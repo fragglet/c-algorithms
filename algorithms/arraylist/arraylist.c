@@ -147,12 +147,14 @@ void arraylist_remove(ArrayList *arraylist, int index)
     arraylist_remove_range(arraylist, index, 1);
 }
 
-int arraylist_index_of(ArrayList *arraylist, void *data)
+int arraylist_index_of(ArrayList *arraylist, 
+                       ArrayListEqualFunc callback,
+                       void *data)
 {
     int i;
 
     for (i=0; i<arraylist->length; ++i) {
-        if (arraylist->data[i] == data)
+        if (callback(arraylist->data[i], data) != 0)
             return i;
     }
 

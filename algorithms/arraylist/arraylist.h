@@ -65,6 +65,14 @@ typedef struct _ArrayList {
 } ArrayList;
 
 /**
+ * Compare two values in an arraylist to determine if they are equal
+ *
+ * @return Non-zero if the values are not equal, zero if they are equal
+ */
+
+typedef int (*ArrayListEqualFunc)(void *data1, void *data2);
+
+/**
  * Allocates a new ArrayList for use
  *
  * @param length         Hint to the initialise function as to the amount
@@ -138,11 +146,15 @@ int arraylist_insert(ArrayList *arraylist, int index, void *data);
  * Finds the index of a particular pointer in an ArrayList.
  *
  * @param arraylist      The ArrayList to search
+ * @param callback       Callback function to be invoked to determine if 
+ *                       values are equal to the data to search for
  * @param data           The data to search for
  * @return               The index of the data if found, or -1 if not found.
  */
 
-int arraylist_index_of(ArrayList *arraylist, void *data);
+int arraylist_index_of(ArrayList *arraylist, 
+                       ArrayListEqualFunc callback, 
+                       void *data);
 
 /** 
  * Removes all entries from an ArrayList
