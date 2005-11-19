@@ -263,7 +263,74 @@ void test_arraylist_remove(void)
     arraylist_remove(arraylist, 15);
 
     assert(arraylist->length == 15);
+}
 
+int int_equal(int *location1, int *location2)
+{
+    return *location1 == *location2;
+}
+
+void test_arraylist_index_of(void)
+{
+    int entries[] = { 89, 4, 23, 42, 16, 15, 8, 99, 50, 30 };
+    int num_entries;
+    ArrayList *arraylist;
+    int i;
+    int index;
+    int val;
+    
+    /* Generate an arraylist containing the entries in the array */
+
+    num_entries = sizeof(entries) / sizeof(int);
+    arraylist = arraylist_new(0);
+
+    for (i=0; i<num_entries; ++i) {
+        arraylist_append(arraylist, &entries[i]);
+    }
+
+    /* Check all values get found correctly */
+
+    for (i=0; i<num_entries; ++i) {
+        
+        val = entries[i];
+        
+        index = arraylist_index_of(arraylist, (ArrayListEqualFunc) int_equal, 
+                                   &val);
+
+        assert(index == i);
+    }
+
+    /* Check invalid values */
+
+    val = 0;
+    assert(arraylist_index_of(arraylist, (ArrayListEqualFunc) int_equal, 
+                              &val) < 0);
+    val = 57;
+    assert(arraylist_index_of(arraylist, (ArrayListEqualFunc) int_equal, 
+                              &val) < 0);
+}
+
+void test_arraylist_clear(void)
+{
+    ArrayList *arraylist;
+
+    arraylist = arraylist_new(0);
+
+    /* Emptying an already-empty arraylist */
+
+    arraylist_clear(arraylist);
+    assert(arraylist->length == 0);
+
+    /* Add some items and then empty it */
+
+    arraylist_append(arraylist, &variable1);
+    arraylist_append(arraylist, &variable2);
+    arraylist_append(arraylist, &variable3);
+    arraylist_append(arraylist, &variable4);
+
+    arraylist_clear(arraylist);
+
+    assert(arraylist->length == 0);
 }
 
 int main(int argc, char *argv[])
@@ -275,5 +342,7 @@ int main(int argc, char *argv[])
     test_arraylist_insert();
     test_arraylist_remove();
     test_arraylist_remove_range();
+    test_arraylist_index_of();
+    test_arraylist_clear();
 }
 
