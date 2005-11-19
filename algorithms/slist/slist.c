@@ -387,5 +387,24 @@ void slist_sort(SListEntry **list, SListCompareFunc compare_func)
     slist_sort_internal(list, compare_func);
 }
 
+SListEntry *slist_find_data(SListEntry *list,
+                            SListEqualFunc callback,
+                            void *data)
+{
+    SListEntry *rover;
+
+    /* Iterate over entries in the list until the data is found */
+
+    for (rover=list; rover != NULL; rover=rover->next) {
+        if (callback(rover->data, data) != 0) {
+            return rover;
+        }
+    }
+    
+    /* Not found */
+
+    return NULL;
+}
+
         
 

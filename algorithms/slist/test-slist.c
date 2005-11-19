@@ -277,10 +277,9 @@ void test_slist_sort(void)
     SListEntry *list;
     int entries[] = { 89, 4, 23, 42, 4, 16, 15, 4, 8, 99, 50, 30, 4 };
     int sorted[]  = { 4, 4, 4, 4, 8, 15, 16, 23, 30, 42, 50, 89, 99 };
-    int num_entries;
+    int num_entries = sizeof(entries) / sizeof(int);
     int i;
 
-    num_entries = sizeof(entries) / sizeof(int);
     list = NULL;
 
     for (i=0; i<num_entries; ++i) {
@@ -309,7 +308,50 @@ void test_slist_sort(void)
     slist_sort(&list, (SListCompareFunc) int_compare);
 
     assert(list == NULL);
+}
 
+int int_equal(int *location1, int *location2)
+{
+    return *location1 == *location2;
+}
+
+void test_slist_find_data(void)
+{
+    int entries[] = { 89, 23, 42, 16, 15, 4, 8, 99, 50, 30 };
+    int num_entries = sizeof(entries) / sizeof(int);
+    SListEntry *list;
+    SListEntry *result;
+    int i;
+    int val;
+    int *data;
+
+    /* Generate a list containing the entries */
+
+    list = NULL;
+    for (i=0; i<num_entries; ++i) {
+        slist_append(&list, &entries[i]);
+    }
+
+    /* Check that each value can be searched for correctly */
+
+    for (i=0; i<num_entries; ++i) {
+
+        val = entries[i];
+        
+        result = slist_find_data(list, (SListEqualFunc) int_equal, &val);
+                                 
+        assert(result != NULL);
+
+        data = (int *) slist_data(result);
+        assert(*data == val);
+    }
+    
+    /* Check some invalid values return NULL */
+
+    val = 0;
+    assert(slist_find_data(list, (SListEqualFunc) int_equal, &val) == NULL);
+    val = 56;
+    assert(slist_find_data(list, (SListEqualFunc) int_equal, &val) == NULL);
 }
 
 int main(int argc, char *argv[])
@@ -324,5 +366,6 @@ int main(int argc, char *argv[])
     test_slist_remove_entry();
     test_slist_remove_data();
     test_slist_sort();
+    test_slist_find_data();
 }
 

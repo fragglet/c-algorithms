@@ -55,9 +55,23 @@ typedef void (*SListIterator)(void *data, void *user_data);
 
 /**
  * Callback function used to compare values in a list when sorting
+ *
+ * @return   A negative value if data1 should be sorted before data2, 
+ *           a positive value if data1 should be sorted after data2, 
+ *           zero if data1 and data2 are equal.
  */
 
 typedef int (*SListCompareFunc)(void *data1, void *data2);
+
+/**
+ * Callback function used to determine of two values in a list are
+ * equal
+ *
+ * @return   A non-zero value if data1 and data2 are equal, zero if they
+ *           are not equal.
+ */
+
+typedef int (*SListEqualFunc)(void *data1, void *data2);
 
 /**
  * Free an entire list
@@ -174,6 +188,21 @@ int slist_remove_data(SListEntry **list, void *data);
  */
 
 void slist_sort(SListEntry **list, SListCompareFunc compare_func);
+
+/**
+ * Finds the entry for a particular data item in a list.
+ *
+ * @param list           The list to search
+ * @param callback       Callback function to be invoked to determine if
+ *                       values are equal to the data to search for
+ * @param data           The data to search for
+ * @return               The list entry of the item being searched for, or
+ *                       NULL if not found.
+ */
+
+SListEntry *slist_find_data(SListEntry *list, 
+                            SListEqualFunc callback,
+                            void *data);
 
 #endif /* #ifndef ALGORITHM_SLIST_H */
 
