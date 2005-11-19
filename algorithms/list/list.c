@@ -166,7 +166,6 @@ ListEntry *list_nth_entry(ListEntry *list, int n)
 void *list_nth_data(ListEntry *list, int n)
 {
     ListEntry *entry;
-    int i;
 
     /* Find the specified entry */
 
@@ -219,8 +218,6 @@ void list_foreach(ListEntry *list, ListIterator callback, void *user_data)
 
 int list_remove_entry(ListEntry **list, ListEntry *entry)
 {
-    ListEntry *rover;
-
     /* If the list is empty, or entry is NULL, always fail */
 
     if (*list == NULL || entry == NULL) {

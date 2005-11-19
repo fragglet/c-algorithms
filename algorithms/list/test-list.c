@@ -72,7 +72,6 @@ void check_list_integrity(ListEntry *list)
 void test_list_append(void)
 {
     ListEntry *list = NULL;
-    void *data;
 
     list_append(&list, &variable1);
     check_list_integrity(list);
@@ -92,7 +91,6 @@ void test_list_append(void)
 void test_list_prepend(void)
 {
     ListEntry *list = NULL;
-    void *data;
 
     list_prepend(&list, &variable1);
     check_list_integrity(list);
@@ -399,5 +397,7 @@ int main(int argc, char *argv[])
     test_list_remove_data();
     test_list_sort();
     test_list_find_data();
+
+    return 0;
 }
 

@@ -57,7 +57,6 @@ SListEntry *generate_list(void)
 void test_slist_append(void)
 {
     SListEntry *list = NULL;
-    void *data;
 
     slist_append(&list, &variable1);
     slist_append(&list, &variable2);
@@ -73,7 +72,6 @@ void test_slist_append(void)
 void test_slist_prepend(void)
 {
     SListEntry *list = NULL;
-    void *data;
 
     slist_prepend(&list, &variable1);
     slist_prepend(&list, &variable2);
@@ -374,5 +372,7 @@ int main(int argc, char *argv[])
     test_slist_remove_data();
     test_slist_sort();
     test_slist_find_data();
+
+    return 0;
 }
 

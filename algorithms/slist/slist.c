@@ -154,7 +154,6 @@ SListEntry *slist_nth_entry(SListEntry *list, int n)
 void *slist_nth_data(SListEntry *list, int n)
 {
     SListEntry *entry;
-    int i;
 
     /* Find the specified entry */
 

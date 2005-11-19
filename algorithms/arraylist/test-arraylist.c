@@ -344,5 +344,7 @@ int main(int argc, char *argv[])
     test_arraylist_remove_range();
     test_arraylist_index_of();
     test_arraylist_clear();
+
+    return 0;
 }
 

@@ -299,5 +299,7 @@ int main(int argc, char *argv[])
     test_queue_pop_tail();
     test_queue_peek_tail();
     test_queue_is_empty();
+
+    return 0;
 }
 

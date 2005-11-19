@@ -60,6 +60,8 @@ Queue *queue_new(void)
     
     queue->head = NULL;
     queue->tail = NULL;
+
+    return queue;
 }
 
 void queue_free(Queue *queue)
