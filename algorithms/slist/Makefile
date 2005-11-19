@@ -9,5 +9,5 @@ test-slist : $(OBJS)
 	$(CC) $(CFLAGS) $^ -c -o $@
 
 clean : 
-	rm $(OBJS) test-slist
+	rm -f $(OBJS) test-slist
 

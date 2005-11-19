@@ -9,5 +9,5 @@ test-arraylist : $(OBJS)
 	$(CC) $(CFLAGS) $^ -c -o $@
 
 clean : 
-	rm $(OBJS) test-arraylist
+	rm -f $(OBJS) test-arraylist
 

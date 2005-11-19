@@ -9,5 +9,5 @@ test-queue : $(OBJS)
 	$(CC) $(CFLAGS) $^ -c -o $@
 
 clean : 
-	rm $(OBJS) test-queue
+	rm -f $(OBJS) test-queue
 
