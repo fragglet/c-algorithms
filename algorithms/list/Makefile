@@ -1,5 +1,5 @@
 
-CFLAGS = -g
+CFLAGS = -g -Wall
 OBJS = list.o test-list.o
 
 test-list : $(OBJS)

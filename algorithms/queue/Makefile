@@ -1,5 +1,5 @@
 
-CFLAGS = -g
+CFLAGS = -g -Wall
 OBJS = queue.o test-queue.o
 
 test-queue : $(OBJS)

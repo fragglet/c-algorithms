@@ -1,5 +1,5 @@
 
-CFLAGS = -g
+CFLAGS = -g -Wall
 OBJS = arraylist.o test-arraylist.o
 
 test-arraylist : $(OBJS)
