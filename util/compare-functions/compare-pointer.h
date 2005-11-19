@@ -42,16 +42,6 @@ POSSIBILITY OF SUCH DAMAGE.
 extern "C" {
 #endif
 
-/** 
- * Generate a hash key for a pointer.  The value pointed at by the pointer
- * is not used, only the pointer itself.
- *
- * @param location        The pointer
- * @return                A hash key for the pointer.
- */
-
-unsigned long pointer_hash(void *location);
-
 /**
  * Compare two pointers to determine if they are equal.  
  *

@@ -34,12 +34,9 @@ POSSIBILITY OF SUCH DAMAGE.
  
 */
 
-/* Comparison functions for a generic void pointer */
+#include "compare-pointer.h"
 
-unsigned long pointer_hash(void *location)
-{
-    return (unsigned long) location;
-}
+/* Comparison functions for a generic void pointer */
 
 int pointer_equal(void *location1, void *location2)
 {

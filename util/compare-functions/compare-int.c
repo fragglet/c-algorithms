@@ -33,12 +33,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-/* Comparison functions for a pointer to an integer */
+#include "compare-int.h"
 
-unsigned long int_hash(int *location)
-{
-    return (unsigned long) *location;
-}
+/* Comparison functions for a pointer to an integer */
 
 int int_equal(int *location1, int *location2)
 {

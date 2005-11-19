@@ -1,6 +1,6 @@
 
 /*
-
+ 
 Copyright (c) 2005, Simon Howard
 All rights reserved.
 
@@ -33,42 +33,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-/* Description */
+#include "hash-pointer.h"
 
-#ifndef ALGORITHM_COMPARE_STRING_H
-#define ALGORITHM_COMPARE_STRING_H
+/* Hash function for a generic pointer */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/**
- * Compare two strings to determine if they are equal.
- *
- * @param string1         The first string.
- * @param string2         The second string.
- * @return                Non-zero if the strings are equal, zero if they are
- *                        not equal.
- */
-
-int string_equal(char *string1, char *string2);
-
-/**
- * Compare two strings.
- *
- * @param string1         The first string.
- * @param string2         The second string.
- * @return                A negative value if the first string should be
- *                        sorted before the second, a positive value if the
- *                        first string should be sorted after the second,
- *                        zero if the two strings are equal.
- */
-
-int string_compare(char *string1, char *string2);
-
-#ifdef __cplusplus
+unsigned long pointer_hash(void *location)
+{
+    return (unsigned long) location;
 }
-#endif
-
-#endif /* #ifndef ALGORITHM_COMPARE_STRING_H */
 

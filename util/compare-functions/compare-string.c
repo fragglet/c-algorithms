@@ -33,22 +33,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-/* String hash function */
+#include <stdlib.h>
+#include <string.h>
 
-unsigned long string_hash(char *string)
-{
-    /* This is the djb2 string hash function */
+#include "compare-string.h"
 
-    unsigned long result = 5381;
-    unsigned char *p;
-    int c;
-
-    for (p=(unsigned char *) string; *p != '\0'; ++p) {
-        result = ((result << 5) ^ result ) ^ (*p);
-    }
-    
-    return result;
-}
+/* Compare functions for a string */
 
 int string_equal(char *string1, char *string2)
 {

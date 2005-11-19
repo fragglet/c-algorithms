@@ -35,40 +35,26 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* Description */
 
-#ifndef ALGORITHM_COMPARE_STRING_H
-#define ALGORITHM_COMPARE_STRING_H
+#ifndef ALGORITHM_HASH_INT_H
+#define ALGORITHM_HASH_INT_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/**
- * Compare two strings to determine if they are equal.
+/** 
+ * Generate a hash key for a pointer to an integer.  The value pointed
+ * at is used to generate the key.
  *
- * @param string1         The first string.
- * @param string2         The second string.
- * @return                Non-zero if the strings are equal, zero if they are
- *                        not equal.
+ * @param location        The pointer
+ * @return                A hash key for the value at the location.
  */
 
-int string_equal(char *string1, char *string2);
-
-/**
- * Compare two strings.
- *
- * @param string1         The first string.
- * @param string2         The second string.
- * @return                A negative value if the first string should be
- *                        sorted before the second, a positive value if the
- *                        first string should be sorted after the second,
- *                        zero if the two strings are equal.
- */
-
-int string_compare(char *string1, char *string2);
+unsigned long int_hash(int *location);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* #ifndef ALGORITHM_COMPARE_STRING_H */
+#endif /* #ifndef ALGORITHM_HASH_INT_H */
 

@@ -1,6 +1,6 @@
 
 /*
-
+ 
 Copyright (c) 2005, Simon Howard
 All rights reserved.
 
@@ -33,42 +33,21 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-/* Description */
+#include "hash-string.h"
 
-#ifndef ALGORITHM_COMPARE_STRING_H
-#define ALGORITHM_COMPARE_STRING_H
+/* String hash function */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+unsigned long string_hash(char *string)
+{
+    /* This is the djb2 string hash function */
 
-/**
- * Compare two strings to determine if they are equal.
- *
- * @param string1         The first string.
- * @param string2         The second string.
- * @return                Non-zero if the strings are equal, zero if they are
- *                        not equal.
- */
+    unsigned long result = 5381;
+    unsigned char *p;
 
-int string_equal(char *string1, char *string2);
-
-/**
- * Compare two strings.
- *
- * @param string1         The first string.
- * @param string2         The second string.
- * @return                A negative value if the first string should be
- *                        sorted before the second, a positive value if the
- *                        first string should be sorted after the second,
- *                        zero if the two strings are equal.
- */
-
-int string_compare(char *string1, char *string2);
-
-#ifdef __cplusplus
+    for (p=(unsigned char *) string; *p != '\0'; ++p) {
+        result = ((result << 5) ^ result ) ^ (*p);
+    }
+    
+    return result;
 }
-#endif
-
-#endif /* #ifndef ALGORITHM_COMPARE_STRING_H */
 

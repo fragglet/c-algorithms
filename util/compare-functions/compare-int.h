@@ -42,16 +42,6 @@ POSSIBILITY OF SUCH DAMAGE.
 extern "C" {
 #endif
 
-/** 
- * Generate a hash key for a pointer to an integer.  The value pointed
- * at is used to generate the key.
- *
- * @param location        The pointer
- * @return                A hash key for the value at the location.
- */
-
-unsigned long int_hash(int *location);
-
 /**
  * Compare the integer values pointed at by two pointers to determine
  * if they are equal.
