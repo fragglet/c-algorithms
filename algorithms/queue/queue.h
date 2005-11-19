@@ -133,7 +133,7 @@ void *queue_peek_tail(Queue *queue);
  *                   is empty
  */
 
-int queue_empty(Queue *queue);
+int queue_is_empty(Queue *queue);
 
 #ifdef __cplusplus
 }

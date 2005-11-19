@@ -66,7 +66,7 @@ void queue_free(Queue *queue)
 {
     /* Empty the queue */
     
-    while (!queue_empty(queue)) {
+    while (!queue_is_empty(queue)) {
         queue_pop_head(queue);
     }
 
@@ -116,7 +116,7 @@ void *queue_pop_head(Queue *queue)
 
     /* Check the queue is not empty */
 
-    if (queue_empty(queue))
+    if (queue_is_empty(queue))
         return NULL;
 
     /* Unlink the first entry from the head of the queue */
@@ -147,7 +147,7 @@ void *queue_pop_head(Queue *queue)
 
 void *queue_peek_head(Queue *queue)
 {
-    if (queue_empty(queue))
+    if (queue_is_empty(queue))
         return NULL;
     else
         return queue->head->data;
@@ -194,7 +194,7 @@ void *queue_pop_tail(Queue *queue)
 
     /* Check the queue is not empty */
 
-    if (queue_empty(queue))
+    if (queue_is_empty(queue))
         return NULL;
 
     /* Unlink the first entry from the tail of the queue */
@@ -226,13 +226,13 @@ void *queue_pop_tail(Queue *queue)
 
 void *queue_peek_tail(Queue *queue)
 {
-    if (queue_empty(queue))
+    if (queue_is_empty(queue))
         return NULL;
     else
         return queue->tail->data;
 }
 
-int queue_empty(Queue *queue)
+int queue_is_empty(Queue *queue)
 {
     return queue->head == NULL;
 }
