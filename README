@@ -1,0 +1,10 @@
+
+C Algorithms
+
+The C programming language includes a very limited standard library in
+comparison to other modern programming languages.  This is a collection
+of common Computer Science algorithms which may be used in C projects.
+
+The code is licensed under the Modified BSD license, and as a result
+may be reused in any project, whether Proprietary or Open Source.
+
