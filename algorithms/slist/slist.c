@@ -257,7 +257,7 @@ int slist_remove_entry(SListEntry **list, SListEntry *entry)
     return 1;
 }
 
-int slist_remove_data(SListEntry **list, void *data)
+int slist_remove_data(SListEntry **list, SListEqualFunc callback, void *data)
 {
     SListEntry **rover;
     SListEntry *next;
@@ -275,7 +275,7 @@ int slist_remove_data(SListEntry **list, void *data)
         
         /* Should this entry be removed? */
         
-        if ((*rover)->data == data) {
+        if (callback((*rover)->data, data) != 0) {
             
             /* Data found, so remove this entry and free */
 

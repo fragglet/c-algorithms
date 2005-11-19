@@ -227,39 +227,51 @@ void test_slist_remove_entry(void)
     assert(slist_remove_entry(&empty_list, NULL) == 0);
 }
 
+int int_equal(int *location1, int *location2)
+{
+    return *location1 == *location2;
+}
+
 void test_slist_remove_data(void)
 {
+    int entries[] = { 89, 4, 23, 42, 4, 16, 15, 4, 8, 99, 50, 30, 4 };
+    int num_entries = sizeof(entries) / sizeof(int);
+    int val;
     SListEntry *list;
+    int i;
 
-    list = generate_list();
+    /* Generate a list containing all the entries in the array */
 
-    /* Append variable4 three times */
+    list = NULL;
 
-    slist_append(&list, &variable4);
-    slist_append(&list, &variable4);
-    slist_append(&list, &variable4);
-
-    assert(slist_length(list) == 7);
+    for (i=0; i<num_entries; ++i) {
+        slist_prepend(&list, &entries[i]);
+    }
 
     /* Test removing invalid data */
 
-    assert(slist_remove_data(&list, NULL) == 0);
-    assert(slist_remove_data(&list, list) == 0);
+    val = 0;
+    assert(slist_remove_data(&list, (SListEqualFunc) int_equal, &val) == 0);
+    val = 56;
+    assert(slist_remove_data(&list, (SListEqualFunc) int_equal, &val) == 0);
     
-    /* Remove variable3 from the list */
+    /* Remove the number 8 from the list */
 
-    assert(slist_remove_data(&list, &variable3) == 1);
-    assert(slist_length(list) == 6);
+    val = 8;
+    assert(slist_remove_data(&list, (SListEqualFunc) int_equal, &val) == 1);
+    assert(slist_length(list) == num_entries - 1);
 
-    /* Remove variable1 from the list (first entry) */
+    /* Remove the number 4 from the list (occurs multiple times) */
 
-    assert(slist_remove_data(&list, &variable1) == 1);
-    assert(slist_length(list) == 5);
+    val = 4;
+    assert(slist_remove_data(&list, (SListEqualFunc) int_equal, &val) == 4);
+    assert(slist_length(list) == num_entries - 5);
 
-    /* Remove variable4 from the list (multiple entries */
+    /* Remove the number 89 from the list (first entry) */
 
-    assert(slist_remove_data(&list, &variable4) == 4);
-    assert(slist_length(list) == 1);
+    val = 89;
+    assert(slist_remove_data(&list, (SListEqualFunc) int_equal, &val) == 1);
+    assert(slist_length(list) == num_entries - 6);
 }
 
 int int_compare(int *location1, int *location2)
@@ -308,11 +320,6 @@ void test_slist_sort(void)
     slist_sort(&list, (SListCompareFunc) int_compare);
 
     assert(list == NULL);
-}
-
-int int_equal(int *location1, int *location2)
-{
-    return *location1 == *location2;
 }
 
 void test_slist_find_data(void)

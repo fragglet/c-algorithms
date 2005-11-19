@@ -174,11 +174,13 @@ int slist_remove_entry(SListEntry **list, SListEntry *entry);
  * Remove all occurrences of a particular piece of data from a list
  *
  * @param list       Pointer to the list
+ * @param callback   Callback function to invoke to compare data in the 
+ *                   list with the data to remove
  * @param data       The data to remove from the list
  * @return           The number of entries removed from the list
  */
 
-int slist_remove_data(SListEntry **list, void *data);
+int slist_remove_data(SListEntry **list, SListEqualFunc callback, void *data);
 
 /**
  * Sort a list
