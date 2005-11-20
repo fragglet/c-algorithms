@@ -103,7 +103,7 @@ void queue_push_head(Queue *queue, void *data);
 void *queue_pop_head(Queue *queue);
 
 /**
- * Read some data from the head of queue, without removing it from
+ * Read data from the head of queue, without removing it from
  * the queue.
  *
  * @param queue      The queue.

@@ -86,7 +86,7 @@ typedef int (*SListEqualFunc)(void *data1, void *data2);
 void slist_free(SListEntry *list);
 
 /**
- * Prepend some new data to the end of a list.
+ * Prepend data to the start of a list.
  *
  * @param list      Pointer to the list to prepend to.
  * @param data      Data to prepend.
@@ -96,7 +96,7 @@ void slist_free(SListEntry *list);
 SListEntry *slist_prepend(SListEntry **list, void *data);
 
 /**
- * Append some new data to the end of a list.
+ * Append data to the end of a list.
  *
  * @param list      Pointer to the list to append to.
  * @param data      Data to append.

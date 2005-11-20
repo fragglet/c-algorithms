@@ -114,7 +114,7 @@ typedef int (*ListEqualFunc)(void *data1, void *data2);
 void list_free(ListEntry *list);
 
 /**
- * Prepend some new data to the end of a list.
+ * Prepend data to the start of a list.
  *
  * @param list      Pointer to the list to prepend to.
  * @param data      Data to prepend.
@@ -124,7 +124,7 @@ void list_free(ListEntry *list);
 ListEntry *list_prepend(ListEntry **list, void *data);
 
 /**
- * Append some new data to the end of a list.
+ * Append data to the end of a list.
  *
  * @param list      Pointer to the list to append to.
  * @param data      Data to append.

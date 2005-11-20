@@ -108,7 +108,7 @@ ArrayList *arraylist_new(int length);
 void arraylist_free(ArrayList *arraylist);
 
 /**
- * Append some data to the end of an ArrayList.
+ * Append data to the end of an ArrayList.
  *
  * @param arraylist      The ArrayList.
  * @param data           The data to append.
@@ -117,7 +117,7 @@ void arraylist_free(ArrayList *arraylist);
 void arraylist_append(ArrayList *arraylist, void *data);
 
 /** 
- * Prepend some data to the beginning of an ArrayList.
+ * Prepend data to the beginning of an ArrayList.
  *
  * @param arraylist      The ArrayList.
  * @param data           The data to prepend.
@@ -145,7 +145,7 @@ void arraylist_remove(ArrayList *arraylist, int index);
 void arraylist_remove_range(ArrayList *arraylist, int index, int length);
 
 /**
- * Insert some new data at the specified index in an ArrayList.
+ * Insert new data at the specified index in an ArrayList.
  * The index where new data can be inserted is limited by the 
  * size of the ArrayList.
  *
@@ -159,7 +159,7 @@ void arraylist_remove_range(ArrayList *arraylist, int index, int length);
 int arraylist_insert(ArrayList *arraylist, int index, void *data);
 
 /**
- * Finds the index of a particular pointer in an ArrayList.
+ * Find the index of a particular pointer in an ArrayList.
  *
  * @param arraylist      The ArrayList to search.
  * @param callback       Callback function to be invoked to determine if 
@@ -173,7 +173,7 @@ int arraylist_index_of(ArrayList *arraylist,
                        void *data);
 
 /** 
- * Removes all entries from an ArrayList.
+ * Remove all entries from an ArrayList.
  *
  * @param arraylist      The ArrayList.
  */
