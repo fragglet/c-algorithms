@@ -89,7 +89,7 @@ typedef struct _ArrayList {
 typedef int (*ArrayListEqualFunc)(void *data1, void *data2);
 
 /**
- * Allocates a new ArrayList for use.
+ * Allocate a new ArrayList for use.
  *
  * @param length         Hint to the initialise function as to the amount
  *                       of memory to allocate initially to the ArrayList.
