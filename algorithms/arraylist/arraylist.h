@@ -33,7 +33,23 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-/* Automatically resizing array */
+/** 
+ * @file arraylist.h
+ *
+ * @brief Automatically resizing array 
+ *
+ * ArrayLists are arrays of pointers which automatically increase in 
+ * size.
+ *
+ * To create an ArrayList, use @ref arraylist_new.
+ * To destroy an ArrayList, use @ref arraylist_free.
+ *
+ * To add data an ArrayList, use @ref arraylist_prepend, 
+ * @ref arraylist_append, or @ref arraylist_insert.
+ *
+ * To remove data from an ArrayList, use @ref arraylist_remove
+ * or @ref arraylist_remove_range.
+ */
 
 #ifndef ALGORITHM_ARRAYLIST_H
 #define ALGORITHM_ARRAYLIST_H
@@ -65,15 +81,15 @@ typedef struct _ArrayList {
 } ArrayList;
 
 /**
- * Compare two values in an arraylist to determine if they are equal
+ * Compare two values in an arraylist to determine if they are equal.
  *
- * @return Non-zero if the values are not equal, zero if they are equal
+ * @return Non-zero if the values are not equal, zero if they are equal.
  */
 
 typedef int (*ArrayListEqualFunc)(void *data1, void *data2);
 
 /**
- * Allocates a new ArrayList for use
+ * Allocates a new ArrayList for use.
  *
  * @param length         Hint to the initialise function as to the amount
  *                       of memory to allocate initially to the ArrayList.
@@ -92,38 +108,38 @@ ArrayList *arraylist_new(int length);
 void arraylist_free(ArrayList *arraylist);
 
 /**
- * Append some data to the end of an ArrayList
+ * Append some data to the end of an ArrayList.
  *
- * @param arraylist      The ArrayList
- * @param data           The data to append
+ * @param arraylist      The ArrayList.
+ * @param data           The data to append.
  */
 
 void arraylist_append(ArrayList *arraylist, void *data);
 
 /** 
- * Prepend some data to the beginning of an ArrayList
+ * Prepend some data to the beginning of an ArrayList.
  *
- * @param arraylist      The ArrayList
- * @param data           The data to prepend
+ * @param arraylist      The ArrayList.
+ * @param data           The data to prepend.
  */
 
 void arraylist_prepend(ArrayList *arraylist, void *data);
 
 /**
- * Remove the entry at the specified location in an ArrayList
+ * Remove the entry at the specified location in an ArrayList.
  *
- * @param arraylist      The ArrayList
- * @param index          The index of the entry to remove
+ * @param arraylist      The ArrayList.
+ * @param index          The index of the entry to remove.
  */
 
 void arraylist_remove(ArrayList *arraylist, int index);
 
 /**
- * Remove a range of entries at the specified location in an ArrayList
+ * Remove a range of entries at the specified location in an ArrayList.
  *
- * @param arraylist      The ArrayList
- * @param index          The index of the start of the range to remove
- * @param length         The length of the range to remove
+ * @param arraylist      The ArrayList.
+ * @param index          The index of the start of the range to remove.
+ * @param length         The length of the range to remove.
  */
 
 void arraylist_remove_range(ArrayList *arraylist, int index, int length);
@@ -133,11 +149,11 @@ void arraylist_remove_range(ArrayList *arraylist, int index, int length);
  * The index where new data can be inserted is limited by the 
  * size of the ArrayList.
  *
- * @param arraylist      The ArrayList
- * @param index          The index at which to insert the data
- * @param data           The data
+ * @param arraylist      The ArrayList.
+ * @param index          The index at which to insert the data.
+ * @param data           The data.
  * @return               Returns zero if unsuccessful, else non-zero 
- *                       if successful
+ *                       if successful.
  */
 
 int arraylist_insert(ArrayList *arraylist, int index, void *data);
@@ -145,10 +161,10 @@ int arraylist_insert(ArrayList *arraylist, int index, void *data);
 /**
  * Finds the index of a particular pointer in an ArrayList.
  *
- * @param arraylist      The ArrayList to search
+ * @param arraylist      The ArrayList to search.
  * @param callback       Callback function to be invoked to determine if 
- *                       values are equal to the data to search for
- * @param data           The data to search for
+ *                       values are equal to the data to search for.
+ * @param data           The data to search for.
  * @return               The index of the data if found, or -1 if not found.
  */
 
@@ -157,9 +173,9 @@ int arraylist_index_of(ArrayList *arraylist,
                        void *data);
 
 /** 
- * Removes all entries from an ArrayList
+ * Removes all entries from an ArrayList.
  *
- * @param arraylist      The ArrayList
+ * @param arraylist      The ArrayList.
  */
 
 void arraylist_clear(ArrayList *arraylist);

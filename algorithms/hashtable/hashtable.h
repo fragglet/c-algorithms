@@ -33,7 +33,24 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-/* Description */
+/**
+ * @file hashtable.h
+ *
+ * @brief Hash table.
+ *
+ * A hash table stores a set of values which can be addressed by a 
+ * key.  Given the key, the corresponding value can be looked up
+ * quickly.
+ *
+ * To create a hash table, use @ref hashtable_new.  To destroy a 
+ * hash table, use @ref hashtable_free.
+ *
+ * To insert a value into a hash table, use @ref hashtable_insert.
+ *
+ * To remove a value from a hash table, use @ref hashtable_remove.
+ *
+ * To look up a value by its key, use @ref hashtable_lookup.
+ */
 
 #ifndef ALGORITHM_HASHTABLE_H
 #define ALGORITHM_HASHTABLE_H
@@ -43,14 +60,17 @@ extern "C" {
 #endif
 
 /** 
- * A hash table structure
+ * A hash table structure.
  */
 
 typedef struct _Hashtable Hashtable;
 
 /**
  * Hash function used to generate hash values for keys used in a hash
- * table
+ * table.
+ *
+ * @param data   The value to generate a hash value for.
+ * @return       The hash value.
  */
 
 typedef unsigned long (*HashtableHashFunc)(void *data);
@@ -65,7 +85,7 @@ typedef unsigned long (*HashtableHashFunc)(void *data);
 typedef int (*HashtableEqualFunc)(void *data1, void *data2);
 
 /**
- * Create a new hash table
+ * Create a new hash table.
  *
  * @param hash_func            Function used to generate hash keys for the 
  *                             keys used in the table.
@@ -78,9 +98,9 @@ Hashtable *hashtable_new(HashtableHashFunc hash_func,
                          HashtableEqualFunc equal_func);
 
 /**
- * Destroy a hash table
+ * Destroy a hash table.
  *
- * @param hashtable            The hash table to destroy
+ * @param hashtable            The hash table to destroy.
  */
 
 void hashtable_free(Hashtable *hashtable);
@@ -89,18 +109,18 @@ void hashtable_free(Hashtable *hashtable);
  * Insert a value into a hash table, overwriting any existing entry 
  * using the same key.
  *
- * @param hashtable            The hash table
- * @param key                  The key for the new value
- * @param value                The value to insert
+ * @param hashtable            The hash table.
+ * @param key                  The key for the new value.
+ * @param value                The value to insert.
  */
 
 void hashtable_insert(Hashtable *hashtable, void *key, void *value);
 
 /**
- * Look up a value in a hash table by key
+ * Look up a value in a hash table by key.
  *
- * @param hashtable           The hash table
- * @param key                 The key of the value to look up
+ * @param hashtable           The hash table.
+ * @param key                 The key of the value to look up.
  * @return                    The value, or NULL if there is no value with
  *                            that key in the hash table.
  */
@@ -108,10 +128,10 @@ void hashtable_insert(Hashtable *hashtable, void *key, void *value);
 void *hashtable_lookup(Hashtable *hashtable, void *key);
 
 /**
- * Remove a value from a hash table
+ * Remove a value from a hash table.
  *
- * @param hashtable           The hash table
- * @param key                 The key of the value to remove
+ * @param hashtable           The hash table.
+ * @param key                 The key of the value to remove.
  * @return                    Non-zero if a key was removed, or zero if the
  *                            specified key was not found in the hash table.
  */
