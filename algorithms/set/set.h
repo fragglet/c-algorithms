@@ -136,6 +136,15 @@ int set_query_data(Set *set, void *data);
 
 void set_foreach(Set *set, SetIterator callback, void *user_data);
 
+/**
+ * Retrieve the number of entries in a set
+ *
+ * @param set           The set.
+ * @return              A count of the number of entries in the set.
+ */
+
+int set_num_entries(Set *set);
+
 #ifdef __cplusplus
 }
 #endif
