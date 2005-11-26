@@ -234,6 +234,10 @@ void hashtable_insert(Hashtable *hashtable, void *key, void *value)
 
     newentry->next = hashtable->table[index];
     hashtable->table[index] = newentry;
+
+    /* Maintain the count of the number of entries */
+
+    ++hashtable->entries;
 }
 
 void *hashtable_lookup(Hashtable *hashtable, void *key)
@@ -300,6 +304,10 @@ int hashtable_remove(Hashtable *hashtable, void *key)
 
             free(entry);
 
+            /* Track count of entries */
+
+            --hashtable->entries;
+
             result = 1;
 
             break;
@@ -311,5 +319,10 @@ int hashtable_remove(Hashtable *hashtable, void *key)
     }
 
     return result;
+}
+
+int hashtable_num_entries(Hashtable *hashtable)
+{
+    return hashtable->entries;
 }
 

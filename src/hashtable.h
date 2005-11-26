@@ -138,6 +138,13 @@ void *hashtable_lookup(Hashtable *hashtable, void *key);
 
 int hashtable_remove(Hashtable *hashtable, void *key);
 
+/** 
+ * Retrieve the number of entries in a hash table.
+ *
+ * @param hashtable           The hash table.
+ * @return                    The number of entries in the hash table.
+ */
+
 #ifdef __cplusplus
 }
 #endif
