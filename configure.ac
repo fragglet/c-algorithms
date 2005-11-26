@@ -8,6 +8,8 @@ AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
+AM_CONFIG_HEADER(config.h:config.h.in)
+
 AC_SUBST(ac_aux_dir)
 
 AC_OUTPUT([
