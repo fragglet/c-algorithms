@@ -44,12 +44,12 @@ POSSIBILITY OF SUCH DAMAGE.
  * To create a new set, use @ref set_new.  To destroy a set, use 
  * @ref set_free.
  *
- * To add a value to a set, use @ref set_add_data.  To remove a value
- * from a set, use @ref set_remove_data.
+ * To add a value to a set, use @ref set_insert.  To remove a value
+ * from a set, use @ref set_remove.
  *
  * To find the number of entries in a set, use @ref set_num_entries.
  *
- * To query if a particular value is in a set, use @ref set_query_data.
+ * To query if a particular value is in a set, use @ref set_query.
  *
  * To iterate over all values in a set, use @ref set_foreach.
  */
@@ -116,7 +116,7 @@ void set_free(Set *set);
  * @param data          The data to add to the set .
  */
 
-void set_add_data(Set *set, void *data);
+void set_insert(Set *set, void *data);
 
 /**
  * Remove a value from a set.
@@ -125,7 +125,7 @@ void set_add_data(Set *set, void *data);
  * @param data          The data to remove from the set.
  */
 
-void set_remove_data(Set *set, void *data);
+void set_remove(Set *set, void *data);
 
 /** 
  * Query if a particular value is in a set.
@@ -136,7 +136,7 @@ void set_remove_data(Set *set, void *data);
  *                      data is in the set.
  */
 
-int set_query_data(Set *set, void *data);
+int set_query(Set *set, void *data);
 
 /**
  * Iterate over all values in a set.

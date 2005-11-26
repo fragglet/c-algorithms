@@ -192,7 +192,7 @@ static void set_enlarge(Set *set)
     free(old_table);
 }
 
-void set_add_data(Set *set, void *data)
+void set_insert(Set *set, void *data)
 {
     SetEntry *newentry;
     SetEntry *rover;
@@ -247,7 +247,7 @@ void set_add_data(Set *set, void *data)
     ++set->entries;
 }
 
-void set_remove_data(Set *set, void *data)
+void set_remove(Set *set, void *data)
 {
     SetEntry **rover;
     SetEntry *entry;
@@ -287,7 +287,7 @@ void set_remove_data(Set *set, void *data)
     /* Not found in set */
 }
 
-int set_query_data(Set *set, void *data)
+int set_query(Set *set, void *data)
 {
     SetEntry *rover;
     int index;
