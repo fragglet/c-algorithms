@@ -196,7 +196,7 @@ int slist_remove_data(SListEntry **list, SListEqualFunc callback, void *data);
 void slist_sort(SListEntry **list, SListCompareFunc compare_func);
 
 /**
- * Find the entry for a particular data item in a list..
+ * Find the entry for a particular data item in a list.
  *
  * @param list           The list to search.
  * @param callback       Callback function to be invoked to determine if

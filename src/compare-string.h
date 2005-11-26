@@ -33,7 +33,15 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-/* Description */
+/**
+ * @file compare-string.h
+ * 
+ * Comparison functions for strings.
+ *
+ * To find the difference between two strings, use @ref string_compare.
+ *
+ * To find if two strings are equal, use @ref string_equal.
+ */
 
 #ifndef ALGORITHM_COMPARE_STRING_H
 #define ALGORITHM_COMPARE_STRING_H

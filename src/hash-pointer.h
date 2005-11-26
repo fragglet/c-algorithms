@@ -33,7 +33,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-/* Description */
+/**
+ * @file hash-pointer.h
+ *
+ * Hash function for a generic (void) pointer.  See @ref pointer_hash.
+ */
 
 #ifndef ALGORITHM_HASH_POINTER_H
 #define ALGORITHM_HASH_POINTER_H

@@ -33,7 +33,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-/* Description */
+/** 
+ * @file hash-int.h
+ *
+ * Hash function for a pointer to an integer.  See @ref int_hash.
+ */
 
 #ifndef ALGORITHM_HASH_INT_H
 #define ALGORITHM_HASH_INT_H
@@ -46,7 +50,7 @@ extern "C" {
  * Generate a hash key for a pointer to an integer.  The value pointed
  * at is used to generate the key.
  *
- * @param location        The pointer
+ * @param location        The pointer.
  * @return                A hash key for the value at the location.
  */
 

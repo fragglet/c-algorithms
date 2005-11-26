@@ -33,7 +33,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-/* Description */
+/**
+ * @file hash-string.h
+ *
+ * Hash function for a string.  For more information see @ref string_hash.
+ */
 
 #ifndef ALGORITHM_HASH_STRING_H
 #define ALGORITHM_HASH_STRING_H
@@ -45,7 +49,7 @@ extern "C" {
 /**
  * Generate a hash key from a string.
  *
- * @param string           The string
+ * @param string           The string.
  * @return                 A hash key for the string.
  */
 
