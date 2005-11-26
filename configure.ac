@@ -8,6 +8,8 @@ AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
+AC_SUBST(ac_aux_dir)
+
 AC_OUTPUT([
     Makefile
     src/Makefile
