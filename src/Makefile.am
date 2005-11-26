@@ -1,4 +1,6 @@
 
+AM_CFLAGS = -Wall
+
 lib_LTLIBRARIES=libcalg.la
 
 SRC=\
