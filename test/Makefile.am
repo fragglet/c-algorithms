@@ -1,5 +1,11 @@
 
-TESTS = test-arraylist test-list test-slist test-queue
+TESTS =                          \
+        test-arraylist           \
+        test-list                \
+        test-slist               \
+        test-queue               \
+        test-compare-functions
+
 noinst_PROGRAMS = $(TESTS)
 
 AM_CFLAGS = -I../src
