@@ -5,7 +5,8 @@ TESTS =                          \
         test-slist               \
         test-queue               \
         test-compare-functions   \
-        test-hashtable
+        test-hashtable           \
+        test-set
 
 noinst_PROGRAMS = $(TESTS)
 
