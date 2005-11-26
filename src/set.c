@@ -307,6 +307,10 @@ int set_query(Set *set, void *data)
 
             return 1;
         }
+
+        /* Advance to the next entry in the chain */
+
+        rover = rover->next;
     }
 
     /* Not found */
@@ -340,5 +344,65 @@ void set_foreach(Set *set, SetIterator callback, void *user_data)
 int set_num_entries(Set *set)
 {
     return set->entries;
+}
+
+static void set_union_foreach(void *value, void *user_data)
+{
+    Set *new_set = (Set *) user_data;
+
+    set_insert(new_set, value);
+}
+
+Set *set_union(Set *set1, Set *set2)
+{
+    Set *new_set;
+
+    new_set = set_new(set1->hash_func, set1->equal_func);
+
+    /* Add all values from the first set */
+    
+    set_foreach(set1, set_union_foreach, new_set);
+
+    /* Add all values from the second set */
+    
+    set_foreach(set2, set_union_foreach, new_set);
+
+    return new_set;
+}
+
+struct set_intersection_data {
+    Set *new_set;
+    Set *set2;
+};
+
+static void set_intersection_foreach(void *value, void *user_data)
+{
+    struct set_intersection_data *params;
+
+    params = (struct set_intersection_data *) user_data;
+
+    /* Is this value in set 2 as well?  If so, it should be in the 
+     * new set. */
+
+    if (set_query(params->set2, value) != 0) {
+        set_insert(params->new_set, value);
+    }
+}
+
+Set *set_intersection(Set *set1, Set *set2)
+{
+    struct set_intersection_data user_data;
+    Set *new_set;
+
+    new_set = set_new(set1->hash_func, set2->equal_func);
+
+    /* Iterate over all values in set 1. */
+
+    user_data.new_set = new_set;
+    user_data.set2 = set2;
+
+    set_foreach(set1, set_intersection_foreach, &user_data);
+    
+    return new_set;
 }
 

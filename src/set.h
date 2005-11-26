@@ -157,6 +157,28 @@ void set_foreach(Set *set, SetIterator callback, void *user_data);
 
 int set_num_entries(Set *set);
 
+/**
+ * Perform a union of two sets.  
+ *
+ * @param set1          The first set.
+ * @param set2          The second set.
+ * @return              A new set containing all values which are in the 
+ *                      first or second sets. 
+ */
+
+Set *set_union(Set *set1, Set *set2);
+
+/**
+ * Perform an intersection of two sets.
+ *
+ * @param set1          The first set.
+ * @param set2          The second set.
+ * @return              A new set containing all values which are in both
+ *                      sets.
+ */
+
+Set *set_intersection(Set *set1, Set *set2);
+
 #ifdef __cplusplus
 }
 #endif
