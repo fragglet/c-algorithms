@@ -4,7 +4,8 @@ TESTS =                          \
         test-list                \
         test-slist               \
         test-queue               \
-        test-compare-functions
+        test-compare-functions   \
+        test-hashtable
 
 noinst_PROGRAMS = $(TESTS)
 
