@@ -247,5 +247,7 @@ int main(int argc, char *argv[])
     test_set_remove();
     test_set_intersection();
     test_set_union();
+
+    return 0;
 }
 
