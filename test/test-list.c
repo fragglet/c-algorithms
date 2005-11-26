@@ -36,7 +36,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+
 #include "list.h"
+#include "compare-int.h"
 
 int variable1 = 50, variable2, variable3, variable4;
 
@@ -244,21 +246,6 @@ void test_list_remove_entry(void)
     /* Removing NULL from an empty list */
 
     assert(list_remove_entry(&empty_list, NULL) == 0);
-}
-
-int int_equal(int *location1, int *location2)
-{
-    return *location1 == *location2;
-}
-
-int int_compare(int *location1, int *location2)
-{
-    if (*location1 < *location2)
-        return -1;
-    else if (*location1 > *location2)
-        return 1;
-    else
-        return 0;
 }
 
 void test_list_remove_data(void)

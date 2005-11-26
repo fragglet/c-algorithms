@@ -40,6 +40,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 
 #include "arraylist.h"
+#include "compare-int.h"
 
 int variable1, variable2, variable3, variable4;
 
@@ -263,11 +264,6 @@ void test_arraylist_remove(void)
     arraylist_remove(arraylist, 15);
 
     assert(arraylist->length == 15);
-}
-
-int int_equal(int *location1, int *location2)
-{
-    return *location1 == *location2;
 }
 
 void test_arraylist_index_of(void)
