@@ -38,8 +38,20 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  * @brief Set of values.
  *
- * A set stores a set of values.  Each value can only exist once in the 
- * set.
+ * A set stores a collection of values.  Each value can only exist once in 
+ * the set.
+ *
+ * To create a new set, use @ref set_new.  To destroy a set, use 
+ * @ref set_free.
+ *
+ * To add a value to a set, use @ref set_add_data.  To remove a value
+ * from a set, use @ref set_remove_data.
+ *
+ * To find the number of entries in a set, use @ref set_num_entries.
+ *
+ * To query if a particular value is in a set, use @ref set_query_data.
+ *
+ * To iterate over all values in a set, use @ref set_foreach.
  */
 
 #ifndef ALGORITHM_SET_H

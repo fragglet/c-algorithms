@@ -36,7 +36,42 @@ POSSIBILITY OF SUCH DAMAGE.
 /**
  * @file slist.h
  *
- * @brief Singly-linked list
+ * Singly-linked list.
+ *
+ * A singly-linked list stores a collection of values.  Each 
+ * entry in the list (represented by a pointer to a @ref SListEntry
+ * structure) contains a link to the next entry.  It is only 
+ * possible to iterate over entries in a singly linked list in one 
+ * direction.
+ *
+ * To create a new singly-linked list, create a variable which is
+ * a pointer to a @ref SListEntry, and initialise it to NULL.
+ *
+ * To destroy a singly linked list, use @ref slist_free.
+ *
+ * To add new data at the start of a list, use @ref slist_prepend.
+ * To add new data at the end of a list, use @ref slist_append.
+ *
+ * To find the length of a list, use @ref slist_length.
+ *
+ * To access data in a list by its index in the list, use 
+ * @ref slist_nth_data.
+ *
+ * To search a list for data, use @ref slist_find_data.
+ *
+ * To sort a list into an order, use @ref slist_sort.
+ *
+ * To iterate over a list, use @ref slist_foreach.
+ *
+ * To find a particular entry in a list by its index, use 
+ * @ref slist_nth_entry.
+ *
+ * Given a particular entry in a list:
+ *
+ * @li To find the next entry, use @ref slist_next.
+ * @li To access the data stored at the entry, use @ref slist_data.
+ * @li To remove the entry, use @ref slist_remove_entry.
+ *
  */
 
 #ifndef ALGORITHM_SLIST_H

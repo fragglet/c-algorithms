@@ -38,8 +38,11 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  * @brief Doubly-linked list.
  *
- * A doubly-linked list stores pointers in a list, with the ability
- * to iterate in either direction.
+ * A doubly-linked list stores a collection of values.  Each entry in
+ * the list (represented by a pointer a @ref ListEntry structure)
+ * contains a link to the next entry and the previous entry.
+ * It is therefore possible to iterate over entries in the list in either 
+ * direction.
  *
  * To create an empty list, create a new variable which is a pointer to
  * a @ref ListEntry structure, and initialise it to NULL.
