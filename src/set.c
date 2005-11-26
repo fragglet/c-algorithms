@@ -50,9 +50,43 @@ struct _Set {
     SetEntry **table;
     int entries;
     int table_size;
+    int prime_index;
     SetHashFunc hash_func;
     SetEqualFunc equal_func;
 };
+
+/* Prime numbers on an escalating exponential scale, used for the table
+ * size.  Each value is approximately 1.5 * the previous value, so the
+ * table size increases by 50% with each enlargement */
+
+static int set_primes[] = {
+    251, 383, 571, 863, 1291, 1933, 2909, 4373, 6553, 9839, 14759, 22133,
+    33211, 49811, 74719, 112069, 168127, 252193, 378289, 567407, 851131,
+    1276721, 1915057, 2872621, 4308937, 6463399, 9695099, 14542651,
+    21813997, 32721001, 49081441, 73622251, 110433383, 165650033,
+    248475107, 372712667, 559068997, 838603499, 1257905249, 1886857859,
+};
+
+static int set_num_primes = sizeof(set_primes) / sizeof(int);
+
+static void set_allocate_table(Set *set)
+{
+    /* Determine the table size based on the current prime index.  
+     * An attempt is made here to ensure sensible behavior if the
+     * maximum prime is exceeded, but in practice other things are
+     * likely to break long before that happens. */
+
+    if (set->prime_index < set_num_primes) {
+        set->table_size = set_primes[set->prime_index];
+    } else {
+        set->table_size = set->entries * 10;
+    }
+
+    /* Allocate the table and initialise to NULL */
+
+    set->table = calloc(set->table_size, sizeof(SetEntry *));
+    memset(set->table, 0, set->table_size * sizeof(SetEntry *));
+}
 
 Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func)
 {
@@ -61,21 +95,42 @@ Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func)
     /* Allocate a new set and fill in the fields */
 
     new_set = (Set *) malloc(sizeof(Set));
-    new_set->table_size = 16;
     new_set->hash_func = hash_func;
     new_set->equal_func = equal_func;
     new_set->entries = 0;
+    new_set->prime_index = 0;
     
     /* Allocate the table */
-
-    new_set->table = calloc(new_set->table_size, sizeof(SetEntry *));
-    memset(new_set->table, 0, new_set->table_size * sizeof(SetEntry *));
     
+    set_allocate_table(new_set);
+
     return new_set;
 }
 
 void set_free(Set *set)
 {
+    SetEntry *rover;
+    SetEntry *next;
+    int i;
+    
+    /* Free all entries in all chains */
+    
+    for (i=0; i<set->table_size; ++i) {
+        rover = set->table[i];
+
+        while (rover != NULL) {
+            next = rover->next;
+
+            /* Free this entry */
+
+            free(rover);
+
+            /* Advance to the next entry in the chain */
+            
+            rover = next;
+        }
+    }
+    
     /* Free the table */
 
     free(set->table);
@@ -99,12 +154,14 @@ static void set_enlarge(Set *set)
     old_table = set->table;
     old_table_size = set->table_size;
 
-    /* Increase table size and allocate a new one */
+    /* Use the next table size from the prime number array */
 
-    set->table_size *= 2;
-    set->table = calloc(set->table_size, sizeof(void *));
-    memset(set->table, 0, set->table_size * sizeof(void *));
-    
+    ++set->prime_index;
+
+    /* Allocate the new table */
+
+    set_allocate_table(set);
+
     /* Iterate through all entries in the old table and add them
      * to the new one */
 
