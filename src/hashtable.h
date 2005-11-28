@@ -42,14 +42,14 @@ POSSIBILITY OF SUCH DAMAGE.
  * key.  Given the key, the corresponding value can be looked up
  * quickly.
  *
- * To create a hash table, use @ref hashtable_new.  To destroy a 
- * hash table, use @ref hashtable_free.
+ * To create a hash table, use @ref hash_table_new.  To destroy a 
+ * hash table, use @ref hash_table_free.
  *
- * To insert a value into a hash table, use @ref hashtable_insert.
+ * To insert a value into a hash table, use @ref hash_table_insert.
  *
- * To remove a value from a hash table, use @ref hashtable_remove.
+ * To remove a value from a hash table, use @ref hash_table_remove.
  *
- * To look up a value by its key, use @ref hashtable_lookup.
+ * To look up a value by its key, use @ref hash_table_lookup.
  */
 
 #ifndef ALGORITHM_HASHTABLE_H
@@ -63,7 +63,7 @@ extern "C" {
  * A hash table structure.
  */
 
-typedef struct _Hashtable Hashtable;
+typedef struct _HashTable HashTable;
 
 /**
  * Hash function used to generate hash values for keys used in a hash
@@ -73,7 +73,7 @@ typedef struct _Hashtable Hashtable;
  * @return       The hash value.
  */
 
-typedef unsigned long (*HashtableHashFunc)(void *data);
+typedef unsigned long (*HashTableHashFunc)(void *data);
 
 /**
  * Function used to compare two keys for equality.
@@ -82,7 +82,7 @@ typedef unsigned long (*HashtableHashFunc)(void *data);
  *           not equal.
  */
 
-typedef int (*HashtableEqualFunc)(void *data1, void *data2);
+typedef int (*HashTableEqualFunc)(void *data1, void *data2);
 
 /**
  * Create a new hash table.
@@ -94,8 +94,8 @@ typedef int (*HashtableEqualFunc)(void *data1, void *data2);
  * @return                     A new hash table structure.
  */
 
-Hashtable *hashtable_new(HashtableHashFunc hash_func, 
-                         HashtableEqualFunc equal_func);
+HashTable *hash_table_new(HashTableHashFunc hash_func, 
+                          HashTableEqualFunc equal_func);
 
 /**
  * Destroy a hash table.
@@ -103,7 +103,7 @@ Hashtable *hashtable_new(HashtableHashFunc hash_func,
  * @param hashtable            The hash table to destroy.
  */
 
-void hashtable_free(Hashtable *hashtable);
+void hash_table_free(HashTable *hashtable);
 
 /**
  * Insert a value into a hash table, overwriting any existing entry 
@@ -114,7 +114,7 @@ void hashtable_free(Hashtable *hashtable);
  * @param value                The value to insert.
  */
 
-void hashtable_insert(Hashtable *hashtable, void *key, void *value);
+void hash_table_insert(HashTable *hashtable, void *key, void *value);
 
 /**
  * Look up a value in a hash table by key.
@@ -125,7 +125,7 @@ void hashtable_insert(Hashtable *hashtable, void *key, void *value);
  *                            that key in the hash table.
  */
 
-void *hashtable_lookup(Hashtable *hashtable, void *key);
+void *hash_table_lookup(HashTable *hashtable, void *key);
 
 /**
  * Remove a value from a hash table.
@@ -136,7 +136,7 @@ void *hashtable_lookup(Hashtable *hashtable, void *key);
  *                            specified key was not found in the hash table.
  */
 
-int hashtable_remove(Hashtable *hashtable, void *key);
+int hash_table_remove(HashTable *hashtable, void *key);
 
 /** 
  * Retrieve the number of entries in a hash table.

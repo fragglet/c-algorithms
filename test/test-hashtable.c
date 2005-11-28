@@ -45,16 +45,16 @@ int value1 = 1, value2 = 2, value3 = 3, value4 = 4;
 
 /* Generates a hashtable for use in tests containing 10,000 entries */
 
-Hashtable *generate_hashtable(void)
+HashTable *generate_hashtable(void)
 {
-    Hashtable *hashtable;
+    HashTable *hashtable;
     int *value;
     int i;
     
     /* Allocate a new hash table */
 
-    hashtable = hashtable_new((HashtableHashFunc) int_hash, 
-                              (HashtableEqualFunc) int_equal);
+    hashtable = hash_table_new((HashTableHashFunc) int_hash, 
+                               (HashTableEqualFunc) int_equal);
     
     /* Insert lots of values */
     
@@ -63,46 +63,46 @@ Hashtable *generate_hashtable(void)
 
         *value = i;
 
-        hashtable_insert(hashtable, value, value);
+        hash_table_insert(hashtable, value, value);
     }
     
     return hashtable;
 }
 
-void test_hashtable_new(void)
+void test_hash_table_new(void)
 {
-    Hashtable *hashtable;
+    HashTable *hashtable;
 
-    hashtable = hashtable_new((HashtableHashFunc) int_hash, 
-                              (HashtableEqualFunc) int_equal);
+    hashtable = hash_table_new((HashTableHashFunc) int_hash, 
+                               (HashTableEqualFunc) int_equal);
     
     assert(hashtable != NULL);
 }
 
-void test_hashtable_free(void)
+void test_hash_table_free(void)
 {
-    Hashtable *hashtable;
+    HashTable *hashtable;
 
-    hashtable = hashtable_new((HashtableHashFunc) int_hash, 
-                              (HashtableEqualFunc) int_equal);
+    hashtable = hash_table_new((HashTableHashFunc) int_hash, 
+                               (HashTableEqualFunc) int_equal);
 
     /* Add some values */
 
-    hashtable_insert(hashtable, &value1, &value1);
-    hashtable_insert(hashtable, &value2, &value2);
-    hashtable_insert(hashtable, &value3, &value3);
-    hashtable_insert(hashtable, &value4, &value4);
+    hash_table_insert(hashtable, &value1, &value1);
+    hash_table_insert(hashtable, &value2, &value2);
+    hash_table_insert(hashtable, &value3, &value3);
+    hash_table_insert(hashtable, &value4, &value4);
 
     /* Free the hash table */
 
-    hashtable_free(hashtable);
+    hash_table_free(hashtable);
 }
 
 /* Test insert and lookup functions */
 
-void test_hashtable_insert_lookup(void)
+void test_hash_table_insert_lookup(void)
 {
-    Hashtable *hashtable;
+    HashTable *hashtable;
     int *value;
     int i;
 
@@ -110,12 +110,12 @@ void test_hashtable_insert_lookup(void)
 
     hashtable = generate_hashtable();
 
-    assert(hashtable_num_entries(hashtable) == 10000);
+    assert(hash_table_num_entries(hashtable) == 10000);
 
     /* Check all values */
 
     for (i=0; i<10000; ++i) {
-        value = (int *) hashtable_lookup(hashtable, &i);
+        value = (int *) hash_table_lookup(hashtable, &i);
 
         assert(*value == i);
     }
@@ -123,57 +123,57 @@ void test_hashtable_insert_lookup(void)
     /* Lookup on invalid values returns NULL */
 
     i = -1;
-    assert(hashtable_lookup(hashtable, &i) == NULL);
+    assert(hash_table_lookup(hashtable, &i) == NULL);
     i = 10000;
-    assert(hashtable_lookup(hashtable, &i) == NULL);
+    assert(hash_table_lookup(hashtable, &i) == NULL);
 
     /* Insert overwrites existing entries with the same key */
 
     value = (int *) malloc(sizeof(int));
     *value = 12345;
     i = 5000;
-    hashtable_insert(hashtable, &i, value);
-    value = (int *) hashtable_lookup(hashtable, &i);
+    hash_table_insert(hashtable, &i, value);
+    value = (int *) hash_table_lookup(hashtable, &i);
     assert(*value == 12345);
 }
 
-void test_hashtable_remove(void)
+void test_hash_table_remove(void)
 {
-    Hashtable *hashtable;
+    HashTable *hashtable;
     int i;
 
     hashtable = generate_hashtable();
 
-    assert(hashtable_num_entries(hashtable) == 10000);
+    assert(hash_table_num_entries(hashtable) == 10000);
     i = 5000;
-    assert(hashtable_lookup(hashtable, &i) != NULL);
+    assert(hash_table_lookup(hashtable, &i) != NULL);
 
     /* Remove an entry */
 
-    hashtable_remove(hashtable, &i);
+    hash_table_remove(hashtable, &i);
 
     /* Check entry counter */
 
-    assert(hashtable_num_entries(hashtable) == 9999);
+    assert(hash_table_num_entries(hashtable) == 9999);
 
     /* Check that NULL is returned now */
 
-    assert(hashtable_lookup(hashtable, &i) == NULL);
+    assert(hash_table_lookup(hashtable, &i) == NULL);
 
     /* Try removing a non-existent entry */
 
     i = -1;
-    hashtable_remove(hashtable, &i);
+    hash_table_remove(hashtable, &i);
 
-    assert(hashtable_num_entries(hashtable) == 9999);
+    assert(hash_table_num_entries(hashtable) == 9999);
 }
 
 int main(int argc, char *argv[])
 {
-    test_hashtable_new();
-    test_hashtable_free();
-    test_hashtable_insert_lookup();
-    test_hashtable_remove();
+    test_hash_table_new();
+    test_hash_table_free();
+    test_hash_table_insert_lookup();
+    test_hash_table_remove();
     
     return 0;
 }

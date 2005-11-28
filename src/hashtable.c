@@ -40,19 +40,19 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "hashtable.h"
 
-typedef struct _HashtableEntry HashtableEntry;
+typedef struct _HashTableEntry HashTableEntry;
 
-struct _HashtableEntry {
+struct _HashTableEntry {
     void *key;
     void *value;
-    HashtableEntry *next;
+    HashTableEntry *next;
 };
 
-struct _Hashtable {
-    HashtableEntry **table;
+struct _HashTable {
+    HashTableEntry **table;
     int table_size;
-    HashtableHashFunc hash_func;
-    HashtableEqualFunc equal_func;
+    HashTableHashFunc hash_func;
+    HashTableEqualFunc equal_func;
     int entries;
     int prime_index;
 };
@@ -61,7 +61,7 @@ struct _Hashtable {
  * size.  Each value is approximately 1.5 * the previous value, so the
  * table size increases by 50% with each enlargement */
 
-static int hashtable_primes[] = {
+static int hash_table_primes[] = {
     251, 383, 571, 863, 1291, 1933, 2909, 4373, 6553, 9839, 14759, 22133,
     33211, 49811, 74719, 112069, 168127, 252193, 378289, 567407, 851131,
     1276721, 1915057, 2872621, 4308937, 6463399, 9695099, 14542651,
@@ -69,39 +69,39 @@ static int hashtable_primes[] = {
     248475107, 372712667, 559068997, 838603499, 1257905249, 1886857859,
 };
 
-static int hashtable_num_primes = sizeof(hashtable_primes) / sizeof(int);
+static int hash_table_num_primes = sizeof(hash_table_primes) / sizeof(int);
 
 /* Internal function used to allocate the table on hashtable creation
  * and when enlarging the table */
 
-static void hashtable_allocate_table(Hashtable *hashtable)
+static void hash_table_allocate_table(HashTable *hashtable)
 {
     /* Determine the table size based on the current prime index.  
      * An attempt is made here to ensure sensible behavior if the
      * maximum prime is exceeded, but in practice other things are
      * likely to break long before that happens. */
 
-    if (hashtable->prime_index < hashtable_num_primes)
-        hashtable->table_size = hashtable_primes[hashtable->prime_index];
+    if (hashtable->prime_index < hash_table_num_primes)
+        hashtable->table_size = hash_table_primes[hashtable->prime_index];
     else
         hashtable->table_size = hashtable->entries * 10;
 
     /* Allocate the table and initialise to NULL for all entries */
 
     hashtable->table = calloc(hashtable->table_size, 
-                              sizeof(HashtableEntry *));
+                              sizeof(HashTableEntry *));
     memset(hashtable->table, 0, 
-           hashtable->table_size * sizeof(HashtableEntry *));
+           hashtable->table_size * sizeof(HashTableEntry *));
 }
 
-Hashtable *hashtable_new(HashtableHashFunc hash_func, 
-                         HashtableEqualFunc equal_func)
+HashTable *hash_table_new(HashTableHashFunc hash_func, 
+                         HashTableEqualFunc equal_func)
 {
-    Hashtable *hashtable;
+    HashTable *hashtable;
 
     /* Allocate a new hash table structure */
     
-    hashtable = (Hashtable *) malloc(sizeof(Hashtable));
+    hashtable = (HashTable *) malloc(sizeof(HashTable));
     hashtable->hash_func = hash_func;
     hashtable->equal_func = equal_func;
     hashtable->entries = 0;
@@ -109,15 +109,15 @@ Hashtable *hashtable_new(HashtableHashFunc hash_func,
 
     /* Allocate the table */
 
-    hashtable_allocate_table(hashtable);
+    hash_table_allocate_table(hashtable);
 
     return hashtable;
 }
 
-void hashtable_free(Hashtable *hashtable)
+void hash_table_free(HashTable *hashtable)
 {
-    HashtableEntry *rover;
-    HashtableEntry *next;
+    HashTableEntry *rover;
+    HashTableEntry *next;
     int i;
     
     /* Free all entries in all chains */
@@ -140,12 +140,12 @@ void hashtable_free(Hashtable *hashtable)
     free(hashtable);
 }
 
-static void hashtable_enlarge(Hashtable *hashtable)
+static void hash_table_enlarge(HashTable *hashtable)
 {
-    HashtableEntry **old_table;
+    HashTableEntry **old_table;
     int old_table_size;
-    HashtableEntry *rover;
-    HashtableEntry *next;
+    HashTableEntry *rover;
+    HashTableEntry *next;
     int index;
     int i;
     
@@ -157,7 +157,7 @@ static void hashtable_enlarge(Hashtable *hashtable)
     /* Allocate a new, larger table */
 
     ++hashtable->prime_index;
-    hashtable_allocate_table(hashtable);
+    hash_table_allocate_table(hashtable);
 
     /* Link all entries from all chains into the new table */
 
@@ -183,10 +183,10 @@ static void hashtable_enlarge(Hashtable *hashtable)
     }    
 }
 
-void hashtable_insert(Hashtable *hashtable, void *key, void *value) 
+void hash_table_insert(HashTable *hashtable, void *key, void *value) 
 {
-    HashtableEntry *rover;
-    HashtableEntry *newentry;
+    HashTableEntry *rover;
+    HashTableEntry *newentry;
     int index;
     
     /* If there are too many items in the table with respect to the table
@@ -197,7 +197,7 @@ void hashtable_insert(Hashtable *hashtable, void *key, void *value)
         
         /* Table is more than 1/3 full */
 
-        hashtable_enlarge(hashtable);
+        hash_table_enlarge(hashtable);
     }
 
     /* Generate the hash of the key and hence the index into the table */
@@ -225,7 +225,7 @@ void hashtable_insert(Hashtable *hashtable, void *key, void *value)
     
     /* Not in the hashtable yet.  Create a new entry */
 
-    newentry = (HashtableEntry *) malloc(sizeof(HashtableEntry));
+    newentry = (HashTableEntry *) malloc(sizeof(HashTableEntry));
 
     newentry->key = key;
     newentry->value = value;
@@ -240,9 +240,9 @@ void hashtable_insert(Hashtable *hashtable, void *key, void *value)
     ++hashtable->entries;
 }
 
-void *hashtable_lookup(Hashtable *hashtable, void *key)
+void *hash_table_lookup(HashTable *hashtable, void *key)
 {
-    HashtableEntry *rover;
+    HashTableEntry *rover;
     int index;
 
     /* Generate the hash of the key and hence the index into the table */
@@ -269,10 +269,10 @@ void *hashtable_lookup(Hashtable *hashtable, void *key)
     return NULL;
 }
 
-int hashtable_remove(Hashtable *hashtable, void *key)
+int hash_table_remove(HashTable *hashtable, void *key)
 {
-    HashtableEntry **rover;
-    HashtableEntry *entry;
+    HashTableEntry **rover;
+    HashTableEntry *entry;
     int index;
     int result;
 
@@ -321,7 +321,7 @@ int hashtable_remove(Hashtable *hashtable, void *key)
     return result;
 }
 
-int hashtable_num_entries(Hashtable *hashtable)
+int hash_table_num_entries(HashTable *hashtable)
 {
     return hashtable->entries;
 }
