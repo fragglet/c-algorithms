@@ -192,7 +192,7 @@ void test_set_union(void)
     
     /* Perform the union */
 
-    result_set = set_union(set1, set2);
+    result_set = set_union(set1, set2, NULL);
 
     assert(set_num_entries(result_set) == 11);
 
@@ -229,7 +229,7 @@ void test_set_intersection(void)
     
     /* Perform the intersection */
 
-    result_set = set_intersection(set1, set2);
+    result_set = set_intersection(set1, set2, NULL);
 
     assert(set_num_entries(result_set) == 3);
 

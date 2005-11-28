@@ -346,26 +346,70 @@ int set_num_entries(Set *set)
     return set->entries;
 }
 
-static void set_union_foreach(void *value, void *user_data)
-{
-    Set *new_set = (Set *) user_data;
+struct set_union_data {
+    Set *new_set;
+    SetDuplicatorFunc duplicator_func;
+};
 
-    set_insert(new_set, value);
+static void set_union_foreach1(void *value, void *user_data)
+{
+    struct set_union_data *params;
+    void *duplicated_value;
+
+    params = (struct set_union_data *) user_data;
+
+    /* Copy the value into the new set, duplicating if necessary */
+
+    if (params->duplicator_func != NULL) {
+        duplicated_value = params->duplicator_func(value);
+    } else {
+        duplicated_value = value;
+    }
+
+    set_insert(params->new_set, duplicated_value);
 }
 
-Set *set_union(Set *set1, Set *set2)
+static void set_union_foreach2(void *value, void *user_data)
 {
+    struct set_union_data *params;
+    void *duplicated_value;
+
+    params = (struct set_union_data *) user_data;
+
+    /* Has this value been put into the new set yet?  If not, add it. */
+
+    if (set_query(params->new_set, value) == 0) {
+
+        /* Copy the value into the new set, duplicating if necessary */
+
+        if (params->duplicator_func != NULL) {
+            duplicated_value = params->duplicator_func(value);
+        } else {
+            duplicated_value = value;
+        }
+
+        set_insert(params->new_set, duplicated_value);
+    }
+}
+
+
+Set *set_union(Set *set1, Set *set2, SetDuplicatorFunc duplicator_func)
+{
+    struct set_union_data user_data;
     Set *new_set;
 
     new_set = set_new(set1->hash_func, set1->equal_func);
 
+    user_data.new_set = new_set;
+    user_data.duplicator_func = duplicator_func;
+
     /* Add all values from the first set */
     
-    set_foreach(set1, set_union_foreach, new_set);
+    set_foreach(set1, set_union_foreach1, &user_data);
 
     /* Add all values from the second set */
     
-    set_foreach(set2, set_union_foreach, new_set);
+    set_foreach(set2, set_union_foreach2, &user_data);
 
     return new_set;
 }
@@ -373,11 +417,13 @@ Set *set_union(Set *set1, Set *set2)
 struct set_intersection_data {
     Set *new_set;
     Set *set2;
+    SetDuplicatorFunc duplicator_func;
 };
 
 static void set_intersection_foreach(void *value, void *user_data)
 {
     struct set_intersection_data *params;
+    void *duplicated_value;
 
     params = (struct set_intersection_data *) user_data;
 
@@ -385,11 +431,21 @@ static void set_intersection_foreach(void *value, void *user_data)
      * new set. */
 
     if (set_query(params->set2, value) != 0) {
-        set_insert(params->new_set, value);
+
+        /* Duplicate the value first before inserting, if necessary */
+
+        if (params->duplicator_func != NULL) {
+            duplicated_value = params->duplicator_func(value);
+        } else {
+            duplicated_value = value;
+        }
+
+        set_insert(params->new_set, duplicated_value);
     }
 }
 
-Set *set_intersection(Set *set1, Set *set2)
+Set *set_intersection(Set *set1, Set *set2, 
+                      SetDuplicatorFunc duplicator_func)
 {
     struct set_intersection_data user_data;
     Set *new_set;
@@ -400,6 +456,7 @@ Set *set_intersection(Set *set1, Set *set2)
 
     user_data.new_set = new_set;
     user_data.set2 = set2;
+    user_data.duplicator_func = duplicator_func;
 
     set_foreach(set1, set_intersection_foreach, &user_data);
     
