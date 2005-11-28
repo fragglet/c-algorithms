@@ -33,6 +33,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+#include <ctype.h>
+
 #include "hash-string.h"
 
 /* String hash function */
@@ -46,6 +48,21 @@ unsigned long string_hash(char *string)
 
     for (p=(unsigned char *) string; *p != '\0'; ++p) {
         result = ((result << 5) ^ result ) ^ (*p);
+    }
+    
+    return result;
+}
+
+/* The same function, with a tolower on every character so that 
+ * case is ignored.  This code is duplicated for performance. */
+
+unsigned long string_nocase_hash(char *string)
+{
+    unsigned long result = 5381;
+    unsigned char *p;
+
+    for (p=(unsigned char *) string; *p != '\0'; ++p) {
+        result = ((result << 5) ^ result ) ^ tolower(*p);
     }
     
     return result;

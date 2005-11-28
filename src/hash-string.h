@@ -36,7 +36,8 @@ POSSIBILITY OF SUCH DAMAGE.
 /**
  * @file hash-string.h
  *
- * Hash function for a string.  For more information see @ref string_hash.
+ * Hash functions for text strings.  For more information 
+ * see @ref string_hash or @ref string_nocase_hash.
  */
 
 #ifndef ALGORITHM_HASH_STRING_H
@@ -54,6 +55,15 @@ extern "C" {
  */
 
 unsigned long string_hash(char *string);
+
+/**
+ * Generate a hash key from a string, ignoring the case of letters.
+ *
+ * @param string           The string.
+ * @return                 A hash key for the string.
+ */
+
+unsigned long string_nocase_hash(char *string);
 
 #ifdef __cplusplus
 }
