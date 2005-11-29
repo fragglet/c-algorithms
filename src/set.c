@@ -53,6 +53,7 @@ struct _Set {
     int prime_index;
     SetHashFunc hash_func;
     SetEqualFunc equal_func;
+    SetFreeFunc free_func;
 };
 
 /* Prime numbers on an escalating exponential scale, used for the table
@@ -88,6 +89,20 @@ static void set_allocate_table(Set *set)
     memset(set->table, 0, set->table_size * sizeof(SetEntry *));
 }
 
+static void set_free_entry(Set *set, SetEntry *entry) 
+{
+    /* If there is a free function registered, call it to free the 
+     * data for this entry first */
+    
+    if (set->free_func != NULL) {
+        set->free_func(entry->data);
+    }
+
+    /* Free the entry structure */
+
+    free(entry);
+}
+
 Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func)
 {
     Set *new_set;
@@ -99,6 +114,7 @@ Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func)
     new_set->equal_func = equal_func;
     new_set->entries = 0;
     new_set->prime_index = 0;
+    new_set->free_func = NULL;
     
     /* Allocate the table */
     
@@ -123,7 +139,7 @@ void set_free(Set *set)
 
             /* Free this entry */
 
-            free(rover);
+            set_free_entry(set, rover);
 
             /* Advance to the next entry in the chain */
             
@@ -138,6 +154,11 @@ void set_free(Set *set)
     /* Free the set structure */
 
     free(set);
+}
+
+void set_register_free_function(Set *set, SetFreeFunc free_func)
+{
+    set->free_func = free_func;
 }
 
 static void set_enlarge(Set *set)
@@ -192,7 +213,7 @@ static void set_enlarge(Set *set)
     free(old_table);
 }
 
-void set_insert(Set *set, void *data)
+int set_insert(Set *set, void *data)
 {
     SetEntry *newentry;
     SetEntry *rover;
@@ -224,7 +245,7 @@ void set_insert(Set *set, void *data)
             
             /* This data is already in the set */
 
-            return;
+            return 0;
         }
         
         rover = rover->next;
@@ -245,9 +266,13 @@ void set_insert(Set *set, void *data)
     /* Keep track of the number of entries in the set */
 
     ++set->entries;
+
+    /* Added successfully */
+
+    return 1;
 }
 
-void set_remove(Set *set, void *data)
+int set_remove(Set *set, void *data)
 {
     SetEntry **rover;
     SetEntry *entry;
@@ -278,13 +303,15 @@ void set_remove(Set *set, void *data)
 
             /* Free the entry and return */
 
-            free(entry);
+            set_free_entry(set, entry);
 
-            return;
+            return 1;
         }
     }
 
     /* Not found in set */
+
+    return 0;
 }
 
 int set_query(Set *set, void *data)

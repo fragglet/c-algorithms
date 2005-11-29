@@ -98,6 +98,13 @@ typedef void *(*SetDuplicatorFunc)(void *data);
 typedef void (*SetIterator)(void *data, void *user_data);
 
 /**
+ * Function used to free values stored in a set.  See
+ * @ref set_register_free_function.
+ */
+
+typedef void (*SetFreeFunc)(void *data);
+
+/**
  * Create a new set.
  *
  * @param hash_func     Hash function used on data in the set .
@@ -117,22 +124,38 @@ Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func);
 void set_free(Set *set);
 
 /**
+ * Register a function to be called when values are removed from 
+ * the set.
+ *
+ * @param set           The set.
+ * @param free_func     Function to call when values are removed from the
+ *                      set.
+ */
+
+void set_register_free_function(Set *set, SetFreeFunc free_func);
+
+/**
  * Add a value to a set.
  *
  * @param set           The set.
  * @param data          The data to add to the set .
+ * @return              Non-zero (true) if the value was added to the set,
+ *                      zero (false) if it already exists in the set.
  */
 
-void set_insert(Set *set, void *data);
+int set_insert(Set *set, void *data);
 
 /**
  * Remove a value from a set.
  *
  * @param set           The set.
  * @param data          The data to remove from the set.
+ * @return              Non-zero (true) if the data was found and removed
+ *                      from the set, zero (false) if the data was not
+ *                      found in the set.
  */
 
-void set_remove(Set *set, void *data);
+int set_remove(Set *set, void *data);
 
 /** 
  * Query if a particular value is in a set.
