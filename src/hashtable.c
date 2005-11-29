@@ -247,6 +247,8 @@ void hash_table_insert(HashTable *hashtable, void *key, void *value)
     while (rover != NULL) {
         if (hashtable->equal_func(rover->key, key) != 0) {
 
+            /* Same key: overwrite this entry with new data */
+
             /* If there is a value free function, free the old data
              * before adding in the new data */
 
@@ -254,8 +256,14 @@ void hash_table_insert(HashTable *hashtable, void *key, void *value)
                 hashtable->value_free_func(rover->value);
             }
 
-            /* Same key: overwrite with new data */
+            /* Same with the key: use the new key value and free the 
+             * old one */
 
+            if (hashtable->key_free_func != NULL) {
+                hashtable->key_free_func(rover->key);
+            }
+
+            rover->key = key;
             rover->value = value;
 
             /* Finished */
