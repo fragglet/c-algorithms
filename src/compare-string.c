@@ -82,7 +82,7 @@ int string_nocase_compare(char *string1, char *string2)
     p1 = string1;
     p2 = string2;
 
-    while (*p1) {
+    for (;;) {
 
         c1 = tolower(*p1);
         c2 = tolower(*p2);
@@ -97,6 +97,11 @@ int string_nocase_compare(char *string1, char *string2)
                 return 1;
             }
         }
+
+        /* End of string */
+
+        if (c1 == '\0')
+            break;
 
         /* Advance to the next character */
 
