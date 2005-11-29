@@ -5,6 +5,7 @@ TESTS =                          \
         test-slist               \
         test-queue               \
         test-compare-functions   \
+	test-hash-functions      \
         test-hashtable           \
         test-set
 
