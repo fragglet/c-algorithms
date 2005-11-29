@@ -53,6 +53,8 @@ struct _HashTable {
     int table_size;
     HashTableHashFunc hash_func;
     HashTableEqualFunc equal_func;
+    HashTableFreeFunc key_free_func;
+    HashTableFreeFunc value_free_func;
     int entries;
     int prime_index;
 };
@@ -94,6 +96,28 @@ static void hash_table_allocate_table(HashTable *hashtable)
            hashtable->table_size * sizeof(HashTableEntry *));
 }
 
+/* Free an entry, calling the free functions if there are any registered */
+
+static void hash_table_free_entry(HashTable *hashtable, HashTableEntry *entry)
+{
+    /* If there is a function registered for freeing keys, use it to free
+     * the key */
+    
+    if (hashtable->key_free_func != NULL) {
+        hashtable->key_free_func(entry->key);
+    }
+
+    /* Likewise with the value */
+
+    if (hashtable->value_free_func != NULL) {
+        hashtable->value_free_func(entry->value);
+    }
+
+    /* Free the data structure */
+    
+    free(entry);
+}
+
 HashTable *hash_table_new(HashTableHashFunc hash_func, 
                          HashTableEqualFunc equal_func)
 {
@@ -104,6 +128,8 @@ HashTable *hash_table_new(HashTableHashFunc hash_func,
     hashtable = (HashTable *) malloc(sizeof(HashTable));
     hashtable->hash_func = hash_func;
     hashtable->equal_func = equal_func;
+    hashtable->key_free_func = NULL;
+    hashtable->value_free_func = NULL;
     hashtable->entries = 0;
     hashtable->prime_index = 0;
 
@@ -126,7 +152,7 @@ void hash_table_free(HashTable *hashtable)
         rover = hashtable->table[i];
         while (rover != NULL) {
             next = rover->next;
-            free(rover);
+            hash_table_free_entry(hashtable, rover);
             rover = next;
         }
     }
@@ -139,6 +165,15 @@ void hash_table_free(HashTable *hashtable)
 
     free(hashtable);
 }
+
+void hash_table_register_free_functions(HashTable *hashtable,
+                                        HashTableFreeFunc key_free_func,
+                                        HashTableFreeFunc value_free_func)
+{
+    hashtable->key_free_func = key_free_func;
+    hashtable->value_free_func = value_free_func;
+}
+
 
 static void hash_table_enlarge(HashTable *hashtable)
 {
@@ -211,6 +246,13 @@ void hash_table_insert(HashTable *hashtable, void *key, void *value)
 
     while (rover != NULL) {
         if (hashtable->equal_func(rover->key, key) != 0) {
+
+            /* If there is a value free function, free the old data
+             * before adding in the new data */
+
+            if (hashtable->value_free_func != NULL) {
+                hashtable->value_free_func(rover->value);
+            }
 
             /* Same key: overwrite with new data */
 
@@ -302,7 +344,7 @@ int hash_table_remove(HashTable *hashtable, void *key)
 
             /* Destroy the entry structure */
 
-            free(entry);
+            hash_table_free_entry(hashtable, entry);
 
             /* Track count of entries */
 

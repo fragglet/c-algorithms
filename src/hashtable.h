@@ -85,6 +85,13 @@ typedef unsigned long (*HashTableHashFunc)(void *data);
 typedef int (*HashTableEqualFunc)(void *data1, void *data2);
 
 /**
+ * Type of function used to free keys and values when entries are
+ * removed from a hash table.
+ */
+
+typedef void (*HashTableFreeFunc)(void *data);
+
+/**
  * Create a new hash table.
  *
  * @param hash_func            Function used to generate hash keys for the 
@@ -104,6 +111,19 @@ HashTable *hash_table_new(HashTableHashFunc hash_func,
  */
 
 void hash_table_free(HashTable *hashtable);
+
+/**
+ * Register functions used to free the key and value when an entry is
+ * removed from a hash table.
+ *
+ * @param hashtable            The hash table.
+ * @param key_free_func        Function used to free keys.
+ * @param value_free_func      Function used to free values.
+ */
+
+void hash_table_register_free_functions(HashTable *hashtable,
+                                        HashTableFreeFunc key_free_func,
+                                        HashTableFreeFunc value_free_func);
 
 /**
  * Insert a value into a hash table, overwriting any existing entry 
