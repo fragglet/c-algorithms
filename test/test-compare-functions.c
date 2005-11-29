@@ -150,6 +150,56 @@ void test_string_equal(void)
     assert(string_equal(test1, test4) == 0);
 }
 
+void test_string_nocase_compare(void)
+{
+    char test1[] = "Apple";
+    char test2[] = "Orange";
+    char test3[] = "Apple";
+    char test4[] = "Alpha";
+    char test5[] = "bravo";
+    char test6[] = "Charlie";
+
+    /* Negative if first argument should be sorted before the second */
+
+    assert(string_nocase_compare(test1, test2) < 0);
+
+    /* Positive if the second argument should be sorted before the first */
+
+    assert(string_nocase_compare(test2, test1) > 0);
+
+    /* Zero if the two arguments are equal */
+
+    assert(string_nocase_compare(test1, test3) == 0);
+
+    /* Check ordering is independent of case */
+
+    assert(string_nocase_compare(test4, test5) < 0);
+    assert(string_nocase_compare(test5, test6) < 0);
+}
+
+void test_string_nocase_equal(void)
+{
+    char test1[] = "this is a test string";
+    char test2[] = "this is a test string ";
+    char test3[] = "this is a test strin";
+    char test4[] = "this is a test strinG";
+    char test5[] = "this is a test string";
+
+    /* Non-zero (true) if the two strings are equal */
+
+    assert(string_nocase_equal(test1, test5) != 0);
+
+    /* Zero (false) if the two strings are different */
+
+    /* Check that length affects the result */
+    assert(string_nocase_equal(test1, test2) == 0);
+    assert(string_nocase_equal(test1, test3) == 0);
+    
+    /* Case insensitive */
+    assert(string_nocase_equal(test1, test4) != 0);
+}
+
+
 int main(int argc, char *argv[])
 {
     test_int_compare();
@@ -158,6 +208,8 @@ int main(int argc, char *argv[])
     test_pointer_equal();
     test_string_compare();
     test_string_equal();
+    test_string_nocase_compare();
+    test_string_nocase_equal();
 
     return 0;
 }
