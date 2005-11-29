@@ -42,14 +42,13 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  * The C programming language includes a very limited standard library in
  * comparison to other modern programming languages.  This is a collection
- * of common Computer Science algorithms which may be used in C projects.
+ * of common Computer Science data structures and algorithms which may be 
+ * used in C projects.
  * 
  * The code is licensed under the Modified BSD license, and as a result
  * may be reused in any project, whether Proprietary or Open Source.
  *
- * @section Algorithms
- *
- * Algorithms:
+ * @section Data structures
  *
  * @li @link arraylist.h ArrayList @endlink: Automatically resizing array.
  * @li @link list.h Doubly linked list @endlink: A set of values stored
@@ -63,7 +62,7 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  * @section Utility_functions Utility functions
  *
- * All of the above algorithms operate on void pointers.  It is 
+ * All of the above data structures operate on void pointers.  It is 
  * sometimes necessary to compare values (when sorting a list, for
  * example) or generate a hash key (in a hash table or set).  This 
  * is done by providing a pointer to a function which provides
