@@ -86,7 +86,7 @@ typedef int (*SetEqualFunc)(void *data1, void *data2);
 
 /**
  * Duplicator function.  Given a pointer to some data, return a
- * copy of it. Used by @ref set_intersection and @ref_set_union.
+ * copy of it. Used by @ref set_intersection and @ref set_union.
  */
 
 typedef void *(*SetDuplicatorFunc)(void *data);
