@@ -1,8 +1,8 @@
 
 AUX_DIST_GEN = $(ac_aux_dir)
 
-EXTRA_DIST = $(AUX_DIST_GEN) doc
+EXTRA_DIST = $(AUX_DIST_GEN) 
 MAINTAINERCLEANFILES = $(AUX_DIST_GEN)
 
-SUBDIRS=src test
+SUBDIRS=src test doc
 

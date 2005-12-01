@@ -14,6 +14,7 @@ AC_SUBST(ac_aux_dir)
 
 AC_OUTPUT([
     Makefile
+    doc/Makefile
     src/Makefile
     test/Makefile
 ])
