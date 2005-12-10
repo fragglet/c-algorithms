@@ -188,6 +188,15 @@ void set_foreach(Set *set, SetIterator callback, void *user_data);
 int set_num_entries(Set *set);
 
 /**
+ * Create an array containing all entries in a set.
+ *
+ * @param set              The set.
+ * @return                 An array containing all entries in the set.
+ */
+
+void **set_to_array(Set *set);
+
+/**
  * Perform a union of two sets.  
  *
  * @param set1             The first set.

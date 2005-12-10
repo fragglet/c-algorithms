@@ -40,6 +40,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "set.h"
 #include "compare-int.h"
 #include "hash-int.h"
+#include "compare-pointer.h"
+#include "hash-pointer.h"
 
 Set *generate_set(void)
 {
@@ -235,6 +237,33 @@ void test_set_intersection(void)
 
     for (i=0; i<3; ++i) {
         assert(set_query(result_set, &result[i]) != 0);
+    }
+}
+
+void test_set_to_array(void)
+{
+    Set *set;
+    int values[100];
+    int **array;
+    int i;
+
+    /* Create a set containing pointers to all entries in the "values"
+     * array. */
+    
+    set = set_new(pointer_hash, pointer_equal);
+
+    for (i=0; i<100; ++i) {
+        values[i] = 1;
+        set_insert(set, &values[i]);
+    }
+
+    array = (int **) set_to_array(set);
+
+    /* Check the array */
+
+    for (i=0; i<100; ++i) {
+        assert(*array[i] == 1);
+        *array[i] = 0;
     }
 }
 

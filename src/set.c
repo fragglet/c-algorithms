@@ -373,6 +373,40 @@ int set_num_entries(Set *set)
     return set->entries;
 }
 
+void **set_to_array(Set *set)
+{
+    void **array;
+    int array_counter;
+    int i;
+    SetEntry *rover;
+    
+    /* Create an array to hold the set entries */
+    
+    array = malloc(sizeof(void *) * set->entries);
+    array_counter = 0;
+
+    /* Iterate over all entries in all chains */
+    
+    for (i=0; i<set->entries; ++i) {
+
+        rover = set->table[i];
+
+        while (rover != NULL) {
+
+            /* Add this value to the array */
+            
+            array[array_counter] = rover->data;
+            ++array_counter;
+
+            /* Advance to the next entry */
+            
+            rover = rover->next;
+        }
+    }
+
+    return array;
+}
+
 struct set_union_data {
     Set *new_set;
     SetCopyFunc copy_func;
