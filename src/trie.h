@@ -45,8 +45,11 @@ extern "C" {
 typedef struct _Trie Trie;
 
 Trie *trie_new(void);
+void trie_free(Trie *trie);
 void trie_insert(Trie *trie, char *key, void *value);
 void *trie_lookup(Trie *trie, char *key);
+void trie_remove(Trie *trie, char *key);
+int trie_num_entries(Trie *trie);
 
 #ifdef __cplusplus
 }
