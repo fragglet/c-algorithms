@@ -5,9 +5,10 @@ TESTS =                          \
         test-slist               \
         test-queue               \
         test-compare-functions   \
-	test-hash-functions      \
+        test-hash-functions      \
         test-hashtable           \
-        test-set
+        test-set                 \
+		test-trie
 
 noinst_PROGRAMS = $(TESTS)
 
