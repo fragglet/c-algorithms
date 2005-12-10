@@ -85,11 +85,11 @@ typedef unsigned long (*SetHashFunc)(void *data);
 typedef int (*SetEqualFunc)(void *data1, void *data2);
 
 /**
- * Duplicator function.  Given a pointer to some data, return a
+ * Copy function.  Given a pointer to some data, return a
  * copy of it. Used by @ref set_intersection and @ref set_union.
  */
 
-typedef void *(*SetDuplicatorFunc)(void *data);
+typedef void *(*SetCopyFunc)(void *data);
 
 /**
  * Set iterator.  Callback function used to iterate over values in a set.
@@ -192,25 +192,25 @@ int set_num_entries(Set *set);
  *
  * @param set1             The first set.
  * @param set2             The second set.
- * @param duplicator_func  Pointer to a function to use to duplicate data.
+ * @param copy_func        Pointer to a function to use to copy data.
  *                         When values are inserted into the new set, they
- *                         are first copied using the duplicator function.
+ *                         are first copied using the copy function.
  *                         If NULL is passed, no copying is performed and
  *                         the reference from the first set is added.
  * @return                 A new set containing all values which are in the 
  *                         first or second sets. 
  */
 
-Set *set_union(Set *set1, Set *set2, SetDuplicatorFunc duplicator_func);
+Set *set_union(Set *set1, Set *set2, SetCopyFunc copy_func);
 
 /**
  * Perform an intersection of two sets.
  *
  * @param set1             The first set.
  * @param set2             The second set.
- * @param duplicator_func  Pointer to a function to use to duplicate data.
+ * @param copy_func        Pointer to a function to use to copy data.
  *                         When values are inserted into the new set, they
- *                         are first copied using the duplicator function.
+ *                         are first copied using the copy function.
  *                         If NULL is passed, no copying is performed and
  *                         the reference from the first set is added.
  * @return                 A new set containing all values which are in both
@@ -218,7 +218,7 @@ Set *set_union(Set *set1, Set *set2, SetDuplicatorFunc duplicator_func);
  */
 
 Set *set_intersection(Set *set1, Set *set2, 
-                      SetDuplicatorFunc duplicator_func);
+                      SetCopyFunc copy_func);
 
 #ifdef __cplusplus
 }

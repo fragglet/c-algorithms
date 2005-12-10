@@ -375,31 +375,31 @@ int set_num_entries(Set *set)
 
 struct set_union_data {
     Set *new_set;
-    SetDuplicatorFunc duplicator_func;
+    SetCopyFunc copy_func;
 };
 
 static void set_union_foreach1(void *value, void *user_data)
 {
     struct set_union_data *params;
-    void *duplicated_value;
+    void *copied_value;
 
     params = (struct set_union_data *) user_data;
 
-    /* Copy the value into the new set, duplicating if necessary */
+    /* Copy the value into the new set, copying if necessary */
 
-    if (params->duplicator_func != NULL) {
-        duplicated_value = params->duplicator_func(value);
+    if (params->copy_func != NULL) {
+        copied_value = params->copy_func(value);
     } else {
-        duplicated_value = value;
+        copied_value = value;
     }
 
-    set_insert(params->new_set, duplicated_value);
+    set_insert(params->new_set, copied_value);
 }
 
 static void set_union_foreach2(void *value, void *user_data)
 {
     struct set_union_data *params;
-    void *duplicated_value;
+    void *copied_value;
 
     params = (struct set_union_data *) user_data;
 
@@ -407,20 +407,20 @@ static void set_union_foreach2(void *value, void *user_data)
 
     if (set_query(params->new_set, value) == 0) {
 
-        /* Copy the value into the new set, duplicating if necessary */
+        /* Copy the value into the new set, copying if necessary */
 
-        if (params->duplicator_func != NULL) {
-            duplicated_value = params->duplicator_func(value);
+        if (params->copy_func != NULL) {
+            copied_value = params->copy_func(value);
         } else {
-            duplicated_value = value;
+            copied_value = value;
         }
 
-        set_insert(params->new_set, duplicated_value);
+        set_insert(params->new_set, copied_value);
     }
 }
 
 
-Set *set_union(Set *set1, Set *set2, SetDuplicatorFunc duplicator_func)
+Set *set_union(Set *set1, Set *set2, SetCopyFunc copy_func)
 {
     struct set_union_data user_data;
     Set *new_set;
@@ -428,7 +428,7 @@ Set *set_union(Set *set1, Set *set2, SetDuplicatorFunc duplicator_func)
     new_set = set_new(set1->hash_func, set1->equal_func);
 
     user_data.new_set = new_set;
-    user_data.duplicator_func = duplicator_func;
+    user_data.copy_func = copy_func;
 
     /* Add all values from the first set */
     
@@ -444,13 +444,13 @@ Set *set_union(Set *set1, Set *set2, SetDuplicatorFunc duplicator_func)
 struct set_intersection_data {
     Set *new_set;
     Set *set2;
-    SetDuplicatorFunc duplicator_func;
+    SetCopyFunc copy_func;
 };
 
 static void set_intersection_foreach(void *value, void *user_data)
 {
     struct set_intersection_data *params;
-    void *duplicated_value;
+    void *copied_value;
 
     params = (struct set_intersection_data *) user_data;
 
@@ -459,20 +459,20 @@ static void set_intersection_foreach(void *value, void *user_data)
 
     if (set_query(params->set2, value) != 0) {
 
-        /* Duplicate the value first before inserting, if necessary */
+        /* Copy the value first before inserting, if necessary */
 
-        if (params->duplicator_func != NULL) {
-            duplicated_value = params->duplicator_func(value);
+        if (params->copy_func != NULL) {
+            copied_value = params->copy_func(value);
         } else {
-            duplicated_value = value;
+            copied_value = value;
         }
 
-        set_insert(params->new_set, duplicated_value);
+        set_insert(params->new_set, copied_value);
     }
 }
 
 Set *set_intersection(Set *set1, Set *set2, 
-                      SetDuplicatorFunc duplicator_func)
+                      SetCopyFunc copy_func)
 {
     struct set_intersection_data user_data;
     Set *new_set;
@@ -483,7 +483,7 @@ Set *set_intersection(Set *set1, Set *set2,
 
     user_data.new_set = new_set;
     user_data.set2 = set2;
-    user_data.duplicator_func = duplicator_func;
+    user_data.copy_func = copy_func;
 
     set_foreach(set1, set_intersection_foreach, &user_data);
     
