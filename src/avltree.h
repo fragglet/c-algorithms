@@ -48,7 +48,7 @@ typedef struct _AVLTreeNode AVLTreeNode;
 typedef int (*AVLTreeCompareFunc)(void *data1, void *data2);
 
 AVLTree *avltree_new(AVLTreeCompareFunc compare_func);
-AVLTreeNode *avltree_insert(AVLTree *tree, void *data);
+AVLTreeNode *avltree_insert(AVLTree *tree, void *key, void *value);
 
 #ifdef __cplusplus
 }

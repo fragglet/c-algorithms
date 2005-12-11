@@ -43,7 +43,8 @@ struct _AVLTreeNode {
     AVLTreeNode *left_child;
     AVLTreeNode *right_child;
     AVLTreeNode *parent;
-    void *data;
+    void *key;
+    void *value;
     int height;
 };
 
@@ -213,7 +214,7 @@ static void avltree_rotate_right(AVLTree *tree, AVLTreeNode *node)
     avltree_update_height(node);
 }
 
-AVLTreeNode *avltree_insert(AVLTree *tree, void *data)
+AVLTreeNode *avltree_insert(AVLTree *tree, void *key, void *value)
 {
     AVLTreeNode **rover;
     AVLTreeNode *new_node;
@@ -229,7 +230,7 @@ AVLTreeNode *avltree_insert(AVLTree *tree, void *data)
 
     while (*rover != NULL) {
         previous_node = *rover;
-        if (tree->compare_func(data, (*rover)->data) < 0) {
+        if (tree->compare_func(key, (*rover)->key) < 0) {
             rover = &((*rover)->left_child);
         } else {
             rover = &((*rover)->right_child);
@@ -242,7 +243,8 @@ AVLTreeNode *avltree_insert(AVLTree *tree, void *data)
     new_node->left_child = NULL;
     new_node->right_child = NULL;
     new_node->parent = previous_node;
-    new_node->data = data;
+    new_node->key = key;
+    new_node->value = value;
     new_node->height = 1;
 
     /* Insert at the NULL pointer that was reached */
@@ -266,7 +268,7 @@ AVLTreeNode *avltree_insert(AVLTree *tree, void *data)
             
             /* Biased toward the right side too much. */
 
-            if (tree->compare_func(data, node->right_child->data) <= 0) {
+            if (tree->compare_func(key, node->right_child->key) <= 0) {
 
                 /* If this was added to the left of the right child,
                  * rotate the right child right first (double rotation) */
@@ -288,7 +290,7 @@ AVLTreeNode *avltree_insert(AVLTree *tree, void *data)
 
             /* Biased toward the left side too much. */
 
-            if (tree->compare_func(data, node->left_child->data) >= 0) {
+            if (tree->compare_func(key, node->left_child->key) >= 0) {
 
                 /* If this was added to the right of the left child,
                  * rotate the left child left first (double rotation) */
@@ -318,6 +320,81 @@ AVLTreeNode *avltree_insert(AVLTree *tree, void *data)
 
     return new_node;
 }
+
+AVLTreeNode *avltree_lookup_node(AVLTree *tree, void *key)
+{
+    AVLTreeNode *node;
+    int diff;
+    
+    /* Search down the tree and attempt to find the node which 
+     * has the specified key */
+
+    node = tree->root_node;
+
+    while (node != NULL) {
+        
+        diff = tree->compare_func(key, node->key);
+
+        if (diff == 0) {
+
+            /* Keys are equal: return this node */
+            
+            return node;
+            
+        } else if (diff < 0) {
+            node = node->left_child;
+        } else {
+            node = node->right_child;
+        }
+    }
+
+    /* Not found */
+
+    return NULL;
+}
+
+void *avltree_lookup(AVLTree *tree, void *key)
+{
+    AVLTreeNode *node;
+
+    /* Find the node */
+
+    node = avltree_lookup_node(tree, key);
+
+    if (node == NULL)
+        return NULL;
+    else
+        return node->value;
+}
+
+void *avltree_node_key(AVLTreeNode *node)
+{
+    return node->key;
+}
+
+void *avltree_node_value(AVLTreeNode *node)
+{
+    return node->value;
+}
+
+AVLTreeNode *avltree_node_left_child(AVLTreeNode *node)
+{
+    return node->left_child;
+}
+
+AVLTreeNode *avltree_node_right_child(AVLTreeNode *node)
+{
+    return node->right_child;
+}
+
+AVLTreeNode *avltree_node_parent(AVLTreeNode *node)
+{
+    return node->parent;
+}
+
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+
+/* The following all needs to be removed eventually */
 
 static void avltree_print_tree_node(AVLTreeNode *node, int indent)
 {
