@@ -63,7 +63,7 @@ struct _HashTable {
  * size.  Each value is approximately 1.5 * the previous value, so the
  * table size increases by 50% with each enlargement */
 
-static int hash_table_primes[] = {
+static unsigned int hash_table_primes[] = {
     251, 383, 571, 863, 1291, 1933, 2909, 4373, 6553, 9839, 14759, 22133,
     33211, 49811, 74719, 112069, 168127, 252193, 378289, 567407, 851131,
     1276721, 1915057, 2872621, 4308937, 6463399, 9695099, 14542651,
