@@ -43,20 +43,20 @@ POSSIBILITY OF SUCH DAMAGE.
 typedef struct _HashTableEntry HashTableEntry;
 
 struct _HashTableEntry {
-    void *key;
-    void *value;
-    HashTableEntry *next;
+	void *key;
+	void *value;
+	HashTableEntry *next;
 };
 
 struct _HashTable {
-    HashTableEntry **table;
-    int table_size;
-    HashTableHashFunc hash_func;
-    HashTableEqualFunc equal_func;
-    HashTableFreeFunc key_free_func;
-    HashTableFreeFunc value_free_func;
-    int entries;
-    int prime_index;
+	HashTableEntry **table;
+	int table_size;
+	HashTableHashFunc hash_func;
+	HashTableEqualFunc equal_func;
+	HashTableFreeFunc key_free_func;
+	HashTableFreeFunc value_free_func;
+	int entries;
+	int prime_index;
 };
 
 /* Prime numbers on an escalating exponential scale, used for the table
@@ -64,11 +64,11 @@ struct _HashTable {
  * table size increases by 50% with each enlargement */
 
 static unsigned int hash_table_primes[] = {
-    251, 383, 571, 863, 1291, 1933, 2909, 4373, 6553, 9839, 14759, 22133,
-    33211, 49811, 74719, 112069, 168127, 252193, 378289, 567407, 851131,
-    1276721, 1915057, 2872621, 4308937, 6463399, 9695099, 14542651,
-    21813997, 32721001, 49081441, 73622251, 110433383, 165650033,
-    248475107, 372712667, 559068997, 838603499, 1257905249, 1886857859,
+	251, 383, 571, 863, 1291, 1933, 2909, 4373, 6553, 9839, 14759, 22133,
+	33211, 49811, 74719, 112069, 168127, 252193, 378289, 567407, 851131,
+	1276721, 1915057, 2872621, 4308937, 6463399, 9695099, 14542651,
+	21813997, 32721001, 49081441, 73622251, 110433383, 165650033,
+	248475107, 372712667, 559068997, 838603499, 1257905249, 1886857859,
 };
 
 static int hash_table_num_primes = sizeof(hash_table_primes) / sizeof(int);
@@ -78,372 +78,372 @@ static int hash_table_num_primes = sizeof(hash_table_primes) / sizeof(int);
 
 static void hash_table_allocate_table(HashTable *hashtable)
 {
-    /* Determine the table size based on the current prime index.  
-     * An attempt is made here to ensure sensible behavior if the
-     * maximum prime is exceeded, but in practice other things are
-     * likely to break long before that happens. */
+	/* Determine the table size based on the current prime index.  
+	 * An attempt is made here to ensure sensible behavior if the
+	 * maximum prime is exceeded, but in practice other things are
+	 * likely to break long before that happens. */
 
-    if (hashtable->prime_index < hash_table_num_primes)
-        hashtable->table_size = hash_table_primes[hashtable->prime_index];
-    else
-        hashtable->table_size = hashtable->entries * 10;
+	if (hashtable->prime_index < hash_table_num_primes)
+		hashtable->table_size = hash_table_primes[hashtable->prime_index];
+	else
+		hashtable->table_size = hashtable->entries * 10;
 
-    /* Allocate the table and initialise to NULL for all entries */
+	/* Allocate the table and initialise to NULL for all entries */
 
-    hashtable->table = calloc(hashtable->table_size, 
-                              sizeof(HashTableEntry *));
-    memset(hashtable->table, 0, 
-           hashtable->table_size * sizeof(HashTableEntry *));
+	hashtable->table = calloc(hashtable->table_size, 
+	                          sizeof(HashTableEntry *));
+	memset(hashtable->table, 0, 
+	       hashtable->table_size * sizeof(HashTableEntry *));
 }
 
 /* Free an entry, calling the free functions if there are any registered */
 
 static void hash_table_free_entry(HashTable *hashtable, HashTableEntry *entry)
 {
-    /* If there is a function registered for freeing keys, use it to free
-     * the key */
-    
-    if (hashtable->key_free_func != NULL) {
-        hashtable->key_free_func(entry->key);
-    }
+	/* If there is a function registered for freeing keys, use it to free
+	 * the key */
+	
+	if (hashtable->key_free_func != NULL) {
+		hashtable->key_free_func(entry->key);
+	}
 
-    /* Likewise with the value */
+	/* Likewise with the value */
 
-    if (hashtable->value_free_func != NULL) {
-        hashtable->value_free_func(entry->value);
-    }
+	if (hashtable->value_free_func != NULL) {
+		hashtable->value_free_func(entry->value);
+	}
 
-    /* Free the data structure */
-    
-    free(entry);
+	/* Free the data structure */
+	
+	free(entry);
 }
 
 HashTable *hash_table_new(HashTableHashFunc hash_func, 
                          HashTableEqualFunc equal_func)
 {
-    HashTable *hashtable;
+	HashTable *hashtable;
 
-    /* Allocate a new hash table structure */
-    
-    hashtable = (HashTable *) malloc(sizeof(HashTable));
-    hashtable->hash_func = hash_func;
-    hashtable->equal_func = equal_func;
-    hashtable->key_free_func = NULL;
-    hashtable->value_free_func = NULL;
-    hashtable->entries = 0;
-    hashtable->prime_index = 0;
+	/* Allocate a new hash table structure */
+	
+	hashtable = (HashTable *) malloc(sizeof(HashTable));
+	hashtable->hash_func = hash_func;
+	hashtable->equal_func = equal_func;
+	hashtable->key_free_func = NULL;
+	hashtable->value_free_func = NULL;
+	hashtable->entries = 0;
+	hashtable->prime_index = 0;
 
-    /* Allocate the table */
+	/* Allocate the table */
 
-    hash_table_allocate_table(hashtable);
+	hash_table_allocate_table(hashtable);
 
-    return hashtable;
+	return hashtable;
 }
 
 void hash_table_free(HashTable *hashtable)
 {
-    HashTableEntry *rover;
-    HashTableEntry *next;
-    int i;
-    
-    /* Free all entries in all chains */
+	HashTableEntry *rover;
+	HashTableEntry *next;
+	int i;
+	
+	/* Free all entries in all chains */
 
-    for (i=0; i<hashtable->table_size; ++i) {
-        rover = hashtable->table[i];
-        while (rover != NULL) {
-            next = rover->next;
-            hash_table_free_entry(hashtable, rover);
-            rover = next;
-        }
-    }
-    
-    /* Free the table */
+	for (i=0; i<hashtable->table_size; ++i) {
+		rover = hashtable->table[i];
+		while (rover != NULL) {
+			next = rover->next;
+			hash_table_free_entry(hashtable, rover);
+			rover = next;
+		}
+	}
+	
+	/* Free the table */
 
-    free(hashtable->table);
-    
-    /* Free the hash table structure */
+	free(hashtable->table);
+	
+	/* Free the hash table structure */
 
-    free(hashtable);
+	free(hashtable);
 }
 
 void hash_table_register_free_functions(HashTable *hashtable,
                                         HashTableFreeFunc key_free_func,
                                         HashTableFreeFunc value_free_func)
 {
-    hashtable->key_free_func = key_free_func;
-    hashtable->value_free_func = value_free_func;
+	hashtable->key_free_func = key_free_func;
+	hashtable->value_free_func = value_free_func;
 }
 
 
 static void hash_table_enlarge(HashTable *hashtable)
 {
-    HashTableEntry **old_table;
-    int old_table_size;
-    HashTableEntry *rover;
-    HashTableEntry *next;
-    int index;
-    int i;
-    
-    /* Store a copy of the old table */
-    
-    old_table = hashtable->table;
-    old_table_size = hashtable->table_size;
+	HashTableEntry **old_table;
+	int old_table_size;
+	HashTableEntry *rover;
+	HashTableEntry *next;
+	int index;
+	int i;
+	
+	/* Store a copy of the old table */
+	
+	old_table = hashtable->table;
+	old_table_size = hashtable->table_size;
 
-    /* Allocate a new, larger table */
+	/* Allocate a new, larger table */
 
-    ++hashtable->prime_index;
-    hash_table_allocate_table(hashtable);
+	++hashtable->prime_index;
+	hash_table_allocate_table(hashtable);
 
-    /* Link all entries from all chains into the new table */
+	/* Link all entries from all chains into the new table */
 
-    for (i=0; i<old_table_size; ++i) {
-        rover = old_table[i];
+	for (i=0; i<old_table_size; ++i) {
+		rover = old_table[i];
 
-        while (rover != NULL) {
-            next = rover->next;
+		while (rover != NULL) {
+			next = rover->next;
 
-            /* Find the index into the new table */
-            
-            index = hashtable->hash_func(rover->key) % hashtable->table_size;
-            
-            /* Link this entry into the chain */
+			/* Find the index into the new table */
+			
+			index = hashtable->hash_func(rover->key) % hashtable->table_size;
+			
+			/* Link this entry into the chain */
 
-            rover->next = hashtable->table[index];
-            hashtable->table[index] = rover;
-            
-            /* Advance to next in the chain */
+			rover->next = hashtable->table[index];
+			hashtable->table[index] = rover;
+			
+			/* Advance to next in the chain */
 
-            rover = next;
-        }
-    }    
+			rover = next;
+		}
+	}    
 }
 
 void hash_table_insert(HashTable *hashtable, void *key, void *value) 
 {
-    HashTableEntry *rover;
-    HashTableEntry *newentry;
-    int index;
-    
-    /* If there are too many items in the table with respect to the table
-     * size, the number of hash collisions increases and performance
-     * decreases. Enlarge the table size to prevent this happening */
+	HashTableEntry *rover;
+	HashTableEntry *newentry;
+	int index;
+	
+	/* If there are too many items in the table with respect to the table
+	 * size, the number of hash collisions increases and performance
+	 * decreases. Enlarge the table size to prevent this happening */
 
-    if ((hashtable->entries * 3) / hashtable->table_size > 0) {
-        
-        /* Table is more than 1/3 full */
+	if ((hashtable->entries * 3) / hashtable->table_size > 0) {
+		
+		/* Table is more than 1/3 full */
 
-        hash_table_enlarge(hashtable);
-    }
+		hash_table_enlarge(hashtable);
+	}
 
-    /* Generate the hash of the key and hence the index into the table */
+	/* Generate the hash of the key and hence the index into the table */
 
-    index = hashtable->hash_func(key) % hashtable->table_size;
+	index = hashtable->hash_func(key) % hashtable->table_size;
 
-    /* Traverse the chain at this location and look for an existing
-     * entry with the same key */
+	/* Traverse the chain at this location and look for an existing
+	 * entry with the same key */
 
-    rover = hashtable->table[index];
+	rover = hashtable->table[index];
 
-    while (rover != NULL) {
-        if (hashtable->equal_func(rover->key, key) != 0) {
+	while (rover != NULL) {
+		if (hashtable->equal_func(rover->key, key) != 0) {
 
-            /* Same key: overwrite this entry with new data */
+			/* Same key: overwrite this entry with new data */
 
-            /* If there is a value free function, free the old data
-             * before adding in the new data */
+			/* If there is a value free function, free the old data
+			 * before adding in the new data */
 
-            if (hashtable->value_free_func != NULL) {
-                hashtable->value_free_func(rover->value);
-            }
+			if (hashtable->value_free_func != NULL) {
+				hashtable->value_free_func(rover->value);
+			}
 
-            /* Same with the key: use the new key value and free the 
-             * old one */
+			/* Same with the key: use the new key value and free the 
+			 * old one */
 
-            if (hashtable->key_free_func != NULL) {
-                hashtable->key_free_func(rover->key);
-            }
+			if (hashtable->key_free_func != NULL) {
+				hashtable->key_free_func(rover->key);
+			}
 
-            rover->key = key;
-            rover->value = value;
+			rover->key = key;
+			rover->value = value;
 
-            /* Finished */
-            
-            return;
-        }
-        rover = rover->next;
-    }
-    
-    /* Not in the hashtable yet.  Create a new entry */
+			/* Finished */
+			
+			return;
+		}
+		rover = rover->next;
+	}
+	
+	/* Not in the hashtable yet.  Create a new entry */
 
-    newentry = (HashTableEntry *) malloc(sizeof(HashTableEntry));
+	newentry = (HashTableEntry *) malloc(sizeof(HashTableEntry));
 
-    newentry->key = key;
-    newentry->value = value;
+	newentry->key = key;
+	newentry->value = value;
 
-    /* Link into the list */
+	/* Link into the list */
 
-    newentry->next = hashtable->table[index];
-    hashtable->table[index] = newentry;
+	newentry->next = hashtable->table[index];
+	hashtable->table[index] = newentry;
 
-    /* Maintain the count of the number of entries */
+	/* Maintain the count of the number of entries */
 
-    ++hashtable->entries;
+	++hashtable->entries;
 }
 
 void *hash_table_lookup(HashTable *hashtable, void *key)
 {
-    HashTableEntry *rover;
-    int index;
+	HashTableEntry *rover;
+	int index;
 
-    /* Generate the hash of the key and hence the index into the table */
-    
-    index = hashtable->hash_func(key) % hashtable->table_size;
+	/* Generate the hash of the key and hence the index into the table */
+	
+	index = hashtable->hash_func(key) % hashtable->table_size;
 
-    /* Walk the chain at this index until the corresponding entry is
-     * found */
+	/* Walk the chain at this index until the corresponding entry is
+	 * found */
 
-    rover = hashtable->table[index];
+	rover = hashtable->table[index];
 
-    while (rover != NULL) {
-        if (hashtable->equal_func(key, rover->key) != 0) {
+	while (rover != NULL) {
+		if (hashtable->equal_func(key, rover->key) != 0) {
 
-            /* Found the entry.  Return the data. */
+			/* Found the entry.  Return the data. */
 
-            return rover->value;
-        }
-        rover = rover->next;
-    }
+			return rover->value;
+		}
+		rover = rover->next;
+	}
 
-    /* Not found */
+	/* Not found */
 
-    return NULL;
+	return NULL;
 }
 
 int hash_table_remove(HashTable *hashtable, void *key)
 {
-    HashTableEntry **rover;
-    HashTableEntry *entry;
-    int index;
-    int result;
+	HashTableEntry **rover;
+	HashTableEntry *entry;
+	int index;
+	int result;
 
-    /* Generate the hash of the key and hence the index into the table */
-    
-    index = hashtable->hash_func(key) % hashtable->table_size;
+	/* Generate the hash of the key and hence the index into the table */
+	
+	index = hashtable->hash_func(key) % hashtable->table_size;
 
-    /* Rover points at the pointer which points at the current entry
-     * in the chain being inspected.  ie. the entry in the table, or
-     * the "next" pointer of the previous entry in the chain.  This
-     * allows us to unlink the entry when we find it. */
+	/* Rover points at the pointer which points at the current entry
+	 * in the chain being inspected.  ie. the entry in the table, or
+	 * the "next" pointer of the previous entry in the chain.  This
+	 * allows us to unlink the entry when we find it. */
 
-    result = 0;
-    rover = &hashtable->table[index];
+	result = 0;
+	rover = &hashtable->table[index];
 
-    while (*rover != NULL) {
+	while (*rover != NULL) {
 
-        if (hashtable->equal_func(key, (*rover)->key) != 0) {
+		if (hashtable->equal_func(key, (*rover)->key) != 0) {
 
-            /* This is the entry to remove */
+			/* This is the entry to remove */
 
-            entry = *rover;
+			entry = *rover;
 
-            /* Unlink from the list */
+			/* Unlink from the list */
 
-            *rover = entry->next;
+			*rover = entry->next;
 
-            /* Destroy the entry structure */
+			/* Destroy the entry structure */
 
-            hash_table_free_entry(hashtable, entry);
+			hash_table_free_entry(hashtable, entry);
 
-            /* Track count of entries */
+			/* Track count of entries */
 
-            --hashtable->entries;
+			--hashtable->entries;
 
-            result = 1;
+			result = 1;
 
-            break;
-        }
-        
-        /* Advance to the next entry */
+			break;
+		}
+		
+		/* Advance to the next entry */
 
-        rover = &((*rover)->next);
-    }
+		rover = &((*rover)->next);
+	}
 
-    return result;
+	return result;
 }
 
 int hash_table_num_entries(HashTable *hashtable)
 {
-    return hashtable->entries;
+	return hashtable->entries;
 }
 
 void hash_table_foreach(HashTable *hashtable, HashTableIterator iterator,
                         void *user_data)
 {
-    int i;
-    HashTableEntry *rover;
+	int i;
+	HashTableEntry *rover;
 
-    /* Iterate over all entries in all chains */
+	/* Iterate over all entries in all chains */
 
-    for (i=0; i<hashtable->table_size; ++i) {
-        rover = hashtable->table[i];
+	for (i=0; i<hashtable->table_size; ++i) {
+		rover = hashtable->table[i];
 
-        while (rover != NULL) {
-            iterator(rover->key, rover->value, user_data);
-            rover = rover->next;
-        }
-    }
+		while (rover != NULL) {
+			iterator(rover->key, rover->value, user_data);
+			rover = rover->next;
+		}
+	}
 }
 
 int hash_table_foreach_remove(HashTable *hashtable,
                               HashTableRemoveIterator iterator,
                               void *user_data)
 {
-    int i;
-    int removed_entries;
-    int remove;
-    HashTableEntry **rover;
-    HashTableEntry *entry;
+	int i;
+	int removed_entries;
+	int remove;
+	HashTableEntry **rover;
+	HashTableEntry *entry;
 
-    /* Iterate over all entries in all chains */
+	/* Iterate over all entries in all chains */
 
-    removed_entries = 0;
+	removed_entries = 0;
 
-    for (i=0; i<hashtable->table_size; ++i) {
-        rover = &(hashtable->table[i]);
+	for (i=0; i<hashtable->table_size; ++i) {
+		rover = &(hashtable->table[i]);
 
-        while (*rover != NULL) {
-            
-            entry = *rover;
+		while (*rover != NULL) {
+			
+			entry = *rover;
 
-            remove = iterator(entry->key, entry->value, user_data);
+			remove = iterator(entry->key, entry->value, user_data);
 
-            /* Remove this entry? */
+			/* Remove this entry? */
 
-            if (remove) {
+			if (remove) {
 
-                /* Unlink this entry from the chain */
+				/* Unlink this entry from the chain */
 
-                *rover = entry->next;
-                --hashtable->entries;
+				*rover = entry->next;
+				--hashtable->entries;
 
-                /* Destroy the entry structure */
+				/* Destroy the entry structure */
 
-                hash_table_free_entry(hashtable, entry);
+				hash_table_free_entry(hashtable, entry);
 
-                /* Keep count of the number removed */
+				/* Keep count of the number removed */
 
-                ++removed_entries;
-                
-            } else {
+				++removed_entries;
+				
+			} else {
 
-                /* Advance to the next entry in the chain */
+				/* Advance to the next entry in the chain */
 
-                rover = &((*rover)->next);
-            }
-        }
-    }
+				rover = &((*rover)->next);
+			}
+		}
+	}
 
-    return removed_entries;
+	return removed_entries;
 }
 
 

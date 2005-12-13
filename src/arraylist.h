@@ -67,17 +67,17 @@ extern "C" {
 
 typedef struct _ArrayList {
 
-    /** Entries in the array */
-    
-    void **data;
+	/** Entries in the array */
+	
+	void **data;
 
-    /** Length of the array */
-    
-    int length;
+	/** Length of the array */
+	
+	int length;
 
-    /** Private data and should not be accessed */
+	/** Private data and should not be accessed */
 
-    int _alloced;
+	int _alloced;
 } ArrayList;
 
 /**

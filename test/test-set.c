@@ -45,238 +45,238 @@ POSSIBILITY OF SUCH DAMAGE.
 
 Set *generate_set(void)
 {
-    Set *set;
-    int i;
-    int *value;
+	Set *set;
+	int i;
+	int *value;
 
-    set = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
 
-    /* Add 10,000 items sequentially, checking that the counter 
-     * works properly */
+	/* Add 10,000 items sequentially, checking that the counter 
+	 * works properly */
 
-    for (i=0; i<10000; ++i) {
-        value = (int *) malloc(sizeof(int));
+	for (i=0; i<10000; ++i) {
+		value = (int *) malloc(sizeof(int));
 
-        *value = i;
+		*value = i;
 
-        set_insert(set, value);
+		set_insert(set, value);
 
-        assert(set_num_entries(set) == i + 1);
-    }
+		assert(set_num_entries(set) == i + 1);
+	}
 
-    return set;
+	return set;
 }
 
 void test_set_new(void)
 {
-    Set *set;
+	Set *set;
 
-    set = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
 }
 
 void test_set_free(void)
 {
-    Set *set;
-    int i;
-    int *value;
+	Set *set;
+	int i;
+	int *value;
 
-    set = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
 
-    /* Fill the set with many values before freeing */
+	/* Fill the set with many values before freeing */
 
-    for (i=0; i<10000; ++i) {
-        value = (int *) malloc(sizeof(int));
+	for (i=0; i<10000; ++i) {
+		value = (int *) malloc(sizeof(int));
 
-        *value = i;
+		*value = i;
 
-        set_insert(set, value);
-    }
+		set_insert(set, value);
+	}
 
-    /* Free the set */
+	/* Free the set */
 
-    set_free(set);
+	set_free(set);
 }
 
 void test_set_insert(void)
 {
-    Set *set;
-    int numbers1[] = { 1, 2, 3, 4, 5, 6 };
-    int numbers2[] = { 5, 6, 7, 8, 9, 10 };
-    int i;
+	Set *set;
+	int numbers1[] = { 1, 2, 3, 4, 5, 6 };
+	int numbers2[] = { 5, 6, 7, 8, 9, 10 };
+	int i;
 
-    set = generate_set();
+	set = generate_set();
 
-    /* Perform a union of numbers1 and numbers2.  Cannot add the same
-     * value twice. */
+	/* Perform a union of numbers1 and numbers2.  Cannot add the same
+	 * value twice. */
 
-    set = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
 
-    for (i=0; i<6; ++i) {
-        set_insert(set, &numbers1[i]);
-    }
-    for (i=0; i<6; ++i) {
-        set_insert(set, &numbers2[i]);
-    }
+	for (i=0; i<6; ++i) {
+		set_insert(set, &numbers1[i]);
+	}
+	for (i=0; i<6; ++i) {
+		set_insert(set, &numbers2[i]);
+	}
 
-    assert(set_num_entries(set) == 10);
+	assert(set_num_entries(set) == 10);
 }
 
 void test_set_query(void)
 {
-    Set *set;
-    int i;
+	Set *set;
+	int i;
 
-    set = generate_set();
+	set = generate_set();
 
-    /* Test all values */
-    
-    for (i=0; i<10000; ++i) {
-        assert(set_query(set, &i) != 0);
-    }
+	/* Test all values */
+	
+	for (i=0; i<10000; ++i) {
+		assert(set_query(set, &i) != 0);
+	}
 
-    /* Test invalid values returning zero */
+	/* Test invalid values returning zero */
 
-    i = -1;
-    assert(set_query(set, &i) == 0);
-    i = 100001;
-    assert(set_query(set, &i) == 0);
+	i = -1;
+	assert(set_query(set, &i) == 0);
+	i = 100001;
+	assert(set_query(set, &i) == 0);
 }
 
 void test_set_remove(void)
 {
-    Set *set;
-    int i;
+	Set *set;
+	int i;
 
-    set = generate_set();
+	set = generate_set();
 
-    i = 5000;
-    assert(set_query(set, &i) != 0);
-    assert(set_num_entries(set) == 10000);
+	i = 5000;
+	assert(set_query(set, &i) != 0);
+	assert(set_num_entries(set) == 10000);
 
-    /* Remove an entry */
+	/* Remove an entry */
 
-    set_remove(set, &i);
-    assert(set_num_entries(set) == 9999);
-    assert(set_query(set, &i) == 0);
+	set_remove(set, &i);
+	assert(set_num_entries(set) == 9999);
+	assert(set_query(set, &i) == 0);
 
-    /* Try to remove an invalid entry */
+	/* Try to remove an invalid entry */
 
-    i = 50000;
-    set_remove(set, &i);
-    assert(set_num_entries(set) == 9999);
+	i = 50000;
+	set_remove(set, &i);
+	assert(set_num_entries(set) == 9999);
 }
 
 void test_set_union(void)
 {
-    int numbers1[] = {1, 2, 3, 4, 5, 6, 7};
-    int numbers2[] = {5, 6, 7, 8, 9, 10, 11};
-    int result[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-    int i;
-    Set *set1;
-    Set *set2;
-    Set *result_set;
+	int numbers1[] = {1, 2, 3, 4, 5, 6, 7};
+	int numbers2[] = {5, 6, 7, 8, 9, 10, 11};
+	int result[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+	int i;
+	Set *set1;
+	Set *set2;
+	Set *result_set;
 
-    /* Create the first set */
+	/* Create the first set */
 
-    set1 = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set1 = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
 
-    for (i=0; i<7; ++i) {
-        set_insert(set1, &numbers1[i]);
-    }
-    
-    /* Create the second set */
-    
-    set2 = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
-    
-    for (i=0; i<7; ++i) {
-        set_insert(set2, &numbers2[i]);
-    }
-    
-    /* Perform the union */
+	for (i=0; i<7; ++i) {
+		set_insert(set1, &numbers1[i]);
+	}
+	
+	/* Create the second set */
+	
+	set2 = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	
+	for (i=0; i<7; ++i) {
+		set_insert(set2, &numbers2[i]);
+	}
+	
+	/* Perform the union */
 
-    result_set = set_union(set1, set2, NULL);
+	result_set = set_union(set1, set2, NULL);
 
-    assert(set_num_entries(result_set) == 11);
+	assert(set_num_entries(result_set) == 11);
 
-    for (i=0; i<11; ++i) {
-        assert(set_query(result_set, &result[i]) != 0);
-    }
+	for (i=0; i<11; ++i) {
+		assert(set_query(result_set, &result[i]) != 0);
+	}
 }
 
 void test_set_intersection(void)
 {
-    int numbers1[] = {1, 2, 3, 4, 5, 6, 7};
-    int numbers2[] = {5, 6, 7, 8, 9, 10, 11};
-    int result[] = {5, 6, 7};
-    int i;
-    Set *set1;
-    Set *set2;
-    Set *result_set;
+	int numbers1[] = {1, 2, 3, 4, 5, 6, 7};
+	int numbers2[] = {5, 6, 7, 8, 9, 10, 11};
+	int result[] = {5, 6, 7};
+	int i;
+	Set *set1;
+	Set *set2;
+	Set *result_set;
 
-    /* Create the first set */
+	/* Create the first set */
 
-    set1 = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set1 = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
 
-    for (i=0; i<7; ++i) {
-        set_insert(set1, &numbers1[i]);
-    }
-    
-    /* Create the second set */
-    
-    set2 = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
-    
-    for (i=0; i<7; ++i) {
-        set_insert(set2, &numbers2[i]);
-    }
-    
-    /* Perform the intersection */
+	for (i=0; i<7; ++i) {
+		set_insert(set1, &numbers1[i]);
+	}
+	
+	/* Create the second set */
+	
+	set2 = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	
+	for (i=0; i<7; ++i) {
+		set_insert(set2, &numbers2[i]);
+	}
+	
+	/* Perform the intersection */
 
-    result_set = set_intersection(set1, set2, NULL);
+	result_set = set_intersection(set1, set2, NULL);
 
-    assert(set_num_entries(result_set) == 3);
+	assert(set_num_entries(result_set) == 3);
 
-    for (i=0; i<3; ++i) {
-        assert(set_query(result_set, &result[i]) != 0);
-    }
+	for (i=0; i<3; ++i) {
+		assert(set_query(result_set, &result[i]) != 0);
+	}
 }
 
 void test_set_to_array(void)
 {
-    Set *set;
-    int values[100];
-    int **array;
-    int i;
+	Set *set;
+	int values[100];
+	int **array;
+	int i;
 
-    /* Create a set containing pointers to all entries in the "values"
-     * array. */
-    
-    set = set_new(pointer_hash, pointer_equal);
+	/* Create a set containing pointers to all entries in the "values"
+	 * array. */
+	
+	set = set_new(pointer_hash, pointer_equal);
 
-    for (i=0; i<100; ++i) {
-        values[i] = 1;
-        set_insert(set, &values[i]);
-    }
+	for (i=0; i<100; ++i) {
+		values[i] = 1;
+		set_insert(set, &values[i]);
+	}
 
-    array = (int **) set_to_array(set);
+	array = (int **) set_to_array(set);
 
-    /* Check the array */
+	/* Check the array */
 
-    for (i=0; i<100; ++i) {
-        assert(*array[i] == 1);
-        *array[i] = 0;
-    }
+	for (i=0; i<100; ++i) {
+		assert(*array[i] == 1);
+		*array[i] = 0;
+	}
 }
 
 int main(int argc, char *argv[])
 {
-    test_set_new();
-    test_set_free();
-    test_set_insert();
-    test_set_query();
-    test_set_remove();
-    test_set_intersection();
-    test_set_union();
+	test_set_new();
+	test_set_free();
+	test_set_insert();
+	test_set_query();
+	test_set_remove();
+	test_set_intersection();
+	test_set_union();
 
-    return 0;
+	return 0;
 }
 

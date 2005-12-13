@@ -39,17 +39,17 @@ POSSIBILITY OF SUCH DAMAGE.
 
 int int_equal(int *location1, int *location2)
 {
-    return *location1 == *location2;
+	return *location1 == *location2;
 }
 
 int int_compare(int *location1, int *location2)
 {
-    if (*location1 < *location2)
-        return -1;
-    else if (*location1 > *location2)
-        return 1;
-    else
-        return 0;
+	if (*location1 < *location2)
+		return -1;
+	else if (*location1 > *location2)
+		return 1;
+	else
+		return 0;
 }
 
 

@@ -43,108 +43,108 @@ POSSIBILITY OF SUCH DAMAGE.
 
 void test_pointer_hash(void)
 {
-    int array[10];
-    int i, j;
+	int array[10];
+	int i, j;
 
-    /* Initialise the array to all zeros */
-    
-    for (i=0; i<10; ++i) {
-        array[i] = 0;
-    }
-    
-    /* Check hashes are never the same */
+	/* Initialise the array to all zeros */
+	
+	for (i=0; i<10; ++i) {
+		array[i] = 0;
+	}
+	
+	/* Check hashes are never the same */
 
-    for (i=0; i<10; ++i) {
-        for (j=i+1; j<10; ++j) {
-            assert(pointer_hash(&array[i]) != pointer_hash(&array[j]));
-        }
-    }
+	for (i=0; i<10; ++i) {
+		for (j=i+1; j<10; ++j) {
+			assert(pointer_hash(&array[i]) != pointer_hash(&array[j]));
+		}
+	}
 }
 
 void test_int_hash(void)
 {
-    int array[100];
-    int i, j;
+	int array[100];
+	int i, j;
 
-    /* Initialise all entries in the array */
+	/* Initialise all entries in the array */
 
-    for (i=0; i<100; ++i) {
-        array[i] = i;
-    }
+	for (i=0; i<100; ++i) {
+		array[i] = i;
+	}
 
-    /* Check hashes are never the same */
+	/* Check hashes are never the same */
 
-    for (i=0; i<100; ++i) {
-        for (j=i+1; j<100; ++j) {
-            assert(int_hash(&array[i]) != int_hash(&array[j]));
-        }
-    }
+	for (i=0; i<100; ++i) {
+		for (j=i+1; j<100; ++j) {
+			assert(int_hash(&array[i]) != int_hash(&array[j]));
+		}
+	}
 
-    /* Hashes of two variables containing the same value are the same */
+	/* Hashes of two variables containing the same value are the same */
 
-    i = 5000;
-    j = 5000;
+	i = 5000;
+	j = 5000;
 
-    assert(int_hash(&i) == int_hash(&j));
+	assert(int_hash(&i) == int_hash(&j));
 }
 
 void test_string_hash(void)
 {
-    char test1[] = "this is a test";
-    char test2[] = "this is a tesu";
-    char test3[] = "this is a test ";
-    char test4[] = "this is a test";
-    char test5[] = "This is a test";
+	char test1[] = "this is a test";
+	char test2[] = "this is a tesu";
+	char test3[] = "this is a test ";
+	char test4[] = "this is a test";
+	char test5[] = "This is a test";
 
-    /* Contents affect the hash */
+	/* Contents affect the hash */
 
-    assert(string_hash(test1) != string_hash(test2));
+	assert(string_hash(test1) != string_hash(test2));
 
-    /* Length affects the hash */
+	/* Length affects the hash */
 
-    assert(string_hash(test1) != string_hash(test3));
+	assert(string_hash(test1) != string_hash(test3));
 
-    /* Case sensitive */
+	/* Case sensitive */
 
-    assert(string_hash(test1) != string_hash(test5));
+	assert(string_hash(test1) != string_hash(test5));
 
-    /* The same strings give the same hash */
+	/* The same strings give the same hash */
 
-    assert(string_hash(test1) == string_hash(test4));
+	assert(string_hash(test1) == string_hash(test4));
 }
 
 void test_string_nocase_hash(void)
 {
-    char test1[] = "this is a test";
-    char test2[] = "this is a tesu";
-    char test3[] = "this is a test ";
-    char test4[] = "this is a test";
-    char test5[] = "This is a test";
+	char test1[] = "this is a test";
+	char test2[] = "this is a tesu";
+	char test3[] = "this is a test ";
+	char test4[] = "this is a test";
+	char test5[] = "This is a test";
 
-    /* Contents affect the hash */
+	/* Contents affect the hash */
 
-    assert(string_nocase_hash(test1) != string_nocase_hash(test2));
+	assert(string_nocase_hash(test1) != string_nocase_hash(test2));
 
-    /* Length affects the hash */
+	/* Length affects the hash */
 
-    assert(string_nocase_hash(test1) != string_nocase_hash(test3));
+	assert(string_nocase_hash(test1) != string_nocase_hash(test3));
 
-    /* Case insensitive */
+	/* Case insensitive */
 
-    assert(string_nocase_hash(test1) == string_nocase_hash(test5));
+	assert(string_nocase_hash(test1) == string_nocase_hash(test5));
 
-    /* The same strings give the same hash */
+	/* The same strings give the same hash */
 
-    assert(string_nocase_hash(test1) == string_nocase_hash(test4));
+	assert(string_nocase_hash(test1) == string_nocase_hash(test4));
 }
 
 int main(int argc, char *argv[])
 {
-    test_pointer_hash();
-    test_int_hash();
-    test_string_hash();
-    test_string_nocase_hash();
+	test_pointer_hash();
+	test_int_hash();
+	test_string_hash();
+	test_string_nocase_hash();
 
-    return 0;
+	return 0;
 }
 

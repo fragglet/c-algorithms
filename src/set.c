@@ -42,18 +42,18 @@ POSSIBILITY OF SUCH DAMAGE.
 typedef struct _SetEntry SetEntry;
 
 struct _SetEntry {
-    void *data;
-    SetEntry *next;
+	void *data;
+	SetEntry *next;
 };
 
 struct _Set {
-    SetEntry **table;
-    int entries;
-    int table_size;
-    int prime_index;
-    SetHashFunc hash_func;
-    SetEqualFunc equal_func;
-    SetFreeFunc free_func;
+	SetEntry **table;
+	int entries;
+	int table_size;
+	int prime_index;
+	SetHashFunc hash_func;
+	SetEqualFunc equal_func;
+	SetFreeFunc free_func;
 };
 
 /* Prime numbers on an escalating exponential scale, used for the table
@@ -61,466 +61,466 @@ struct _Set {
  * table size increases by 50% with each enlargement */
 
 static unsigned int set_primes[] = {
-    251, 383, 571, 863, 1291, 1933, 2909, 4373, 6553, 9839, 14759, 22133,
-    33211, 49811, 74719, 112069, 168127, 252193, 378289, 567407, 851131,
-    1276721, 1915057, 2872621, 4308937, 6463399, 9695099, 14542651,
-    21813997, 32721001, 49081441, 73622251, 110433383, 165650033,
-    248475107, 372712667, 559068997, 838603499, 1257905249, 1886857859,
+	251, 383, 571, 863, 1291, 1933, 2909, 4373, 6553, 9839, 14759, 22133,
+	33211, 49811, 74719, 112069, 168127, 252193, 378289, 567407, 851131,
+	1276721, 1915057, 2872621, 4308937, 6463399, 9695099, 14542651,
+	21813997, 32721001, 49081441, 73622251, 110433383, 165650033,
+	248475107, 372712667, 559068997, 838603499, 1257905249, 1886857859,
 };
 
 static int set_num_primes = sizeof(set_primes) / sizeof(int);
 
 static void set_allocate_table(Set *set)
 {
-    /* Determine the table size based on the current prime index.  
-     * An attempt is made here to ensure sensible behavior if the
-     * maximum prime is exceeded, but in practice other things are
-     * likely to break long before that happens. */
+	/* Determine the table size based on the current prime index.  
+	 * An attempt is made here to ensure sensible behavior if the
+	 * maximum prime is exceeded, but in practice other things are
+	 * likely to break long before that happens. */
 
-    if (set->prime_index < set_num_primes) {
-        set->table_size = set_primes[set->prime_index];
-    } else {
-        set->table_size = set->entries * 10;
-    }
+	if (set->prime_index < set_num_primes) {
+		set->table_size = set_primes[set->prime_index];
+	} else {
+		set->table_size = set->entries * 10;
+	}
 
-    /* Allocate the table and initialise to NULL */
+	/* Allocate the table and initialise to NULL */
 
-    set->table = calloc(set->table_size, sizeof(SetEntry *));
-    memset(set->table, 0, set->table_size * sizeof(SetEntry *));
+	set->table = calloc(set->table_size, sizeof(SetEntry *));
+	memset(set->table, 0, set->table_size * sizeof(SetEntry *));
 }
 
 static void set_free_entry(Set *set, SetEntry *entry) 
 {
-    /* If there is a free function registered, call it to free the 
-     * data for this entry first */
-    
-    if (set->free_func != NULL) {
-        set->free_func(entry->data);
-    }
+	/* If there is a free function registered, call it to free the 
+	 * data for this entry first */
+	
+	if (set->free_func != NULL) {
+		set->free_func(entry->data);
+	}
 
-    /* Free the entry structure */
+	/* Free the entry structure */
 
-    free(entry);
+	free(entry);
 }
 
 Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func)
 {
-    Set *new_set;
+	Set *new_set;
 
-    /* Allocate a new set and fill in the fields */
+	/* Allocate a new set and fill in the fields */
 
-    new_set = (Set *) malloc(sizeof(Set));
-    new_set->hash_func = hash_func;
-    new_set->equal_func = equal_func;
-    new_set->entries = 0;
-    new_set->prime_index = 0;
-    new_set->free_func = NULL;
-    
-    /* Allocate the table */
-    
-    set_allocate_table(new_set);
+	new_set = (Set *) malloc(sizeof(Set));
+	new_set->hash_func = hash_func;
+	new_set->equal_func = equal_func;
+	new_set->entries = 0;
+	new_set->prime_index = 0;
+	new_set->free_func = NULL;
+	
+	/* Allocate the table */
+	
+	set_allocate_table(new_set);
 
-    return new_set;
+	return new_set;
 }
 
 void set_free(Set *set)
 {
-    SetEntry *rover;
-    SetEntry *next;
-    int i;
-    
-    /* Free all entries in all chains */
-    
-    for (i=0; i<set->table_size; ++i) {
-        rover = set->table[i];
+	SetEntry *rover;
+	SetEntry *next;
+	int i;
+	
+	/* Free all entries in all chains */
+	
+	for (i=0; i<set->table_size; ++i) {
+		rover = set->table[i];
 
-        while (rover != NULL) {
-            next = rover->next;
+		while (rover != NULL) {
+			next = rover->next;
 
-            /* Free this entry */
+			/* Free this entry */
 
-            set_free_entry(set, rover);
+			set_free_entry(set, rover);
 
-            /* Advance to the next entry in the chain */
-            
-            rover = next;
-        }
-    }
-    
-    /* Free the table */
+			/* Advance to the next entry in the chain */
+			
+			rover = next;
+		}
+	}
+	
+	/* Free the table */
 
-    free(set->table);
+	free(set->table);
 
-    /* Free the set structure */
+	/* Free the set structure */
 
-    free(set);
+	free(set);
 }
 
 void set_register_free_function(Set *set, SetFreeFunc free_func)
 {
-    set->free_func = free_func;
+	set->free_func = free_func;
 }
 
 static void set_enlarge(Set *set)
 {
-    SetEntry *rover;
-    SetEntry *next;
-    SetEntry **old_table;
-    int old_table_size;
-    int index;
-    int i;
+	SetEntry *rover;
+	SetEntry *next;
+	SetEntry **old_table;
+	int old_table_size;
+	int index;
+	int i;
 
-    /* Store the old table */
-    
-    old_table = set->table;
-    old_table_size = set->table_size;
+	/* Store the old table */
+	
+	old_table = set->table;
+	old_table_size = set->table_size;
 
-    /* Use the next table size from the prime number array */
+	/* Use the next table size from the prime number array */
 
-    ++set->prime_index;
+	++set->prime_index;
 
-    /* Allocate the new table */
+	/* Allocate the new table */
 
-    set_allocate_table(set);
+	set_allocate_table(set);
 
-    /* Iterate through all entries in the old table and add them
-     * to the new one */
+	/* Iterate through all entries in the old table and add them
+	 * to the new one */
 
-    for (i=0; i<old_table_size; ++i) {
+	for (i=0; i<old_table_size; ++i) {
 
-        /* Walk along this chain */
+		/* Walk along this chain */
 
-        rover = old_table[i];
+		rover = old_table[i];
 
-        while (rover != NULL) {
+		while (rover != NULL) {
 
-            next = rover->next;
+			next = rover->next;
 
-            /* Hook this entry into the new table */
-            
-            index = set->hash_func(rover->data) % set->table_size;
-            rover->next = set->table[index];
-            set->table[index] = rover;
+			/* Hook this entry into the new table */
+			
+			index = set->hash_func(rover->data) % set->table_size;
+			rover->next = set->table[index];
+			set->table[index] = rover;
 
-            /* Advance to the next entry in the chain */
-            
-            rover = next;
-        }
-    }
+			/* Advance to the next entry in the chain */
+			
+			rover = next;
+		}
+	}
 
-    /* Free back the old table */
+	/* Free back the old table */
 
-    free(old_table);
+	free(old_table);
 }
 
 int set_insert(Set *set, void *data)
 {
-    SetEntry *newentry;
-    SetEntry *rover;
-    int index;
+	SetEntry *newentry;
+	SetEntry *rover;
+	int index;
 
-    /* The hash table becomes less efficient as the number of entries
-     * increases. Check if the percentage used becomes large. */
-    
-    if ((set->entries * 3) / set->table_size > 0) {
-        
-        /* The table is more than 1/3 full and must be increased in size */
+	/* The hash table becomes less efficient as the number of entries
+	 * increases. Check if the percentage used becomes large. */
+	
+	if ((set->entries * 3) / set->table_size > 0) {
+		
+		/* The table is more than 1/3 full and must be increased in size */
 
-        set_enlarge(set);
-    }
+		set_enlarge(set);
+	}
 
-    /* Use the hash of the data to determine an index to insert into the 
-     * table at. */
+	/* Use the hash of the data to determine an index to insert into the 
+	 * table at. */
 
-    index = set->hash_func(data) % set->table_size;
+	index = set->hash_func(data) % set->table_size;
 
-    /* Walk along this chain and attempt to determine if this data has
-     * already been added to the table */
+	/* Walk along this chain and attempt to determine if this data has
+	 * already been added to the table */
 
-    rover = set->table[index];
+	rover = set->table[index];
 
-    while (rover != NULL) {
+	while (rover != NULL) {
 
-        if (set->equal_func(data, rover->data) != 0) {
-            
-            /* This data is already in the set */
+		if (set->equal_func(data, rover->data) != 0) {
+			
+			/* This data is already in the set */
 
-            return 0;
-        }
-        
-        rover = rover->next;
-    }
+			return 0;
+		}
+		
+		rover = rover->next;
+	}
 
-    /* Not in the set.  We must add a new entry. */
+	/* Not in the set.  We must add a new entry. */
 
-    /* Make a new entry for this data */
+	/* Make a new entry for this data */
 
-    newentry = (SetEntry *) malloc(sizeof(SetEntry));
-    newentry->data = data;
-    
-    /* Link into chain */
+	newentry = (SetEntry *) malloc(sizeof(SetEntry));
+	newentry->data = data;
+	
+	/* Link into chain */
 
-    newentry->next = set->table[index];
-    set->table[index] = newentry;
+	newentry->next = set->table[index];
+	set->table[index] = newentry;
 
-    /* Keep track of the number of entries in the set */
+	/* Keep track of the number of entries in the set */
 
-    ++set->entries;
+	++set->entries;
 
-    /* Added successfully */
+	/* Added successfully */
 
-    return 1;
+	return 1;
 }
 
 int set_remove(Set *set, void *data)
 {
-    SetEntry **rover;
-    SetEntry *entry;
-    int index;
+	SetEntry **rover;
+	SetEntry *entry;
+	int index;
 
-    /* Look up the data by its hash key */
+	/* Look up the data by its hash key */
 
-    index = set->hash_func(data) % set->table_size;
+	index = set->hash_func(data) % set->table_size;
 
-    /* Search this chain, until the corresponding entry is found */
+	/* Search this chain, until the corresponding entry is found */
 
-    rover = &set->table[index];
+	rover = &set->table[index];
 
-    while (*rover != NULL) {
-        if (set->equal_func(data, (*rover)->data) != 0) {
-            
-            /* Found the entry */
+	while (*rover != NULL) {
+		if (set->equal_func(data, (*rover)->data) != 0) {
+			
+			/* Found the entry */
 
-            entry = *rover;
+			entry = *rover;
 
-            /* Unlink from the linked list */
+			/* Unlink from the linked list */
 
-            *rover = entry->next;
+			*rover = entry->next;
 
-            /* Update counter */
+			/* Update counter */
 
-            --set->entries;
+			--set->entries;
 
-            /* Free the entry and return */
+			/* Free the entry and return */
 
-            set_free_entry(set, entry);
+			set_free_entry(set, entry);
 
-            return 1;
-        }
-    }
+			return 1;
+		}
+	}
 
-    /* Not found in set */
+	/* Not found in set */
 
-    return 0;
+	return 0;
 }
 
 int set_query(Set *set, void *data)
 {
-    SetEntry *rover;
-    int index;
+	SetEntry *rover;
+	int index;
 
-    /* Look up the data by its hash key */
+	/* Look up the data by its hash key */
 
-    index = set->hash_func(data) % set->table_size;
+	index = set->hash_func(data) % set->table_size;
 
-    /* Search this chain, until the corresponding entry is found */
+	/* Search this chain, until the corresponding entry is found */
 
-    rover = set->table[index];
+	rover = set->table[index];
 
-    while (rover != NULL) {
-        if (set->equal_func(data, rover->data) != 0) {
-            
-            /* Found the entry */
+	while (rover != NULL) {
+		if (set->equal_func(data, rover->data) != 0) {
+			
+			/* Found the entry */
 
-            return 1;
-        }
+			return 1;
+		}
 
-        /* Advance to the next entry in the chain */
+		/* Advance to the next entry in the chain */
 
-        rover = rover->next;
-    }
+		rover = rover->next;
+	}
 
-    /* Not found */
+	/* Not found */
 
-    return 0;
+	return 0;
 }
 
 void set_foreach(Set *set, SetIterator callback, void *user_data)
 {
-    SetEntry *rover;
-    int i;
+	SetEntry *rover;
+	int i;
 
-    /* Iterate over all chains and all values in the chains */
+	/* Iterate over all chains and all values in the chains */
 
-    for (i=0; i<set->table_size; ++i) {
-        rover = set->table[i];
+	for (i=0; i<set->table_size; ++i) {
+		rover = set->table[i];
 
-        while (rover != NULL) {
+		while (rover != NULL) {
 
-            /* Invoke callback for this data */
+			/* Invoke callback for this data */
 
-            callback(rover->data, user_data);
+			callback(rover->data, user_data);
 
-            /* Advance to the next entry */
+			/* Advance to the next entry */
 
-            rover = rover->next;
-        }
-    }
+			rover = rover->next;
+		}
+	}
 }
 
 int set_num_entries(Set *set)
 {
-    return set->entries;
+	return set->entries;
 }
 
 void **set_to_array(Set *set)
 {
-    void **array;
-    int array_counter;
-    int i;
-    SetEntry *rover;
-    
-    /* Create an array to hold the set entries */
-    
-    array = malloc(sizeof(void *) * set->entries);
-    array_counter = 0;
+	void **array;
+	int array_counter;
+	int i;
+	SetEntry *rover;
+	
+	/* Create an array to hold the set entries */
+	
+	array = malloc(sizeof(void *) * set->entries);
+	array_counter = 0;
 
-    /* Iterate over all entries in all chains */
-    
-    for (i=0; i<set->entries; ++i) {
+	/* Iterate over all entries in all chains */
+	
+	for (i=0; i<set->entries; ++i) {
 
-        rover = set->table[i];
+		rover = set->table[i];
 
-        while (rover != NULL) {
+		while (rover != NULL) {
 
-            /* Add this value to the array */
-            
-            array[array_counter] = rover->data;
-            ++array_counter;
+			/* Add this value to the array */
+			
+			array[array_counter] = rover->data;
+			++array_counter;
 
-            /* Advance to the next entry */
-            
-            rover = rover->next;
-        }
-    }
+			/* Advance to the next entry */
+			
+			rover = rover->next;
+		}
+	}
 
-    return array;
+	return array;
 }
 
 struct set_union_data {
-    Set *new_set;
-    SetCopyFunc copy_func;
+	Set *new_set;
+	SetCopyFunc copy_func;
 };
 
 static void set_union_foreach1(void *value, void *user_data)
 {
-    struct set_union_data *params;
-    void *copied_value;
+	struct set_union_data *params;
+	void *copied_value;
 
-    params = (struct set_union_data *) user_data;
+	params = (struct set_union_data *) user_data;
 
-    /* Copy the value into the new set, copying if necessary */
+	/* Copy the value into the new set, copying if necessary */
 
-    if (params->copy_func != NULL) {
-        copied_value = params->copy_func(value);
-    } else {
-        copied_value = value;
-    }
+	if (params->copy_func != NULL) {
+		copied_value = params->copy_func(value);
+	} else {
+		copied_value = value;
+	}
 
-    set_insert(params->new_set, copied_value);
+	set_insert(params->new_set, copied_value);
 }
 
 static void set_union_foreach2(void *value, void *user_data)
 {
-    struct set_union_data *params;
-    void *copied_value;
+	struct set_union_data *params;
+	void *copied_value;
 
-    params = (struct set_union_data *) user_data;
+	params = (struct set_union_data *) user_data;
 
-    /* Has this value been put into the new set yet?  If not, add it. */
+	/* Has this value been put into the new set yet?  If not, add it. */
 
-    if (set_query(params->new_set, value) == 0) {
+	if (set_query(params->new_set, value) == 0) {
 
-        /* Copy the value into the new set, copying if necessary */
+		/* Copy the value into the new set, copying if necessary */
 
-        if (params->copy_func != NULL) {
-            copied_value = params->copy_func(value);
-        } else {
-            copied_value = value;
-        }
+		if (params->copy_func != NULL) {
+			copied_value = params->copy_func(value);
+		} else {
+			copied_value = value;
+		}
 
-        set_insert(params->new_set, copied_value);
-    }
+		set_insert(params->new_set, copied_value);
+	}
 }
 
 
 Set *set_union(Set *set1, Set *set2, SetCopyFunc copy_func)
 {
-    struct set_union_data user_data;
-    Set *new_set;
+	struct set_union_data user_data;
+	Set *new_set;
 
-    new_set = set_new(set1->hash_func, set1->equal_func);
+	new_set = set_new(set1->hash_func, set1->equal_func);
 
-    user_data.new_set = new_set;
-    user_data.copy_func = copy_func;
+	user_data.new_set = new_set;
+	user_data.copy_func = copy_func;
 
-    /* Add all values from the first set */
-    
-    set_foreach(set1, set_union_foreach1, &user_data);
+	/* Add all values from the first set */
+	
+	set_foreach(set1, set_union_foreach1, &user_data);
 
-    /* Add all values from the second set */
-    
-    set_foreach(set2, set_union_foreach2, &user_data);
+	/* Add all values from the second set */
+	
+	set_foreach(set2, set_union_foreach2, &user_data);
 
-    return new_set;
+	return new_set;
 }
 
 struct set_intersection_data {
-    Set *new_set;
-    Set *set2;
-    SetCopyFunc copy_func;
+	Set *new_set;
+	Set *set2;
+	SetCopyFunc copy_func;
 };
 
 static void set_intersection_foreach(void *value, void *user_data)
 {
-    struct set_intersection_data *params;
-    void *copied_value;
+	struct set_intersection_data *params;
+	void *copied_value;
 
-    params = (struct set_intersection_data *) user_data;
+	params = (struct set_intersection_data *) user_data;
 
-    /* Is this value in set 2 as well?  If so, it should be in the 
-     * new set. */
+	/* Is this value in set 2 as well?  If so, it should be in the 
+	 * new set. */
 
-    if (set_query(params->set2, value) != 0) {
+	if (set_query(params->set2, value) != 0) {
 
-        /* Copy the value first before inserting, if necessary */
+		/* Copy the value first before inserting, if necessary */
 
-        if (params->copy_func != NULL) {
-            copied_value = params->copy_func(value);
-        } else {
-            copied_value = value;
-        }
+		if (params->copy_func != NULL) {
+			copied_value = params->copy_func(value);
+		} else {
+			copied_value = value;
+		}
 
-        set_insert(params->new_set, copied_value);
-    }
+		set_insert(params->new_set, copied_value);
+	}
 }
 
 Set *set_intersection(Set *set1, Set *set2, 
                       SetCopyFunc copy_func)
 {
-    struct set_intersection_data user_data;
-    Set *new_set;
+	struct set_intersection_data user_data;
+	Set *new_set;
 
-    new_set = set_new(set1->hash_func, set2->equal_func);
+	new_set = set_new(set1->hash_func, set2->equal_func);
 
-    /* Iterate over all values in set 1. */
+	/* Iterate over all values in set 1. */
 
-    user_data.new_set = new_set;
-    user_data.set2 = set2;
-    user_data.copy_func = copy_func;
+	user_data.new_set = new_set;
+	user_data.set2 = set2;
+	user_data.copy_func = copy_func;
 
-    set_foreach(set1, set_intersection_foreach, &user_data);
-    
-    return new_set;
+	set_foreach(set1, set_intersection_foreach, &user_data);
+	
+	return new_set;
 }
 

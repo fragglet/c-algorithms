@@ -42,200 +42,200 @@ POSSIBILITY OF SUCH DAMAGE.
 typedef struct _QueueEntry QueueEntry;
 
 struct _QueueEntry {
-    void *data;
-    QueueEntry *prev;
-    QueueEntry *next;
+	void *data;
+	QueueEntry *prev;
+	QueueEntry *next;
 };
 
 struct _Queue {
-    QueueEntry *head;
-    QueueEntry *tail;
+	QueueEntry *head;
+	QueueEntry *tail;
 };
 
 Queue *queue_new(void)
 {
-    Queue *queue;
+	Queue *queue;
 
-    queue = (Queue *) malloc(sizeof(Queue));
-    
-    queue->head = NULL;
-    queue->tail = NULL;
+	queue = (Queue *) malloc(sizeof(Queue));
+	
+	queue->head = NULL;
+	queue->tail = NULL;
 
-    return queue;
+	return queue;
 }
 
 void queue_free(Queue *queue)
 {
-    /* Empty the queue */
-    
-    while (!queue_is_empty(queue)) {
-        queue_pop_head(queue);
-    }
+	/* Empty the queue */
+	
+	while (!queue_is_empty(queue)) {
+		queue_pop_head(queue);
+	}
 
-    /* Free back the queue */
+	/* Free back the queue */
 
-    free(queue);
+	free(queue);
 }
 
 void queue_push_head(Queue *queue, void *data)
 {
-    QueueEntry *new_entry;
+	QueueEntry *new_entry;
 
-    /* Create the new entry and fill in the fields in the structure */
+	/* Create the new entry and fill in the fields in the structure */
 
-    new_entry = malloc(sizeof(QueueEntry));
-    new_entry->data = data;
-    new_entry->prev = NULL;
-    new_entry->next = queue->head;
-    
-    /* Insert into the queue */
+	new_entry = malloc(sizeof(QueueEntry));
+	new_entry->data = data;
+	new_entry->prev = NULL;
+	new_entry->next = queue->head;
+	
+	/* Insert into the queue */
 
-    if (queue->head == NULL) {
+	if (queue->head == NULL) {
 
-        /* If the queue was previously empty, both the head and tail must
-         * be pointed at the new entry */
+		/* If the queue was previously empty, both the head and tail must
+		 * be pointed at the new entry */
 
-        queue->head = new_entry;
-        queue->tail = new_entry;
+		queue->head = new_entry;
+		queue->tail = new_entry;
 
-    } else {
+	} else {
 
-        /* First entry in the list must have prev pointed back to this
-         * new entry */
+		/* First entry in the list must have prev pointed back to this
+		 * new entry */
 
-        queue->head->prev = new_entry;
+		queue->head->prev = new_entry;
 
-        /* Only the head must be pointed at the new entry */
+		/* Only the head must be pointed at the new entry */
 
-        queue->head = new_entry;
-    }
+		queue->head = new_entry;
+	}
 }
 
 void *queue_pop_head(Queue *queue)
 {
-    QueueEntry *entry;
-    void *result;
+	QueueEntry *entry;
+	void *result;
 
-    /* Check the queue is not empty */
+	/* Check the queue is not empty */
 
-    if (queue_is_empty(queue))
-        return NULL;
+	if (queue_is_empty(queue))
+		return NULL;
 
-    /* Unlink the first entry from the head of the queue */
+	/* Unlink the first entry from the head of the queue */
 
-    entry = queue->head;
-    queue->head = entry->next;
-    result = entry->data;
+	entry = queue->head;
+	queue->head = entry->next;
+	result = entry->data;
 
-    if (queue->head == NULL) {
+	if (queue->head == NULL) {
 
-        /* If doing this has unlinked the last entry in the queue, set
-         * tail to NULL as well. */
+		/* If doing this has unlinked the last entry in the queue, set
+		 * tail to NULL as well. */
 
-        queue->tail = NULL;
-    } else {
+		queue->tail = NULL;
+	} else {
 
-        /* The new first in the queue has no previous entry */
+		/* The new first in the queue has no previous entry */
 
-        queue->head->prev = NULL;
-    }
+		queue->head->prev = NULL;
+	}
 
-    /* Free back the queue entry structure */
+	/* Free back the queue entry structure */
 
-    free(entry);
-    
-    return result;    
+	free(entry);
+	
+	return result;    
 }
 
 void *queue_peek_head(Queue *queue)
 {
-    if (queue_is_empty(queue))
-        return NULL;
-    else
-        return queue->head->data;
+	if (queue_is_empty(queue))
+		return NULL;
+	else
+		return queue->head->data;
 }
 
 void queue_push_tail(Queue *queue, void *data)
 {
-    QueueEntry *new_entry;
+	QueueEntry *new_entry;
 
-    /* Create the new entry and fill in the fields in the structure */
+	/* Create the new entry and fill in the fields in the structure */
 
-    new_entry = malloc(sizeof(QueueEntry));
-    new_entry->data = data;
-    new_entry->prev = queue->tail;
-    new_entry->next = NULL;
-    
-    /* Insert into the queue tail */
+	new_entry = malloc(sizeof(QueueEntry));
+	new_entry->data = data;
+	new_entry->prev = queue->tail;
+	new_entry->next = NULL;
+	
+	/* Insert into the queue tail */
 
-    if (queue->tail == NULL) {
+	if (queue->tail == NULL) {
 
-        /* If the queue was previously empty, both the head and tail must
-         * be pointed at the new entry */
+		/* If the queue was previously empty, both the head and tail must
+		 * be pointed at the new entry */
 
-        queue->head = new_entry;
-        queue->tail = new_entry;
+		queue->head = new_entry;
+		queue->tail = new_entry;
 
-    } else {
+	} else {
 
-        /* The current entry at the tail must have next pointed to this
-         * new entry */
+		/* The current entry at the tail must have next pointed to this
+		 * new entry */
 
-        queue->tail->next = new_entry;
+		queue->tail->next = new_entry;
 
-        /* Only the tail must be pointed at the new entry */
+		/* Only the tail must be pointed at the new entry */
 
-        queue->tail = new_entry;
-    }
+		queue->tail = new_entry;
+	}
 }
 
 void *queue_pop_tail(Queue *queue)
 {
-    QueueEntry *entry;
-    void *result;
+	QueueEntry *entry;
+	void *result;
 
-    /* Check the queue is not empty */
+	/* Check the queue is not empty */
 
-    if (queue_is_empty(queue))
-        return NULL;
+	if (queue_is_empty(queue))
+		return NULL;
 
-    /* Unlink the first entry from the tail of the queue */
+	/* Unlink the first entry from the tail of the queue */
 
-    entry = queue->tail;
-    queue->tail = entry->prev;
-    result = entry->data;
+	entry = queue->tail;
+	queue->tail = entry->prev;
+	result = entry->data;
 
-    if (queue->tail == NULL) {
+	if (queue->tail == NULL) {
 
-        /* If doing this has unlinked the last entry in the queue, set
-         * head to NULL as well. */
+		/* If doing this has unlinked the last entry in the queue, set
+		 * head to NULL as well. */
 
-        queue->head = NULL;
+		queue->head = NULL;
 
-    } else {
+	} else {
 
-        /* The new entry at the tail has no next entry. */
+		/* The new entry at the tail has no next entry. */
 
-        queue->tail->next = NULL;
-    }
+		queue->tail->next = NULL;
+	}
 
-    /* Free back the queue entry structure */
+	/* Free back the queue entry structure */
 
-    free(entry);
-    
-    return result;    
+	free(entry);
+	
+	return result;    
 }
 
 void *queue_peek_tail(Queue *queue)
 {
-    if (queue_is_empty(queue))
-        return NULL;
-    else
-        return queue->tail->data;
+	if (queue_is_empty(queue))
+		return NULL;
+	else
+		return queue->tail->data;
 }
 
 int queue_is_empty(Queue *queue)
 {
-    return queue->head == NULL;
+	return queue->head == NULL;
 }
 

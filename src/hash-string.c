@@ -41,16 +41,16 @@ POSSIBILITY OF SUCH DAMAGE.
 
 unsigned long string_hash(char *string)
 {
-    /* This is the djb2 string hash function */
+	/* This is the djb2 string hash function */
 
-    unsigned long result = 5381;
-    unsigned char *p;
+	unsigned long result = 5381;
+	unsigned char *p;
 
-    for (p=(unsigned char *) string; *p != '\0'; ++p) {
-        result = ((result << 5) ^ result ) ^ (*p);
-    }
-    
-    return result;
+	for (p=(unsigned char *) string; *p != '\0'; ++p) {
+		result = ((result << 5) ^ result ) ^ (*p);
+	}
+	
+	return result;
 }
 
 /* The same function, with a tolower on every character so that 
@@ -58,13 +58,13 @@ unsigned long string_hash(char *string)
 
 unsigned long string_nocase_hash(char *string)
 {
-    unsigned long result = 5381;
-    unsigned char *p;
+	unsigned long result = 5381;
+	unsigned char *p;
 
-    for (p=(unsigned char *) string; *p != '\0'; ++p) {
-        result = ((result << 5) ^ result ) ^ tolower(*p);
-    }
-    
-    return result;
+	for (p=(unsigned char *) string; *p != '\0'; ++p) {
+		result = ((result << 5) ^ result ) ^ tolower(*p);
+	}
+	
+	return result;
 }
 

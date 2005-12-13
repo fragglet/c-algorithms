@@ -39,6 +39,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 unsigned long int_hash(int *location)
 {
-    return (unsigned long) *location;
+	return (unsigned long) *location;
 }
 

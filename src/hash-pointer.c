@@ -39,6 +39,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 unsigned long pointer_hash(void *location)
 {
-    return (unsigned long) location;
+	return (unsigned long) location;
 }
 

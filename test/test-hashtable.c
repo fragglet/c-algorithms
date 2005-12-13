@@ -47,158 +47,158 @@ int value1 = 1, value2 = 2, value3 = 3, value4 = 4;
 
 HashTable *generate_hashtable(void)
 {
-    HashTable *hashtable;
-    int *value;
-    int i;
-    
-    /* Allocate a new hash table */
+	HashTable *hashtable;
+	int *value;
+	int i;
+	
+	/* Allocate a new hash table */
 
-    hashtable = hash_table_new((HashTableHashFunc) int_hash, 
-                               (HashTableEqualFunc) int_equal);
-    
-    /* Insert lots of values */
-    
-    for (i=0; i<10000; ++i) {
-        value = (int *) malloc(sizeof(int));
+	hashtable = hash_table_new((HashTableHashFunc) int_hash, 
+	                           (HashTableEqualFunc) int_equal);
+	
+	/* Insert lots of values */
+	
+	for (i=0; i<10000; ++i) {
+		value = (int *) malloc(sizeof(int));
 
-        *value = i;
+		*value = i;
 
-        hash_table_insert(hashtable, value, value);
-    }
-    
-    return hashtable;
+		hash_table_insert(hashtable, value, value);
+	}
+	
+	return hashtable;
 }
 
 void test_hash_table_new(void)
 {
-    HashTable *hashtable;
+	HashTable *hashtable;
 
-    hashtable = hash_table_new((HashTableHashFunc) int_hash, 
-                               (HashTableEqualFunc) int_equal);
-    
-    assert(hashtable != NULL);
+	hashtable = hash_table_new((HashTableHashFunc) int_hash, 
+	                           (HashTableEqualFunc) int_equal);
+	
+	assert(hashtable != NULL);
 }
 
 void test_hash_table_free(void)
 {
-    HashTable *hashtable;
+	HashTable *hashtable;
 
-    hashtable = hash_table_new((HashTableHashFunc) int_hash, 
-                               (HashTableEqualFunc) int_equal);
+	hashtable = hash_table_new((HashTableHashFunc) int_hash, 
+	                           (HashTableEqualFunc) int_equal);
 
-    /* Add some values */
+	/* Add some values */
 
-    hash_table_insert(hashtable, &value1, &value1);
-    hash_table_insert(hashtable, &value2, &value2);
-    hash_table_insert(hashtable, &value3, &value3);
-    hash_table_insert(hashtable, &value4, &value4);
+	hash_table_insert(hashtable, &value1, &value1);
+	hash_table_insert(hashtable, &value2, &value2);
+	hash_table_insert(hashtable, &value3, &value3);
+	hash_table_insert(hashtable, &value4, &value4);
 
-    /* Free the hash table */
+	/* Free the hash table */
 
-    hash_table_free(hashtable);
+	hash_table_free(hashtable);
 }
 
 /* Test insert and lookup functions */
 
 void test_hash_table_insert_lookup(void)
 {
-    HashTable *hashtable;
-    int *value;
-    int i;
+	HashTable *hashtable;
+	int *value;
+	int i;
 
-    /* Generate a hash table */
+	/* Generate a hash table */
 
-    hashtable = generate_hashtable();
+	hashtable = generate_hashtable();
 
-    assert(hash_table_num_entries(hashtable) == 10000);
+	assert(hash_table_num_entries(hashtable) == 10000);
 
-    /* Check all values */
+	/* Check all values */
 
-    for (i=0; i<10000; ++i) {
-        value = (int *) hash_table_lookup(hashtable, &i);
+	for (i=0; i<10000; ++i) {
+		value = (int *) hash_table_lookup(hashtable, &i);
 
-        assert(*value == i);
-    }
+		assert(*value == i);
+	}
 
-    /* Lookup on invalid values returns NULL */
+	/* Lookup on invalid values returns NULL */
 
-    i = -1;
-    assert(hash_table_lookup(hashtable, &i) == NULL);
-    i = 10000;
-    assert(hash_table_lookup(hashtable, &i) == NULL);
+	i = -1;
+	assert(hash_table_lookup(hashtable, &i) == NULL);
+	i = 10000;
+	assert(hash_table_lookup(hashtable, &i) == NULL);
 
-    /* Insert overwrites existing entries with the same key */
+	/* Insert overwrites existing entries with the same key */
 
-    value = (int *) malloc(sizeof(int));
-    *value = 12345;
-    i = 5000;
-    hash_table_insert(hashtable, &i, value);
-    value = (int *) hash_table_lookup(hashtable, &i);
-    assert(*value == 12345);
+	value = (int *) malloc(sizeof(int));
+	*value = 12345;
+	i = 5000;
+	hash_table_insert(hashtable, &i, value);
+	value = (int *) hash_table_lookup(hashtable, &i);
+	assert(*value == 12345);
 }
 
 void test_hash_table_remove(void)
 {
-    HashTable *hashtable;
-    int i;
+	HashTable *hashtable;
+	int i;
 
-    hashtable = generate_hashtable();
+	hashtable = generate_hashtable();
 
-    assert(hash_table_num_entries(hashtable) == 10000);
-    i = 5000;
-    assert(hash_table_lookup(hashtable, &i) != NULL);
+	assert(hash_table_num_entries(hashtable) == 10000);
+	i = 5000;
+	assert(hash_table_lookup(hashtable, &i) != NULL);
 
-    /* Remove an entry */
+	/* Remove an entry */
 
-    hash_table_remove(hashtable, &i);
+	hash_table_remove(hashtable, &i);
 
-    /* Check entry counter */
+	/* Check entry counter */
 
-    assert(hash_table_num_entries(hashtable) == 9999);
+	assert(hash_table_num_entries(hashtable) == 9999);
 
-    /* Check that NULL is returned now */
+	/* Check that NULL is returned now */
 
-    assert(hash_table_lookup(hashtable, &i) == NULL);
+	assert(hash_table_lookup(hashtable, &i) == NULL);
 
-    /* Try removing a non-existent entry */
+	/* Try removing a non-existent entry */
 
-    i = -1;
-    hash_table_remove(hashtable, &i);
+	i = -1;
+	hash_table_remove(hashtable, &i);
 
-    assert(hash_table_num_entries(hashtable) == 9999);
+	assert(hash_table_num_entries(hashtable) == 9999);
 }
 
 int hash_table_foreach_count;
 
 void hash_table_foreach_callback(void *key, void *value, void *user_data)
 {
-    ++hash_table_foreach_count;
+	++hash_table_foreach_count;
 }
 
 void test_hash_table_foreach(void)
 {
-    HashTable *hashtable;
+	HashTable *hashtable;
 
-    hashtable = generate_hashtable();
+	hashtable = generate_hashtable();
 
-    /* Iterate over all values in the table */
+	/* Iterate over all values in the table */
 
-    hash_table_foreach_count = 0;
+	hash_table_foreach_count = 0;
 
-    hash_table_foreach(hashtable, hash_table_foreach_callback, NULL);
+	hash_table_foreach(hashtable, hash_table_foreach_callback, NULL);
 
-    assert(hash_table_foreach_count == 10000);
+	assert(hash_table_foreach_count == 10000);
 
-    /* Test iterating over an empty table */
+	/* Test iterating over an empty table */
 
-    hashtable = hash_table_new((HashTableHashFunc) int_hash, 
-                               (HashTableEqualFunc) int_equal);
-    
-    hash_table_foreach_count = 0;
+	hashtable = hash_table_new((HashTableHashFunc) int_hash, 
+	                           (HashTableEqualFunc) int_equal);
+	
+	hash_table_foreach_count = 0;
 
-    hash_table_foreach(hashtable, hash_table_foreach_callback, NULL);
+	hash_table_foreach(hashtable, hash_table_foreach_callback, NULL);
 
-    assert(hash_table_foreach_count == 0);
+	assert(hash_table_foreach_count == 0);
 }
 
 int hash_table_foreach_remove_count;
@@ -206,78 +206,78 @@ int hash_table_foreach_remove_removed;
 
 int hash_table_foreach_remove_callback(void *key, void *value, void *user_data)
 {
-    int *number = (int *) key;
+	int *number = (int *) key;
 
-    ++hash_table_foreach_remove_count;
+	++hash_table_foreach_remove_count;
 
-    /* Remove every hundredth entry */
+	/* Remove every hundredth entry */
 
-    if (*number % 100 == 0) {
-        ++hash_table_foreach_remove_removed;
-        return 1;
-    } else {
-        return 0;
-    }
+	if (*number % 100 == 0) {
+		++hash_table_foreach_remove_removed;
+		return 1;
+	} else {
+		return 0;
+	}
 }
 
 void test_hash_table_foreach_remove(void)
 {
-    HashTable *hashtable;
-    int removed;
-    int i;
+	HashTable *hashtable;
+	int removed;
+	int i;
 
-    hashtable = generate_hashtable();
+	hashtable = generate_hashtable();
 
-    /* Iterate over all values in the table */
+	/* Iterate over all values in the table */
 
-    hash_table_foreach_remove_count = 0;
-    hash_table_foreach_remove_removed = 0;
+	hash_table_foreach_remove_count = 0;
+	hash_table_foreach_remove_removed = 0;
 
-    removed = hash_table_foreach_remove(hashtable, 
-                                        hash_table_foreach_remove_callback, 
-                                        NULL);
+	removed = hash_table_foreach_remove(hashtable, 
+	                                    hash_table_foreach_remove_callback, 
+	                                    NULL);
 
-    assert(hash_table_foreach_remove_removed == removed);
-    assert(hash_table_foreach_remove_count == 10000);
+	assert(hash_table_foreach_remove_removed == removed);
+	assert(hash_table_foreach_remove_count == 10000);
 
-    assert(hash_table_num_entries(hashtable) == 10000 - removed);
+	assert(hash_table_num_entries(hashtable) == 10000 - removed);
 
-    /* Check all entries divisible by 100 were really removed */
+	/* Check all entries divisible by 100 were really removed */
 
-    for (i=0; i<10000; ++i) {
-        if (i % 100 == 0) {
-            assert(hash_table_lookup(hashtable, &i) == NULL);
-        } else {
-            assert(hash_table_lookup(hashtable, &i) != NULL);
-        }
-    }
+	for (i=0; i<10000; ++i) {
+		if (i % 100 == 0) {
+			assert(hash_table_lookup(hashtable, &i) == NULL);
+		} else {
+			assert(hash_table_lookup(hashtable, &i) != NULL);
+		}
+	}
 
-    /* Test iterating over an empty table */
+	/* Test iterating over an empty table */
 
-    hashtable = hash_table_new((HashTableHashFunc) int_hash, 
-                               (HashTableEqualFunc) int_equal);
-    
-    hash_table_foreach_remove_count = 0;
-    hash_table_foreach_remove_removed = 0;
+	hashtable = hash_table_new((HashTableHashFunc) int_hash, 
+	                           (HashTableEqualFunc) int_equal);
+	
+	hash_table_foreach_remove_count = 0;
+	hash_table_foreach_remove_removed = 0;
 
-    removed = hash_table_foreach_remove(hashtable, 
-                                        hash_table_foreach_remove_callback, 
-                                        NULL);
+	removed = hash_table_foreach_remove(hashtable, 
+	                                    hash_table_foreach_remove_callback, 
+	                                    NULL);
 
-    assert(hash_table_foreach_remove_removed == removed);
-    assert(hash_table_foreach_remove_removed == 0);
-    assert(hash_table_foreach_remove_count == 0);
+	assert(hash_table_foreach_remove_removed == removed);
+	assert(hash_table_foreach_remove_removed == 0);
+	assert(hash_table_foreach_remove_count == 0);
 }
 
 int main(int argc, char *argv[])
 {
-    test_hash_table_new();
-    test_hash_table_free();
-    test_hash_table_insert_lookup();
-    test_hash_table_remove();
-    test_hash_table_foreach();
-    test_hash_table_foreach_remove();
-    
-    return 0;
+	test_hash_table_new();
+	test_hash_table_free();
+	test_hash_table_insert_lookup();
+	test_hash_table_remove();
+	test_hash_table_foreach();
+	test_hash_table_foreach_remove();
+	
+	return 0;
 }
 

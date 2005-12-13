@@ -64,7 +64,7 @@ extern "C" {
 /**
  * A double-ended queue.
  */
-    
+	
 typedef struct _Queue Queue;
 
 /**
