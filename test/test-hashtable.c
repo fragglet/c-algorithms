@@ -201,6 +201,74 @@ void test_hash_table_foreach(void)
     assert(hash_table_foreach_count == 0);
 }
 
+int hash_table_foreach_remove_count;
+int hash_table_foreach_remove_removed;
+
+int hash_table_foreach_remove_callback(void *key, void *value, void *user_data)
+{
+    int *number = (int *) key;
+
+    ++hash_table_foreach_remove_count;
+
+    /* Remove every hundredth entry */
+
+    if (*number % 100 == 0) {
+        ++hash_table_foreach_remove_removed;
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+void test_hash_table_foreach_remove(void)
+{
+    HashTable *hashtable;
+    int removed;
+    int i;
+
+    hashtable = generate_hashtable();
+
+    /* Iterate over all values in the table */
+
+    hash_table_foreach_remove_count = 0;
+    hash_table_foreach_remove_removed = 0;
+
+    removed = hash_table_foreach_remove(hashtable, 
+                                        hash_table_foreach_remove_callback, 
+                                        NULL);
+
+    assert(hash_table_foreach_remove_removed == removed);
+    assert(hash_table_foreach_remove_count == 10000);
+
+    assert(hash_table_num_entries(hashtable) == 10000 - removed);
+
+    /* Check all entries divisible by 100 were really removed */
+
+    for (i=0; i<10000; ++i) {
+        if (i % 100 == 0) {
+            assert(hash_table_lookup(hashtable, &i) == NULL);
+        } else {
+            assert(hash_table_lookup(hashtable, &i) != NULL);
+        }
+    }
+
+    /* Test iterating over an empty table */
+
+    hashtable = hash_table_new((HashTableHashFunc) int_hash, 
+                               (HashTableEqualFunc) int_equal);
+    
+    hash_table_foreach_remove_count = 0;
+    hash_table_foreach_remove_removed = 0;
+
+    removed = hash_table_foreach_remove(hashtable, 
+                                        hash_table_foreach_remove_callback, 
+                                        NULL);
+
+    assert(hash_table_foreach_remove_removed == removed);
+    assert(hash_table_foreach_remove_removed == 0);
+    assert(hash_table_foreach_remove_count == 0);
+}
+
 int main(int argc, char *argv[])
 {
     test_hash_table_new();
@@ -208,6 +276,7 @@ int main(int argc, char *argv[])
     test_hash_table_insert_lookup();
     test_hash_table_remove();
     test_hash_table_foreach();
+    test_hash_table_foreach_remove();
     
     return 0;
 }

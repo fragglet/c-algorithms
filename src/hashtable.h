@@ -104,6 +104,24 @@ typedef void (*HashTableFreeFunc)(void *data);
 typedef void (*HashTableIterator)(void *key, void *value, void *user_data);
 
 /**
+ * Type of function used as a callback when iterating over a hash table,
+ * selectively removing entries.
+ * See @ref hash_table_foreach_remove.
+ *
+ * @param key            The key to the current element being iterated over.
+ * @param value          The value of the current element being iterated over.
+ * @param user_data      Extra data passed to the @ref hash_table_foreach
+ *                       function.
+ * @return               Non-zero (true) if the entry should be removed
+ *                       from the hash table.  Zero (false) if the entry 
+ *                       should not be removed from the hash table.
+ */
+
+typedef int (*HashTableRemoveIterator)(void *key, 
+                                       void *value, 
+                                       void *user_data);
+
+/**
  * Create a new hash table.
  *
  * @param hash_func            Function used to generate hash keys for the 
@@ -190,6 +208,22 @@ int hash_table_num_entries(HashTable *hashtable);
 
 void hash_table_foreach(HashTable *hashtable, HashTableIterator iterator,
                         void *user_data);
+
+/**
+ * Iterate over all key-value pairs in a hash table, selectively
+ * removing entries.
+ *
+ * @param hashtable           The hash table.
+ * @param iterator            Callback function to invoke for each element.
+ * @param user_data           Extra data to pass to the iterator function
+ *                            as context.
+ * @return                    The total number of entries removed from
+ *                            the hash table.
+ */
+
+int hash_table_foreach_remove(HashTable *hashtable, 
+                              HashTableRemoveIterator iterator,
+                              void *user_data);
 
 #ifdef __cplusplus
 }

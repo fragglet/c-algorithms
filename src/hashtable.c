@@ -382,7 +382,7 @@ void hash_table_foreach(HashTable *hashtable, HashTableIterator iterator,
     int i;
     HashTableEntry *rover;
 
-    /* Iterator over all entries in all chains */
+    /* Iterate over all entries in all chains */
 
     for (i=0; i<hashtable->table_size; ++i) {
         rover = hashtable->table[i];
@@ -393,4 +393,57 @@ void hash_table_foreach(HashTable *hashtable, HashTableIterator iterator,
         }
     }
 }
+
+int hash_table_foreach_remove(HashTable *hashtable,
+                              HashTableRemoveIterator iterator,
+                              void *user_data)
+{
+    int i;
+    int removed_entries;
+    int remove;
+    HashTableEntry **rover;
+    HashTableEntry *entry;
+
+    /* Iterate over all entries in all chains */
+
+    removed_entries = 0;
+
+    for (i=0; i<hashtable->table_size; ++i) {
+        rover = &(hashtable->table[i]);
+
+        while (*rover != NULL) {
+            
+            entry = *rover;
+
+            remove = iterator(entry->key, entry->value, user_data);
+
+            /* Remove this entry? */
+
+            if (remove) {
+
+                /* Unlink this entry from the chain */
+
+                *rover = entry->next;
+                --hashtable->entries;
+
+                /* Destroy the entry structure */
+
+                hash_table_free_entry(hashtable, entry);
+
+                /* Keep count of the number removed */
+
+                ++removed_entries;
+                
+            } else {
+
+                /* Advance to the next entry in the chain */
+
+                rover = &((*rover)->next);
+            }
+        }
+    }
+
+    return removed_entries;
+}
+
 
