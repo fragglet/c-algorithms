@@ -1,0 +1,3 @@
+This directory is not included in distributions (make dist) but contains
+useful scripts used in project maintenance.
+
