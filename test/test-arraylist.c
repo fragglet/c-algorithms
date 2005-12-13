@@ -329,6 +329,55 @@ void test_arraylist_clear(void)
     assert(arraylist->length == 0);
 }
 
+void test_arraylist_sort(void)
+{
+    ArrayList *arraylist;
+    int entries[] = { 89, 4, 23, 42, 4, 16, 15, 4, 8, 99, 50, 30, 4 };
+    int sorted[]  = { 4, 4, 4, 4, 8, 15, 16, 23, 30, 42, 50, 89, 99 };
+    int num_entries = sizeof(entries) / sizeof(int);
+    int i;
+
+    arraylist = arraylist_new(10);
+
+    for (i=0; i<num_entries; ++i) {
+        arraylist_prepend(arraylist, &entries[i]);
+    }
+
+    arraylist_sort(arraylist, (ArrayListCompareFunc) int_compare);
+
+    /* List length is unchanged */
+
+    assert(arraylist->length == num_entries);
+
+    /* Check the list is sorted */
+
+    for (i=0; i<num_entries; ++i) {
+        int *value;
+
+        value = (int *) arraylist->data[i];
+        assert(*value == sorted[i]);
+    }
+
+    /* Check sorting an empty list */
+
+    arraylist = arraylist_new(5);
+
+    arraylist_sort(arraylist, (ArrayListCompareFunc) int_compare);
+
+    assert(arraylist->length == 0);
+
+    /* Check sorting a list with 1 entry */
+
+    arraylist = arraylist_new(5);
+
+    arraylist_prepend(arraylist, &entries[0]);
+    arraylist_sort(arraylist, (ArrayListCompareFunc) int_compare);
+
+    assert(arraylist->length == 1);
+    assert(arraylist->data[0] == &entries[0]);
+}
+
+
 int main(int argc, char *argv[])
 {
     test_arraylist_new();
@@ -340,6 +389,7 @@ int main(int argc, char *argv[])
     test_arraylist_remove_range();
     test_arraylist_index_of();
     test_arraylist_clear();
+    test_arraylist_sort();
 
     return 0;
 }

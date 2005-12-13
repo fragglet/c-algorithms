@@ -89,6 +89,20 @@ typedef struct _ArrayList {
 typedef int (*ArrayListEqualFunc)(void *data1, void *data2);
 
 /**
+ * Compare two values in an arraylist.  Used by @ref arraylist_sort
+ * when sorting values.
+ *
+ * @param data1               The first value.
+ * @param data2               The second value.
+ * @return                    A negative number if data1 should be sorted
+ *                            before data2, a positive number if data2 should
+ *                            be sorted before data1, zero if the two values
+ *                            are equal.
+ */
+
+typedef int (*ArrayListCompareFunc)(void *data1, void *data2);
+
+/**
  * Allocate a new ArrayList for use.
  *
  * @param length         Hint to the initialise function as to the amount
@@ -179,6 +193,15 @@ int arraylist_index_of(ArrayList *arraylist,
  */
 
 void arraylist_clear(ArrayList *arraylist);
+
+/** 
+ * Sort the values in an ArrayList.
+ *
+ * @param arraylist      The ArrayList.
+ * @param compare_func   Function used to compare values in sorting.
+ */
+
+void arraylist_sort(ArrayList *arraylist, ArrayListCompareFunc compare_func);
 
 #ifdef __cplusplus
 }
