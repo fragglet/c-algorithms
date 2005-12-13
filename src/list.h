@@ -63,8 +63,8 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
-#ifndef ALGORITHM_SLIST_H
-#define ALGORITHM_SLIST_H
+#ifndef ALGORITHM_LIST_H
+#define ALGORITHM_LIST_H
 
 /**
  * Represents an entry in a doubly-linked list.  The empty list is
@@ -252,5 +252,5 @@ ListEntry *list_find_data(ListEntry *list,
                           ListEqualFunc callback,
                           void *data);
 
-#endif /* #ifndef ALGORITHM_SLIST_H */
+#endif /* #ifndef ALGORITHM_LIST_H */
 
