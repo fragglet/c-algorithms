@@ -3,13 +3,23 @@ AM_CFLAGS = -Wall
 
 lib_LTLIBRARIES=libcalg.la
 
-SRC=\
-arraylist.c        compare-pointer.h  hash-pointer.c  hashtable.h  set.c     \
-arraylist.h        compare-string.c   hash-pointer.h  list.c       set.h     \
-compare-int.c      compare-string.h   hash-string.c   list.h       slist.c   \
-compare-int.h      hash-int.c         hash-string.h   queue.c      slist.h   \
-compare-pointer.c  hash-int.h         hashtable.c     queue.h                \
-avltree.c          avltree.h          trie.c          trie.h
+MAIN_HEADERFILES = libcalg.h
 
-libcalg_la_SOURCES=$(SRC)
+CALG_HEADERFILES=\
+arraylist.h  compare-int.h      hash-int.h      hashtable.h  set.h       \
+avltree.h    compare-pointer.h  hash-pointer.h  list.h       slist.h     \
+queue.h      compare-string.h   hash-string.h   trie.h
+
+SRC=\
+arraylist.c    compare-pointer.c  hash-pointer.c  list.c   slist.c       \
+avltree.c      compare-string.c   hash-string.c   queue.c  trie.c        \
+compare-int.c  hash-int.c         hashtable.c     set.c
+
+libcalg_la_SOURCES=$(SRC) $(MAIN_HEADERFILES) $(CALG_HEADERFILES)
+
+headerfilesdir=$(includedir)/libcalg-1.0
+headerfiles_HEADERS=$(MAIN_HEADERFILES)
+
+calgheaderfilesdir=$(headerfilesdir)/libcalg
+calgheaderfiles_HEADERS=$(CALG_HEADERFILES)
 

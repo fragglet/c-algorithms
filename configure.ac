@@ -14,9 +14,9 @@ AC_SUBST(ac_aux_dir)
 
 AC_OUTPUT([
     Makefile
+    libcalg-1.0.pc
     doc/Makefile
     src/Makefile
     test/Makefile
 ])
-#    c-algorithms.pc
 
