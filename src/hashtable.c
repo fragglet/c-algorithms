@@ -376,3 +376,21 @@ int hash_table_num_entries(HashTable *hashtable)
     return hashtable->entries;
 }
 
+void hash_table_foreach(HashTable *hashtable, HashTableIterator iterator,
+                        void *user_data)
+{
+    int i;
+    HashTableEntry *rover;
+
+    /* Iterator over all entries in all chains */
+
+    for (i=0; i<hashtable->table_size; ++i) {
+        rover = hashtable->table[i];
+
+        while (rover != NULL) {
+            iterator(rover->key, rover->value, user_data);
+            rover = rover->next;
+        }
+    }
+}
+

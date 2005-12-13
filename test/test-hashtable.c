@@ -168,12 +168,46 @@ void test_hash_table_remove(void)
     assert(hash_table_num_entries(hashtable) == 9999);
 }
 
+int hash_table_foreach_count;
+
+void hash_table_foreach_callback(void *key, void *value, void *user_data)
+{
+    ++hash_table_foreach_count;
+}
+
+void test_hash_table_foreach(void)
+{
+    HashTable *hashtable;
+
+    hashtable = generate_hashtable();
+
+    /* Iterate over all values in the table */
+
+    hash_table_foreach_count = 0;
+
+    hash_table_foreach(hashtable, hash_table_foreach_callback, NULL);
+
+    assert(hash_table_foreach_count == 10000);
+
+    /* Test iterating over an empty table */
+
+    hashtable = hash_table_new((HashTableHashFunc) int_hash, 
+                               (HashTableEqualFunc) int_equal);
+    
+    hash_table_foreach_count = 0;
+
+    hash_table_foreach(hashtable, hash_table_foreach_callback, NULL);
+
+    assert(hash_table_foreach_count == 0);
+}
+
 int main(int argc, char *argv[])
 {
     test_hash_table_new();
     test_hash_table_free();
     test_hash_table_insert_lookup();
     test_hash_table_remove();
+    test_hash_table_foreach();
     
     return 0;
 }
