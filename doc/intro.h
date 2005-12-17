@@ -59,6 +59,7 @@ POSSIBILITY OF SUCH DAMAGE.
  * @li @link set.h Set @endlink: A set of values.
  * @li @link slist.h Singly linked list @endlink: A set of values stored
  * in a list with links that point in one direction.
+ * @li @link trie.h Trie @endlink: Fast mapping using strings as keys.
  *
  * @section Utility_functions Utility functions
  *
