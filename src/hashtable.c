@@ -83,10 +83,11 @@ static void hash_table_allocate_table(HashTable *hashtable)
 	 * maximum prime is exceeded, but in practice other things are
 	 * likely to break long before that happens. */
 
-	if (hashtable->prime_index < hash_table_num_primes)
+	if (hashtable->prime_index < hash_table_num_primes) {
 		hashtable->table_size = hash_table_primes[hashtable->prime_index];
-	else
+	} else {
 		hashtable->table_size = hashtable->entries * 10;
+	}
 
 	/* Allocate the table and initialise to NULL for all entries */
 

@@ -90,8 +90,9 @@ int arraylist_insert(ArrayList *arraylist, int index, void *data)
 {
 	/* Sanity check the index */
 
-	if (index < 0 || index > arraylist->length)
+	if (index < 0 || index > arraylist->length) {
 		return 0;
+	}
 
 	/* Increase the size if necessary */
 	
@@ -128,9 +129,10 @@ void arraylist_remove_range(ArrayList *arraylist, int index, int length)
 {
 	/* Check this is a valid range */
 
-	if (index < 0 || length < 0 || index + length > arraylist->length)
+	if (index < 0 || length < 0 || index + length > arraylist->length) {
 		return;
-	
+	}
+
 	/* Move back the entries following the range to be removed */
 
 	memmove(&arraylist->data[index],
@@ -179,8 +181,9 @@ static void arraylist_sort_internal(void **list_data, int list_length,
 
 	/* If less than two items, it is always sorted. */
 
-	if (list_length <= 1)
+	if (list_length <= 1) {
 		return;
+	}
 
 	/* Take the last item as the pivot. */
 

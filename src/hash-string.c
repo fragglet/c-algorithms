@@ -46,10 +46,13 @@ unsigned long string_hash(char *string)
 	unsigned long result = 5381;
 	unsigned char *p;
 
-	for (p=(unsigned char *) string; *p != '\0'; ++p) {
+	p = (unsigned char *) string;
+
+	while (*p != '\0') {
 		result = ((result << 5) ^ result ) ^ (*p);
+		++p;
 	}
-	
+
 	return result;
 }
 
@@ -61,8 +64,11 @@ unsigned long string_nocase_hash(char *string)
 	unsigned long result = 5381;
 	unsigned char *p;
 
-	for (p=(unsigned char *) string; *p != '\0'; ++p) {
+	p = (unsigned char *) string;
+
+	while (*p != '\0') {
 		result = ((result << 5) ^ result ) ^ tolower(*p);
+		++p;
 	}
 	
 	return result;

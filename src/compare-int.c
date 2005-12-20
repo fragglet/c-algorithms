@@ -44,12 +44,13 @@ int int_equal(int *location1, int *location2)
 
 int int_compare(int *location1, int *location2)
 {
-	if (*location1 < *location2)
+	if (*location1 < *location2) {
 		return -1;
-	else if (*location1 > *location2)
+	} else if (*location1 > *location2) {
 		return 1;
-	else
+	} else {
 		return 0;
+	}
 }
 
 

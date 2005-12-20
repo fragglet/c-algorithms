@@ -50,12 +50,13 @@ int pointer_compare(void *location1, void *location2)
 	a1 = (unsigned long) location1;
 	a2 = (unsigned long) location2;
 
-	if (a1 < a2)
+	if (a1 < a2) {
 		return -1;
-	else if (a1 > a2)
+	} else if (a1 > a2) {
 		return 1;
-	else
+	} else {
 		return 0;
+	}
 }
 
 

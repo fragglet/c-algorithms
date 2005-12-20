@@ -84,10 +84,11 @@ static void avltree_update_height(AVLTreeNode *node)
 	left_height = avltree_subtree_height(node->left_child);
 	right_height = avltree_subtree_height(node->right_child);
 
-	if (left_height > right_height)
+	if (left_height > right_height) {
 		node->height = left_height + 1;
-	else
+	} else {
 		node->height = right_height + 1;
+	}
 }
 
 /* Rotate a section of the tree left.  'node' is the node at the top
@@ -361,10 +362,11 @@ void *avltree_lookup(AVLTree *tree, void *key)
 
 	node = avltree_lookup_node(tree, key);
 
-	if (node == NULL)
+	if (node == NULL) {
 		return NULL;
-	else
+	} else {
 		return node->value;
+	}
 }
 
 void *avltree_node_key(AVLTreeNode *node)
@@ -400,11 +402,13 @@ static void avltree_print_tree_node(AVLTreeNode *node, int indent)
 {
 	int i;
 
-	if (node == NULL)
+	if (node == NULL) {
 		return;
+	}
 
-	for (i=0; i<indent; ++i)
+	for (i=0; i<indent; ++i) {
 		putchar(' ');
+	}
 
 	printf("node:\n");
 
@@ -421,8 +425,9 @@ static int avltree_check_node_balanced(AVLTreeNode *node)
 {
 	int diff;
 
-	if (node == NULL)
+	if (node == NULL) {
 		return 1;
+	}
 
 	avltree_check_node_balanced(node->left_child);
 	avltree_check_node_balanced(node->right_child);

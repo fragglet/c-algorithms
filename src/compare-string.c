@@ -52,12 +52,13 @@ int string_compare(char *string1, char *string2)
 
 	result = strcmp(string1, string2);
 	
-	if (result < 0)
+	if (result < 0) {
 		return -1;
-	else if (result > 0)
+	} else if (result > 0) {
 		return 1;
-	else
+	} else {
 		return 0;
+	}
 }
 
 /* Comparison functions for strings, which ignore the case of letters. */

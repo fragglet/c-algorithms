@@ -100,8 +100,9 @@ void trie_insert(Trie *trie, char *key, void *value)
 
 	/* Cannot insert NULL values */
 
-	if (value == NULL)
+	if (value == NULL) {
 		return;
+	}
 
 	/* Search down the trie until we reach the end of string,
 	 * creating nodes as necessary */
@@ -272,9 +273,10 @@ int trie_num_entries(Trie *trie)
 	/* To find the number of entries, simply look at the use count
 	 * of the root node. */
 
-	if (trie->root_node == NULL)
+	if (trie->root_node == NULL) {
 		return 0;
-	else
+	} else {
 		return trie->root_node->use_count;
+	}
 }
 
