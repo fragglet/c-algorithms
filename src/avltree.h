@@ -47,8 +47,84 @@ typedef struct _AVLTreeNode AVLTreeNode;
 
 typedef int (*AVLTreeCompareFunc)(void *data1, void *data2);
 
+/**
+ * Create a new AVL tree.
+ *
+ * @param compare_func    Function to use when comparing keys in the tree.
+ * @return                A new AVL tree.
+ */
+
 AVLTree *avltree_new(AVLTreeCompareFunc compare_func);
+
 AVLTreeNode *avltree_insert(AVLTree *tree, void *key, void *value);
+
+AVLTreeNode *avltree_lookup_node(AVLTree *tree, void *key);
+
+/**
+ * Search an AVL tree for a value corresponding to a particular
+ * key.  This uses the tree as a mapping.
+ *
+ * @param tree            The AVL tree to search.
+ * @param key             The key to search for.
+ * @return                The value associated with the given key, or NULL
+ *                        if no entry with the given key is found.
+ */
+
+void *avltree_lookup(AVLTree *tree, void *key);
+
+/**
+ * Retrieve the key for a given tree node.
+ *
+ * @param node            The tree node.
+ * @return                The key to the given node.
+ */
+
+void *avltree_node_key(AVLTreeNode *node);
+
+/** 
+ * Retrieve the value at a given tree node.
+ *
+ * @param node            The tree node.
+ * @return                The value at the given node.
+ */
+
+void *avltree_node_value(AVLTreeNode *node);
+
+/**
+ * Find the left child of a given tree node.
+ *
+ * @param node            The tree node.
+ * @return                The left child of the tree node, or NULL if the
+ *                        node has no left child.
+ */
+
+AVLTreeNode *avltree_node_left_child(AVLTreeNode *node);
+
+/**
+ * Find the right child of a given tree node.
+ *
+ * @param node            The tree node.
+ * @return                The right child of the tree node, or NULL if the
+ *                        node has no right child.
+ */
+
+AVLTreeNode *avltree_node_right_child(AVLTreeNode *node);
+
+/**
+ * Find the parent node of a given tree node.
+ *
+ * @param node            The tree node.
+ * @return                The parent node of the tree node, or NULL if 
+ *                        this is the root node.
+ */
+
+AVLTreeNode *avltree_node_parent(AVLTreeNode *node);
+
+
+/******************** debug for removal ******************************/
+
+void avltree_print_tree(AVLTree *tree);
+int avltree_check_balanced(AVLTree *tree);
 
 #ifdef __cplusplus
 }
