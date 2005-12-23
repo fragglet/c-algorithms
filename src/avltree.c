@@ -64,6 +64,29 @@ AVLTree *avltree_new(AVLTreeCompareFunc compare_func)
 	return new_tree;
 }
 
+static void avltree_free_subtree(AVLTree *tree, AVLTreeNode *node)
+{
+	if (node == NULL) {
+		return;
+	}
+
+	avltree_free_subtree(tree, node->left_child);
+	avltree_free_subtree(tree, node->right_child);
+
+	free(node);
+}
+
+void avltree_free(AVLTree *tree)
+{
+	/* Destroy all nodes */
+	
+	avltree_free_subtree(tree, tree->root_node);
+
+	/* Free back the main tree data structure */
+
+	free(tree);
+}
+
 int avltree_subtree_height(AVLTreeNode *node)
 {
 	if (node == NULL) {
@@ -506,6 +529,29 @@ void avltree_remove_node(AVLTree *tree, AVLTreeNode *node)
 
 		rover = rover->parent;
 	}
+}
+
+/* Remove a node by key */
+
+int avltree_remove(AVLTree *tree, void *key)
+{
+	AVLTreeNode *node;
+
+	/* Find the node to remove */
+
+	node = avltree_lookup_node(tree, key);
+
+	if (node == NULL) {
+		/* Not found in tree */
+		
+		return 0;
+	}
+
+	/* Remove the node */
+
+	avltree_remove_node(tree, node);
+
+	return 1;
 }
 
 AVLTreeNode *avltree_lookup_node(AVLTree *tree, void *key)

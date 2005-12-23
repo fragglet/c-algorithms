@@ -49,10 +49,12 @@ POSSIBILITY OF SUCH DAMAGE.
  * as a mapping (searching for a value based on its key), or
  * as a set of keys which is always ordered.
  *
- * To create a new AVL tree, use @ref avltree_new.
+ * To create a new AVL tree, use @ref avltree_new.  To destroy
+ * an AVL tree, use @ref avltree_free.
  *
  * To insert a new key-value pair into an AVL tree, use
- * @ref avltree_insert.
+ * @ref avltree_insert.  To remove an entry from an
+ * AVL tree, use @ref avltree_remove or @ref avltree_remove_node.
  *
  * To search an AVL tree, use @ref avltree_lookup or 
  * @ref avltree_lookup_node.
@@ -115,6 +117,14 @@ typedef int (*AVLTreeCompareFunc)(void *data1, void *data2);
 AVLTree *avltree_new(AVLTreeCompareFunc compare_func);
 
 /**
+ * Destroy an AVL tree.
+ * 
+ * @param tree            The tree to destroy.
+ */
+
+void avltree_free(AVLTree *tree);
+
+/**
  * Insert a new key-value pair into an AVL tree.
  *
  * @param tree            The tree.
@@ -134,6 +144,19 @@ AVLTreeNode *avltree_insert(AVLTree *tree, void *key, void *value);
  */
 
 void avltree_remove_node(AVLTree *tree, AVLTreeNode *node);
+
+/**
+ * Remove an entry from a tree, specifying the key of the node to
+ * remove.
+ *
+ * @param tree            The tree.
+ * @param key             The key of the node to remove.
+ * @return                Zero (false) if no node with the specified key was
+ *                        found in the tree, non-zero (true) if a node with
+ *                        the specified key was removed.
+ */
+
+int avltree_remove(AVLTree *tree, void *key);
 
 /**
  * Search an AVL tree for a node with a particular key.  This uses
@@ -227,12 +250,6 @@ AVLTreeNode *avltree_node_parent(AVLTreeNode *node);
  */
 
 int avltree_subtree_height(AVLTreeNode *node);
-
-
-/******************** debug for removal ******************************/
-
-void avltree_print_tree(AVLTree *tree);
-int avltree_check_balanced(AVLTree *tree);
 
 #ifdef __cplusplus
 }
