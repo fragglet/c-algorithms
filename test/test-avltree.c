@@ -46,16 +46,16 @@ int find_subtree_height(AVLTreeNode *node)
 
 	if (node == NULL) {
 		return 0;
-        }
+	}
 
 	left_height = find_subtree_height(avltree_node_left_child(node));
 	right_height = find_subtree_height(avltree_node_right_child(node));
 
 	if (left_height > right_height) {
 		return left_height + 1;
-        } else {
+	} else {
 		return right_height + 1;
-        }
+	}
 }
 
 /* Validates a subtree, returning its height */
@@ -70,7 +70,7 @@ int validate_subtree(AVLTreeNode *node)
 
 	if (node == NULL) {
 		return 0;
-        }
+	}
 
 	left_node = avltree_node_left_child(node);
 	right_node = avltree_node_right_child(node);
@@ -112,9 +112,9 @@ int validate_subtree(AVLTreeNode *node)
 
 	if (left_height > right_height) {
 		return left_height + 1;
-        } else {
+	} else {
 		return right_height + 1;
-        }
+	}
 }
 
 void validate_tree(AVLTree *tree)
@@ -135,6 +135,7 @@ void test_avltree_new(void)
 
 	assert(tree != NULL);
 	assert(avltree_root_node(tree) == NULL);
+	assert(avltree_num_entries(tree) == 0);
 }
 
 void test_avltree_insert_lookup(void)
@@ -155,6 +156,7 @@ void test_avltree_insert_lookup(void)
 
 		avltree_insert(tree, key, NULL);
 
+		assert(avltree_num_entries(tree) == i+1);
 		validate_tree(tree);
 	}
 
@@ -232,6 +234,8 @@ void test_avltree_remove(void)
 		assert(avltree_remove(tree, &i) != 0);
 
 		validate_tree(tree);
+
+		assert(avltree_num_entries(tree) == 1000 - (i+1));
 	}
 
 	/* All entries removed, should be empty now */
@@ -240,12 +244,41 @@ void test_avltree_remove(void)
 	
 }
 
+void test_avltree_to_array(void)
+{
+	AVLTree *tree;
+	int entries[] = { 89, 23, 42, 4, 16, 15, 8, 99, 50, 30 };
+	int sorted[]  = { 4, 8, 15, 16, 23, 30, 42, 50, 89, 99 };
+	int num_entries = sizeof(entries) / sizeof(int);
+	int i;
+	int **array;
+
+	/* Add all entries to the tree */
+	
+	tree = avltree_new((AVLTreeCompareFunc) int_compare);
+
+	for (i=0; i<num_entries; ++i) {
+		avltree_insert(tree, &entries[i], NULL);
+	}
+	
+	assert(avltree_num_entries(tree) == num_entries);
+
+	/* Convert to an array and check the contents */
+
+	array = (int **) avltree_to_array(tree);
+
+	for (i=0; i<num_entries; ++i) {
+		assert(*array[i] == sorted[i]);
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	test_avltree_new();
 	test_avltree_free();
 	test_avltree_insert_lookup();
 	test_avltree_remove();
+	test_avltree_to_array();
 	
 	return 0;
 }

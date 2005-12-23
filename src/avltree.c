@@ -51,6 +51,7 @@ struct _AVLTreeNode {
 struct _AVLTree {
 	AVLTreeNode *root_node;
 	AVLTreeCompareFunc compare_func;
+	int num_nodes;
 };
 
 AVLTree *avltree_new(AVLTreeCompareFunc compare_func)
@@ -60,6 +61,7 @@ AVLTree *avltree_new(AVLTreeCompareFunc compare_func)
 	new_tree = (AVLTree *) malloc(sizeof(AVLTree));
 	new_tree->root_node = NULL;
 	new_tree->compare_func = compare_func;
+	new_tree->num_nodes = 0;
 
 	return new_tree;
 }
@@ -377,6 +379,10 @@ AVLTreeNode *avltree_insert(AVLTree *tree, void *key, void *value)
 		node = node->parent;
 	}
 
+	/* Keep track of the number of entries */
+
+	++tree->num_nodes;
+
 	return new_node;
 }
 
@@ -515,6 +521,10 @@ void avltree_remove_node(AVLTree *tree, AVLTreeNode *node)
 
 	free(node);
 
+	/* Keep track of the number of nodes */
+
+	--tree->num_nodes;
+
 	/* Rebalance the tree */
 
 	rover = balance_startpoint;
@@ -630,5 +640,49 @@ AVLTreeNode *avltree_node_right_child(AVLTreeNode *node)
 AVLTreeNode *avltree_node_parent(AVLTreeNode *node)
 {
 	return node->parent;
+}
+
+int avltree_num_entries(AVLTree *tree)
+{
+	return tree->num_nodes;
+}
+
+static void avltree_to_array_add_subtree(AVLTreeNode *subtree, 
+                                         void **array, 
+                                         int *index)
+{
+	if (subtree == NULL) {
+		return;
+	}
+		
+	/* Add left subtree first */
+
+	avltree_to_array_add_subtree(subtree->left_child, array, index);
+	
+	/* Add this node */
+	
+	array[*index] = subtree->key;
+	++*index;
+
+	/* Finally add right subtree */
+
+	avltree_to_array_add_subtree(subtree->right_child, array, index);
+}
+
+void **avltree_to_array(AVLTree *tree)
+{
+	void **array;
+	int index;
+
+	/* Allocate the array */
+	
+	array = calloc(sizeof(void *), tree->num_nodes);
+	index = 0;
+
+	/* Add all keys */
+	
+	avltree_to_array_add_subtree(tree->root_node, array, &index);
+
+	return array;
 }
 
