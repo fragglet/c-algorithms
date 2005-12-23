@@ -62,7 +62,7 @@ extern "C" {
  *                        not equal.
  */
 
-int string_equal(char *string1, char *string2);
+int string_equal(void *string1, void *string2);
 
 /**
  * Compare two strings.
@@ -75,7 +75,7 @@ int string_equal(char *string1, char *string2);
  *                        zero if the two strings are equal.
  */
 
-int string_compare(char *string1, char *string2);
+int string_compare(void *string1, void *string2);
 
 /**
  * Compare two strings to determine if they are equal, ignoring the 
@@ -87,7 +87,7 @@ int string_compare(char *string1, char *string2);
  *                        not equal.
  */
 
-int string_nocase_equal(char *string1, char *string2);
+int string_nocase_equal(void *string1, void *string2);
 
 /**
  * Compare two strings, ignoring the case of letters.
@@ -100,7 +100,7 @@ int string_nocase_equal(char *string1, char *string2);
  *                        zero if the two strings are equal.
  */
 
-int string_nocase_compare(char *string1, char *string2);
+int string_nocase_compare(void *string1, void *string2);
 
 #ifdef __cplusplus
 }

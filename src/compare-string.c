@@ -41,16 +41,16 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* Comparison functions for strings */
 
-int string_equal(char *string1, char *string2)
+int string_equal(void *string1, void *string2)
 {
-	return strcmp(string1, string2) == 0;
+	return strcmp((char *) string1, (char *) string2) == 0;
 }
 
-int string_compare(char *string1, char *string2)
+int string_compare(void *string1, void *string2)
 {
 	int result;
 
-	result = strcmp(string1, string2);
+	result = strcmp((char *) string1, (char *) string2);
 	
 	if (result < 0) {
 		return -1;
@@ -63,16 +63,16 @@ int string_compare(char *string1, char *string2)
 
 /* Comparison functions for strings, which ignore the case of letters. */
 
-int string_nocase_equal(char *string1, char *string2)
+int string_nocase_equal(void *string1, void *string2)
 {
-	return string_nocase_compare(string1, string2) == 0;
+	return string_nocase_compare((char *) string1, (char *) string2) == 0;
 }
 
 /* On many systems, strcasecmp or stricmp will give the same functionality
  * as this function.  However, it is non-standard and cannot be relied
  * on to be present. */
 
-int string_nocase_compare(char *string1, char *string2)
+int string_nocase_compare(void *string1, void *string2)
 {
 	char *p1;
 	char *p2;
@@ -80,8 +80,8 @@ int string_nocase_compare(char *string1, char *string2)
 
 	/* Iterate over each character in the strings */
 
-	p1 = string1;
-	p2 = string2;
+	p1 = (char *) string1;
+	p2 = (char *) string2;
 
 	for (;;) {
 

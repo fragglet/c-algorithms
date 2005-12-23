@@ -61,7 +61,7 @@ extern "C" {
  *                        two values are not equal.
  */
 
-int int_equal(int *location1, int *location2);
+int int_equal(void *location1, void *location2);
 
 /**
  * Compare the integer values pointed at by two pointers.
@@ -74,7 +74,7 @@ int int_equal(int *location1, int *location2);
  *                         they are equal.
  */
 
-int int_compare(int *location1, int *location2);
+int int_compare(void *location1, void *location2);
 
 #ifdef __cplusplus
 }

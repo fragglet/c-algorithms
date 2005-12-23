@@ -54,7 +54,7 @@ extern "C" {
  * @return                 A hash key for the string.
  */
 
-unsigned long string_hash(char *string);
+unsigned long string_hash(void *string);
 
 /**
  * Generate a hash key from a string, ignoring the case of letters.
@@ -63,7 +63,7 @@ unsigned long string_hash(char *string);
  * @return                 A hash key for the string.
  */
 
-unsigned long string_nocase_hash(char *string);
+unsigned long string_nocase_hash(void *string);
 
 #ifdef __cplusplus
 }

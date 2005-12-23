@@ -37,8 +37,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* Hash function for a pointer to an integer */
 
-unsigned long int_hash(int *location)
+unsigned long int_hash(void *vlocation)
 {
+	int *location;
+
+	location = (int *) vlocation;
+
 	return (unsigned long) *location;
 }
 

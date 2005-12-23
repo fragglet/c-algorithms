@@ -53,8 +53,7 @@ HashTable *generate_hashtable(void)
 	
 	/* Allocate a new hash table */
 
-	hashtable = hash_table_new((HashTableHashFunc) int_hash, 
-	                           (HashTableEqualFunc) int_equal);
+	hashtable = hash_table_new(int_hash, int_equal);
 	
 	/* Insert lots of values */
 	
@@ -73,8 +72,7 @@ void test_hash_table_new(void)
 {
 	HashTable *hashtable;
 
-	hashtable = hash_table_new((HashTableHashFunc) int_hash, 
-	                           (HashTableEqualFunc) int_equal);
+	hashtable = hash_table_new(int_hash, int_equal);
 	
 	assert(hashtable != NULL);
 }
@@ -83,8 +81,7 @@ void test_hash_table_free(void)
 {
 	HashTable *hashtable;
 
-	hashtable = hash_table_new((HashTableHashFunc) int_hash, 
-	                           (HashTableEqualFunc) int_equal);
+	hashtable = hash_table_new(int_hash, int_equal);
 
 	/* Add some values */
 
@@ -191,8 +188,7 @@ void test_hash_table_foreach(void)
 
 	/* Test iterating over an empty table */
 
-	hashtable = hash_table_new((HashTableHashFunc) int_hash, 
-	                           (HashTableEqualFunc) int_equal);
+	hashtable = hash_table_new(int_hash, int_equal);
 	
 	hash_table_foreach_count = 0;
 
@@ -254,8 +250,7 @@ void test_hash_table_foreach_remove(void)
 
 	/* Test iterating over an empty table */
 
-	hashtable = hash_table_new((HashTableHashFunc) int_hash, 
-	                           (HashTableEqualFunc) int_equal);
+	hashtable = hash_table_new(int_hash, int_equal);
 	
 	hash_table_foreach_remove_count = 0;
 	hash_table_foreach_remove_removed = 0;

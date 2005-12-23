@@ -49,7 +49,7 @@ Set *generate_set(void)
 	int i;
 	int *value;
 
-	set = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set = set_new(int_hash, int_equal);
 
 	/* Add 10,000 items sequentially, checking that the counter 
 	 * works properly */
@@ -71,7 +71,7 @@ void test_set_new(void)
 {
 	Set *set;
 
-	set = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set = set_new(int_hash, int_equal);
 }
 
 void test_set_free(void)
@@ -80,7 +80,7 @@ void test_set_free(void)
 	int i;
 	int *value;
 
-	set = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set = set_new(int_hash, int_equal);
 
 	/* Fill the set with many values before freeing */
 
@@ -109,7 +109,7 @@ void test_set_insert(void)
 	/* Perform a union of numbers1 and numbers2.  Cannot add the same
 	 * value twice. */
 
-	set = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set = set_new(int_hash, int_equal);
 
 	for (i=0; i<6; ++i) {
 		set_insert(set, &numbers1[i]);
@@ -178,7 +178,7 @@ void test_set_union(void)
 
 	/* Create the first set */
 
-	set1 = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set1 = set_new(int_hash, int_equal);
 
 	for (i=0; i<7; ++i) {
 		set_insert(set1, &numbers1[i]);
@@ -186,7 +186,7 @@ void test_set_union(void)
 	
 	/* Create the second set */
 	
-	set2 = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set2 = set_new(int_hash, int_equal);
 	
 	for (i=0; i<7; ++i) {
 		set_insert(set2, &numbers2[i]);
@@ -215,7 +215,7 @@ void test_set_intersection(void)
 
 	/* Create the first set */
 
-	set1 = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set1 = set_new(int_hash, int_equal);
 
 	for (i=0; i<7; ++i) {
 		set_insert(set1, &numbers1[i]);
@@ -223,7 +223,7 @@ void test_set_intersection(void)
 	
 	/* Create the second set */
 	
-	set2 = set_new((SetHashFunc) int_hash, (SetEqualFunc) int_equal);
+	set2 = set_new(int_hash, int_equal);
 	
 	for (i=0; i<7; ++i) {
 		set_insert(set2, &numbers2[i]);

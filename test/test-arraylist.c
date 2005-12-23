@@ -290,8 +290,7 @@ void test_arraylist_index_of(void)
 		
 		val = entries[i];
 		
-		index = arraylist_index_of(arraylist, (ArrayListEqualFunc) int_equal, 
-		                           &val);
+		index = arraylist_index_of(arraylist, int_equal, &val);
 
 		assert(index == i);
 	}
@@ -299,11 +298,9 @@ void test_arraylist_index_of(void)
 	/* Check invalid values */
 
 	val = 0;
-	assert(arraylist_index_of(arraylist, (ArrayListEqualFunc) int_equal, 
-	                          &val) < 0);
+	assert(arraylist_index_of(arraylist, int_equal, &val) < 0);
 	val = 57;
-	assert(arraylist_index_of(arraylist, (ArrayListEqualFunc) int_equal, 
-	                          &val) < 0);
+	assert(arraylist_index_of(arraylist, int_equal, &val) < 0);
 }
 
 void test_arraylist_clear(void)
@@ -343,7 +340,7 @@ void test_arraylist_sort(void)
 		arraylist_prepend(arraylist, &entries[i]);
 	}
 
-	arraylist_sort(arraylist, (ArrayListCompareFunc) int_compare);
+	arraylist_sort(arraylist, int_compare);
 
 	/* List length is unchanged */
 
@@ -362,7 +359,7 @@ void test_arraylist_sort(void)
 
 	arraylist = arraylist_new(5);
 
-	arraylist_sort(arraylist, (ArrayListCompareFunc) int_compare);
+	arraylist_sort(arraylist, int_compare);
 
 	assert(arraylist->length == 0);
 
@@ -371,7 +368,7 @@ void test_arraylist_sort(void)
 	arraylist = arraylist_new(5);
 
 	arraylist_prepend(arraylist, &entries[0]);
-	arraylist_sort(arraylist, (ArrayListCompareFunc) int_compare);
+	arraylist_sort(arraylist, int_compare);
 
 	assert(arraylist->length == 1);
 	assert(arraylist->data[0] == &entries[0]);

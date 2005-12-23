@@ -267,29 +267,29 @@ void test_list_remove_data(void)
 	/* Test removing invalid data */
 
 	val = 0;
-	assert(list_remove_data(&list, (ListEqualFunc) int_equal, &val) == 0);
+	assert(list_remove_data(&list, int_equal, &val) == 0);
 	val = 56;
-	assert(list_remove_data(&list, (ListEqualFunc) int_equal, &val) == 0);
+	assert(list_remove_data(&list, int_equal, &val) == 0);
 	check_list_integrity(list);
 	
 	/* Remove the number 8 from the list */
 
 	val = 8;
-	assert(list_remove_data(&list, (ListEqualFunc) int_equal, &val) == 1);
+	assert(list_remove_data(&list, int_equal, &val) == 1);
 	assert(list_length(list) == num_entries - 1);
 	check_list_integrity(list);
 
 	/* Remove the number 4 from the list (occurs multiple times) */
 
 	val = 4;
-	assert(list_remove_data(&list, (ListEqualFunc) int_equal, &val) == 4);
+	assert(list_remove_data(&list, int_equal, &val) == 4);
 	assert(list_length(list) == num_entries - 5);
 	check_list_integrity(list);
 
 	/* Remove the number 89 from the list (first entry) */
 
 	val = 89;
-	assert(list_remove_data(&list, (ListEqualFunc) int_equal, &val) == 1);
+	assert(list_remove_data(&list, int_equal, &val) == 1);
 	assert(list_length(list) == num_entries - 6);
 	check_list_integrity(list);
 }
@@ -308,7 +308,7 @@ void test_list_sort(void)
 		list_prepend(&list, &entries[i]);
 	}
 
-	list_sort(&list, (ListCompareFunc) int_compare);
+	list_sort(&list, int_compare);
 
 	/* List length is unchanged */
 
@@ -327,7 +327,7 @@ void test_list_sort(void)
 
 	list = NULL;
 
-	list_sort(&list, (ListCompareFunc) int_compare);
+	list_sort(&list, int_compare);
 
 	assert(list == NULL);
 }
@@ -355,7 +355,7 @@ void test_list_find_data(void)
 
 		val = entries[i];
 		
-		result = list_find_data(list, (ListEqualFunc) int_equal, &val);
+		result = list_find_data(list, int_equal, &val);
 		
 		assert(result != NULL);
 
@@ -366,9 +366,9 @@ void test_list_find_data(void)
 	/* Check some invalid values return NULL */
 
 	val = 0;
-	assert(list_find_data(list, (ListEqualFunc) int_equal, &val) == NULL);
+	assert(list_find_data(list, int_equal, &val) == NULL);
 	val = 56;
-	assert(list_find_data(list, (ListEqualFunc) int_equal, &val) == NULL);
+	assert(list_find_data(list, int_equal, &val) == NULL);
 }
 
 void test_list_to_array(void)
