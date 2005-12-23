@@ -131,7 +131,7 @@ void test_avltree_new(void)
 {
 	AVLTree *tree;
 
-	tree = avltree_new(int_compare);
+	tree = avltree_new((AVLTreeCompareFunc) int_compare);
 
 	assert(tree != NULL);
 	assert(avltree_root_node(tree) == NULL);
@@ -147,7 +147,7 @@ void test_avltree_insert_lookup(void)
 	/* Create a tree containing some values. Validate the 
 	 * tree is consistent at all stages. */
 
-	tree = avltree_new(int_compare);
+	tree = avltree_new((AVLTreeCompareFunc) int_compare);
 
 	for (i=0; i<1000; ++i) {
 		key = (int *) malloc(sizeof(int));
@@ -166,45 +166,84 @@ void test_avltree_insert_lookup(void)
 		node = avltree_lookup_node(tree, &i);
 		assert(node != NULL);
 	}
+
+	/* Check that invalid nodes are not found */
+
+	i = -1;
+	assert(avltree_lookup_node(tree, &i) == NULL);
+	i = 100000;
+	assert(avltree_lookup_node(tree, &i) == NULL);
 }
 
-void test_avltree_remove(void)
+AVLTree *create_tree(void)
 {
 	AVLTree *tree;
-	AVLTreeNode *node;
-	int i;
 	int *key;
+	int i;
 
 	/* Create a tree and fill with nodes */
 
-	tree = avltree_new(int_compare);
+	tree = avltree_new((AVLTreeCompareFunc) int_compare);
 
 	for (i=0; i<1000; ++i) {
 		key = (int *) malloc(sizeof(int));
 		*key = i;
 
 		avltree_insert(tree, key, NULL);
-
-		validate_tree(tree);
 	}
+	
+	return tree;
+}
 
+void test_avltree_free(void)
+{
+	AVLTree *tree;
+	
+	/* Try freeing an empty tree */
+
+	tree = avltree_new((AVLTreeCompareFunc) int_compare);
+	avltree_free(tree);
+
+	/* Create a big tree and free it */
+
+	tree = create_tree();
+	avltree_free(tree);
+}
+
+void test_avltree_remove(void)
+{
+	AVLTree *tree;
+	int i;
+
+	tree = create_tree();
+
+	/* Try removing invalid entries */
+
+	i = 100000;
+	assert(avltree_remove(tree, &i) == 0);
+	i = -1;
+	assert(avltree_remove(tree, &i) == 0);
 
 	/* Delete the nodes from the tree */
 
 	for (i=0; i<1000; ++i) {
-		node = avltree_lookup_node(tree, &i);
+		/* Remove this entry */
 
-		assert(node != NULL);
-
-		avltree_remove_node(tree, node);
+		assert(avltree_remove(tree, &i) != 0);
 
 		validate_tree(tree);
 	}
+
+	/* All entries removed, should be empty now */
+
+	assert(avltree_root_node(tree) == NULL);
+	
 }
 
 int main(int argc, char *argv[])
 {
 	test_avltree_new();
+	test_avltree_free();
 	test_avltree_insert_lookup();
 	test_avltree_remove();
 	

@@ -13,7 +13,7 @@ TESTS =                          \
 
 noinst_PROGRAMS = $(TESTS)
 
-AM_CFLAGS = -I../src
+AM_CFLAGS = -I../src -Wall
 LDADD = $(top_builddir)/src/libcalg.la
 
 test_arraylist_SOURCES = test-arraylist.c
