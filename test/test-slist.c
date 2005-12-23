@@ -361,6 +361,49 @@ void test_slist_to_array(void)
 	assert(array[3] == &variable4);
 }
 
+static void test_slist_foreach_foreach(void *data, void *vcounter)
+{
+	int *counter;
+
+	counter = (int *) vcounter;
+
+	++*counter;
+}
+
+void test_slist_foreach(void)
+{
+	int a;
+	int i;
+	int counter;
+	SListEntry *list;
+
+	/* Create a list with 50 entries */
+
+	list = NULL;
+
+	for (i=0; i<50; ++i) {
+		slist_prepend(&list, &a);
+	}
+
+	/* Iterate over the list and count the number of entries visited */
+
+	counter = 0;
+
+	slist_foreach(list, test_slist_foreach_foreach, &counter);
+
+	assert(counter == 50);
+
+	/* Test iterating over an empty list */
+
+	list = NULL;
+	counter = 0;
+
+	slist_foreach(list, test_slist_foreach_foreach, &counter);
+
+	assert(counter == 0);
+
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -376,6 +419,7 @@ int main(int argc, char *argv[])
 	test_slist_sort();
 	test_slist_find_data();
 	test_slist_to_array();
+	test_slist_foreach();
 
 	return 0;
 }

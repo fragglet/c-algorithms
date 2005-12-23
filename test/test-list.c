@@ -386,6 +386,49 @@ void test_list_to_array(void)
 	assert(array[3] == &variable4);
 }
 
+static void test_list_foreach_foreach(void *data, void *vcounter)
+{
+	int *counter;
+
+	counter = (int *) vcounter;
+
+	++*counter;
+}
+
+void test_list_foreach(void)
+{
+	int a;
+	int i;
+	int counter;
+	ListEntry *list;
+
+	/* Create a list with 50 entries */
+
+	list = NULL;
+
+	for (i=0; i<50; ++i) {
+		list_prepend(&list, &a);
+	}
+
+	/* Iterate over the list and count the number of entries visited */
+
+	counter = 0;
+
+	list_foreach(list, test_list_foreach_foreach, &counter);
+
+	assert(counter == 50);
+
+	/* Test iterating over an empty list */
+
+	list = NULL;
+	counter = 0;
+
+	list_foreach(list, test_list_foreach_foreach, &counter);
+
+	assert(counter == 0);
+
+}
+
 int main(int argc, char *argv[])
 {
 	test_list_append();
@@ -400,6 +443,7 @@ int main(int argc, char *argv[])
 	test_list_sort();
 	test_list_find_data();
 	test_list_to_array();
+	test_list_foreach();
 
 	return 0;
 }

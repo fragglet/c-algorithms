@@ -233,6 +233,10 @@ void slist_foreach(SListEntry *list, SListIterator callback, void *user_data)
 		/* Invoke the callback function */
 
 		callback(entry->data, user_data);
+
+		/* Advance to the next entry */
+
+		entry = entry->next;
 	}
 }
 
