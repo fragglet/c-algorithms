@@ -1,6 +1,7 @@
 
 TESTS =                          \
         test-arraylist           \
+        test-avltree             \
         test-list                \
         test-slist               \
         test-queue               \
@@ -8,7 +9,7 @@ TESTS =                          \
         test-hash-functions      \
         test-hashtable           \
         test-set                 \
-		test-trie
+        test-trie
 
 noinst_PROGRAMS = $(TESTS)
 

@@ -127,6 +127,15 @@ AVLTree *avltree_new(AVLTreeCompareFunc compare_func);
 AVLTreeNode *avltree_insert(AVLTree *tree, void *key, void *value);
 
 /**
+ * Remove a node from a tree.
+ *
+ * @param tree            The tree.
+ * @param node            The node to remove
+ */
+
+void avltree_remove_node(AVLTree *tree, AVLTreeNode *node);
+
+/**
  * Search an AVL tree for a node with a particular key.  This uses
  * the tree as a mapping.
  *
@@ -151,6 +160,16 @@ AVLTreeNode *avltree_lookup_node(AVLTree *tree, void *key);
  */
 
 void *avltree_lookup(AVLTree *tree, void *key);
+
+/**
+ * Find the root node of a tree.
+ *
+ * @param tree            The tree.
+ * @return                The root node of the tree, or NULL if the tree is 
+ *                        empty.
+ */
+
+AVLTreeNode *avltree_root_node(AVLTree *tree);
 
 /**
  * Retrieve the key for a given tree node.
@@ -199,6 +218,15 @@ AVLTreeNode *avltree_node_right_child(AVLTreeNode *node);
  */
 
 AVLTreeNode *avltree_node_parent(AVLTreeNode *node);
+
+/**
+ * Find the height of a subtree.
+ *
+ * @param node            The root node of the subtree.
+ * @return                The height of the subtree.
+ */
+
+int avltree_subtree_height(AVLTreeNode *node);
 
 
 /******************** debug for removal ******************************/
