@@ -33,7 +33,37 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-/* AVL Tree (balanced binary search tree */
+/** @file avltree.h
+ *
+ * @brief Balanced binary tree
+ *
+ * The AVL tree structure is a balanced binary tree which stores 
+ * a collection of nodes (see @ref AVLTreeNode).  Each node has
+ * a key and a value associated with it.  The nodes are sorted
+ * within the tree based on the order of their keys. Modifications
+ * to the tree are constructed such that the tree remains 
+ * balanced at all times (there are always roughly equal numbers
+ * of nodes on either side of the tree).
+ *
+ * Balanced binary trees have several uses.  They can be used
+ * as a mapping (searching for a value based on its key), or
+ * as a set of keys which is always ordered.
+ *
+ * To create a new AVL tree, use @ref avltree_new.
+ *
+ * To insert a new key-value pair into an AVL tree, use
+ * @ref avltree_insert.
+ *
+ * To search an AVL tree, use @ref avltree_lookup or 
+ * @ref avltree_lookup_node.
+ *
+ * Tree nodes can be queried using the 
+ * @ref avltree_node_left_child,
+ * @ref avltree_node_right_child,
+ * @ref avltree_node_parent,
+ * @ref avltree_node_key and
+ * @ref avltree_node_value functions.
+ */
 
 #ifndef ALGORITHM_AVLTREE_H
 #define ALGORITHM_AVLTREE_H
@@ -42,8 +72,36 @@ POSSIBILITY OF SUCH DAMAGE.
 extern "C" {
 #endif
 
+/**
+ * An AVL tree balanced binary tree.
+ *
+ * @see avltree_new
+ */
+
 typedef struct _AVLTree AVLTree;
+
+/**
+ * A node in an AVL tree.
+ *
+ * @see avltree_node_left_child
+ * @see avltree_node_right_child
+ * @see avltree_node_parent
+ * @see avltree_node_key 
+ * @see avltree_node_value
+ */
+
 typedef struct _AVLTreeNode AVLTreeNode;
+
+/**
+ * Type of function used to compare keys in an AVL tree.
+ *
+ * @param data1            The first key.
+ * @param data2            The second key.
+ * @return                 A negative number if data1 should be sorted
+ *                         before data2, a positive number if data2 should 
+ *                         be sorted before data1, zero if the two keys
+ *                         are equal.
+ */
 
 typedef int (*AVLTreeCompareFunc)(void *data1, void *data2);
 
@@ -56,13 +114,35 @@ typedef int (*AVLTreeCompareFunc)(void *data1, void *data2);
 
 AVLTree *avltree_new(AVLTreeCompareFunc compare_func);
 
+/**
+ * Insert a new key-value pair into an AVL tree.
+ *
+ * @param tree            The tree.
+ * @param key             The key to insert.
+ * @param value           The value to insert.
+ * @return                The newly created tree node containing the
+ *                        key and value.
+ */
+
 AVLTreeNode *avltree_insert(AVLTree *tree, void *key, void *value);
+
+/**
+ * Search an AVL tree for a node with a particular key.  This uses
+ * the tree as a mapping.
+ *
+ * @param tree            The AVL tree to search.
+ * @param key             The key to search for.
+ * @return                The tree node containing the given key, or NULL
+ *                        if no entry with the given key is found.
+ */
 
 AVLTreeNode *avltree_lookup_node(AVLTree *tree, void *key);
 
 /**
- * Search an AVL tree for a value corresponding to a particular
- * key.  This uses the tree as a mapping.
+ * Search an AVL tree for a value corresponding to a particular key.
+ * This uses the tree as a mapping.  Note that this performs 
+ * identically to @ref avltree_lookup_node, except that the value
+ * at the node is returned rather than the node itself.
  *
  * @param tree            The AVL tree to search.
  * @param key             The key to search for.
