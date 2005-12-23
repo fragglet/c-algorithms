@@ -48,18 +48,29 @@ POSSIBILITY OF SUCH DAMAGE.
  * The code is licensed under the Modified BSD license, and as a result
  * may be reused in any project, whether Proprietary or Open Source.
  *
- * @section Data structures
+ * @section Data_structures Data structures
+ *
+ * @subsection Collections
  *
  * @li @link arraylist.h ArrayList @endlink: Automatically resizing array.
  * @li @link list.h Doubly linked list @endlink: A set of values stored
  * in a list with links that point in both directions.
- * @li @link hashtable.h Hash table @endlink: Collection of values which can be
- * addressed using a key.
- * @li @link queue.h Queue @endlink: Double ended queue
- * @li @link set.h Set @endlink: A set of values.
  * @li @link slist.h Singly linked list @endlink: A set of values stored
  * in a list with links that point in one direction.
+ * @li @link queue.h Queue @endlink: Double ended queue which can be used
+ * as a FIFO or a stack.
+ * @li @link set.h Set @endlink: Unordered set of values.
+ *
+ * @subsection Mappings
+ *
+ * @li @link hashtable.h Hash table @endlink: Collection of values which can be
+ * addressed using a key.
  * @li @link trie.h Trie @endlink: Fast mapping using strings as keys.
+ *
+ * @subsection Binary_search_trees Binary search trees
+ *
+ * @li @link avltree.h AVL tree @endlink: Balanced binary search tree 
+ * with O(log n) worst case performance.
  *
  * @section Utility_functions Utility functions
  *
