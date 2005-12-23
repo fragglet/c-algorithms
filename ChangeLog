@@ -1,0 +1,261 @@
+Wed Dec 21 21:39:17 2005 fraggle
+	
+	Add missing function declarations and some documentation.
+
+Tue Dec 20 23:21:36 2005 fraggle
+	
+	Style cleanups: always use {} blocks for if statements.
+
+Tue Dec 13 22:02:22 2005 fraggle
+	
+	Smart indent all source code
+
+Tue Dec 13 20:16:30 2005 fraggle
+	
+	hash_table_foreach_remove function
+
+Tue Dec 13 19:57:56 2005 fraggle
+	
+	Use unsigned int for prime arrays
+
+Tue Dec 13 19:54:03 2005 fraggle
+	
+	Hash table iterator function; add missing num_entries function to header.
+
+Tue Dec 13 19:29:57 2005 fraggle
+	
+	Install header files, pkgconfig .pc file
+
+Tue Dec 13 19:28:19 2005 fraggle
+	
+	Sort function
+
+Tue Dec 13 19:27:15 2005 fraggle
+	
+	SLIST -> LIST (prevent conflict with the real slist.h)
+
+Sun Dec 11 01:58:51 2005 fraggle
+	
+	Act as a mapping.  Add a lookup function and accessor functions for
+	the nodes.
+
+Sat Dec 10 23:44:26 2005 fraggle
+	
+	Set to array convertor function
+
+Sat Dec 10 23:17:40 2005 fraggle
+	
+	Trie documentation
+
+Sat Dec 10 22:43:02 2005 fraggle
+	
+	Trie testcase
+
+Sat Dec 10 22:42:18 2005 fraggle
+	
+	Add remove, free functions, entries count
+
+Sat Dec 10 21:47:39 2005 fraggle
+	
+	terminology: "duplicate" -> "copy"
+
+Thu Dec  1 17:47:42 2005 fraggle
+	
+	Fix error in documentation
+
+Thu Dec  1 17:46:24 2005 fraggle
+	
+	Move Doxyfile to the doc/ directory, only generate HTML documentation.
+	Include docs in dist.
+
+Wed Nov 30 00:58:02 2005 fraggle
+	
+	First implementation of a trie
+
+Tue Nov 29 23:25:59 2005 fraggle
+	
+	When overwriting an existing value in a hashtable, use the new key
+	and not the old one.
+
+Tue Nov 29 23:24:01 2005 fraggle
+	
+	Return results for set_remove and set_insert.  Add free function
+	registration to free values.
+
+Tue Nov 29 23:03:06 2005 fraggle
+	
+	Test cases for hash functions
+
+Tue Nov 29 22:49:17 2005 fraggle
+	
+	Add test cases for case insensitive string compare functions
+
+Tue Nov 29 22:47:07 2005 fraggle
+	
+	Fix case insensitive string compare
+
+Tue Nov 29 00:00:12 2005 fraggle
+	
+	Key/value free functions
+
+Mon Nov 28 18:25:45 2005 fraggle
+	
+	Case insensitive string hash and comparison functions
+
+Mon Nov 28 18:23:43 2005 fraggle
+	
+	Duplicator functions for union and intersection calls to copy values.
+
+Mon Nov 28 18:20:59 2005 fraggle
+	
+	Hashtable -> HashTable, hashtable_ -> hash_table_ - consistent naming
+	scheme and consistent with glib
+
+Sat Nov 26 23:27:57 2005 fraggle
+	
+	First implementation of an AVL Tree
+
+Sat Nov 26 20:13:18 2005 fraggle
+	
+	Exit with an error code of 0 if completed successfully
+
+Sat Nov 26 19:04:40 2005 fraggle
+	
+	Set unit tests
+
+Sat Nov 26 19:03:18 2005 fraggle
+	
+	Add union and intersection functions, fix bug in set_query
+
+Sat Nov 26 18:20:16 2005 fraggle
+	
+	Rename set functions to be consistent with hashtable function names
+
+Sat Nov 26 18:11:26 2005 fraggle
+	
+	Hash table test suite
+
+Sat Nov 26 18:11:01 2005 fraggle
+	
+	Keep track of the number of entries in a hash table correctly.
+	Add num_entries function to retrieve the number of entries.
+
+Sat Nov 26 17:46:54 2005 fraggle
+	
+	Test cases for the compare functions
+
+Sat Nov 26 16:59:07 2005 fraggle
+	
+	Include the doc directory in distributions
+
+Sat Nov 26 16:13:08 2005 fraggle
+	
+	Improve documentation, add an introduction page
+
+Sat Nov 26 15:21:53 2005 fraggle
+	
+	Always show all warnings
+
+Sat Nov 26 15:21:40 2005 fraggle
+	
+	Generate a configuration file so that the compiler command line is not
+	so cluttered.
+
+Sat Nov 26 15:18:40 2005 fraggle
+	
+	Include the autotools directory in distribution
+
+Sat Nov 26 15:14:53 2005 fraggle
+	
+	Use comparison functions from the library instead of duplicating
+	declarations
+
+Sat Nov 26 14:42:55 2005 fraggle
+	
+	Include manpage links for function names
+
+Sat Nov 26 14:38:07 2005 fraggle
+	
+	Documentation improvements
+
+Sat Nov 26 14:27:30 2005 fraggle
+	
+	Use prime numbered table sizes
+
+Sat Nov 26 13:34:42 2005 fraggle
+	
+	Restructure directories
+
+Mon Nov 21 16:09:16 2005 fraggle
+	
+	Function to retrieve a count of the number of entries
+
+Sun Nov 20 02:47:04 2005 fraggle
+	
+	Wording fix
+
+Sun Nov 20 02:43:46 2005 fraggle
+	
+	Generate brief descriptions automatically
+
+Sun Nov 20 02:43:33 2005 fraggle
+	
+	Documentation wording fixes
+
+Sun Nov 20 02:40:07 2005 fraggle
+	
+	Do not display directories.  Remove my local build dirs from the file and
+	use relative paths.
+
+Sun Nov 20 02:27:22 2005 fraggle
+	
+	Documentation improvements; generate documentation through Doxygen
+
+Sat Nov 19 19:29:00 2005 fraggle
+	
+	rm -f
+
+Sat Nov 19 19:28:24 2005 fraggle
+	
+	Shut up compiler warnings
+
+Sat Nov 19 19:25:01 2005 fraggle
+	
+	Turn on warnings on all makefiles
+
+Sat Nov 19 19:24:10 2005 fraggle
+	
+	Use callback to determine data to remove with slist_remove_data
+
+Sat Nov 19 19:14:32 2005 fraggle
+	
+	Split hash functions into a separate hash-functions directory
+
+Sat Nov 19 13:18:34 2005 fraggle
+	
+	Add new test functions
+
+Sat Nov 19 13:18:23 2005 fraggle
+	
+	Use callback functions when searching
+
+Sat Nov 19 13:10:54 2005 fraggle
+	
+	Add a search function
+
+Sat Nov 19 12:36:25 2005 fraggle
+	
+	queue_empty -> queue_is_empty
+
+Sat Nov 19 12:28:35 2005 fraggle
+	
+	Rename files, add headers and documentation
+
+Fri Nov 18 16:41:20 2005 fraggle
+	
+	Update license to match source files
+
+Fri Nov 18 16:37:23 2005 fraggle
+	
+	Initial revision
+
