@@ -371,6 +371,21 @@ void test_list_find_data(void)
 	assert(list_find_data(list, (ListEqualFunc) int_equal, &val) == NULL);
 }
 
+void test_list_to_array(void)
+{
+	ListEntry *list;
+	void **array;
+	
+	list = generate_list();
+	
+	array = list_to_array(list);
+
+	assert(array[0] == &variable1);
+	assert(array[1] == &variable2);
+	assert(array[2] == &variable3);
+	assert(array[3] == &variable4);
+}
+
 int main(int argc, char *argv[])
 {
 	test_list_append();
@@ -384,6 +399,7 @@ int main(int argc, char *argv[])
 	test_list_remove_data();
 	test_list_sort();
 	test_list_find_data();
+	test_list_to_array();
 
 	return 0;
 }

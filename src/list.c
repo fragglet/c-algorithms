@@ -200,6 +200,37 @@ int list_length(ListEntry *list)
 	return length;
 }
 
+void **list_to_array(ListEntry *list)
+{
+	ListEntry *rover;
+	int listlen;
+	void **array;
+	int i;
+
+	/* Allocate an array equal in size to the list length */
+	
+	listlen = list_length(list);
+
+	array = calloc(sizeof(void *), listlen);
+	
+	/* Add all entries to the array */
+	
+	rover = list;
+	
+	for (i=0; i<listlen; ++i) {
+
+		/* Add this node's data */
+
+		array[i] = rover->data;
+		
+		/* Jump to the next list node */
+
+		rover = rover->next;
+	}
+
+	return array;
+}
+
 void list_foreach(ListEntry *list, ListIterator callback, void *user_data)
 {
 	ListEntry *entry;

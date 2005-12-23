@@ -188,6 +188,38 @@ int slist_length(SListEntry *list)
 	return length;
 }
 
+void **slist_to_array(SListEntry *list)
+{
+	SListEntry *rover;
+	int listlen;
+	void **array;
+	int i;
+
+	/* Allocate an array equal in size to the list length */
+	
+	listlen = slist_length(list);
+
+	array = calloc(sizeof(void *), listlen);
+	
+	/* Add all entries to the array */
+	
+	rover = list;
+	
+	for (i=0; i<listlen; ++i) {
+
+		/* Add this node's data */
+
+		array[i] = rover->data;
+		
+		/* Jump to the next list node */
+
+		rover = rover->next;
+	}
+
+	return array;
+}
+
+
 void slist_foreach(SListEntry *list, SListIterator callback, void *user_data)
 {
 	SListEntry *entry;

@@ -188,6 +188,17 @@ void *slist_nth_data(SListEntry *list, int n);
 
 int slist_length(SListEntry *list);
 
+/**
+ * Create a C array containing the contents of a list.
+ *
+ * @param list       The list.
+ * @return           A newly-allocated C array containing all values in the
+ *                   list.  The length of the array is equal to the length
+ *                   of the list (see @ref slist_length).
+ */
+
+void **slist_to_array(SListEntry *list);
+
 /** 
  * Iterate over all entries in a list.
  *

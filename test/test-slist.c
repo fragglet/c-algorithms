@@ -346,6 +346,22 @@ void test_slist_find_data(void)
 	assert(slist_find_data(list, (SListEqualFunc) int_equal, &val) == NULL);
 }
 
+void test_slist_to_array(void)
+{
+	SListEntry *list;
+	void **array;
+	
+	list = generate_list();
+	
+	array = slist_to_array(list);
+
+	assert(array[0] == &variable1);
+	assert(array[1] == &variable2);
+	assert(array[2] == &variable3);
+	assert(array[3] == &variable4);
+}
+
+
 int main(int argc, char *argv[])
 {
 	test_slist_append();
@@ -359,6 +375,7 @@ int main(int argc, char *argv[])
 	test_slist_remove_data();
 	test_slist_sort();
 	test_slist_find_data();
+	test_slist_to_array();
 
 	return 0;
 }
