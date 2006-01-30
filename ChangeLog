@@ -1,3 +1,54 @@
+Fri Dec 23 23:19:01 2005 fraggle
+	
+	Make compare/hash functions take void pointers, removing the need to
+	cast the functions to the appropriate type when used.
+
+Fri Dec 23 22:39:38 2005 fraggle
+	
+	Fix bug in list iterator, add test cases for iterator
+
+Fri Dec 23 19:08:17 2005 fraggle
+	
+	Do not include complete path in Doxygen documentation
+
+Fri Dec 23 19:07:57 2005 fraggle
+	
+	Add AVL tree to main documentation list; split data structures into
+	categories
+
+Fri Dec 23 18:57:38 2005 fraggle
+	
+	List to array conversion functions
+
+Fri Dec 23 18:44:15 2005 fraggle
+	
+	to_array conversion function.
+
+Fri Dec 23 18:25:36 2005 fraggle
+	
+	Turn on warnings; remove unneeded variables.  Add more test cases.
+
+Fri Dec 23 18:24:43 2005 fraggle
+	
+	avltree_remove, avltree_free functions.
+
+Fri Dec 23 16:07:37 2005 fraggle
+	
+	AVL tree: Remove debugging functions, fix bug with parent references
+	not updated on rotate.  Add "remove" function and test cases.
+
+Fri Dec 23 02:11:27 2005 fraggle
+	
+	More AVL tree documentation.
+
+Fri Dec 23 01:51:34 2005 fraggle
+	
+	Update NEWS, ChangeLog
+
+Fri Dec 23 01:49:54 2005 fraggle
+	
+	CVS history script
+
 Wed Dec 21 21:39:17 2005 fraggle
 	
 	Add missing function declarations and some documentation.
@@ -6,9 +57,21 @@ Tue Dec 20 23:21:36 2005 fraggle
 	
 	Style cleanups: always use {} blocks for if statements.
 
+Tue Dec 20 23:20:23 2005 fraggle
+	
+	Main header
+
+Sat Dec 17 13:45:52 2005 fraggle
+	
+	Add trie
+
 Tue Dec 13 22:02:22 2005 fraggle
 	
 	Smart indent all source code
+
+Tue Dec 13 21:54:51 2005 fraggle
+	
+	Maintenance scripts
 
 Tue Dec 13 20:16:30 2005 fraggle
 	
@@ -71,6 +134,10 @@ Thu Dec  1 17:46:24 2005 fraggle
 Wed Nov 30 00:58:02 2005 fraggle
 	
 	First implementation of a trie
+
+Tue Nov 29 23:30:51 2005 fraggle
+	
+	Algorithms -> data structures
 
 Tue Nov 29 23:25:59 2005 fraggle
 	
@@ -170,6 +237,14 @@ Sat Nov 26 15:14:53 2005 fraggle
 	Use comparison functions from the library instead of duplicating
 	declarations
 
+Sat Nov 26 15:12:31 2005 fraggle
+	
+	Add build system
+
+Sat Nov 26 15:11:30 2005 fraggle
+	
+	AUTHORS file
+
 Sat Nov 26 14:42:55 2005 fraggle
 	
 	Include manpage links for function names
@@ -186,9 +261,17 @@ Sat Nov 26 13:34:42 2005 fraggle
 	
 	Restructure directories
 
+Mon Nov 21 16:09:37 2005 fraggle
+	
+	Implementation of a set
+
 Mon Nov 21 16:09:16 2005 fraggle
 	
 	Function to retrieve a count of the number of entries
+
+Sun Nov 20 12:11:59 2005 fraggle
+	
+	A set of values
 
 Sun Nov 20 02:47:04 2005 fraggle
 	
@@ -211,6 +294,10 @@ Sun Nov 20 02:27:22 2005 fraggle
 	
 	Documentation improvements; generate documentation through Doxygen
 
+Sun Nov 20 01:21:34 2005 fraggle
+	
+	Hash table implementation
+
 Sat Nov 19 19:29:00 2005 fraggle
 	
 	rm -f
@@ -231,6 +318,14 @@ Sat Nov 19 19:14:32 2005 fraggle
 	
 	Split hash functions into a separate hash-functions directory
 
+Sat Nov 19 19:07:52 2005 fraggle
+	
+	Doubly-linked list implementation
+
+Sat Nov 19 13:21:42 2005 fraggle
+	
+	Add README
+
 Sat Nov 19 13:18:34 2005 fraggle
 	
 	Add new test functions
@@ -243,17 +338,25 @@ Sat Nov 19 13:10:54 2005 fraggle
 	
 	Add a search function
 
+Sat Nov 19 12:47:34 2005 fraggle
+	
+	Queue test cases
+
 Sat Nov 19 12:36:25 2005 fraggle
 	
 	queue_empty -> queue_is_empty
 
-Sat Nov 19 12:28:35 2005 fraggle
+Sat Nov 19 12:28:34 2005 fraggle
 	
 	Rename files, add headers and documentation
 
 Fri Nov 18 16:41:20 2005 fraggle
 	
 	Update license to match source files
+
+Fri Nov 18 16:40:27 2005 fraggle
+	
+	Compare functions for different types
 
 Fri Nov 18 16:37:23 2005 fraggle
 	
