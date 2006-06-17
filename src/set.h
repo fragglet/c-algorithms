@@ -71,6 +71,14 @@ extern "C" {
 
 typedef struct _Set Set;
 
+/**
+ * An object used to iterate over a set.
+ *
+ * @see set_iterate
+ */
+
+typedef struct _SetIterator SetIterator;
+
 /** 
  * Hash function.  Generates a hash key for data to be stored in a set.
  */
@@ -90,12 +98,6 @@ typedef int (*SetEqualFunc)(void *data1, void *data2);
  */
 
 typedef void *(*SetCopyFunc)(void *data);
-
-/**
- * Set iterator.  Callback function used to iterate over values in a set.
- */
-
-typedef void (*SetIterator)(void *data, void *user_data);
 
 /**
  * Function used to free values stored in a set.  See
@@ -169,16 +171,6 @@ int set_remove(Set *set, void *data);
 int set_query(Set *set, void *data);
 
 /**
- * Iterate over all values in a set.
- *
- * @param set           The set.
- * @param callback      Callback function to be invoked for each value.
- * @param user_data     Extra data to be passed to the callback function.
- */
-
-void set_foreach(Set *set, SetIterator callback, void *user_data);
-
-/**
  * Retrieve the number of entries in a set
  *
  * @param set           The set.
@@ -228,6 +220,48 @@ Set *set_union(Set *set1, Set *set2, SetCopyFunc copy_func);
 
 Set *set_intersection(Set *set1, Set *set2, 
                       SetCopyFunc copy_func);
+
+/**
+ * Create an iterator to iterate over the values in a set.
+ * It should be noted that a set iterator must be freed once iterating
+ * has been completed.  This should be done using @ref set_iterator_free.
+ *
+ * @param set              The set to iterate over.
+ * @return                 A new iterator object.
+ */
+
+SetIterator *set_iterate(Set *set);
+
+/**
+ * Determine if there are more values in the set to iterate over.
+ * It should be noted that a set iterator is not freed when iterating
+ * has finished.  This should be done using @ref set_iterator_free.
+ *
+ * @param iterator         The set iterator object.
+ * @return                 Zero if there are no more values in the set
+ *                         to iterate over, non-zero if there are more
+ *                         values to be read.
+ */
+
+int set_iterator_has_more(SetIterator *iterator);
+
+/**
+ * Using a set iterator, retrieve the next value from the set.
+ *
+ * @param iterator         The set iterator.
+ * @return                 The next value from the set, or NULL if no
+ *                         more values are available.
+ */
+
+void *set_iterator_next(SetIterator *iterator);
+
+/**
+ * Free back a set iterator object. 
+ * 
+ * @param iterator         The iterator to free.
+ */
+
+void set_iterator_free(SetIterator *iterator);
 
 #ifdef __cplusplus
 }

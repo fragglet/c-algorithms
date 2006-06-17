@@ -56,6 +56,13 @@ struct _Set {
 	SetFreeFunc free_func;
 };
 
+struct _SetIterator {
+	Set *set;
+	SetEntry **current_entry;
+	SetEntry **next_entry;
+	int next_chain;
+};
+
 /* Prime numbers on an escalating exponential scale, used for the table
  * size.  Each value is approximately 1.5 * the previous value, so the
  * table size increases by 50% with each enlargement */
@@ -345,29 +352,6 @@ int set_query(Set *set, void *data)
 	return 0;
 }
 
-void set_foreach(Set *set, SetIterator callback, void *user_data)
-{
-	SetEntry *rover;
-	int i;
-
-	/* Iterate over all chains and all values in the chains */
-
-	for (i=0; i<set->table_size; ++i) {
-		rover = set->table[i];
-
-		while (rover != NULL) {
-
-			/* Invoke callback for this data */
-
-			callback(rover->data, user_data);
-
-			/* Advance to the next entry */
-
-			rover = rover->next;
-		}
-	}
-}
-
 int set_num_entries(Set *set)
 {
 	return set->entries;
@@ -407,120 +391,211 @@ void **set_to_array(Set *set)
 	return array;
 }
 
-struct set_union_data {
-	Set *new_set;
-	SetCopyFunc copy_func;
-};
-
-static void set_union_foreach1(void *value, void *user_data)
-{
-	struct set_union_data *params;
-	void *copied_value;
-
-	params = (struct set_union_data *) user_data;
-
-	/* Copy the value into the new set, copying if necessary */
-
-	if (params->copy_func != NULL) {
-		copied_value = params->copy_func(value);
-	} else {
-		copied_value = value;
-	}
-
-	set_insert(params->new_set, copied_value);
-}
-
-static void set_union_foreach2(void *value, void *user_data)
-{
-	struct set_union_data *params;
-	void *copied_value;
-
-	params = (struct set_union_data *) user_data;
-
-	/* Has this value been put into the new set yet?  If not, add it. */
-
-	if (set_query(params->new_set, value) == 0) {
-
-		/* Copy the value into the new set, copying if necessary */
-
-		if (params->copy_func != NULL) {
-			copied_value = params->copy_func(value);
-		} else {
-			copied_value = value;
-		}
-
-		set_insert(params->new_set, copied_value);
-	}
-}
-
-
 Set *set_union(Set *set1, Set *set2, SetCopyFunc copy_func)
 {
-	struct set_union_data user_data;
+	SetIterator *iterator;
 	Set *new_set;
+	void *value;
+	void *copied_value;
 
 	new_set = set_new(set1->hash_func, set1->equal_func);
 
-	user_data.new_set = new_set;
-	user_data.copy_func = copy_func;
-
 	/* Add all values from the first set */
 	
-	set_foreach(set1, set_union_foreach1, &user_data);
+	iterator = set_iterate(set1);
 
-	/* Add all values from the second set */
-	
-	set_foreach(set2, set_union_foreach2, &user_data);
+	while (set_iterator_has_more(iterator)) {
 
-	return new_set;
-}
+		/* Read the next value */
 
-struct set_intersection_data {
-	Set *new_set;
-	Set *set2;
-	SetCopyFunc copy_func;
-};
+		value = set_iterator_next(iterator);
 
-static void set_intersection_foreach(void *value, void *user_data)
-{
-	struct set_intersection_data *params;
-	void *copied_value;
+		/* Copy the value into the new set, copying if necessary */
 
-	params = (struct set_intersection_data *) user_data;
-
-	/* Is this value in set 2 as well?  If so, it should be in the 
-	 * new set. */
-
-	if (set_query(params->set2, value) != 0) {
-
-		/* Copy the value first before inserting, if necessary */
-
-		if (params->copy_func != NULL) {
-			copied_value = params->copy_func(value);
+		if (copy_func != NULL) {
+			copied_value = copy_func(value);
 		} else {
 			copied_value = value;
 		}
 
-		set_insert(params->new_set, copied_value);
+		set_insert(new_set, copied_value);
 	}
+
+	set_iterator_free(iterator);
+	
+	/* Add all values from the second set */
+	
+	iterator = set_iterate(set2);
+
+	while (set_iterator_has_more(iterator)) {
+
+		/* Read the next value */
+
+		value = set_iterator_next(iterator);
+
+		/* Has this value been put into the new set already? 
+		 * If so, do not insert this again */
+
+		if (set_query(new_set, value) == 0) {
+
+			/* Insert the value into the new set, copying 
+			 * if necessary */
+
+			if (copy_func != NULL) {
+				copied_value = copy_func(value);
+			} else {
+				copied_value = value;
+			}
+
+			set_insert(new_set, copied_value);
+		}
+	}
+
+	set_iterator_free(iterator);
+
+	return new_set;
 }
 
 Set *set_intersection(Set *set1, Set *set2, 
                       SetCopyFunc copy_func)
 {
-	struct set_intersection_data user_data;
 	Set *new_set;
+	SetIterator *iterator;
+	void *value;
+	void *copied_value;
 
 	new_set = set_new(set1->hash_func, set2->equal_func);
 
 	/* Iterate over all values in set 1. */
 
-	user_data.new_set = new_set;
-	user_data.set2 = set2;
-	user_data.copy_func = copy_func;
+	iterator = set_iterate(set1);
 
-	set_foreach(set1, set_intersection_foreach, &user_data);
-	
+	while (set_iterator_has_more(iterator)) {
+
+		/* Get the next value */
+
+		value = set_iterator_next(iterator);
+
+		/* Is this value in set 2 as well?  If so, it should be 
+		 * in the new set. */
+
+		if (set_query(set2, value) != 0) {
+
+			/* Copy the value first before inserting, 
+			 * if necessary */
+
+			if (copy_func != NULL) {
+				copied_value = copy_func(value);
+			} else {
+				copied_value = value;
+			}
+
+			set_insert(new_set, copied_value);
+		}
+	}
+
+	set_iterator_free(iterator);
+
 	return new_set;
+}
+
+SetIterator *set_iterate(Set *set)
+{
+	SetIterator *iter;
+	int chain;
+	
+	/* Create a new iterator object */
+	
+	iter = malloc(sizeof(SetIterator));
+
+        iter->set = set;
+	iter->current_entry = NULL;
+	iter->next_entry = NULL;
+
+	/* Find the first entry */
+	
+	for (chain = 0; chain < set->table_size; ++chain) {
+
+		/* There is a value at the start of this chain */
+
+		if (set->table[chain] != NULL) {
+			iter->next_entry = &set->table[chain];
+			break;
+		}
+	}
+	
+	iter->next_chain = chain;
+
+	return iter;
+}
+
+void *set_iterator_next(SetIterator *iterator)
+{
+	Set *set;
+	void *result;
+        int chain;
+
+	set = iterator->set;
+
+	/* No more entries? */
+	
+	if (iterator->next_entry == NULL) {
+		return NULL;
+	}
+	/* We have the result immediately */
+
+	iterator->current_entry = iterator->next_entry;
+	result = (*iterator->current_entry)->data;
+
+	/* Advance next_entry to the next SetEntry in the Set. */
+
+	if ((*iterator->current_entry)->next != NULL) {
+
+		/* Use the next value in this chain */
+
+		iterator->next_entry = &((*iterator->current_entry)->next);
+
+	} else {
+		
+		/* Default value if no valid chain is found */
+
+		iterator->next_entry = NULL;
+
+		/* No more entries in this chain.  Search the next chain */
+
+                chain = iterator->next_chain + 1;
+
+                while (chain < set->table_size) {
+
+			/* Is there a chain at this table entry? */
+
+			if (set->table[chain] != NULL) {
+				
+				/* Valid chain found! */
+
+				iterator->next_entry = &set->table[chain];
+
+				break;
+			}
+
+			/* Keep searching until we find an empty chain */
+
+                        ++chain;
+		}
+
+                iterator->next_chain = chain;
+	}
+
+	return result;
+}
+
+int set_iterator_has_more(SetIterator *iterator)
+{
+	return iterator->next_entry != NULL;
+}
+
+void set_iterator_free(SetIterator *iterator)
+{
+	free(iterator);
 }
 
