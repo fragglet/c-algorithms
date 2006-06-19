@@ -508,7 +508,7 @@ SetIterator *set_iterate(Set *set)
 	
 	iter = malloc(sizeof(SetIterator));
 
-        iter->set = set;
+	iter->set = set;
 	iter->current_entry = NULL;
 	iter->next_entry = NULL;
 
@@ -533,7 +533,7 @@ void *set_iter_next(SetIterator *iterator)
 {
 	Set *set;
 	void *result;
-        int chain;
+	int chain;
 
 	set = iterator->set;
 
@@ -563,9 +563,9 @@ void *set_iter_next(SetIterator *iterator)
 
 		/* No more entries in this chain.  Search the next chain */
 
-                chain = iterator->next_chain + 1;
+		chain = iterator->next_chain + 1;
 
-                while (chain < set->table_size) {
+		while (chain < set->table_size) {
 
 			/* Is there a chain at this table entry? */
 
@@ -580,10 +580,10 @@ void *set_iter_next(SetIterator *iterator)
 
 			/* Keep searching until we find an empty chain */
 
-                        ++chain;
+			++chain;
 		}
 
-                iterator->next_chain = chain;
+		iterator->next_chain = chain;
 	}
 
 	return result;

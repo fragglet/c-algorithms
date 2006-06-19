@@ -463,9 +463,9 @@ void *hash_table_iter_next(HashTableIterator *iterator)
 				break;
 			}
 
-                        /* Try the next chain */
+			/* Try the next chain */
 
-                        ++chain;
+			++chain;
 		}
 
 		iterator->next_chain = chain;
