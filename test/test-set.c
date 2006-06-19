@@ -267,6 +267,94 @@ void test_set_to_array(void)
 	}
 }
 
+void test_set_iterating(void)
+{
+	Set *set;
+	SetIterator *iterator;
+	int count;
+
+	set = generate_set();
+
+	/* Iterate over all values in the set */
+
+	count = 0;
+	iterator = set_iterate(set);
+
+	while (set_iter_has_more(iterator)) {
+
+		set_iter_next(iterator);
+
+		++count;
+	}
+
+	set_iter_free(iterator);
+	
+	/* Check final count */
+
+	assert(count == 10000);
+
+	set_free(set);
+	
+	/* Test iterating over an empty set */
+
+	set = set_new(int_hash, int_equal);
+
+	iterator = set_iterate(set);
+
+	assert(set_iter_has_more(iterator) == 0);
+	
+	set_iter_free(iterator);
+	set_free(set);
+}
+
+/* Test the ability to remove the current value while iterating over 
+ * a set.  ie. the act of removing the current value should not affect
+ * the iterator. */
+
+void test_set_iterating_remove(void)
+{
+	Set *set;
+	SetIterator *iterator;
+	int count;
+	int removed;
+	int *val;
+
+	set = generate_set();
+
+	count = 0;
+	removed = 0;
+
+	/* Iterate over all values in the set */
+
+	iterator = set_iterate(set);
+
+	while (set_iter_has_more(iterator)) {
+
+		val = (int *) set_iter_next(iterator);
+
+		if ((*val % 100) == 0) {
+
+			/* Remove this value */
+
+			set_remove(set, val);
+
+			++removed;
+		}
+
+		++count;
+	}
+
+	set_iter_free(iterator);
+	
+	/* Check final counts */
+
+	assert(count == 10000);
+	assert(removed == 100);
+	assert(set_num_entries(set) == 10000 - removed);
+
+	set_free(set);
+}
+
 int main(int argc, char *argv[])
 {
 	test_set_new();
@@ -276,6 +364,8 @@ int main(int argc, char *argv[])
 	test_set_remove();
 	test_set_intersection();
 	test_set_union();
+	test_set_iterating();
+	test_set_iterating_remove();
 
 	return 0;
 }
