@@ -61,8 +61,8 @@ struct _HashTable {
 
 struct _HashTableIterator {
 	HashTable *hashtable;
-	HashTableEntry **current_entry;
-	HashTableEntry **next_entry;
+	HashTableEntry *current_entry;
+	HashTableEntry *next_entry;
 	int next_chain;
 };
 
@@ -402,7 +402,7 @@ HashTableIterator *hash_table_iterate(HashTable *hashtable)
 	for (chain=0; chain<hashtable->table_size; ++chain) {
 		
 		if (hashtable->table[chain] != NULL) {
-			iterator->next_entry = &hashtable->table[chain];
+			iterator->next_entry = hashtable->table[chain];
 			iterator->next_chain = chain;
 			break;
 		}
@@ -433,15 +433,15 @@ void *hash_table_iter_next(HashTableIterator *iterator)
 	/* Result is immediately available */
 
 	iterator->current_entry = iterator->next_entry;
-	result = (*iterator->current_entry)->key;
+	result = iterator->current_entry->key;
 
 	/* Find the next entry */
 
-	if ((*iterator->current_entry)->next != NULL) {
+	if (iterator->current_entry->next != NULL) {
 		
 		/* Next entry in current chain */
 
-		iterator->next_entry = &(*iterator->current_entry)->next;
+		iterator->next_entry = iterator->current_entry->next;
 		
 	} else {
 	
@@ -458,8 +458,7 @@ void *hash_table_iter_next(HashTableIterator *iterator)
 			/* Is there anything in this chain? */
 
 			if (hashtable->table[chain] != NULL) {
-				iterator->next_entry
-				     = &hashtable->table[chain];
+				iterator->next_entry = hashtable->table[chain];
 				break;
 			}
 

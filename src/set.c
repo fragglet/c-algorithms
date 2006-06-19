@@ -58,8 +58,8 @@ struct _Set {
 
 struct _SetIterator {
 	Set *set;
-	SetEntry **current_entry;
-	SetEntry **next_entry;
+	SetEntry *current_entry;
+	SetEntry *next_entry;
 	int next_chain;
 };
 
@@ -519,7 +519,7 @@ SetIterator *set_iterate(Set *set)
 		/* There is a value at the start of this chain */
 
 		if (set->table[chain] != NULL) {
-			iter->next_entry = &set->table[chain];
+			iter->next_entry = set->table[chain];
 			break;
 		}
 	}
@@ -545,15 +545,15 @@ void *set_iter_next(SetIterator *iterator)
 	/* We have the result immediately */
 
 	iterator->current_entry = iterator->next_entry;
-	result = (*iterator->current_entry)->data;
+	result = iterator->current_entry->data;
 
 	/* Advance next_entry to the next SetEntry in the Set. */
 
-	if ((*iterator->current_entry)->next != NULL) {
+	if (iterator->current_entry->next != NULL) {
 
 		/* Use the next value in this chain */
 
-		iterator->next_entry = &((*iterator->current_entry)->next);
+		iterator->next_entry = iterator->current_entry->next;
 
 	} else {
 		
@@ -573,7 +573,7 @@ void *set_iter_next(SetIterator *iterator)
 				
 				/* Valid chain found! */
 
-				iterator->next_entry = &set->table[chain];
+				iterator->next_entry = set->table[chain];
 
 				break;
 			}
