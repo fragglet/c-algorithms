@@ -179,13 +179,13 @@ void test_hash_table_iterating(void)
 
 	iterator = hash_table_iterate(hashtable);
 
-	while (hash_table_iterator_has_more(iterator)) {
-	      hash_table_iterator_next(iterator);
+	while (hash_table_iter_has_more(iterator)) {
+	      hash_table_iter_next(iterator);
 
 	      ++count;
 	}
 
-	hash_table_iterator_free(iterator);
+	hash_table_iter_free(iterator);
 		
 	assert(count == 10000);
 
@@ -195,9 +195,9 @@ void test_hash_table_iterating(void)
 	
 	iterator = hash_table_iterate(hashtable);
 
-	assert(hash_table_iterator_has_more(iterator) == 0);
+	assert(hash_table_iter_has_more(iterator) == 0);
 
-	hash_table_iterator_free(iterator);
+	hash_table_iter_free(iterator);
 }
 
 /* Demonstrates the ability to iteratively remove objects from
@@ -222,11 +222,11 @@ void test_hash_table_iterating_remove(void)
 
 	iterator = hash_table_iterate(hashtable);
 
-	while (hash_table_iterator_has_more(iterator)) {
+	while (hash_table_iter_has_more(iterator)) {
 		
 		/* Read the next value */
 		
-		val = (int *) hash_table_iterator_next(iterator);
+		val = (int *) hash_table_iter_next(iterator);
 
 		/* Remove every hundredth entry */
 
@@ -238,7 +238,7 @@ void test_hash_table_iterating_remove(void)
 		++count;
 	}
 
-	hash_table_iterator_free(iterator);
+	hash_table_iter_free(iterator);
 
 	/* Check counts */
 

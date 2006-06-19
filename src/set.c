@@ -404,11 +404,11 @@ Set *set_union(Set *set1, Set *set2, SetCopyFunc copy_func)
 	
 	iterator = set_iterate(set1);
 
-	while (set_iterator_has_more(iterator)) {
+	while (set_iter_has_more(iterator)) {
 
 		/* Read the next value */
 
-		value = set_iterator_next(iterator);
+		value = set_iter_next(iterator);
 
 		/* Copy the value into the new set, copying if necessary */
 
@@ -421,17 +421,17 @@ Set *set_union(Set *set1, Set *set2, SetCopyFunc copy_func)
 		set_insert(new_set, copied_value);
 	}
 
-	set_iterator_free(iterator);
+	set_iter_free(iterator);
 	
 	/* Add all values from the second set */
 	
 	iterator = set_iterate(set2);
 
-	while (set_iterator_has_more(iterator)) {
+	while (set_iter_has_more(iterator)) {
 
 		/* Read the next value */
 
-		value = set_iterator_next(iterator);
+		value = set_iter_next(iterator);
 
 		/* Has this value been put into the new set already? 
 		 * If so, do not insert this again */
@@ -451,7 +451,7 @@ Set *set_union(Set *set1, Set *set2, SetCopyFunc copy_func)
 		}
 	}
 
-	set_iterator_free(iterator);
+	set_iter_free(iterator);
 
 	return new_set;
 }
@@ -470,11 +470,11 @@ Set *set_intersection(Set *set1, Set *set2,
 
 	iterator = set_iterate(set1);
 
-	while (set_iterator_has_more(iterator)) {
+	while (set_iter_has_more(iterator)) {
 
 		/* Get the next value */
 
-		value = set_iterator_next(iterator);
+		value = set_iter_next(iterator);
 
 		/* Is this value in set 2 as well?  If so, it should be 
 		 * in the new set. */
@@ -494,7 +494,7 @@ Set *set_intersection(Set *set1, Set *set2,
 		}
 	}
 
-	set_iterator_free(iterator);
+	set_iter_free(iterator);
 
 	return new_set;
 }
@@ -529,7 +529,7 @@ SetIterator *set_iterate(Set *set)
 	return iter;
 }
 
-void *set_iterator_next(SetIterator *iterator)
+void *set_iter_next(SetIterator *iterator)
 {
 	Set *set;
 	void *result;
@@ -589,12 +589,12 @@ void *set_iterator_next(SetIterator *iterator)
 	return result;
 }
 
-int set_iterator_has_more(SetIterator *iterator)
+int set_iter_has_more(SetIterator *iterator)
 {
 	return iterator->next_entry != NULL;
 }
 
-void set_iterator_free(SetIterator *iterator)
+void set_iter_free(SetIterator *iterator)
 {
 	free(iterator);
 }

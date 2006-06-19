@@ -224,7 +224,7 @@ Set *set_intersection(Set *set1, Set *set2,
 /**
  * Create an iterator to iterate over the values in a set.
  * It should be noted that a set iterator must be freed once iterating
- * has been completed.  This should be done using @ref set_iterator_free.
+ * has been completed.  This should be done using @ref set_iter_free.
  *
  * @param set              The set to iterate over.
  * @return                 A new iterator object.
@@ -235,7 +235,7 @@ SetIterator *set_iterate(Set *set);
 /**
  * Determine if there are more values in the set to iterate over.
  * It should be noted that a set iterator is not freed when iterating
- * has finished.  This should be done using @ref set_iterator_free.
+ * has finished.  This should be done using @ref set_iter_free.
  *
  * @param iterator         The set iterator object.
  * @return                 Zero if there are no more values in the set
@@ -243,7 +243,7 @@ SetIterator *set_iterate(Set *set);
  *                         values to be read.
  */
 
-int set_iterator_has_more(SetIterator *iterator);
+int set_iter_has_more(SetIterator *iterator);
 
 /**
  * Using a set iterator, retrieve the next value from the set.
@@ -253,7 +253,7 @@ int set_iterator_has_more(SetIterator *iterator);
  *                         more values are available.
  */
 
-void *set_iterator_next(SetIterator *iterator);
+void *set_iter_next(SetIterator *iterator);
 
 /**
  * Free back a set iterator object. 
@@ -261,7 +261,7 @@ void *set_iterator_next(SetIterator *iterator);
  * @param iterator         The iterator to free.
  */
 
-void set_iterator_free(SetIterator *iterator);
+void set_iter_free(SetIterator *iterator);
 
 #ifdef __cplusplus
 }

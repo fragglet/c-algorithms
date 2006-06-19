@@ -411,12 +411,12 @@ HashTableIterator *hash_table_iterate(HashTable *hashtable)
 	return iterator;
 }
 
-int hash_table_iterator_has_more(HashTableIterator *iterator)
+int hash_table_iter_has_more(HashTableIterator *iterator)
 {
 	return iterator->next_entry != NULL;
 }
 
-void *hash_table_iterator_next(HashTableIterator *iterator)
+void *hash_table_iter_next(HashTableIterator *iterator)
 {
 	HashTable *hashtable;
 	void *result;
@@ -474,7 +474,7 @@ void *hash_table_iterator_next(HashTableIterator *iterator)
 	return result;
 }
 
-void hash_table_iterator_free(HashTableIterator *iterator)
+void hash_table_iter_free(HashTableIterator *iterator)
 {
 	free(iterator);
 }

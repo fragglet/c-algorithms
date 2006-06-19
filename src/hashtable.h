@@ -176,7 +176,7 @@ int hash_table_num_entries(HashTable *hashtable);
 /**
  * Create a new @ref HashTableIterator to iterate over a hash table.
  * Note: iterators should be freed back with 
- * @ref hash_table_iterator_free once iterating has completed.
+ * @ref hash_table_iter_free once iterating has completed.
  *
  * @param hashtable           The hash table.
  * @return                    A pointer to a new @ref HashTableIterator 
@@ -195,7 +195,7 @@ HashTableIterator *hash_table_iterate(HashTable *hashtable);
  *                            iterate over.
  */
 
-int hash_table_iterator_has_more(HashTableIterator *iterator);
+int hash_table_iter_has_more(HashTableIterator *iterator);
 
 /**
  * Using a hash table iterator, retrieve the next key.
@@ -205,7 +205,7 @@ int hash_table_iterator_has_more(HashTableIterator *iterator);
  *                            if there are no more keys to iterate over.
  */
 
-void *hash_table_iterator_next(HashTableIterator *iterator);
+void *hash_table_iter_next(HashTableIterator *iterator);
 
 /**
  * Free back a hash table iterator object.  This must be done once
@@ -214,7 +214,7 @@ void *hash_table_iterator_next(HashTableIterator *iterator);
  * @param iterator            The hash table iterator.
  */
 
-void hash_table_iterator_free(HashTableIterator *iterator);
+void hash_table_iter_free(HashTableIterator *iterator);
 
 #ifdef __cplusplus
 }
