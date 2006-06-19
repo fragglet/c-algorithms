@@ -66,6 +66,12 @@ extern "C" {
 typedef struct _HashTable HashTable;
 
 /**
+ * Structure used to iterate over a hash table.
+ */
+
+typedef struct _HashTableIterator HashTableIterator;
+
+/**
  * Hash function used to generate hash values for keys used in a hash
  * table.
  *
@@ -90,36 +96,6 @@ typedef int (*HashTableEqualFunc)(void *data1, void *data2);
  */
 
 typedef void (*HashTableFreeFunc)(void *data);
-
-/**
- * Type of function used as a callback when iterating over data.
- * See @ref hash_table_foreach.
- *
- * @param key            The key to the current element being iterated over.
- * @param value          The value of the current element being iterated over.
- * @param user_data      Extra data passed to the @ref hash_table_foreach
- *                       function.
- */
-
-typedef void (*HashTableIterator)(void *key, void *value, void *user_data);
-
-/**
- * Type of function used as a callback when iterating over a hash table,
- * selectively removing entries.
- * See @ref hash_table_foreach_remove.
- *
- * @param key            The key to the current element being iterated over.
- * @param value          The value of the current element being iterated over.
- * @param user_data      Extra data passed to the @ref hash_table_foreach
- *                       function.
- * @return               Non-zero (true) if the entry should be removed
- *                       from the hash table.  Zero (false) if the entry 
- *                       should not be removed from the hash table.
- */
-
-typedef int (*HashTableRemoveIterator)(void *key, 
-                                       void *value, 
-                                       void *user_data);
 
 /**
  * Create a new hash table.
@@ -198,32 +174,47 @@ int hash_table_remove(HashTable *hashtable, void *key);
 int hash_table_num_entries(HashTable *hashtable);
 
 /**
- * Iterate over all key-value pairs in a hash table.
+ * Create a new @ref HashTableIterator to iterate over a hash table.
+ * Note: iterators should be freed back with 
+ * @ref hash_table_iterator_free once iterating has completed.
  *
  * @param hashtable           The hash table.
- * @param iterator            Callback function to invoke for each element.
- * @param user_data           Extra data to pass to the iterator function
- *                            as context.
+ * @return                    A pointer to a new @ref HashTableIterator 
+ *                            to iterate over the hash table.
  */
 
-void hash_table_foreach(HashTable *hashtable, HashTableIterator iterator,
-                        void *user_data);
+HashTableIterator *hash_table_iterate(HashTable *hashtable);
 
 /**
- * Iterate over all key-value pairs in a hash table, selectively
- * removing entries.
+ * Determine if there are more keys in the hash table to iterate
+ * over. 
  *
- * @param hashtable           The hash table.
- * @param iterator            Callback function to invoke for each element.
- * @param user_data           Extra data to pass to the iterator function
- *                            as context.
- * @return                    The total number of entries removed from
- *                            the hash table.
+ * @param iterator            The hash table iterator.
+ * @return                    Zero if there are no more values to iterate
+ *                            over, non-zero if there are more values to 
+ *                            iterate over.
  */
 
-int hash_table_foreach_remove(HashTable *hashtable, 
-                              HashTableRemoveIterator iterator,
-                              void *user_data);
+int hash_table_iterator_has_more(HashTableIterator *iterator);
+
+/**
+ * Using a hash table iterator, retrieve the next key.
+ *
+ * @param iterator            The hash table iterator.
+ * @return                    The next key from the hash table, or NULL
+ *                            if there are no more keys to iterate over.
+ */
+
+void *hash_table_iterator_next(HashTableIterator *iterator);
+
+/**
+ * Free back a hash table iterator object.  This must be done once
+ * iterating has completed.
+ * 
+ * @param iterator            The hash table iterator.
+ */
+
+void hash_table_iterator_free(HashTableIterator *iterator);
 
 #ifdef __cplusplus
 }

@@ -165,60 +165,51 @@ void test_hash_table_remove(void)
 	assert(hash_table_num_entries(hashtable) == 9999);
 }
 
-int hash_table_foreach_count;
-
-void hash_table_foreach_callback(void *key, void *value, void *user_data)
-{
-	++hash_table_foreach_count;
-}
-
-void test_hash_table_foreach(void)
+void test_hash_table_iterating(void)
 {
 	HashTable *hashtable;
+	HashTableIterator *iterator;
+	int count;
 
 	hashtable = generate_hashtable();
 
 	/* Iterate over all values in the table */
 
-	hash_table_foreach_count = 0;
+	count = 0;
 
-	hash_table_foreach(hashtable, hash_table_foreach_callback, NULL);
+	iterator = hash_table_iterate(hashtable);
 
-	assert(hash_table_foreach_count == 10000);
+	while (hash_table_iterator_has_more(iterator)) {
+	      hash_table_iterator_next(iterator);
+
+	      ++count;
+	}
+
+	hash_table_iterator_free(iterator);
+		
+	assert(count == 10000);
 
 	/* Test iterating over an empty table */
 
 	hashtable = hash_table_new(int_hash, int_equal);
 	
-	hash_table_foreach_count = 0;
+	iterator = hash_table_iterate(hashtable);
 
-	hash_table_foreach(hashtable, hash_table_foreach_callback, NULL);
+	assert(hash_table_iterator_has_more(iterator) == 0);
 
-	assert(hash_table_foreach_count == 0);
+	hash_table_iterator_free(iterator);
 }
 
-int hash_table_foreach_remove_count;
-int hash_table_foreach_remove_removed;
+/* Demonstrates the ability to iteratively remove objects from
+ * a hash table: ie. removing the current key being iterated over 
+ * does not break the iterator. */
 
-int hash_table_foreach_remove_callback(void *key, void *value, void *user_data)
-{
-	int *number = (int *) key;
-
-	++hash_table_foreach_remove_count;
-
-	/* Remove every hundredth entry */
-
-	if (*number % 100 == 0) {
-		++hash_table_foreach_remove_removed;
-		return 1;
-	} else {
-		return 0;
-	}
-}
-
-void test_hash_table_foreach_remove(void)
+void test_hash_table_iterating_remove(void)
 {
 	HashTable *hashtable;
+	HashTableIterator *iterator;
+	int *val;
+	int count;
 	int removed;
 	int i;
 
@@ -226,15 +217,33 @@ void test_hash_table_foreach_remove(void)
 
 	/* Iterate over all values in the table */
 
-	hash_table_foreach_remove_count = 0;
-	hash_table_foreach_remove_removed = 0;
+	count = 0;
+	removed = 0;
 
-	removed = hash_table_foreach_remove(hashtable, 
-	                                    hash_table_foreach_remove_callback, 
-	                                    NULL);
+	iterator = hash_table_iterate(hashtable);
 
-	assert(hash_table_foreach_remove_removed == removed);
-	assert(hash_table_foreach_remove_count == 10000);
+	while (hash_table_iterator_has_more(iterator)) {
+		
+		/* Read the next value */
+		
+		val = (int *) hash_table_iterator_next(iterator);
+
+		/* Remove every hundredth entry */
+
+		if (*val % 100 == 0) {
+			hash_table_remove(hashtable, val);
+			++removed;
+		}
+
+		++count;
+	}
+
+	hash_table_iterator_free(iterator);
+
+	/* Check counts */
+
+	assert(removed == removed);
+	assert(count == 10000);
 
 	assert(hash_table_num_entries(hashtable) == 10000 - removed);
 
@@ -247,21 +256,6 @@ void test_hash_table_foreach_remove(void)
 			assert(hash_table_lookup(hashtable, &i) != NULL);
 		}
 	}
-
-	/* Test iterating over an empty table */
-
-	hashtable = hash_table_new(int_hash, int_equal);
-	
-	hash_table_foreach_remove_count = 0;
-	hash_table_foreach_remove_removed = 0;
-
-	removed = hash_table_foreach_remove(hashtable, 
-	                                    hash_table_foreach_remove_callback, 
-	                                    NULL);
-
-	assert(hash_table_foreach_remove_removed == removed);
-	assert(hash_table_foreach_remove_removed == 0);
-	assert(hash_table_foreach_remove_count == 0);
 }
 
 int main(int argc, char *argv[])
@@ -270,8 +264,8 @@ int main(int argc, char *argv[])
 	test_hash_table_free();
 	test_hash_table_insert_lookup();
 	test_hash_table_remove();
-	test_hash_table_foreach();
-	test_hash_table_foreach_remove();
+	test_hash_table_iterating();
+	test_hash_table_iterating_remove();
 	
 	return 0;
 }

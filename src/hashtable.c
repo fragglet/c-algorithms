@@ -59,6 +59,13 @@ struct _HashTable {
 	int prime_index;
 };
 
+struct _HashTableIterator {
+	HashTable *hashtable;
+	HashTableEntry **current_entry;
+	HashTableEntry **next_entry;
+	int next_chain;
+};
+
 /* Prime numbers on an escalating exponential scale, used for the table
  * size.  Each value is approximately 1.5 * the previous value, so the
  * table size increases by 50% with each enlargement */
@@ -120,7 +127,7 @@ static void hash_table_free_entry(HashTable *hashtable, HashTableEntry *entry)
 }
 
 HashTable *hash_table_new(HashTableHashFunc hash_func, 
-                         HashTableEqualFunc equal_func)
+                          HashTableEqualFunc equal_func)
 {
 	HashTable *hashtable;
 
@@ -377,74 +384,98 @@ int hash_table_num_entries(HashTable *hashtable)
 	return hashtable->entries;
 }
 
-void hash_table_foreach(HashTable *hashtable, HashTableIterator iterator,
-                        void *user_data)
+HashTableIterator *hash_table_iterate(HashTable *hashtable)
 {
-	int i;
-	HashTableEntry *rover;
+	HashTableIterator *iterator;
+	int chain;
+	
+	iterator = (HashTableIterator *) malloc(sizeof(HashTableIterator));
+	iterator->hashtable = hashtable;
+	iterator->current_entry = NULL;
 
-	/* Iterate over all entries in all chains */
-
-	for (i=0; i<hashtable->table_size; ++i) {
-		rover = hashtable->table[i];
-
-		while (rover != NULL) {
-			iterator(rover->key, rover->value, user_data);
-			rover = rover->next;
+	/* Default value of next if no entries are found. */
+	
+	iterator->next_entry = NULL;
+	
+	/* Find the first entry */
+	
+	for (chain=0; chain<hashtable->table_size; ++chain) {
+		
+		if (hashtable->table[chain] != NULL) {
+			iterator->next_entry = &hashtable->table[chain];
+			iterator->next_chain = chain;
+			break;
 		}
 	}
+
+	return iterator;
 }
 
-int hash_table_foreach_remove(HashTable *hashtable,
-                              HashTableRemoveIterator iterator,
-                              void *user_data)
+int hash_table_iterator_has_more(HashTableIterator *iterator)
 {
-	int i;
-	int removed_entries;
-	int remove;
-	HashTableEntry **rover;
-	HashTableEntry *entry;
+	return iterator->next_entry != NULL;
+}
 
-	/* Iterate over all entries in all chains */
+void *hash_table_iterator_next(HashTableIterator *iterator)
+{
+	HashTable *hashtable;
+	void *result;
+	int chain;
 
-	removed_entries = 0;
+	hashtable = iterator->hashtable;
 
-	for (i=0; i<hashtable->table_size; ++i) {
-		rover = &(hashtable->table[i]);
+	/* No more entries? */
+	
+	if (iterator->next_entry == NULL) {
+		return NULL;
+	}
+	
+	/* Result is immediately available */
 
-		while (*rover != NULL) {
-			
-			entry = *rover;
+	iterator->current_entry = iterator->next_entry;
+	result = (*iterator->current_entry)->key;
 
-			remove = iterator(entry->key, entry->value, user_data);
+	/* Find the next entry */
 
-			/* Remove this entry? */
+	if ((*iterator->current_entry)->next != NULL) {
+		
+		/* Next entry in current chain */
 
-			if (remove) {
+		iterator->next_entry = &(*iterator->current_entry)->next;
+		
+	} else {
+	
+		/* None left in this chain, so advance to the next chain */
 
-				/* Unlink this entry from the chain */
+		chain = iterator->next_chain + 1;
 
-				*rover = entry->next;
-				--hashtable->entries;
+		/* Default value if no next chain found */
+		
+		iterator->next_entry = NULL;
 
-				/* Destroy the entry structure */
+		while (chain < hashtable->table_size) {
 
-				hash_table_free_entry(hashtable, entry);
+			/* Is there anything in this chain? */
 
-				/* Keep count of the number removed */
-
-				++removed_entries;
-				
-			} else {
-
-				/* Advance to the next entry in the chain */
-
-				rover = &((*rover)->next);
+			if (hashtable->table[chain] != NULL) {
+				iterator->next_entry
+				     = &hashtable->table[chain];
+				break;
 			}
+
+                        /* Try the next chain */
+
+                        ++chain;
 		}
+
+		iterator->next_chain = chain;
 	}
 
-	return removed_entries;
+	return result;
 }
 
+void hash_table_iterator_free(HashTableIterator *iterator)
+{
+	free(iterator);
+}
 
