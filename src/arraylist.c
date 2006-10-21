@@ -59,7 +59,7 @@ ArrayList *arraylist_new(int length)
 
 	/* Allocate the data array */
 
-	new_arraylist->data = calloc(length, sizeof(void *));
+	new_arraylist->data = malloc(length * sizeof(void *));
 
 	return new_arraylist;    
 }

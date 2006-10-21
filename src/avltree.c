@@ -676,7 +676,7 @@ void **avltree_to_array(AVLTree *tree)
 
 	/* Allocate the array */
 	
-	array = calloc(sizeof(void *), tree->num_nodes);
+	array = malloc(sizeof(void *) * tree->num_nodes);
 	index = 0;
 
 	/* Add all keys */

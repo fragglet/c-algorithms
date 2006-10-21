@@ -211,7 +211,7 @@ void **list_to_array(ListEntry *list)
 	
 	listlen = list_length(list);
 
-	array = calloc(sizeof(void *), listlen);
+	array = malloc(sizeof(void *) * listlen);
 	
 	/* Add all entries to the array */
 	

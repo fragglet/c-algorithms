@@ -118,8 +118,7 @@ void trie_insert(Trie *trie, char *key, void *value)
 			
 			/* Node does not exist, so create it */
 
-			node = (TrieNode *) malloc(sizeof(TrieNode));
-			memset(node, 0, sizeof(TrieNode));
+			node = (TrieNode *) calloc(1, sizeof(TrieNode));
 
 			/* Link in to the trie */
 

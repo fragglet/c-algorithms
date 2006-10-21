@@ -93,7 +93,6 @@ static void set_allocate_table(Set *set)
 	/* Allocate the table and initialise to NULL */
 
 	set->table = calloc(set->table_size, sizeof(SetEntry *));
-	memset(set->table, 0, set->table_size * sizeof(SetEntry *));
 }
 
 static void set_free_entry(Set *set, SetEntry *entry) 

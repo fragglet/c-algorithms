@@ -100,8 +100,6 @@ static void hash_table_allocate_table(HashTable *hashtable)
 
 	hashtable->table = calloc(hashtable->table_size, 
 	                          sizeof(HashTableEntry *));
-	memset(hashtable->table, 0, 
-	       hashtable->table_size * sizeof(HashTableEntry *));
 }
 
 /* Free an entry, calling the free functions if there are any registered */
