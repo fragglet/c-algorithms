@@ -72,6 +72,12 @@ BinaryHeap *binary_heap_new(BinaryHeapType heap_type,
 	return heap;
 }
 
+void binary_heap_free(BinaryHeap *heap)
+{
+        free(heap->values);
+        free(heap);
+}
+
 void binary_heap_insert(BinaryHeap *heap, void *value)
 {
 	int index;
