@@ -2,6 +2,7 @@
 TESTS =                          \
         test-arraylist           \
         test-avltree             \
+        test-binary-heap         \
         test-list                \
         test-slist               \
         test-queue               \
