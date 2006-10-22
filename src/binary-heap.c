@@ -105,7 +105,7 @@ void binary_heap_insert(BinaryHeap *heap, void *value)
 
 		/* The parent index is found by halving the node index */
 
-		parent = index / 2;
+		parent = (index - 1) / 2;
 
 		/* Compare the node with its parent */
 
@@ -178,10 +178,10 @@ void *binary_heap_pop(BinaryHeap *heap)
 			if (child2 < heap->num_values
 			 && binary_heap_cmp(heap,
                                             heap->values[child1],
-			                    heap->values[child2]) < 0) {
-				next_index = child1;
-			} else {
+			                    heap->values[child2]) > 0) {
 				next_index = child2;
+			} else {
+				next_index = child1;
 			}
 			
 		} else if (child2 < heap->num_values
