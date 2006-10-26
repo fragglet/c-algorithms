@@ -63,19 +63,19 @@ struct _SetIterator {
 	int next_chain;
 };
 
-/* Prime numbers on an escalating exponential scale, used for the table
- * size.  Each value is approximately 1.5 * the previous value, so the
- * table size increases by 50% with each enlargement */
+/* This is a set of good hash table prime numbers, from:
+ *   http://planetmath.org/encyclopedia/GoodHashTablePrimes.html
+ * Each prime is roughly double the previous value, and as far as
+ * possible from the nearest powers of two. */
 
-static unsigned int set_primes[] = {
-	251, 383, 571, 863, 1291, 1933, 2909, 4373, 6553, 9839, 14759, 22133,
-	33211, 49811, 74719, 112069, 168127, 252193, 378289, 567407, 851131,
-	1276721, 1915057, 2872621, 4308937, 6463399, 9695099, 14542651,
-	21813997, 32721001, 49081441, 73622251, 110433383, 165650033,
-	248475107, 372712667, 559068997, 838603499, 1257905249, 1886857859,
+static const unsigned int set_primes[] = {
+        193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157, 98317,
+        196613, 393241, 786433, 1572869, 3145739, 6291469,
+        12582917, 25165843, 50331653, 100663319, 201326611,
+        402653189, 805306457, 1610612741,
 };
 
-static int set_num_primes = sizeof(set_primes) / sizeof(int);
+static const int set_num_primes = sizeof(set_primes) / sizeof(int);
 
 static void set_allocate_table(Set *set)
 {
