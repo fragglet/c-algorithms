@@ -386,21 +386,14 @@ void test_list_to_array(void)
 	assert(array[3] == &variable4);
 }
 
-static void test_list_foreach_foreach(void *data, void *vcounter)
+void test_list_iterate(void)
 {
-	int *counter;
-
-	counter = (int *) vcounter;
-
-	++*counter;
-}
-
-void test_list_foreach(void)
-{
-	int a;
-	int i;
-	int counter;
 	ListEntry *list;
+        ListIterator *iter;
+	int i;
+        int a;
+	int counter;
+        int *data;
 
 	/* Create a list with 50 entries */
 
@@ -414,7 +407,20 @@ void test_list_foreach(void)
 
 	counter = 0;
 
-	list_foreach(list, test_list_foreach_foreach, &counter);
+        iter = list_iterate(&list);
+
+        while (list_iter_has_more(iter)) {
+                data = (int *) list_iter_next(iter);
+                ++counter;
+
+                if ((counter % 2) == 0) {
+                        /* Delete half the entries in the list.  */
+
+                        list_iter_remove(iter);
+                }
+        }
+
+        list_iter_free(iter);
 
 	assert(counter == 50);
 
@@ -423,10 +429,14 @@ void test_list_foreach(void)
 	list = NULL;
 	counter = 0;
 
-	list_foreach(list, test_list_foreach_foreach, &counter);
+        iter = list_iterate(&list);
+
+        while (list_iter_has_more(iter)) {
+                data = (int *) list_iter_next(iter);
+                ++counter;
+        }
 
 	assert(counter == 0);
-
 }
 
 int main(int argc, char *argv[])
@@ -443,7 +453,7 @@ int main(int argc, char *argv[])
 	test_list_sort();
 	test_list_find_data();
 	test_list_to_array();
-	test_list_foreach();
+	test_list_iterate();
 
 	return 0;
 }

@@ -75,14 +75,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
 typedef struct _ListEntry ListEntry;
 
-/**
- * Callback function used for iterating over a list.
- *
- * @param data        The element being iterated over.
- * @param user_data   Extra data specified by the user.
+/** 
+ * Structure used to iterate over a list.
  */
 
-typedef void (*ListIterator)(void *data, void *user_data);
+typedef struct _ListIterator ListIterator;
 
 /**
  * Callback function used to compare values in a list when sorting.
@@ -206,16 +203,6 @@ int list_length(ListEntry *list);
 
 void **list_to_array(ListEntry *list);
 
-/** 
- * Iterate over all entries in a list.
- *
- * @param list       The list.
- * @param callback   Callback function to invoke for each entry in the list.
- * @param user_data  Extra data to pass to the callback function.
- */
-
-void list_foreach(ListEntry *list, ListIterator callback, void *user_data);
-
 /**
  * Remove an entry from a list.
  *
@@ -262,6 +249,57 @@ void list_sort(ListEntry **list, ListCompareFunc compare_func);
 ListEntry *list_find_data(ListEntry *list, 
                           ListEqualFunc callback,
                           void *data);
+
+/** 
+ * Create an iterator to iterate over the values in a list.
+ * The iterator should be freed once iterating has completed, using
+ * the function @ref list_iter_free.
+ *
+ * @param list           A pointer to the list to iterate over.
+ * @return               A new iterator.
+ */
+
+ListIterator *list_iterate(ListEntry **list);
+
+/**
+ * Determine if there are more values in the list to iterate over.  When
+ * iteration is finished, the iterator should be freed using 
+ * @ref list_iter_free.
+ *
+ * @param iterator        The list iterator.
+ * @return                Zero if there are no more values in the list to
+ *                        iterate over, non-zero if there are more values to
+ *                        read.
+ */
+
+int list_iter_has_more(ListIterator *iter);
+
+/**
+ * Using a list iterator, retrieve the next value from the list. 
+ *
+ * @param iterator        The list iterator.
+ * @return                The next value from the list, or NULL if there are
+ *                        no more values in the list.
+ */
+        
+void *list_iter_next(ListIterator *iter);
+
+/** 
+ * Delete the current entry in the list (the value last returned from
+ * list_iter_next)
+ *
+ * @param iterator        The list iterator.
+ */
+
+void list_iter_remove(ListIterator *iter);
+
+/**
+ * Free back a list iterator.
+ *
+ * @param iterator        The list iterator.
+ */
+
+void list_iter_free(ListIterator *iter);
 
 #endif /* #ifndef ALGORITHM_LIST_H */
 
