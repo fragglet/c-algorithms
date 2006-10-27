@@ -69,10 +69,10 @@ struct _SetIterator {
  * possible from the nearest powers of two. */
 
 static const unsigned int set_primes[] = {
-        193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157, 98317,
-        196613, 393241, 786433, 1572869, 3145739, 6291469,
-        12582917, 25165843, 50331653, 100663319, 201326611,
-        402653189, 805306457, 1610612741,
+	193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157, 98317,
+	196613, 393241, 786433, 1572869, 3145739, 6291469,
+	12582917, 25165843, 50331653, 100663319, 201326611,
+	402653189, 805306457, 1610612741,
 };
 
 static const int set_num_primes = sizeof(set_primes) / sizeof(int);
@@ -94,7 +94,7 @@ static int set_allocate_table(Set *set)
 
 	set->table = calloc(set->table_size, sizeof(SetEntry *));
 
-        return set->table != NULL;
+	return set->table != NULL;
 }
 
 static void set_free_entry(Set *set, SetEntry *entry) 
@@ -119,10 +119,10 @@ Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func)
 
 	new_set = (Set *) malloc(sizeof(Set));
 
-        if (new_set == NULL) {
-                return NULL;
-        }
-        
+	if (new_set == NULL) {
+		return NULL;
+	}
+	
 	new_set->hash_func = hash_func;
 	new_set->equal_func = equal_func;
 	new_set->entries = 0;
@@ -132,9 +132,9 @@ Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func)
 	/* Allocate the table */
 	
 	if (!set_allocate_table(new_set)) {
-                free(new_set);
-                return NULL;
-        }
+		free(new_set);
+		return NULL;
+	}
 
 	return new_set;
 }
@@ -183,7 +183,7 @@ static int set_enlarge(Set *set)
 	SetEntry *next;
 	SetEntry **old_table;
 	int old_table_size;
-        int old_prime_index;
+	int old_prime_index;
 	int index;
 	int i;
 
@@ -191,7 +191,7 @@ static int set_enlarge(Set *set)
 	
 	old_table = set->table;
 	old_table_size = set->table_size;
-        old_prime_index = set->prime_index;
+	old_prime_index = set->prime_index;
 
 	/* Use the next table size from the prime number array */
 
@@ -200,12 +200,12 @@ static int set_enlarge(Set *set)
 	/* Allocate the new table */
 
 	if (!set_allocate_table(set)) {
-                set->table = old_table;
-                set->table_size = old_table_size;
-                set->prime_index = old_prime_index;
+		set->table = old_table;
+		set->table_size = old_table_size;
+		set->prime_index = old_prime_index;
 
-                return 0;
-        }
+		return 0;
+	}
 
 	/* Iterate through all entries in the old table and add them
 	 * to the new one */
@@ -236,9 +236,9 @@ static int set_enlarge(Set *set)
 
 	free(old_table);
 
-        /* Resized successfully */
+	/* Resized successfully */
 
-        return 1;
+	return 1;
 }
 
 int set_insert(Set *set, void *data)
@@ -255,8 +255,8 @@ int set_insert(Set *set, void *data)
 		/* The table is more than 1/3 full and must be increased in size */
 
 		if (!set_enlarge(set)) {
-                        return 0;
-                }
+			return 0;
+		}
 	}
 
 	/* Use the hash of the data to determine an index to insert into the 
@@ -287,10 +287,10 @@ int set_insert(Set *set, void *data)
 
 	newentry = (SetEntry *) malloc(sizeof(SetEntry));
 
-        if (newentry == NULL) {
-                return 0;
-        }
-        
+	if (newentry == NULL) {
+		return 0;
+	}
+	
 	newentry->data = data;
 	
 	/* Link into chain */
@@ -343,9 +343,9 @@ int set_remove(Set *set, void *data)
 			return 1;
 		}
 
-                /* Advance to the next entry */
+		/* Advance to the next entry */
 
-                rover = &((*rover)->next);
+		rover = &((*rover)->next);
 	}
 
 	/* Not found in set */
@@ -400,10 +400,10 @@ void **set_to_array(Set *set)
 	
 	array = malloc(sizeof(void *) * set->entries);
 
-        if (array == NULL) {
-                return NULL;
-        }
-        
+	if (array == NULL) {
+		return NULL;
+	}
+	
 	array_counter = 0;
 
 	/* Iterate over all entries in all chains */
@@ -436,9 +436,9 @@ Set *set_union(Set *set1, Set *set2)
 
 	new_set = set_new(set1->hash_func, set1->equal_func);
 
-        if (new_set == NULL) {
-                return NULL;
-        }
+	if (new_set == NULL) {
+		return NULL;
+	}
 
 	/* Add all values from the first set */
 	
@@ -454,11 +454,11 @@ Set *set_union(Set *set1, Set *set2)
 
 		if (!set_insert(new_set, value)) {
 
-                        /* Failed to insert */
-                        
-                        set_free(new_set);
-                        return NULL;
-                }
+			/* Failed to insert */
+			
+			set_free(new_set);
+			return NULL;
+		}
 	}
 
 	set_iter_free(iterator);
@@ -479,11 +479,11 @@ Set *set_union(Set *set1, Set *set2)
 		if (set_query(new_set, value) == 0) {
 			if (!set_insert(new_set, value)) {
 
-                                /* Failed to insert */
+				/* Failed to insert */
 
-                                set_free(new_set);
-                                return NULL;
-                        }
+				set_free(new_set);
+				return NULL;
+			}
 		}
 	}
 
@@ -500,9 +500,9 @@ Set *set_intersection(Set *set1, Set *set2)
 
 	new_set = set_new(set1->hash_func, set2->equal_func);
 
-        if (new_set == NULL) {
-                return NULL;
-        }
+	if (new_set == NULL) {
+		return NULL;
+	}
 
 	/* Iterate over all values in set 1. */
 
@@ -523,10 +523,10 @@ Set *set_intersection(Set *set1, Set *set2)
 			 * if necessary */
 
 			if (!set_insert(new_set, value)) {
-                                set_free(new_set);
+				set_free(new_set);
 
-                                return NULL;
-                        }
+				return NULL;
+			}
 		}
 	}
 
@@ -544,9 +544,9 @@ SetIterator *set_iterate(Set *set)
 	
 	iter = malloc(sizeof(SetIterator));
 
-        if (iter == NULL) {
-                return NULL;
-        }
+	if (iter == NULL) {
+		return NULL;
+	}
 
 	iter->set = set;
 	iter->current_entry = NULL;

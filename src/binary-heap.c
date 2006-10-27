@@ -38,7 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "binary-heap.h"
 
 struct _BinaryHeap {
-        BinaryHeapType heap_type;
+	BinaryHeapType heap_type;
 	void **values;
 	int num_values;
 	int alloced_size;
@@ -47,11 +47,11 @@ struct _BinaryHeap {
 
 static int binary_heap_cmp(BinaryHeap *heap, void *data1, void *data2)
 {
-        if (heap->heap_type == BINARY_HEAP_TYPE_MIN) {
-                return heap->compare_func(data1, data2);
-        } else {
-                return -heap->compare_func(data1, data2);
-        }
+	if (heap->heap_type == BINARY_HEAP_TYPE_MIN) {
+		return heap->compare_func(data1, data2);
+	} else {
+		return -heap->compare_func(data1, data2);
+	}
 }
 
 BinaryHeap *binary_heap_new(BinaryHeapType heap_type,
@@ -61,11 +61,11 @@ BinaryHeap *binary_heap_new(BinaryHeapType heap_type,
 
 	heap = malloc(sizeof(BinaryHeap));
 
-        if (heap == NULL) {
-                return NULL;
-        }
-        
-        heap->heap_type = heap_type;
+	if (heap == NULL) {
+		return NULL;
+	}
+	
+	heap->heap_type = heap_type;
 	heap->num_values = 0;
 	heap->compare_func = compare_func;
 	
@@ -74,23 +74,23 @@ BinaryHeap *binary_heap_new(BinaryHeapType heap_type,
 	heap->alloced_size = 16;
 	heap->values = malloc(sizeof(void *) * heap->alloced_size);
 
-        if (heap->values == NULL) {
-                free(heap);
-                return NULL;
-        }
+	if (heap->values == NULL) {
+		free(heap);
+		return NULL;
+	}
 	
 	return heap;
 }
 
 void binary_heap_free(BinaryHeap *heap)
 {
-        free(heap->values);
-        free(heap);
+	free(heap->values);
+	free(heap);
 }
 
 int binary_heap_insert(BinaryHeap *heap, void *value)
 {
-        void **new_values;
+	void **new_values;
 	int index;
 	int parent;
 
@@ -104,11 +104,11 @@ int binary_heap_insert(BinaryHeap *heap, void *value)
 		new_values = realloc(heap->values, 
 		                     sizeof(void *) * heap->alloced_size);
 
-                if (new_values == NULL) {
-                        return 0;
-                }
-                
-                heap->values = new_values;
+		if (new_values == NULL) {
+			return 0;
+		}
+		
+		heap->values = new_values;
 	}
 
 	/* Add to the bottom of the heap and start from there */
@@ -148,7 +148,7 @@ int binary_heap_insert(BinaryHeap *heap, void *value)
 
 	heap->values[index] = value;
 
-        return 1;
+	return 1;
 }
 
 void *binary_heap_pop(BinaryHeap *heap)
@@ -188,15 +188,15 @@ void *binary_heap_pop(BinaryHeap *heap)
 
 		if (child1 < heap->num_values
 		 && binary_heap_cmp(heap, 
-                                    new_value, 
-                                    heap->values[child1]) > 0) {
+		                    new_value, 
+		                    heap->values[child1]) > 0) {
 
 			/* Left child is less than the node.  We need to swap
 			 * with one of the children, whichever is less. */
 
 			if (child2 < heap->num_values
 			 && binary_heap_cmp(heap,
-                                            heap->values[child1],
+			                    heap->values[child1],
 			                    heap->values[child2]) > 0) {
 				next_index = child2;
 			} else {
@@ -205,8 +205,8 @@ void *binary_heap_pop(BinaryHeap *heap)
 			
 		} else if (child2 < heap->num_values
 		        && binary_heap_cmp(heap, 
-                                           new_value, 
-                                           heap->values[child2]) > 0) {
+		                           new_value, 
+		                           heap->values[child2]) > 0) {
 
 			/* Right child is less than the node.  Swap with the 
 			 * right child. */
@@ -230,7 +230,7 @@ void *binary_heap_pop(BinaryHeap *heap)
 		index = next_index;
 	}
 
-    return result;
+	return result;
 }
 
 int binary_heap_num_entries(BinaryHeap *heap)

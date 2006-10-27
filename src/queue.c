@@ -58,9 +58,9 @@ Queue *queue_new(void)
 
 	queue = (Queue *) malloc(sizeof(Queue));
 
-        if (queue == NULL) {
-                return NULL;
-        }
+	if (queue == NULL) {
+		return NULL;
+	}
 	
 	queue->head = NULL;
 	queue->tail = NULL;
@@ -89,10 +89,10 @@ int queue_push_head(Queue *queue, void *data)
 
 	new_entry = malloc(sizeof(QueueEntry));
 
-        if (new_entry == NULL) {
-                return 0;
-        }
-        
+	if (new_entry == NULL) {
+		return 0;
+	}
+	
 	new_entry->data = data;
 	new_entry->prev = NULL;
 	new_entry->next = queue->head;
@@ -119,7 +119,7 @@ int queue_push_head(Queue *queue, void *data)
 		queue->head = new_entry;
 	}
 
-        return 1;
+	return 1;
 }
 
 void *queue_pop_head(Queue *queue)
@@ -176,10 +176,10 @@ int queue_push_tail(Queue *queue, void *data)
 
 	new_entry = malloc(sizeof(QueueEntry));
 
-        if (new_entry == NULL) {
-                return 0;
-        }
-        
+	if (new_entry == NULL) {
+		return 0;
+	}
+	
 	new_entry->data = data;
 	new_entry->prev = queue->tail;
 	new_entry->next = NULL;
@@ -206,7 +206,7 @@ int queue_push_tail(Queue *queue, void *data)
 		queue->tail = new_entry;
 	}
 
-        return 1;
+	return 1;
 }
 
 void *queue_pop_tail(Queue *queue)

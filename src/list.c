@@ -48,9 +48,9 @@ struct _ListEntry {
 /* Iterator for iterating over a doubly-linked list. */
 
 struct _ListIterator {
-        ListEntry **list;
-        ListEntry **prev_next;
-        ListEntry *current;
+	ListEntry **list;
+	ListEntry **prev_next;
+	ListEntry *current;
 };
 
 void list_free(ListEntry *list)
@@ -81,10 +81,10 @@ ListEntry *list_prepend(ListEntry **list, void *data)
 
 	newentry = malloc(sizeof(ListEntry));
 
-        if (newentry == NULL) {
-                return NULL;
-        }
-        
+	if (newentry == NULL) {
+		return NULL;
+	}
+	
 	newentry->data = data;
 
 	/* Hook into the list start */
@@ -108,10 +108,10 @@ ListEntry *list_append(ListEntry **list, void *data)
 
 	newentry = malloc(sizeof(ListEntry));
 
-        if (newentry == NULL) {
-                return NULL;
-        }
-        
+	if (newentry == NULL) {
+		return NULL;
+	}
+	
 	newentry->data = data;
 	newentry->next = NULL;
 	
@@ -231,9 +231,9 @@ void **list_to_array(ListEntry *list)
 
 	array = malloc(sizeof(void *) * listlen);
 
-        if (array == NULL) {
-                return NULL;
-        }
+	if (array == NULL) {
+		return NULL;
+	}
 	
 	/* Add all entries to the array */
 	
@@ -280,7 +280,7 @@ int list_remove_entry(ListEntry **list, ListEntry *entry)
 
 		/* This is not the first in the list, so we must have a 
 		 * previous entry.  Update its 'next' pointer to the new 
-                 * value */
+		 * value */
 
 		entry->prev->next = entry->next;
 
@@ -320,7 +320,7 @@ int list_remove_data(ListEntry **list, ListEqualFunc callback, void *data)
 		if (callback(rover->data, data)) {
 
 			/* This data needs to be removed.  Unlink this entry 
-                         * from the list. */
+			 * from the list. */
 
 			if (rover->prev == NULL) {
 				
@@ -330,7 +330,7 @@ int list_remove_data(ListEntry **list, ListEqualFunc callback, void *data)
 			} else {
 
 				/* Point the previous entry at its new 
-                                 * location */
+				 * location */
 				
 				rover->prev->next = rover->next;
 			}
@@ -477,102 +477,102 @@ ListEntry *list_find_data(ListEntry *list,
 
 ListIterator *list_iterate(ListEntry **list)
 {
-        ListIterator *iter;
+	ListIterator *iter;
 
-        /* Create a new iterator */
+	/* Create a new iterator */
 
-        iter = malloc(sizeof(ListIterator));
+	iter = malloc(sizeof(ListIterator));
 
-        if (iter == NULL) {
-                return NULL;
-        }
+	if (iter == NULL) {
+		return NULL;
+	}
 
-        /* Save pointer to the list */
-        
-        iter->list = list;
+	/* Save pointer to the list */
+	
+	iter->list = list;
 
-        /* These are NULL until the first call to list_iter_next: */
+	/* These are NULL until the first call to list_iter_next: */
 
-        iter->prev_next = NULL;
-        iter->current = NULL;
+	iter->prev_next = NULL;
+	iter->current = NULL;
 
-        return iter;
+	return iter;
 }
 
 int list_iter_has_more(ListIterator *iter)
 {
-        if (iter->prev_next == NULL) {
-               
-                /* The list has just been created.  list_iter_next
-                 * has not been called yet.  There are more entries 
-                 * if the list is not empty. */
-                
-                return *iter->list != NULL;
+	if (iter->prev_next == NULL) {
+	       
+		/* The list has just been created.  list_iter_next
+		 * has not been called yet.  There are more entries 
+		 * if the list is not empty. */
+		
+		return *iter->list != NULL;
 
-        } else if (*iter->prev_next != iter->current) {
+	} else if (*iter->prev_next != iter->current) {
 
-                /* Current entry has been deleted since the last call
-                 * to list_iter_next.  Use prev_next as an indicator 
-                 * of the next entry. */
+		/* Current entry has been deleted since the last call
+		 * to list_iter_next.  Use prev_next as an indicator 
+		 * of the next entry. */
 
-                return *iter->prev_next != NULL;
+		return *iter->prev_next != NULL;
 
-        } else {
-                /* The current entry as not been deleted since the last 
-                 * call to list_iter_next: there is a next entry if 
-                 * current->next is not NULL */
+	} else {
+		/* The current entry as not been deleted since the last 
+		 * call to list_iter_next: there is a next entry if 
+		 * current->next is not NULL */
 
-                return iter->current->next != NULL;
-        }
+		return iter->current->next != NULL;
+	}
 }
 
 void *list_iter_next(ListIterator *iter)
 {
-        if (iter->prev_next == NULL) {
-                /* First call to list_iter_next.  Initialise. */
+	if (iter->prev_next == NULL) {
+		/* First call to list_iter_next.  Initialise. */
 
-                /* Initial previous next link is the pointer to the list 
-                 * start variable */
+		/* Initial previous next link is the pointer to the list 
+		 * start variable */
 
-                iter->prev_next = iter->list;
+		iter->prev_next = iter->list;
 
-                /* Start at the first element */
+		/* Start at the first element */
 
-                iter->current = *iter->list;
+		iter->current = *iter->list;
 
-        } else if (*iter->prev_next != iter->current) {
+	} else if (*iter->prev_next != iter->current) {
 
-                /* The current value has been deleted since the last call
-                 * to list_iter_next.  Use what prev_next is pointing to 
-                 * now as the next entry. */
+		/* The current value has been deleted since the last call
+		 * to list_iter_next.  Use what prev_next is pointing to 
+		 * now as the next entry. */
 
-                iter->current = *iter->prev_next;
+		iter->current = *iter->prev_next;
 
-        } else {
+	} else {
 
-                /* Current entry has not been deleted since the last call
-                 * to list_iter_next.  Simply advance to the next entry
-                 * in the list. */
+		/* Current entry has not been deleted since the last call
+		 * to list_iter_next.  Simply advance to the next entry
+		 * in the list. */
 
-                if (iter->current != NULL) {
-                        iter->prev_next = &iter->current->next;
-                        iter->current = iter->current->next;
-                }
-                
-        }
-        
-        /* Return data from the current entry */
+		if (iter->current != NULL) {
+			iter->prev_next = &iter->current->next;
+			iter->current = iter->current->next;
+		}
+		
+	}
+	
+	/* Return data from the current entry */
 
-        return iter->current->data;
+	return iter->current->data;
 }
 
 void list_iter_remove(ListIterator *iter)
 {
-        list_remove_entry(iter->list, iter->current);
+	list_remove_entry(iter->list, iter->current);
 }
 
 void list_iter_free(ListIterator *iter)
 {
-        free(iter);
+	free(iter);
 }
 

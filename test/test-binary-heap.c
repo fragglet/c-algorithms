@@ -41,97 +41,97 @@ POSSIBILITY OF SUCH DAMAGE.
 
 void test_binary_heap_new_free(void)
 {
-        BinaryHeap *heap;
-        int i;
+	BinaryHeap *heap;
+	int i;
 
-        for (i=0; i<1000; ++i) {
-                heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
-                binary_heap_free(heap);
-        }
+	for (i=0; i<1000; ++i) {
+		heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
+		binary_heap_free(heap);
+	}
 }
 
 void test_binary_heap_insert(void)
 {
-        BinaryHeap *heap;
-        int *val;
-        int i;
+	BinaryHeap *heap;
+	int *val;
+	int i;
 
-        heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
+	heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
 
-        for (i=0; i<1000; ++i) {
-                val = malloc(sizeof(int));
-                *val = i;
-                binary_heap_insert(heap, val);
-        }
-        assert(binary_heap_num_entries(heap) == 1000);
+	for (i=0; i<1000; ++i) {
+		val = malloc(sizeof(int));
+		*val = i;
+		binary_heap_insert(heap, val);
+	}
+	assert(binary_heap_num_entries(heap) == 1000);
 
-        binary_heap_free(heap);
+	binary_heap_free(heap);
 }
 
 void test_min_heap(void)
 {
-        BinaryHeap *heap;
-        int *val;
-        int i;
+	BinaryHeap *heap;
+	int *val;
+	int i;
 
-        heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
+	heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
 
-        /* Push a load of values onto the heap */
+	/* Push a load of values onto the heap */
 
-        for (i=0; i<1000; ++i) {
-                val = malloc(sizeof(int));
-                *val = i;
-                binary_heap_insert(heap, val);
-        }
+	for (i=0; i<1000; ++i) {
+		val = malloc(sizeof(int));
+		*val = i;
+		binary_heap_insert(heap, val);
+	}
 
-        /* Pop values off the heap and check they are in order */
+	/* Pop values off the heap and check they are in order */
 
-        i = -1;
-        while (binary_heap_num_entries(heap) > 0) {
-                val = (int *) binary_heap_pop(heap);
+	i = -1;
+	while (binary_heap_num_entries(heap) > 0) {
+		val = (int *) binary_heap_pop(heap);
 
-                assert(*val == i + 1);
-                i = *val;
-        }
+		assert(*val == i + 1);
+		i = *val;
+	}
 
-        binary_heap_free(heap);
+	binary_heap_free(heap);
 }
 
 void test_max_heap(void)
 {
-        BinaryHeap *heap;
-        int *val;
-        int i;
+	BinaryHeap *heap;
+	int *val;
+	int i;
 
-        heap = binary_heap_new(BINARY_HEAP_TYPE_MAX, int_compare);
+	heap = binary_heap_new(BINARY_HEAP_TYPE_MAX, int_compare);
 
-        /* Push a load of values onto the heap */
+	/* Push a load of values onto the heap */
 
-        for (i=0; i<1000; ++i) {
-                val = malloc(sizeof(int));
-                *val = i;
-                binary_heap_insert(heap, val);
-        }
+	for (i=0; i<1000; ++i) {
+		val = malloc(sizeof(int));
+		*val = i;
+		binary_heap_insert(heap, val);
+	}
 
-        /* Pop values off the heap and check they are in order */
+	/* Pop values off the heap and check they are in order */
 
-        i = 1000;
-        while (binary_heap_num_entries(heap) > 0) {
-                val = (int *) binary_heap_pop(heap);
+	i = 1000;
+	while (binary_heap_num_entries(heap) > 0) {
+		val = (int *) binary_heap_pop(heap);
 
-                assert(*val == i - 1);
-                i = *val;
-        }
+		assert(*val == i - 1);
+		i = *val;
+	}
 
-        binary_heap_free(heap);
+	binary_heap_free(heap);
 }
 
 int main(int argc, char *argv[])
 {
-        test_binary_heap_new_free();
-        test_min_heap();
-        test_max_heap();
+	test_binary_heap_new_free();
+	test_min_heap();
+	test_max_heap();
 
-        return 0;
+	return 0;
 }
 

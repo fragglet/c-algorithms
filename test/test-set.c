@@ -146,46 +146,46 @@ void test_set_remove(void)
 {
 	Set *set;
 	int i;
-        int num_entries;
+	int num_entries;
 
 	set = generate_set();
 
-        num_entries = set_num_entries(set);
-        assert(num_entries == 10000);
+	num_entries = set_num_entries(set);
+	assert(num_entries == 10000);
 
 	/* Remove some entries */
 
-        for (i=4000; i<6000; ++i) {
-                /* Check this is in the set */
+	for (i=4000; i<6000; ++i) {
+		/* Check this is in the set */
 
-                assert(set_query(set, &i) != 0);
+		assert(set_query(set, &i) != 0);
 
-                /* Remove it */
+		/* Remove it */
 
-                assert(set_remove(set, &i) != 0);
+		assert(set_remove(set, &i) != 0);
 
-                /* Check the number of entries decreases */
+		/* Check the number of entries decreases */
 
-                assert(set_num_entries(set) == num_entries - 1);
+		assert(set_num_entries(set) == num_entries - 1);
 
-                /* Check it is no longer in the set */
+		/* Check it is no longer in the set */
 
-                assert(set_query(set, &i) == 0);
+		assert(set_query(set, &i) == 0);
 
-                --num_entries;
-        }
+		--num_entries;
+	}
 
 	/* Try to remove some invalid entries */
 
-        for (i=-1000; i<-500; ++i) {
-        	assert(set_remove(set, &i) == 0);
-        	assert(set_num_entries(set) == num_entries);
-        }
+	for (i=-1000; i<-500; ++i) {
+		assert(set_remove(set, &i) == 0);
+		assert(set_num_entries(set) == num_entries);
+	}
 
-        for (i=50000; i<51000; ++i) {
-        	assert(set_remove(set, &i) == 0);
-        	assert(set_num_entries(set) == num_entries);
-        }
+	for (i=50000; i<51000; ++i) {
+		assert(set_remove(set, &i) == 0);
+		assert(set_num_entries(set) == num_entries);
+	}
 }
 
 void test_set_union(void)

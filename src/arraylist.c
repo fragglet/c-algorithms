@@ -55,10 +55,10 @@ ArrayList *arraylist_new(int length)
 
 	new_arraylist = (ArrayList *) malloc(sizeof(ArrayList));
 
-        if (new_arraylist == NULL) {
-                return NULL;
-        }
-        
+	if (new_arraylist == NULL) {
+		return NULL;
+	}
+	
 	new_arraylist->_alloced = length;
 	new_arraylist->length = 0;
 
@@ -66,10 +66,10 @@ ArrayList *arraylist_new(int length)
 
 	new_arraylist->data = malloc(length * sizeof(void *));
 
-        if (new_arraylist->data == NULL) {
-                free(new_arraylist);
-                return NULL;
-        }
+	if (new_arraylist->data == NULL) {
+		free(new_arraylist);
+		return NULL;
+	}
 
 	return new_arraylist;
 }
@@ -86,7 +86,7 @@ void arraylist_free(ArrayList *arraylist)
 
 static int arraylist_enlarge(ArrayList *arraylist)
 {
-        void **data;
+	void **data;
 
 	/* Double the allocated size */
 
@@ -97,13 +97,13 @@ static int arraylist_enlarge(ArrayList *arraylist)
 	data = realloc(arraylist->data, 
 	               sizeof(void *) * arraylist->_alloced);
 
-        if (data == NULL) {
-                return 0;
-        } else {
-                arraylist->data = data;
+	if (data == NULL) {
+		return 0;
+	} else {
+		arraylist->data = data;
 
-                return 1;
-        }
+		return 1;
+	}
 }
 
 int arraylist_insert(ArrayList *arraylist, int index, void *data)
@@ -118,8 +118,8 @@ int arraylist_insert(ArrayList *arraylist, int index, void *data)
 	
 	if (arraylist->length + 1 > arraylist->_alloced) {
 		if (!arraylist_enlarge(arraylist)) {
-                        return 0;
-                }
+			return 0;
+		}
 	}
 
 	/* Move the contents of the array forward from the index

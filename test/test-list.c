@@ -389,11 +389,11 @@ void test_list_to_array(void)
 void test_list_iterate(void)
 {
 	ListEntry *list;
-        ListIterator *iter;
+	ListIterator *iter;
 	int i;
-        int a;
+	int a;
 	int counter;
-        int *data;
+	int *data;
 
 	/* Create a list with 50 entries */
 
@@ -407,20 +407,20 @@ void test_list_iterate(void)
 
 	counter = 0;
 
-        iter = list_iterate(&list);
+	iter = list_iterate(&list);
 
-        while (list_iter_has_more(iter)) {
-                data = (int *) list_iter_next(iter);
-                ++counter;
+	while (list_iter_has_more(iter)) {
+		data = (int *) list_iter_next(iter);
+		++counter;
 
-                if ((counter % 2) == 0) {
-                        /* Delete half the entries in the list.  */
+		if ((counter % 2) == 0) {
+			/* Delete half the entries in the list.  */
 
-                        list_iter_remove(iter);
-                }
-        }
+			list_iter_remove(iter);
+		}
+	}
 
-        list_iter_free(iter);
+	list_iter_free(iter);
 
 	assert(counter == 50);
 
@@ -429,12 +429,12 @@ void test_list_iterate(void)
 	list = NULL;
 	counter = 0;
 
-        iter = list_iterate(&list);
+	iter = list_iterate(&list);
 
-        while (list_iter_has_more(iter)) {
-                data = (int *) list_iter_next(iter);
-                ++counter;
-        }
+	while (list_iter_has_more(iter)) {
+		data = (int *) list_iter_next(iter);
+		++counter;
+	}
 
 	assert(counter == 0);
 }

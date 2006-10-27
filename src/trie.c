@@ -76,10 +76,10 @@ Trie *trie_new(void)
 
 	new_trie = (Trie *) malloc(sizeof(Trie));
 
-        if (new_trie == NULL) {
-                return NULL;
-        }
-        
+	if (new_trie == NULL) {
+		return NULL;
+	}
+	
 	new_trie->root_node = NULL;
 
 	return new_trie;
@@ -125,9 +125,9 @@ int trie_insert(Trie *trie, char *key, void *value)
 
 			node = (TrieNode *) calloc(1, sizeof(TrieNode));
 
-                        if (node == NULL) {
-                                return 0;
-                        }
+			if (node == NULL) {
+				return 0;
+			}
 
 			/* Link in to the trie */
 
@@ -159,7 +159,7 @@ int trie_insert(Trie *trie, char *key, void *value)
 		++p;
 	}
 
-        return 1;
+	return 1;
 }
 
 void trie_remove(Trie *trie, char *key)
