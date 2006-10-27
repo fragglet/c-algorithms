@@ -84,7 +84,7 @@ static const int hash_table_num_primes
 /* Internal function used to allocate the table on hashtable creation
  * and when enlarging the table */
 
-static void hash_table_allocate_table(HashTable *hashtable)
+static int hash_table_allocate_table(HashTable *hashtable)
 {
 	/* Determine the table size based on the current prime index.  
 	 * An attempt is made here to ensure sensible behavior if the
@@ -101,6 +101,8 @@ static void hash_table_allocate_table(HashTable *hashtable)
 
 	hashtable->table = calloc(hashtable->table_size, 
 	                          sizeof(HashTableEntry *));
+
+        return hashtable->table != NULL;
 }
 
 /* Free an entry, calling the free functions if there are any registered */
@@ -133,6 +135,11 @@ HashTable *hash_table_new(HashTableHashFunc hash_func,
 	/* Allocate a new hash table structure */
 	
 	hashtable = (HashTable *) malloc(sizeof(HashTable));
+
+        if (hashtable == NULL) {
+                return NULL;
+        }
+        
 	hashtable->hash_func = hash_func;
 	hashtable->equal_func = equal_func;
 	hashtable->key_free_func = NULL;
@@ -142,7 +149,11 @@ HashTable *hash_table_new(HashTableHashFunc hash_func,
 
 	/* Allocate the table */
 
-	hash_table_allocate_table(hashtable);
+	if (!hash_table_allocate_table(hashtable)) {
+                free(hashtable);
+
+                return NULL;
+        }
 
 	return hashtable;
 }
@@ -182,10 +193,11 @@ void hash_table_register_free_functions(HashTable *hashtable,
 }
 
 
-static void hash_table_enlarge(HashTable *hashtable)
+static int hash_table_enlarge(HashTable *hashtable)
 {
 	HashTableEntry **old_table;
 	int old_table_size;
+        int old_prime_index;
 	HashTableEntry *rover;
 	HashTableEntry *next;
 	int index;
@@ -195,11 +207,22 @@ static void hash_table_enlarge(HashTable *hashtable)
 	
 	old_table = hashtable->table;
 	old_table_size = hashtable->table_size;
+        old_prime_index = hashtable->prime_index;
 
 	/* Allocate a new, larger table */
 
 	++hashtable->prime_index;
-	hash_table_allocate_table(hashtable);
+        
+	if (!hash_table_allocate_table(hashtable)) {
+
+                /* Failed to allocate the new table */
+
+                hashtable->table = old_table;
+                hashtable->table_size = old_table_size;
+                hashtable->prime_index = old_prime_index;
+
+                return 0;
+        }
 
 	/* Link all entries from all chains into the new table */
 
@@ -222,10 +245,12 @@ static void hash_table_enlarge(HashTable *hashtable)
 
 			rover = next;
 		}
-	}    
+	}
+       
+        return 1;
 }
 
-void hash_table_insert(HashTable *hashtable, void *key, void *value) 
+int hash_table_insert(HashTable *hashtable, void *key, void *value) 
 {
 	HashTableEntry *rover;
 	HashTableEntry *newentry;
@@ -239,7 +264,12 @@ void hash_table_insert(HashTable *hashtable, void *key, void *value)
 		
 		/* Table is more than 1/3 full */
 
-		hash_table_enlarge(hashtable);
+		if (!hash_table_enlarge(hashtable)) {
+
+                        /* Failed to enlarge the table */
+
+                        return 0;
+                }
 	}
 
 	/* Generate the hash of the key and hence the index into the table */
@@ -263,8 +293,8 @@ void hash_table_insert(HashTable *hashtable, void *key, void *value)
 				hashtable->value_free_func(rover->value);
 			}
 
-			/* Same with the key: use the new key value and free the 
-			 * old one */
+			/* Same with the key: use the new key value and free 
+                         * the old one */
 
 			if (hashtable->key_free_func != NULL) {
 				hashtable->key_free_func(rover->key);
@@ -275,7 +305,7 @@ void hash_table_insert(HashTable *hashtable, void *key, void *value)
 
 			/* Finished */
 			
-			return;
+			return 1;
 		}
 		rover = rover->next;
 	}
@@ -283,6 +313,10 @@ void hash_table_insert(HashTable *hashtable, void *key, void *value)
 	/* Not in the hashtable yet.  Create a new entry */
 
 	newentry = (HashTableEntry *) malloc(sizeof(HashTableEntry));
+
+        if (newentry == NULL) {
+                return 0;
+        }
 
 	newentry->key = key;
 	newentry->value = value;
@@ -295,6 +329,10 @@ void hash_table_insert(HashTable *hashtable, void *key, void *value)
 	/* Maintain the count of the number of entries */
 
 	++hashtable->entries;
+
+        /* Added successfully */
+
+        return 1;
 }
 
 void *hash_table_lookup(HashTable *hashtable, void *key)
@@ -389,6 +427,11 @@ HashTableIterator *hash_table_iterate(HashTable *hashtable)
 	int chain;
 	
 	iterator = (HashTableIterator *) malloc(sizeof(HashTableIterator));
+
+        if (iterator == NULL) {
+                return NULL;
+        }
+        
 	iterator->hashtable = hashtable;
 	iterator->current_entry = NULL;
 

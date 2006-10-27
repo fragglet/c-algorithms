@@ -93,7 +93,8 @@ typedef struct _BinaryHeap BinaryHeap;
  * @param heap_type        The type of heap: min heap or max heap.
  * @param compare_func     Pointer to a function used to compare the priority
  *                         of values in the heap.
- * @return                 A new binary heap.
+ * @return                 A new binary heap, or NULL if it was not possible
+ *                         to allocate the memory.
  */
 
 BinaryHeap *binary_heap_new(BinaryHeapType heap_type,
@@ -112,9 +113,12 @@ void binary_heap_free(BinaryHeap *heap);
  *
  * @param heap             The heap to insert into.
  * @param value            The value to insert.
+ * @return                 Non-zero if the entry was added, or zero if it
+ *                         was not possible to allocate memory for the new
+ *                         entry.
  */
 
-void binary_heap_insert(BinaryHeap *heap, void *value);
+int binary_heap_insert(BinaryHeap *heap, void *value);
 
 /**
  * Remove the first value from a binary heap.

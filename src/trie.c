@@ -75,6 +75,11 @@ Trie *trie_new(void)
 	Trie *new_trie;
 
 	new_trie = (Trie *) malloc(sizeof(Trie));
+
+        if (new_trie == NULL) {
+                return NULL;
+        }
+        
 	new_trie->root_node = NULL;
 
 	return new_trie;
@@ -91,7 +96,7 @@ void trie_free(Trie *trie)
 	free(trie);
 }
 
-void trie_insert(Trie *trie, char *key, void *value)
+int trie_insert(Trie *trie, char *key, void *value)
 {
 	TrieNode **rover;
 	TrieNode *node;
@@ -101,7 +106,7 @@ void trie_insert(Trie *trie, char *key, void *value)
 	/* Cannot insert NULL values */
 
 	if (value == NULL) {
-		return;
+		return 0;
 	}
 
 	/* Search down the trie until we reach the end of string,
@@ -119,6 +124,10 @@ void trie_insert(Trie *trie, char *key, void *value)
 			/* Node does not exist, so create it */
 
 			node = (TrieNode *) calloc(1, sizeof(TrieNode));
+
+                        if (node == NULL) {
+                                return 0;
+                        }
 
 			/* Link in to the trie */
 
@@ -149,6 +158,8 @@ void trie_insert(Trie *trie, char *key, void *value)
 		rover = &node->next[c];
 		++p;
 	}
+
+        return 1;
 }
 
 void trie_remove(Trie *trie, char *key)

@@ -71,6 +71,11 @@ SListEntry *slist_prepend(SListEntry **list, void *data)
 	/* Create new entry */
 
 	newentry = malloc(sizeof(SListEntry));
+
+        if (newentry == NULL) {
+                return NULL;
+        }
+        
 	newentry->data = data;
 
 	/* Hook into the list start */
@@ -89,6 +94,11 @@ SListEntry *slist_append(SListEntry **list, void *data)
 	/* Create new list entry */
 
 	newentry = malloc(sizeof(SListEntry));
+
+        if (newentry == NULL) {
+                return NULL;
+        }
+        
 	newentry->data = data;
 	newentry->next = NULL;
 	
@@ -199,7 +209,11 @@ void **slist_to_array(SListEntry *list)
 	
 	listlen = slist_length(list);
 
-	array = calloc(sizeof(void *), listlen);
+	array = malloc(sizeof(void *) * listlen);
+
+        if (array == NULL) {
+                return NULL;
+        }
 	
 	/* Add all entries to the array */
 	

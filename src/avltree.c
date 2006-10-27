@@ -59,6 +59,11 @@ AVLTree *avltree_new(AVLTreeCompareFunc compare_func)
 	AVLTree *new_tree;
 
 	new_tree = (AVLTree *) malloc(sizeof(AVLTree));
+
+        if (new_tree == NULL) {
+                return NULL; 
+        }
+        
 	new_tree->root_node = NULL;
 	new_tree->compare_func = compare_func;
 	new_tree->num_nodes = 0;
@@ -353,6 +358,11 @@ AVLTreeNode *avltree_insert(AVLTree *tree, void *key, void *value)
 	/* Create a new node.  Use the last node visited as the parent link. */
 
 	new_node = (AVLTreeNode *) malloc(sizeof(AVLTreeNode));
+
+        if (new_node == NULL) {
+                return NULL;
+        }
+        
 	new_node->left_child = NULL;
 	new_node->right_child = NULL;
 	new_node->parent = previous_node;
@@ -677,6 +687,11 @@ void **avltree_to_array(AVLTree *tree)
 	/* Allocate the array */
 	
 	array = malloc(sizeof(void *) * tree->num_nodes);
+
+        if (array == NULL) {
+                return NULL;
+        }
+        
 	index = 0;
 
 	/* Add all keys */

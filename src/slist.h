@@ -125,7 +125,8 @@ void slist_free(SListEntry *list);
  *
  * @param list      Pointer to the list to prepend to.
  * @param data      Data to prepend.
- * @return          The new entry in the list.
+ * @return          The new entry in the list, or NULL if it was not possible
+ *                  to allocate a new entry.
  */
 
 SListEntry *slist_prepend(SListEntry **list, void *data);
@@ -135,7 +136,8 @@ SListEntry *slist_prepend(SListEntry **list, void *data);
  *
  * @param list      Pointer to the list to append to.
  * @param data      Data to append.
- * @return          The new entry in the list.
+ * @return          The new entry in the list, or NULL if it was not possible
+ *                  to allocate a new entry.
  */
 
 SListEntry *slist_append(SListEntry **list, void *data);
@@ -193,8 +195,9 @@ int slist_length(SListEntry *list);
  *
  * @param list       The list.
  * @return           A newly-allocated C array containing all values in the
- *                   list.  The length of the array is equal to the length
- *                   of the list (see @ref slist_length).
+ *                   list, or NULL if it was not possible to allocate the 
+ *                   memory for the array.  The length of the array is 
+ *                   equal to the length of the list (see @ref slist_length).
  */
 
 void **slist_to_array(SListEntry *list);

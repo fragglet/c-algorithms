@@ -77,7 +77,7 @@ static const unsigned int set_primes[] = {
 
 static const int set_num_primes = sizeof(set_primes) / sizeof(int);
 
-static void set_allocate_table(Set *set)
+static int set_allocate_table(Set *set)
 {
 	/* Determine the table size based on the current prime index.  
 	 * An attempt is made here to ensure sensible behavior if the
@@ -93,6 +93,8 @@ static void set_allocate_table(Set *set)
 	/* Allocate the table and initialise to NULL */
 
 	set->table = calloc(set->table_size, sizeof(SetEntry *));
+
+        return set->table != NULL;
 }
 
 static void set_free_entry(Set *set, SetEntry *entry) 
@@ -116,6 +118,11 @@ Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func)
 	/* Allocate a new set and fill in the fields */
 
 	new_set = (Set *) malloc(sizeof(Set));
+
+        if (new_set == NULL) {
+                return NULL;
+        }
+        
 	new_set->hash_func = hash_func;
 	new_set->equal_func = equal_func;
 	new_set->entries = 0;
@@ -124,7 +131,10 @@ Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func)
 	
 	/* Allocate the table */
 	
-	set_allocate_table(new_set);
+	if (!set_allocate_table(new_set)) {
+                free(new_set);
+                return NULL;
+        }
 
 	return new_set;
 }
@@ -167,12 +177,13 @@ void set_register_free_function(Set *set, SetFreeFunc free_func)
 	set->free_func = free_func;
 }
 
-static void set_enlarge(Set *set)
+static int set_enlarge(Set *set)
 {
 	SetEntry *rover;
 	SetEntry *next;
 	SetEntry **old_table;
 	int old_table_size;
+        int old_prime_index;
 	int index;
 	int i;
 
@@ -180,6 +191,7 @@ static void set_enlarge(Set *set)
 	
 	old_table = set->table;
 	old_table_size = set->table_size;
+        old_prime_index = set->prime_index;
 
 	/* Use the next table size from the prime number array */
 
@@ -187,7 +199,13 @@ static void set_enlarge(Set *set)
 
 	/* Allocate the new table */
 
-	set_allocate_table(set);
+	if (!set_allocate_table(set)) {
+                set->table = old_table;
+                set->table_size = old_table_size;
+                set->prime_index = old_prime_index;
+
+                return 0;
+        }
 
 	/* Iterate through all entries in the old table and add them
 	 * to the new one */
@@ -217,6 +235,10 @@ static void set_enlarge(Set *set)
 	/* Free back the old table */
 
 	free(old_table);
+
+        /* Resized successfully */
+
+        return 1;
 }
 
 int set_insert(Set *set, void *data)
@@ -232,7 +254,9 @@ int set_insert(Set *set, void *data)
 		
 		/* The table is more than 1/3 full and must be increased in size */
 
-		set_enlarge(set);
+		if (!set_enlarge(set)) {
+                        return 0;
+                }
 	}
 
 	/* Use the hash of the data to determine an index to insert into the 
@@ -262,6 +286,11 @@ int set_insert(Set *set, void *data)
 	/* Make a new entry for this data */
 
 	newentry = (SetEntry *) malloc(sizeof(SetEntry));
+
+        if (newentry == NULL) {
+                return 0;
+        }
+        
 	newentry->data = data;
 	
 	/* Link into chain */
@@ -370,6 +399,11 @@ void **set_to_array(Set *set)
 	/* Create an array to hold the set entries */
 	
 	array = malloc(sizeof(void *) * set->entries);
+
+        if (array == NULL) {
+                return NULL;
+        }
+        
 	array_counter = 0;
 
 	/* Iterate over all entries in all chains */
@@ -394,14 +428,17 @@ void **set_to_array(Set *set)
 	return array;
 }
 
-Set *set_union(Set *set1, Set *set2, SetCopyFunc copy_func)
+Set *set_union(Set *set1, Set *set2)
 {
 	SetIterator *iterator;
 	Set *new_set;
 	void *value;
-	void *copied_value;
 
 	new_set = set_new(set1->hash_func, set1->equal_func);
+
+        if (new_set == NULL) {
+                return NULL;
+        }
 
 	/* Add all values from the first set */
 	
@@ -413,15 +450,15 @@ Set *set_union(Set *set1, Set *set2, SetCopyFunc copy_func)
 
 		value = set_iter_next(iterator);
 
-		/* Copy the value into the new set, copying if necessary */
+		/* Copy the value into the new set */
 
-		if (copy_func != NULL) {
-			copied_value = copy_func(value);
-		} else {
-			copied_value = value;
-		}
+		if (!set_insert(new_set, value)) {
 
-		set_insert(new_set, copied_value);
+                        /* Failed to insert */
+                        
+                        set_free(new_set);
+                        return NULL;
+                }
 	}
 
 	set_iter_free(iterator);
@@ -440,17 +477,13 @@ Set *set_union(Set *set1, Set *set2, SetCopyFunc copy_func)
 		 * If so, do not insert this again */
 
 		if (set_query(new_set, value) == 0) {
+			if (!set_insert(new_set, value)) {
 
-			/* Insert the value into the new set, copying 
-			 * if necessary */
+                                /* Failed to insert */
 
-			if (copy_func != NULL) {
-				copied_value = copy_func(value);
-			} else {
-				copied_value = value;
-			}
-
-			set_insert(new_set, copied_value);
+                                set_free(new_set);
+                                return NULL;
+                        }
 		}
 	}
 
@@ -459,15 +492,17 @@ Set *set_union(Set *set1, Set *set2, SetCopyFunc copy_func)
 	return new_set;
 }
 
-Set *set_intersection(Set *set1, Set *set2, 
-                      SetCopyFunc copy_func)
+Set *set_intersection(Set *set1, Set *set2)
 {
 	Set *new_set;
 	SetIterator *iterator;
 	void *value;
-	void *copied_value;
 
 	new_set = set_new(set1->hash_func, set2->equal_func);
+
+        if (new_set == NULL) {
+                return NULL;
+        }
 
 	/* Iterate over all values in set 1. */
 
@@ -487,13 +522,11 @@ Set *set_intersection(Set *set1, Set *set2,
 			/* Copy the value first before inserting, 
 			 * if necessary */
 
-			if (copy_func != NULL) {
-				copied_value = copy_func(value);
-			} else {
-				copied_value = value;
-			}
+			if (!set_insert(new_set, value)) {
+                                set_free(new_set);
 
-			set_insert(new_set, copied_value);
+                                return NULL;
+                        }
 		}
 	}
 
@@ -510,6 +543,10 @@ SetIterator *set_iterate(Set *set)
 	/* Create a new iterator object */
 	
 	iter = malloc(sizeof(SetIterator));
+
+        if (iter == NULL) {
+                return NULL;
+        }
 
 	iter->set = set;
 	iter->current_entry = NULL;

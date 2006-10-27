@@ -60,6 +60,11 @@ BinaryHeap *binary_heap_new(BinaryHeapType heap_type,
 	BinaryHeap *heap;
 
 	heap = malloc(sizeof(BinaryHeap));
+
+        if (heap == NULL) {
+                return NULL;
+        }
+        
         heap->heap_type = heap_type;
 	heap->num_values = 0;
 	heap->compare_func = compare_func;
@@ -68,6 +73,11 @@ BinaryHeap *binary_heap_new(BinaryHeapType heap_type,
 
 	heap->alloced_size = 16;
 	heap->values = malloc(sizeof(void *) * heap->alloced_size);
+
+        if (heap->values == NULL) {
+                free(heap);
+                return NULL;
+        }
 	
 	return heap;
 }
@@ -78,8 +88,9 @@ void binary_heap_free(BinaryHeap *heap)
         free(heap);
 }
 
-void binary_heap_insert(BinaryHeap *heap, void *value)
+int binary_heap_insert(BinaryHeap *heap, void *value)
 {
+        void **new_values;
 	int index;
 	int parent;
 
@@ -90,8 +101,14 @@ void binary_heap_insert(BinaryHeap *heap, void *value)
 		/* Double the table size */
 		
 		heap->alloced_size *= 2;
-		heap->values = realloc(heap->values, 
-		                       sizeof(void *) * heap->alloced_size);
+		new_values = realloc(heap->values, 
+		                     sizeof(void *) * heap->alloced_size);
+
+                if (new_values == NULL) {
+                        return 0;
+                }
+                
+                heap->values = new_values;
 	}
 
 	/* Add to the bottom of the heap and start from there */
@@ -130,6 +147,8 @@ void binary_heap_insert(BinaryHeap *heap, void *value)
 	/* Save the new value in the final location */
 
 	heap->values[index] = value;
+
+        return 1;
 }
 
 void *binary_heap_pop(BinaryHeap *heap)

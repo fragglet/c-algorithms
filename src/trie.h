@@ -64,7 +64,9 @@ typedef struct _Trie Trie;
 /**
  * Create a new trie.
  *
- * @return                   Pointer to a new trie structure.
+ * @return                   Pointer to a new trie structure, or NULL if it
+ *                           was not possible to allocate memory for the
+ *                           new trie.
  */
 
 Trie *trie_new(void);
@@ -83,9 +85,12 @@ void trie_free(Trie *trie);
  * @param trie               The trie.
  * @param key                The key to access the new value.
  * @param value              The value.
+ * @return                   Non-zero if the value was inserted successfully,
+ *                           or zero if it was not possible to allocate 
+ *                           memory for the new entry.
  */
 
-void trie_insert(Trie *trie, char *key, void *value);
+int trie_insert(Trie *trie, char *key, void *value);
 
 /**
  * Look up a value from its key in a trie.

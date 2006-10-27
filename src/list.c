@@ -80,6 +80,11 @@ ListEntry *list_prepend(ListEntry **list, void *data)
 	/* Create new entry */
 
 	newentry = malloc(sizeof(ListEntry));
+
+        if (newentry == NULL) {
+                return NULL;
+        }
+        
 	newentry->data = data;
 
 	/* Hook into the list start */
@@ -102,6 +107,11 @@ ListEntry *list_append(ListEntry **list, void *data)
 	/* Create new list entry */
 
 	newentry = malloc(sizeof(ListEntry));
+
+        if (newentry == NULL) {
+                return NULL;
+        }
+        
 	newentry->data = data;
 	newentry->next = NULL;
 	
@@ -220,6 +230,10 @@ void **list_to_array(ListEntry *list)
 	listlen = list_length(list);
 
 	array = malloc(sizeof(void *) * listlen);
+
+        if (array == NULL) {
+                return NULL;
+        }
 	
 	/* Add all entries to the array */
 	

@@ -107,7 +107,8 @@ typedef int (*ArrayListCompareFunc)(void *data1, void *data2);
  *
  * @param length         Hint to the initialise function as to the amount
  *                       of memory to allocate initially to the ArrayList.
- *
+ * @return               A new arraylist, or NULL if it was not possible
+ *                       to allocate the memory.
  * @see arraylist_free
  */
 
@@ -126,18 +127,24 @@ void arraylist_free(ArrayList *arraylist);
  *
  * @param arraylist      The ArrayList.
  * @param data           The data to append.
+ * @return               Non-zero if the request was successful, zero
+ *                       if it was not possible to allocate more memory
+ *                       for the new entry.
  */
 
-void arraylist_append(ArrayList *arraylist, void *data);
+int arraylist_append(ArrayList *arraylist, void *data);
 
 /** 
  * Prepend data to the beginning of an ArrayList.
  *
  * @param arraylist      The ArrayList.
  * @param data           The data to prepend.
+ * @return               Non-zero if the request was successful, zero
+ *                       if it was not possible to allocate more memory
+ *                       for the new entry.
  */
 
-void arraylist_prepend(ArrayList *arraylist, void *data);
+int arraylist_prepend(ArrayList *arraylist, void *data);
 
 /**
  * Remove the entry at the specified location in an ArrayList.
@@ -167,7 +174,8 @@ void arraylist_remove_range(ArrayList *arraylist, int index, int length);
  * @param index          The index at which to insert the data.
  * @param data           The data.
  * @return               Returns zero if unsuccessful, else non-zero 
- *                       if successful.
+ *                       if successful (due to an invalid index or 
+ *                       if it was impossible to allocate more memory).
  */
 
 int arraylist_insert(ArrayList *arraylist, int index, void *data);

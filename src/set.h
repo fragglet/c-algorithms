@@ -93,13 +93,6 @@ typedef unsigned long (*SetHashFunc)(void *data);
 typedef int (*SetEqualFunc)(void *data1, void *data2);
 
 /**
- * Copy function.  Given a pointer to some data, return a
- * copy of it. Used by @ref set_intersection and @ref set_union.
- */
-
-typedef void *(*SetCopyFunc)(void *data);
-
-/**
  * Function used to free values stored in a set.  See
  * @ref set_register_free_function.
  */
@@ -112,7 +105,8 @@ typedef void (*SetFreeFunc)(void *data);
  * @param hash_func     Hash function used on data in the set .
  * @param equal_func    Compares two values in the set to determine
  *                      if they are equal.
- * @return              A new set.
+ * @return              A new set, or NULL if it was not possible to 
+ *                      allocate the memory for the set.
  */
 
 Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func);
@@ -142,7 +136,9 @@ void set_register_free_function(Set *set, SetFreeFunc free_func);
  * @param set           The set.
  * @param data          The data to add to the set .
  * @return              Non-zero (true) if the value was added to the set,
- *                      zero (false) if it already exists in the set.
+ *                      zero (false) if it already exists in the set, or 
+ *                      if it was not possible to allocate memory for the
+ *                      new entry.
  */
 
 int set_insert(Set *set, void *data);
@@ -193,33 +189,24 @@ void **set_to_array(Set *set);
  *
  * @param set1             The first set.
  * @param set2             The second set.
- * @param copy_func        Pointer to a function to use to copy data.
- *                         When values are inserted into the new set, they
- *                         are first copied using the copy function.
- *                         If NULL is passed, no copying is performed and
- *                         the reference from the first set is added.
  * @return                 A new set containing all values which are in the 
- *                         first or second sets. 
+ *                         first or second sets, or NULL if it was not
+ *                         possible to allocate memory for the new set.
  */
 
-Set *set_union(Set *set1, Set *set2, SetCopyFunc copy_func);
+Set *set_union(Set *set1, Set *set2);
 
 /**
  * Perform an intersection of two sets.
  *
  * @param set1             The first set.
  * @param set2             The second set.
- * @param copy_func        Pointer to a function to use to copy data.
- *                         When values are inserted into the new set, they
- *                         are first copied using the copy function.
- *                         If NULL is passed, no copying is performed and
- *                         the reference from the first set is added.
  * @return                 A new set containing all values which are in both
- *                         sets.
+ *                         set, or NULL if it was not possible to allocate
+ *                         memory for the new set.
  */
 
-Set *set_intersection(Set *set1, Set *set2, 
-                      SetCopyFunc copy_func);
+Set *set_intersection(Set *set1, Set *set2); 
 
 /**
  * Create an iterator to iterate over the values in a set.

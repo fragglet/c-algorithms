@@ -57,6 +57,10 @@ Queue *queue_new(void)
 	Queue *queue;
 
 	queue = (Queue *) malloc(sizeof(Queue));
+
+        if (queue == NULL) {
+                return NULL;
+        }
 	
 	queue->head = NULL;
 	queue->tail = NULL;
@@ -77,13 +81,18 @@ void queue_free(Queue *queue)
 	free(queue);
 }
 
-void queue_push_head(Queue *queue, void *data)
+int queue_push_head(Queue *queue, void *data)
 {
 	QueueEntry *new_entry;
 
 	/* Create the new entry and fill in the fields in the structure */
 
 	new_entry = malloc(sizeof(QueueEntry));
+
+        if (new_entry == NULL) {
+                return 0;
+        }
+        
 	new_entry->data = data;
 	new_entry->prev = NULL;
 	new_entry->next = queue->head;
@@ -109,6 +118,8 @@ void queue_push_head(Queue *queue, void *data)
 
 		queue->head = new_entry;
 	}
+
+        return 1;
 }
 
 void *queue_pop_head(Queue *queue)
@@ -157,13 +168,18 @@ void *queue_peek_head(Queue *queue)
 	}
 }
 
-void queue_push_tail(Queue *queue, void *data)
+int queue_push_tail(Queue *queue, void *data)
 {
 	QueueEntry *new_entry;
 
 	/* Create the new entry and fill in the fields in the structure */
 
 	new_entry = malloc(sizeof(QueueEntry));
+
+        if (new_entry == NULL) {
+                return 0;
+        }
+        
 	new_entry->data = data;
 	new_entry->prev = queue->tail;
 	new_entry->next = NULL;
@@ -189,6 +205,8 @@ void queue_push_tail(Queue *queue, void *data)
 
 		queue->tail = new_entry;
 	}
+
+        return 1;
 }
 
 void *queue_pop_tail(Queue *queue)

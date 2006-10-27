@@ -70,7 +70,8 @@ typedef struct _Queue Queue;
 /**
  * Create a new double-ended queue.
  *
- * @return           A new queue.
+ * @return           A new queue, or NULL if it was not possible to allocate
+ *                   the memory.
  */
 
 Queue *queue_new(void);
@@ -88,9 +89,12 @@ void queue_free(Queue *queue);
  *
  * @param queue      The queue.
  * @param data       The data to add.
+ * @return           Non-zero if the value was added successfully, or zero
+ *                   if it was not possible to allocate the memory for the
+ *                   new entry. 
  */
 
-void queue_push_head(Queue *queue, void *data);
+int queue_push_head(Queue *queue, void *data);
 
 /**
  * Remove data from the head of a queue.
@@ -118,9 +122,12 @@ void *queue_peek_head(Queue *queue);
  *
  * @param queue      The queue.
  * @param data       The data to add.
+ * @return           Non-zero if the value was added successfully, or zero
+ *                   if it was not possible to allocate the memory for the
+ *                   new entry. 
  */
 
-void queue_push_tail(Queue *queue, void *data);
+int queue_push_tail(Queue *queue, void *data);
 
 /**
  * Remove data from the tail of a queue.

@@ -108,7 +108,7 @@ typedef int (*ListEqualFunc)(void *data1, void *data2);
 /**
  * Free an entire list.
  *
- * @param list           The list to free.
+ * @param list         The list to free.
  */
 
 void list_free(ListEntry *list);
@@ -116,9 +116,10 @@ void list_free(ListEntry *list);
 /**
  * Prepend data to the start of a list.
  *
- * @param list      Pointer to the list to prepend to.
- * @param data      Data to prepend.
- * @return          The new entry in the list.
+ * @param list         Pointer to the list to prepend to.
+ * @param data         Data to prepend.
+ * @return             The new entry in the list, or NULL if it was not possible
+ *                     to allocate the memory for the new entry.
  */
 
 ListEntry *list_prepend(ListEntry **list, void *data);
@@ -126,9 +127,10 @@ ListEntry *list_prepend(ListEntry **list, void *data);
 /**
  * Append data to the end of a list.
  *
- * @param list      Pointer to the list to append to.
- * @param data      Data to append.
- * @return          The new entry in the list.
+ * @param list         Pointer to the list to append to.
+ * @param data         Data to append.
+ * @return             The new entry in the list, or NULL if it was not possible
+ *                     to allocate the memory for the new entry.
  */
 
 ListEntry *list_append(ListEntry **list, void *data);
@@ -197,7 +199,8 @@ int list_length(ListEntry *list);
  *
  * @param list       The list.
  * @return           A newly-allocated C array containing all values in the
- *                   list.  The length of the array is equal to the length
+ *                   list, or NULL if it was not possible to allocate the
+ *                   memory.  The length of the array is equal to the length
  *                   of the list (see @ref list_length).
  */
 
@@ -256,7 +259,8 @@ ListEntry *list_find_data(ListEntry *list,
  * the function @ref list_iter_free.
  *
  * @param list           A pointer to the list to iterate over.
- * @return               A new iterator.
+ * @return               A new iterator, or NULL if it was not possible
+ *                       to allocate the memory for the iterator.
  */
 
 ListIterator *list_iterate(ListEntry **list);
@@ -266,10 +270,10 @@ ListIterator *list_iterate(ListEntry **list);
  * iteration is finished, the iterator should be freed using 
  * @ref list_iter_free.
  *
- * @param iterator        The list iterator.
- * @return                Zero if there are no more values in the list to
- *                        iterate over, non-zero if there are more values to
- *                        read.
+ * @param iterator       The list iterator.
+ * @return               Zero if there are no more values in the list to
+ *                       iterate over, non-zero if there are more values to
+ *                       read.
  */
 
 int list_iter_has_more(ListIterator *iter);
@@ -277,9 +281,9 @@ int list_iter_has_more(ListIterator *iter);
 /**
  * Using a list iterator, retrieve the next value from the list. 
  *
- * @param iterator        The list iterator.
- * @return                The next value from the list, or NULL if there are
- *                        no more values in the list.
+ * @param iterator       The list iterator.
+ * @return               The next value from the list, or NULL if there are
+ *                       no more values in the list.
  */
         
 void *list_iter_next(ListIterator *iter);
@@ -288,7 +292,7 @@ void *list_iter_next(ListIterator *iter);
  * Delete the current entry in the list (the value last returned from
  * list_iter_next)
  *
- * @param iterator        The list iterator.
+ * @param iterator       The list iterator.
  */
 
 void list_iter_remove(ListIterator *iter);
@@ -296,7 +300,7 @@ void list_iter_remove(ListIterator *iter);
 /**
  * Free back a list iterator.
  *
- * @param iterator        The list iterator.
+ * @param iterator       The list iterator.
  */
 
 void list_iter_free(ListIterator *iter);

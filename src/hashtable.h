@@ -104,7 +104,9 @@ typedef void (*HashTableFreeFunc)(void *data);
  *                             keys used in the table.
  * @param equal_func           Function used to test keys used in the table 
  *                             for equality.
- * @return                     A new hash table structure.
+ * @return                     A new hash table structure, or NULL if it 
+ *                             was not possible to allocate the new hash
+ *                             table.
  */
 
 HashTable *hash_table_new(HashTableHashFunc hash_func, 
@@ -138,9 +140,12 @@ void hash_table_register_free_functions(HashTable *hashtable,
  * @param hashtable            The hash table.
  * @param key                  The key for the new value.
  * @param value                The value to insert.
+ * @return                     Non-zero if the value was added successfully,
+ *                             or zero if it was not possible to allocate
+ *                             memory for the new entry.
  */
 
-void hash_table_insert(HashTable *hashtable, void *key, void *value);
+int hash_table_insert(HashTable *hashtable, void *key, void *value);
 
 /**
  * Look up a value in a hash table by key.
@@ -180,7 +185,9 @@ int hash_table_num_entries(HashTable *hashtable);
  *
  * @param hashtable           The hash table.
  * @return                    A pointer to a new @ref HashTableIterator 
- *                            to iterate over the hash table.
+ *                            to iterate over the hash table, or NULL
+ *                            if it was not possible to allocate the
+ *                            memory.
  */
 
 HashTableIterator *hash_table_iterate(HashTable *hashtable);

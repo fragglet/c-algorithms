@@ -54,6 +54,11 @@ ArrayList *arraylist_new(int length)
 	 * initially no entries. */
 
 	new_arraylist = (ArrayList *) malloc(sizeof(ArrayList));
+
+        if (new_arraylist == NULL) {
+                return NULL;
+        }
+        
 	new_arraylist->_alloced = length;
 	new_arraylist->length = 0;
 
@@ -61,7 +66,12 @@ ArrayList *arraylist_new(int length)
 
 	new_arraylist->data = malloc(length * sizeof(void *));
 
-	return new_arraylist;    
+        if (new_arraylist->data == NULL) {
+                free(new_arraylist);
+                return NULL;
+        }
+
+	return new_arraylist;
 }
 
 void arraylist_free(ArrayList *arraylist)
@@ -74,16 +84,26 @@ void arraylist_free(ArrayList *arraylist)
 	}
 }
 
-static void arraylist_enlarge(ArrayList *arraylist)
+static int arraylist_enlarge(ArrayList *arraylist)
 {
+        void **data;
+
 	/* Double the allocated size */
 
 	arraylist->_alloced *= 2;
 	
 	/* Reallocate the array to the new size */
 
-	arraylist->data = realloc(arraylist->data, 
-	                          sizeof(void *) * arraylist->_alloced);
+	data = realloc(arraylist->data, 
+	               sizeof(void *) * arraylist->_alloced);
+
+        if (data == NULL) {
+                return 0;
+        } else {
+                arraylist->data = data;
+
+                return 1;
+        }
 }
 
 int arraylist_insert(ArrayList *arraylist, int index, void *data)
@@ -97,7 +117,9 @@ int arraylist_insert(ArrayList *arraylist, int index, void *data)
 	/* Increase the size if necessary */
 	
 	if (arraylist->length + 1 > arraylist->_alloced) {
-		arraylist_enlarge(arraylist);
+		if (!arraylist_enlarge(arraylist)) {
+                        return 0;
+                }
 	}
 
 	/* Move the contents of the array forward from the index
@@ -115,14 +137,14 @@ int arraylist_insert(ArrayList *arraylist, int index, void *data)
 	return 1;
 }
 
-void arraylist_append(ArrayList *arraylist, void *data)
+int arraylist_append(ArrayList *arraylist, void *data)
 {
-	arraylist_insert(arraylist, arraylist->length, data);
+	return arraylist_insert(arraylist, arraylist->length, data);
 }
 
-void arraylist_prepend(ArrayList *arraylist, void *data)
+int arraylist_prepend(ArrayList *arraylist, void *data)
 {
-	arraylist_insert(arraylist, 0, data);
+	return arraylist_insert(arraylist, 0, data);
 }
 
 void arraylist_remove_range(ArrayList *arraylist, int index, int length)

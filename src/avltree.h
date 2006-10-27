@@ -111,7 +111,8 @@ typedef int (*AVLTreeCompareFunc)(void *data1, void *data2);
  * Create a new AVL tree.
  *
  * @param compare_func    Function to use when comparing keys in the tree.
- * @return                A new AVL tree.
+ * @return                A new AVL tree, or NULL if it was not possible
+ *                        to allocate the memory.
  */
 
 AVLTree *avltree_new(AVLTreeCompareFunc compare_func);
@@ -131,7 +132,8 @@ void avltree_free(AVLTree *tree);
  * @param key             The key to insert.
  * @param value           The value to insert.
  * @return                The newly created tree node containing the
- *                        key and value.
+ *                        key and value, or NULL if it was not possible
+ *                        to allocate the new memory.
  */
 
 AVLTreeNode *avltree_insert(AVLTree *tree, void *key, void *value);
