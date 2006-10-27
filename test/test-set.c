@@ -146,24 +146,46 @@ void test_set_remove(void)
 {
 	Set *set;
 	int i;
+        int num_entries;
 
 	set = generate_set();
 
-	i = 5000;
-	assert(set_query(set, &i) != 0);
-	assert(set_num_entries(set) == 10000);
+        num_entries = set_num_entries(set);
+        assert(num_entries == 10000);
 
-	/* Remove an entry */
+	/* Remove some entries */
 
-	set_remove(set, &i);
-	assert(set_num_entries(set) == 9999);
-	assert(set_query(set, &i) == 0);
+        for (i=4000; i<6000; ++i) {
+                /* Check this is in the set */
 
-	/* Try to remove an invalid entry */
+                assert(set_query(set, &i) != 0);
 
-	i = 50000;
-	set_remove(set, &i);
-	assert(set_num_entries(set) == 9999);
+                /* Remove it */
+
+                assert(set_remove(set, &i) != 0);
+
+                /* Check the number of entries decreases */
+
+                assert(set_num_entries(set) == num_entries - 1);
+
+                /* Check it is no longer in the set */
+
+                assert(set_query(set, &i) == 0);
+
+                --num_entries;
+        }
+
+	/* Try to remove some invalid entries */
+
+        for (i=-1000; i<-500; ++i) {
+        	assert(set_remove(set, &i) == 0);
+        	assert(set_num_entries(set) == num_entries);
+        }
+
+        for (i=50000; i<51000; ++i) {
+        	assert(set_remove(set, &i) == 0);
+        	assert(set_num_entries(set) == num_entries);
+        }
 }
 
 void test_set_union(void)
