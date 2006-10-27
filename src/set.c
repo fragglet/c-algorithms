@@ -313,6 +313,10 @@ int set_remove(Set *set, void *data)
 
 			return 1;
 		}
+
+                /* Advance to the next entry */
+
+                rover = &((*rover)->next);
 	}
 
 	/* Not found in set */
@@ -541,6 +545,7 @@ void *set_iter_next(SetIterator *iterator)
 	if (iterator->next_entry == NULL) {
 		return NULL;
 	}
+
 	/* We have the result immediately */
 
 	iterator->current_entry = iterator->next_entry;
