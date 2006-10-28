@@ -409,6 +409,12 @@ void test_list_iterate(void)
 
 	iter = list_iterate(&list);
 
+        /* Test remove before list_iter_next has been called */
+
+        list_iter_remove(iter);
+
+        /* Iterate over the list */
+
 	while (list_iter_has_more(iter)) {
 		data = (int *) list_iter_next(iter);
 		++counter;
@@ -417,12 +423,23 @@ void test_list_iterate(void)
 			/* Delete half the entries in the list.  */
 
 			list_iter_remove(iter);
+
+                        /* Test double remove */
+
+                        list_iter_remove(iter);
 		}
 	}
 
+        /* Test remove at the end of a list */
+
+        list_iter_remove(iter);
+
+        /* Destroy the iterator */
+        
 	list_iter_free(iter);
 
 	assert(counter == 50);
+        assert(list_length(list) == 25);
 
 	/* Test iterating over an empty list */
 
