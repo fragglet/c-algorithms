@@ -348,34 +348,27 @@ void test_slist_find_data(void)
 
 void test_slist_to_array(void)
 {
+       SListEntry *list;
+       void **array;
+       
+       list = generate_list();
+       
+       array = slist_to_array(list);
+
+       assert(array[0] == &variable1);
+       assert(array[1] == &variable2);
+       assert(array[2] == &variable3);
+       assert(array[3] == &variable4);
+}
+
+void test_slist_iterate(void)
+{
 	SListEntry *list;
-	void **array;
-	
-	list = generate_list();
-	
-	array = slist_to_array(list);
-
-	assert(array[0] == &variable1);
-	assert(array[1] == &variable2);
-	assert(array[2] == &variable3);
-	assert(array[3] == &variable4);
-}
-
-static void test_slist_foreach_foreach(void *data, void *vcounter)
-{
-	int *counter;
-
-	counter = (int *) vcounter;
-
-	++*counter;
-}
-
-void test_slist_foreach(void)
-{
+        SListIterator *iter;
+        int *data;
 	int a;
 	int i;
 	int counter;
-	SListEntry *list;
 
 	/* Create a list with 50 entries */
 
@@ -389,19 +382,65 @@ void test_slist_foreach(void)
 
 	counter = 0;
 
-	slist_foreach(list, test_slist_foreach_foreach, &counter);
+        iter = slist_iterate(&list);
+
+        /* Test remove before slist_iter_next has been called */
+
+        slist_iter_remove(iter);
+
+        /* Iterate over the list */
+
+        while (slist_iter_has_more(iter)) {
+
+                data = (int *) slist_iter_next(iter);
+
+                ++counter;
+
+                /* Remove half the entries from the list */
+
+                if ((counter % 2) == 0) {
+                        slist_iter_remove(iter);
+
+                        /* Test double remove */
+
+                        slist_iter_remove(iter);
+                }
+        }
+        
+        /* Test remove at the end of a list */
+
+        slist_iter_remove(iter);
+
+        /* Destroy the iterator */
+        
+        slist_iter_free(iter);
 
 	assert(counter == 50);
+        assert(slist_length(list) == 25);
 
 	/* Test iterating over an empty list */
 
 	list = NULL;
 	counter = 0;
 
-	slist_foreach(list, test_slist_foreach_foreach, &counter);
+        iter = slist_iterate(&list);
+
+        while (slist_iter_has_more(iter)) {
+
+                data = (int *) slist_iter_next(iter);
+
+                ++counter;
+
+                /* Remove half the entries from the list */
+
+                if ((counter % 2) == 0) {
+                        slist_iter_remove(iter);
+                }
+        }
+        
+        slist_iter_free(iter);
 
 	assert(counter == 0);
-
 }
 
 
@@ -419,7 +458,7 @@ int main(int argc, char *argv[])
 	test_slist_sort();
 	test_slist_find_data();
 	test_slist_to_array();
-	test_slist_foreach();
+	test_slist_iterate();
 
 	return 0;
 }

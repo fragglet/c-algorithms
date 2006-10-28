@@ -61,8 +61,6 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  * To sort a list into an order, use @ref slist_sort.
  *
- * To iterate over a list, use @ref slist_foreach.
- *
  * To find a particular entry in a list by its index, use 
  * @ref slist_nth_entry.
  *
@@ -87,10 +85,10 @@ POSSIBILITY OF SUCH DAMAGE.
 typedef struct _SListEntry SListEntry;
 
 /**
- * Callback function used for iterating over a list
+ * Structure used to iterate over a list.
  */
 
-typedef void (*SListIterator)(void *data, void *user_data);
+typedef struct _SListIterator SListIterator;
 
 /**
  * Callback function used to compare values in a list when sorting.
@@ -202,16 +200,6 @@ int slist_length(SListEntry *list);
 
 void **slist_to_array(SListEntry *list);
 
-/** 
- * Iterate over all entries in a list.
- *
- * @param list       The list.
- * @param callback   Callback function to invoke for each entry in the list.
- * @param user_data  Extra data to pass to the callback function.
- */
-
-void slist_foreach(SListEntry *list, SListIterator callback, void *user_data);
-
 /**
  * Remove an entry from a list.
  *
@@ -258,6 +246,57 @@ void slist_sort(SListEntry **list, SListCompareFunc compare_func);
 SListEntry *slist_find_data(SListEntry *list, 
                             SListEqualFunc callback,
                             void *data);
+
+/** 
+ * Create a new @reg SListIterator structure to iterate over a list.
+ * The iterator should be freed once iterating has completed, using
+ * the function @ref list_iter_free.
+ *
+ * @param list           Pointer to the list to iterate over.
+ * @return               A new @ref SListIterator.
+ */
+
+SListIterator *slist_iterate(SListEntry **list);
+
+/**
+ * Determine if there are more values in the list to iterate over.  When
+ * iteration is finished, the iterator should be freed using 
+ * @ref slist_iter_free.
+ *
+ * @param iterator       The list iterator.
+ * @return               Zero if there are no more values in the list to
+ *                       iterate over, non-zero if there are more values to
+ *                       read.
+ */
+
+int slist_iter_has_more(SListIterator *iter);
+
+/**
+ * Using a list iterator, retrieve the next value from the list. 
+ *
+ * @param iterator       The list iterator.
+ * @return               The next value from the list, or NULL if there are
+ *                       no more values in the list.
+ */
+        
+void *slist_iter_next(SListIterator *iter);
+
+/** 
+ * Delete the current entry in the list (the value last returned from
+ * @ref slist_iter_next)
+ *
+ * @param iterator       The list iterator.
+ */
+
+void slist_iter_remove(SListIterator *iter);
+
+/**
+ * Free back a list iterator.
+ *
+ * @param iterator       The list iterator.
+ */
+
+void slist_iter_free(SListIterator *iter);
 
 #endif /* #ifndef ALGORITHM_SLIST_H */
 
