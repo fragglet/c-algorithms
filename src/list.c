@@ -511,8 +511,8 @@ int list_iter_has_more(ListIterator *iter)
 
 	} else if (*iter->prev_next != iter->current) {
 
-                /* The entry last returned by list_iter_next has been
-                 * deleted.  The next entry is indincated by prev_next. */
+		/* The entry last returned by list_iter_next has been
+		 * deleted.  The next entry is indincated by prev_next. */
 
 		return *iter->prev_next != NULL;
 
@@ -542,14 +542,14 @@ void *list_iter_next(ListIterator *iter)
 	} else if (*iter->prev_next != iter->current) {
 
 		/* The value last returned by list_iter_next was deleted.
-                 * Use prev_next to find the next entry. */
+		 * Use prev_next to find the next entry. */
 
 		iter->current = *iter->prev_next;
 
 	} else {
 
-                /* Last value returned from list_iter_next was not deleted.
-                 * Advance to the next entry. */
+		/* Last value returned from list_iter_next was not deleted.
+		 * Advance to the next entry. */
 
 		if (iter->current != NULL) {
 			iter->prev_next = &iter->current->next;
@@ -559,31 +559,31 @@ void *list_iter_next(ListIterator *iter)
 	
 	/* Return data from the current entry */
 
-        if (iter->current == NULL) {
-                return NULL;
-        } else {
-	        return iter->current->data;
-        }
+	if (iter->current == NULL) {
+		return NULL;
+	} else {
+		return iter->current->data;
+	}
 }
 
 void list_iter_remove(ListIterator *iter)
 {
-        if (iter->prev_next == NULL) {
+	if (iter->prev_next == NULL) {
 
-                /* list_iter_next has not been called yet. */
+		/* list_iter_next has not been called yet. */
 
-        } else if (*iter->prev_next != iter->current) {
+	} else if (*iter->prev_next != iter->current) {
 
-                /* Current entry was already deleted. */
+		/* Current entry was already deleted. */
 
-        } else {
-                
-                /* Remove the current entry */
+	} else {
+		
+		/* Remove the current entry */
 
-                if (iter->current != NULL) {
-                	list_remove_entry(iter->list, iter->current);
-                }
-        }
+		if (iter->current != NULL) {
+			list_remove_entry(iter->list, iter->current);
+		}
+	}
 }
 
 void list_iter_free(ListIterator *iter)

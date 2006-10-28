@@ -47,9 +47,9 @@ struct _SListEntry {
 /* Iterator for iterating over a singly-linked list. */
 
 struct _SListIterator {
-        SListEntry **list;
-        SListEntry **prev_next;
-        SListEntry *current;
+	SListEntry **list;
+	SListEntry **prev_next;
+	SListEntry *current;
 };
 
 void slist_free(SListEntry *list)
@@ -444,119 +444,119 @@ SListEntry *slist_find_data(SListEntry *list,
 
 SListIterator *slist_iterate(SListEntry **list)
 {
-        SListIterator *iter;
+	SListIterator *iter;
 
-        /* Allocate the new structure */
+	/* Allocate the new structure */
 
-        iter = malloc(sizeof(SListIterator));
+	iter = malloc(sizeof(SListIterator));
 
-        if (iter == NULL) {
-                return NULL;
-        }
+	if (iter == NULL) {
+		return NULL;
+	}
 
-        /* Save the list location */
+	/* Save the list location */
 
-        iter->list = list;
+	iter->list = list;
 
-        /* These are NULL as we have not read the first item yet */
+	/* These are NULL as we have not read the first item yet */
 
-        iter->prev_next = NULL;
-        iter->current = NULL;
+	iter->prev_next = NULL;
+	iter->current = NULL;
 
-        return iter;
+	return iter;
 }
 
 int slist_iter_has_more(SListIterator *iter)
 {
-        if (iter->prev_next == NULL) {
-                
-                /* The iterator has just been created.  slist_iter_next
-                 * has not been called yet.  There are more entries if 
-                 * the list itself is not empty. */
+	if (iter->prev_next == NULL) {
+		
+		/* The iterator has just been created.  slist_iter_next
+		 * has not been called yet.  There are more entries if 
+		 * the list itself is not empty. */
 
-                return *iter->list != NULL;
-                
-        } else if (*iter->prev_next != iter->current) {
+		return *iter->list != NULL;
+		
+	} else if (*iter->prev_next != iter->current) {
 
-                /* The entry last returned from slist_iter_next has been
-                 * deleted.  The next entry is indicated by prev_next. */
+		/* The entry last returned from slist_iter_next has been
+		 * deleted.  The next entry is indicated by prev_next. */
 
-                return *iter->prev_next != NULL;
+		return *iter->prev_next != NULL;
 
-        } else {
-        
-                /* The current entry has not been deleted.  There
-                 * is a next entry if current->next is not NULL. */
+	} else {
+	
+		/* The current entry has not been deleted.  There
+		 * is a next entry if current->next is not NULL. */
 
-                return iter->current->next != NULL;
+		return iter->current->next != NULL;
 
-        }
+	}
 }
 
 void *slist_iter_next(SListIterator *iter)
 {
-        if (iter->prev_next == NULL) {
+	if (iter->prev_next == NULL) {
 
-                /* This is the first call to slist_iter_next. */
+		/* This is the first call to slist_iter_next. */
 
-                /* Initial prev_next is the list start variable */
+		/* Initial prev_next is the list start variable */
 
-                iter->prev_next = iter->list;
+		iter->prev_next = iter->list;
 
-                /* Start at the first element */
+		/* Start at the first element */
 
-                iter->current = *iter->list;
+		iter->current = *iter->list;
 
-        } else if (*iter->prev_next != iter->current) {
+	} else if (*iter->prev_next != iter->current) {
 
-                /* The value last returned by slist_iter_next was
-                 * deleted.  Use prev_next to find the next
-                 * entry. */
+		/* The value last returned by slist_iter_next was
+		 * deleted.  Use prev_next to find the next
+		 * entry. */
 
-                iter->current = *iter->prev_next;
+		iter->current = *iter->prev_next;
 
-        } else {
+	} else {
 
-                /* Last value returned from slist_iter_next was not
-                 * deleted. Advance to the next entry. */
+		/* Last value returned from slist_iter_next was not
+		 * deleted. Advance to the next entry. */
 
-                if (iter->current != NULL) {
-                        iter->prev_next = &iter->current->next;
-                        iter->current = iter->current->next;
-                }
-        }
+		if (iter->current != NULL) {
+			iter->prev_next = &iter->current->next;
+			iter->current = iter->current->next;
+		}
+	}
 
-        if (iter->current == NULL) {
-                return NULL;
-        } else {
-                return iter->current->data;
-        }
+	if (iter->current == NULL) {
+		return NULL;
+	} else {
+		return iter->current->data;
+	}
 
 }
 
 void slist_iter_remove(SListIterator *iter)
 {
-        if (iter->prev_next == NULL) {
+	if (iter->prev_next == NULL) {
 
-                /* slist_iter_next has not been called yet. */
+		/* slist_iter_next has not been called yet. */
 
-        } else if (*iter->prev_next != iter->current) {
-                
-                /* Current entry was already deleted */
+	} else if (*iter->prev_next != iter->current) {
+		
+		/* Current entry was already deleted */
 
-        } else {
-                
-                /* Remove the current entry */
+	} else {
+		
+		/* Remove the current entry */
 
-                if (iter->current != NULL) {
-                        *iter->prev_next = iter->current->next;
-                        free(iter->current);
-                }
-        }
+		if (iter->current != NULL) {
+			*iter->prev_next = iter->current->next;
+			free(iter->current);
+		}
+	}
 }
 
 void slist_iter_free(SListIterator *iter)
 {
-        free(iter);
+	free(iter);
 }
 
