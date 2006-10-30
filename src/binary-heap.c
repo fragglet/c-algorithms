@@ -92,6 +92,7 @@ int binary_heap_insert(BinaryHeap *heap, void *value)
 {
 	void **new_values;
 	int index;
+	int newsize;
 	int parent;
 
 	/* Possibly realloc the heap to a larger size */
@@ -100,14 +101,14 @@ int binary_heap_insert(BinaryHeap *heap, void *value)
 
 		/* Double the table size */
 		
-		heap->alloced_size *= 2;
-		new_values = realloc(heap->values, 
-		                     sizeof(void *) * heap->alloced_size);
+		newsize = heap->alloced_size * 2;
+		new_values = realloc(heap->values, sizeof(void *) * newsize);
 
 		if (new_values == NULL) {
 			return 0;
 		}
 		
+		heap->alloced_size = newsize;
 		heap->values = new_values;
 	}
 

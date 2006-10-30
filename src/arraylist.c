@@ -87,20 +87,21 @@ void arraylist_free(ArrayList *arraylist)
 static int arraylist_enlarge(ArrayList *arraylist)
 {
 	void **data;
+	int newsize;
 
 	/* Double the allocated size */
 
-	arraylist->_alloced *= 2;
+	newsize = arraylist->_alloced * 2;
 	
 	/* Reallocate the array to the new size */
 
-	data = realloc(arraylist->data, 
-	               sizeof(void *) * arraylist->_alloced);
+	data = realloc(arraylist->data, sizeof(void *) * newsize);
 
 	if (data == NULL) {
 		return 0;
 	} else {
 		arraylist->data = data;
+		arraylist->_alloced = newsize;
 
 		return 1;
 	}
