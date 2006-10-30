@@ -108,9 +108,11 @@ void *trie_lookup(Trie *trie, char *key);
  *
  * @param trie               The trie.
  * @param key                The key of the entry to remove.
+ * @return                   Non-zero if the key was removed successfully,
+ *                           or zero if it is not present in the trie.
  */
 
-void trie_remove(Trie *trie, char *key);
+int trie_remove(Trie *trie, char *key);
 
 /** 
  * Find the number of entries in a trie.

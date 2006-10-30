@@ -96,6 +96,73 @@ void trie_free(Trie *trie)
 	free(trie);
 }
 
+static TrieNode *trie_find_end(Trie *trie, char *key)
+{
+	TrieNode *node;
+	char *p;
+	int c;
+
+	/* Search down the trie until the end of string is reached */
+
+	node = trie->root_node;
+
+	for (p=key; *p != '\0'; ++p) {
+
+		if (node == NULL) {
+			/* Not found in the tree. Return. */
+
+			return NULL;
+		}
+
+		/* Jump to the next node */
+
+		c = *p;
+		node = node->next[c];
+	}
+
+	/* This key is present if the value at the last node is not NULL */
+
+	return node;
+}
+
+/* Roll back an insert operation after a failed malloc() call. */
+
+static void trie_insert_rollback(Trie *trie, char *key)
+{
+	TrieNode **rover;
+	TrieNode *node;
+	char *p;
+
+	/* Follow the chain along.  We know that we will never reach the 
+	 * end of the string because trie_insert never got that far.  As a
+	 * result, it is not necessary to check for the end of string
+	 * delimiter (NUL) */
+
+	rover = &trie->root_node;
+	p = key;
+
+	while (*rover != NULL) {
+
+		/* Advance to the next node in the chain.  Do this now,
+		 * before we potentially free this node. */
+
+		node = *rover;
+		rover = &node->next[(int) *p];
+		++p;
+		
+		/* Decrement the use count at this node back to what it 
+		 * previously was. */
+
+		--node->use_count;
+
+		if (node->use_count <= 0) {
+			/* This has just been allocated.  Free it back. */
+
+			free(node);
+		}
+	}
+}
+
 int trie_insert(Trie *trie, char *key, void *value)
 {
 	TrieNode **rover;
@@ -107,6 +174,18 @@ int trie_insert(Trie *trie, char *key, void *value)
 
 	if (value == NULL) {
 		return 0;
+	}
+		
+	/* Search to see if this is already in the tree */
+
+	node = trie_find_end(trie, key);
+
+	/* Already in the tree? If so, replace the existing value and 
+	 * return success. */
+
+	if (node != NULL && node->data != NULL) {
+		node->data = value;
+		return 1;
 	}
 
 	/* Search down the trie until we reach the end of string,
@@ -120,12 +199,18 @@ int trie_insert(Trie *trie, char *key, void *value)
 		node = *rover;
 
 		if (node == NULL) {
-			
+
 			/* Node does not exist, so create it */
 
 			node = (TrieNode *) calloc(1, sizeof(TrieNode));
 
 			if (node == NULL) {
+  
+				/* Allocation failed.  Go back and undo
+				 * what we have done so far. */
+
+				trie_insert_rollback(trie, key);
+		
 				return 0;
 			}
 
@@ -134,7 +219,7 @@ int trie_insert(Trie *trie, char *key, void *value)
 			*rover = node;
 		}
 
-		/* One more use of this node */
+		/* Increase the node use count */
 
 		++node->use_count;
 
@@ -162,7 +247,7 @@ int trie_insert(Trie *trie, char *key, void *value)
 	return 1;
 }
 
-void trie_remove(Trie *trie, char *key)
+int trie_remove(Trie *trie, char *key)
 {
 	TrieNode *node;
 	TrieNode *next;
@@ -170,30 +255,15 @@ void trie_remove(Trie *trie, char *key)
 	char *p;
 	int c;
 	
-	/* First, search down to the ending node so that the data can
-	 * be removed. */
+	/* Find the end node and remove the value */
 
-	/* Search down the trie until the end of string is reached */
+	node = trie_find_end(trie, key);
 
-	node = trie->root_node;
-
-	for (p=key; *p != '\0'; ++p) {
-
-		if (node == NULL) {
-			/* Not found in the tree. Return. */
-
-			return;
-		}
-
-		/* Jump to the next node */
-
-		c = *p;
-		node = node->next[c];
+	if (node != NULL && node->data != NULL) {
+		node->data = NULL;
+	} else {
+		return 0;
 	}
-
-	/* Remove the data at this node */
-
-	node->data = NULL;
 
 	/* Now traverse the tree again as before, decrementing the use
 	 * count of each node.  Free back nodes as necessary. */
@@ -217,7 +287,7 @@ void trie_remove(Trie *trie, char *key)
 			free(node);
 
 			/* Set the "next" pointer on the previous node to NULL,
-			 * to unlink the free'd node from the tree.  This only
+			 * to unlink the freed node from the tree.  This only
 			 * needs to be done once in a remove.  After the first
 			 * unlink, all further nodes are also going to be
 			 * free'd. */
@@ -248,34 +318,23 @@ void trie_remove(Trie *trie, char *key)
 
 		node = next;
 	}
+
+	/* Removed successfully */
+
+	return 1;
 }
 
 void *trie_lookup(Trie *trie, char *key)
 {
 	TrieNode *node;
-	char *p;
-	int c;
 
-	/* Search down the trie until the end of string is found */
-	
-	node = trie->root_node;
-	p = key;
+	node = trie_find_end(trie, key);
 
-	while (*p != '\0') {
-		if (node == NULL) {
-			/* Not found - reached end of branch */
-
-			return NULL;
-		}
-
-		/* Advance to the next node in the chain, next character */
-
-		c = *p;
-		node = node->next[c];
-		++p;
+	if (node != NULL) {
+		return node->data;
+	} else {
+		return NULL;
 	}
-
-	return node->data;
 }
 
 int trie_num_entries(Trie *trie)
