@@ -75,7 +75,7 @@ void test_trie_free()
 	trie = trie_new();
 
 	trie_insert(trie, "hello", "there");
-	trie_remove(trie, "hello");
+	assert(trie_remove(trie, "hello") == 1);
 	
 	trie_free(trie);
 }
@@ -109,6 +109,20 @@ void test_trie_insert_lookup_remove()
 		assert(trie_num_entries(trie) == entries);
 	}
 
+	/* Test remove on non-existent values. */
+
+	assert(trie_remove(trie, "000000000000000") == 0);
+	assert(trie_remove(trie, "") == 0);
+	assert(trie_num_entries(trie) == entries);
+
+	/* Test replacing values */
+
+	val = malloc(sizeof(int));
+	*val = 999;
+	trie_insert(trie, "999", val);
+	assert(trie_num_entries(trie) == entries);
+	assert(trie_lookup(trie, "999") == val);
+
 	/* Look up all values */
 
 	for (i=0; i<100000; ++i) {
@@ -121,7 +135,7 @@ void test_trie_insert_lookup_remove()
 
 		/* Remove value and check counter */
 
-		trie_remove(trie, buf);
+		assert(trie_remove(trie, buf) != 0);
 		--entries;
 		assert(trie_num_entries(trie) == entries);
 	}
@@ -131,7 +145,7 @@ void test_trie_insert_lookup_remove()
 	trie_insert(trie, "", buf);
 	assert(trie_num_entries(trie) == 1);
 	assert(trie_lookup(trie, "") == buf);
-	trie_remove(trie, "");
+	assert(trie_remove(trie, "") != 0);
 
 	assert(trie_num_entries(trie) == 0);
 }
