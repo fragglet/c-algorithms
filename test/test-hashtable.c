@@ -180,9 +180,9 @@ void test_hash_table_iterating(void)
 	iterator = hash_table_iterate(hashtable);
 
 	while (hash_table_iter_has_more(iterator)) {
-	      hash_table_iter_next(iterator);
+		hash_table_iter_next(iterator);
 
-	      ++count;
+		++count;
 	}
 
 	hash_table_iter_free(iterator);
