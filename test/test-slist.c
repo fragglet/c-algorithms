@@ -348,17 +348,17 @@ void test_slist_find_data(void)
 
 void test_slist_to_array(void)
 {
-       SListEntry *list;
-       void **array;
-       
-       list = generate_list();
-       
-       array = slist_to_array(list);
+	SListEntry *list;
+	void **array;
+	   
+	list = generate_list();
 
-       assert(array[0] == &variable1);
-       assert(array[1] == &variable2);
-       assert(array[2] == &variable3);
-       assert(array[3] == &variable4);
+	array = slist_to_array(list);
+
+	assert(array[0] == &variable1);
+	assert(array[1] == &variable2);
+	assert(array[2] == &variable3);
+	assert(array[3] == &variable4);
 }
 
 void test_slist_iterate(void)
