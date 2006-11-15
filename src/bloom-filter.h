@@ -49,7 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
  * To insert a value into a bloom filter, use @ref bloom_filter_insert.
  *
  * To query whether a value is part of the set, use 
- * @ref bloom_filter_lookup.
+ * @ref bloom_filter_query.
  */
 
 #ifndef ALGORITHM_BLOOM_FILTER_H
@@ -82,9 +82,11 @@ typedef unsigned long (*BloomFilterHashFunc)(void *data);
  *                         the table size, the more elements can be
  *                         stored, and the lesser the chance of false
  *                         positives.
+ * @param hash_func        Hash function to use on values stored in the
+ *                         filter.
  * @param num_functions    Number of hash functions to apply to each
  *                         element on insertion.  This running time for
- *                         insertion and lookups is proportional to this
+ *                         insertion and queries is proportional to this
  *                         value.  The more functions applied, the lesser
  *                         the chance of false positives.  The maximum
  *                         number of functions is 64.
@@ -125,7 +127,7 @@ void bloom_filter_insert(BloomFilter *bloomfilter, void *value);
  *                             have been inserted.
  */
 
-int bloom_filter_lookup(BloomFilter *bloomfilter, void *value);
+int bloom_filter_query(BloomFilter *bloomfilter, void *value);
 
 /**
  * Read the contents of a bloom filter into an array.

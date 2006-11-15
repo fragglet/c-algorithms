@@ -143,7 +143,7 @@ void bloom_filter_insert(BloomFilter *bloomfilter, void *value)
 	}
 }
 
-int bloom_filter_lookup(BloomFilter *bloomfilter, void *value)
+int bloom_filter_query(BloomFilter *bloomfilter, void *value)
 {
 	unsigned long hash;
 	unsigned long subhash;
