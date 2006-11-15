@@ -152,6 +152,46 @@ void bloom_filter_read(BloomFilter *bloomfilter, unsigned char *array);
 
 void bloom_filter_load(BloomFilter *bloomfilter, unsigned char *array);
 
+/** 
+ * Find the union of two bloom filters.  Values are present in the 
+ * resulting filter if they are present in either of the original 
+ * filters.
+ *
+ * Both of the original filters must have been created using the 
+ * same parameters to @ref bloom_filter_new.
+ *
+ * @param filter1              The first filter.
+ * @param filter2              The second filter.
+ * @return                     A new filter which is an intersection of the
+ *                             two filters, or NULL if it was not possible
+ *                             to allocate memory for the new filter, or
+ *                             if the two filters specified were created
+ *                             with different parameters. 
+ */
+
+BloomFilter *bloom_filter_union(BloomFilter *filter1, 
+                                BloomFilter *filter2);
+
+/** 
+ * Find the intersection of two bloom filters.  Values are only ever 
+ * present in the resulting filter if they are present in both of the
+ * original filters.
+ *
+ * Both of the original filters must have been created using the 
+ * same parameters to @ref bloom_filter_new.
+ *
+ * @param filter1              The first filter.
+ * @param filter2              The second filter.
+ * @return                     A new filter which is an intersection of the
+ *                             two filters, or NULL if it was not possible
+ *                             to allocate memory for the new filter, or
+ *                             if the two filters specified were created
+ *                             with different parameters. 
+ */
+
+BloomFilter *bloom_filter_intersection(BloomFilter *filter1, 
+                                       BloomFilter *filter2);
+
 #ifdef __cplusplus
 }
 #endif

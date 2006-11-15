@@ -217,4 +217,82 @@ void bloom_filter_load(BloomFilter *bloomfilter, unsigned char *array)
 	memcpy(bloomfilter->table, array, array_size);
 }
 
+BloomFilter *bloom_filter_union(BloomFilter *filter1, BloomFilter *filter2)
+{
+	BloomFilter *result;
+	unsigned int i;
+	unsigned int array_size;
+
+	/* To perform this operation, both filters must be created with
+	 * the same values. */
+
+	if (filter1->table_size != filter2->table_size
+	 || filter1->num_functions != filter2->num_functions
+	 || filter1->hash_func != filter2->hash_func) {
+		return NULL;
+	}
+
+	/* Create a new bloom filter for the result */
+
+	result = bloom_filter_new(filter1->table_size, 
+	                          filter1->hash_func, 
+	                          filter1->num_functions);
+
+	if (result == NULL) {
+		return NULL;
+	}
+
+	/* The table is an array of bits, packed into bytes.  Round up
+	 * to the nearest byte. */
+
+	array_size = (filter1->table_size + 7) / 8;
+
+	/* Populate the table of the new filter */
+
+	for (i=0; i<array_size; ++i) {
+		result->table[i] = filter1->table[i] | filter2->table[i];
+	}
+
+	return result;
+}
+
+BloomFilter *bloom_filter_intersection(BloomFilter *filter1, 
+                                       BloomFilter *filter2)
+{
+	BloomFilter *result;
+	unsigned int i;
+	unsigned int array_size;
+
+	/* To perform this operation, both filters must be created with
+	 * the same values. */
+
+	if (filter1->table_size != filter2->table_size
+	 || filter1->num_functions != filter2->num_functions
+	 || filter1->hash_func != filter2->hash_func) {
+		return NULL;
+	}
+
+	/* Create a new bloom filter for the result */
+
+	result = bloom_filter_new(filter1->table_size, 
+	                          filter1->hash_func, 
+	                          filter1->num_functions);
+
+	if (result == NULL) {
+		return NULL;
+	}
+
+	/* The table is an array of bits, packed into bytes.  Round up
+	 * to the nearest byte. */
+
+	array_size = (filter1->table_size + 7) / 8;
+
+	/* Populate the table of the new filter */
+
+	for (i=0; i<array_size; ++i) {
+		result->table[i] = filter1->table[i] & filter2->table[i];
+	}
+
+	return result;
+}
 
