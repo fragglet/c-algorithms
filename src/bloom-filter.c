@@ -47,7 +47,7 @@ struct _BloomFilter {
 /* Salt values.  These salts are XORed with the output of the hash
  * function to give multiple unique hashes. */
 
-static const int salts[] = {
+static const unsigned int salts[] = {
 	0x5cee4612, 0xb5587b1c, 0xa250f2b0, 0xa3bf6d2a, 
 	0x7a81bd1a, 0x92888d7f, 0x1dc977c7, 0xedc96624, 
 	0x920c85d9, 0xf16066b3, 0xc6f0d4b3, 0x2b76eb86, 
