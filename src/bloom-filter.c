@@ -34,6 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "bloom-filter.h"
 
@@ -65,7 +66,6 @@ static const unsigned int salts[] = {
 	0xf4518d30, 0x46e62797, 0x9889aa76, 0x1405aadf, 
 	0xf62f9124, 0x5c435ac5, 0x35b8dfe3, 0x651c08c5, 
 };
-
 
 BloomFilter *bloom_filter_new(unsigned int table_size, 
                               BloomFilterHashFunc hash_func,
@@ -187,6 +187,34 @@ int bloom_filter_lookup(BloomFilter *bloomfilter, void *value)
 	 * insertions. */
 
 	return 1;
+}
+
+void bloom_filter_read(BloomFilter *bloomfilter, unsigned char *array)
+{
+	unsigned int array_size;
+
+	/* The table is an array of bits, packed into bytes.  Round up
+	 * to the nearest byte. */
+
+	array_size = (bloomfilter->table_size + 7) / 8;
+
+	/* Copy into the buffer of the calling routine. */
+
+	memcpy(array, bloomfilter->table, array_size);
+}
+
+void bloom_filter_load(BloomFilter *bloomfilter, unsigned char *array)
+{
+	unsigned int array_size;
+
+	/* The table is an array of bits, packed into bytes.  Round up
+	 * to the nearest byte. */
+
+	array_size = (bloomfilter->table_size + 7) / 8;
+
+	/* Copy from the buffer of the calling routine. */
+
+	memcpy(bloomfilter->table, array, array_size);
 }
 
 

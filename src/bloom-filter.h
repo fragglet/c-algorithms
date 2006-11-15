@@ -127,6 +127,31 @@ void bloom_filter_insert(BloomFilter *bloomfilter, void *value);
 
 int bloom_filter_lookup(BloomFilter *bloomfilter, void *value);
 
+/**
+ * Read the contents of a bloom filter into an array.
+ *
+ * @param bloomfilter          The bloom filter.
+ * @param array                Pointer to the array to read into.  This
+ *                             should be (table_size + 7) / 8 bytes in 
+ *                             length.
+ */
+
+void bloom_filter_read(BloomFilter *bloomfilter, unsigned char *array);
+
+/**
+ * Load the contents of a bloom filter from an array.
+ * The data loaded should be the output read from @ref bloom_filter_read,
+ * from a bloom filter created using the same arguments used to create
+ * the original filter.
+ *
+ * @param bloomfilter          The bloom filter.
+ * @param array                Pointer to the array to load from.  This 
+ *                             should be (table_size + 7) / 8 bytes in 
+ *                             length.
+ */
+
+void bloom_filter_load(BloomFilter *bloomfilter, unsigned char *array);
+
 #ifdef __cplusplus
 }
 #endif
