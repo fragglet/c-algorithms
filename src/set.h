@@ -51,7 +51,7 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  * To query if a particular value is in a set, use @ref set_query.
  *
- * To iterate over all values in a set, use @ref set_foreach.
+ * To iterate over all values in a set, use @ref set_iterate.
  */
 
 #ifndef ALGORITHM_SET_H

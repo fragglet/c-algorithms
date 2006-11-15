@@ -276,7 +276,7 @@ ListIterator *list_iterate(ListEntry **list);
  *                       read.
  */
 
-int list_iter_has_more(ListIterator *iter);
+int list_iter_has_more(ListIterator *iterator);
 
 /**
  * Using a list iterator, retrieve the next value from the list. 
@@ -286,7 +286,7 @@ int list_iter_has_more(ListIterator *iter);
  *                       no more values in the list.
  */
         
-void *list_iter_next(ListIterator *iter);
+void *list_iter_next(ListIterator *iterator);
 
 /** 
  * Delete the current entry in the list (the value last returned from
@@ -295,7 +295,7 @@ void *list_iter_next(ListIterator *iter);
  * @param iterator       The list iterator.
  */
 
-void list_iter_remove(ListIterator *iter);
+void list_iter_remove(ListIterator *iterator);
 
 /**
  * Free back a list iterator.
@@ -303,7 +303,7 @@ void list_iter_remove(ListIterator *iter);
  * @param iterator       The list iterator.
  */
 
-void list_iter_free(ListIterator *iter);
+void list_iter_free(ListIterator *iterator);
 
 #endif /* #ifndef ALGORITHM_LIST_H */
 

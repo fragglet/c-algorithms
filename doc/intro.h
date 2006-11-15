@@ -60,6 +60,7 @@ POSSIBILITY OF SUCH DAMAGE.
  * @li @link queue.h Queue @endlink: Double ended queue which can be used
  * as a FIFO or a stack.
  * @li @link set.h Set @endlink: Unordered set of values.
+ * @li @link bloom-filter.h Bloom Filter @endlink: Space-efficient set.
  *
  * @subsection Mappings
  *

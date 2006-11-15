@@ -248,7 +248,7 @@ SListEntry *slist_find_data(SListEntry *list,
                             void *data);
 
 /** 
- * Create a new @reg SListIterator structure to iterate over a list.
+ * Create a new @ref SListIterator structure to iterate over a list.
  * The iterator should be freed once iterating has completed, using
  * the function @ref list_iter_free.
  *
@@ -269,7 +269,7 @@ SListIterator *slist_iterate(SListEntry **list);
  *                       read.
  */
 
-int slist_iter_has_more(SListIterator *iter);
+int slist_iter_has_more(SListIterator *iterator);
 
 /**
  * Using a list iterator, retrieve the next value from the list. 
@@ -279,7 +279,7 @@ int slist_iter_has_more(SListIterator *iter);
  *                       no more values in the list.
  */
         
-void *slist_iter_next(SListIterator *iter);
+void *slist_iter_next(SListIterator *iterator);
 
 /** 
  * Delete the current entry in the list (the value last returned from
@@ -288,7 +288,7 @@ void *slist_iter_next(SListIterator *iter);
  * @param iterator       The list iterator.
  */
 
-void slist_iter_remove(SListIterator *iter);
+void slist_iter_remove(SListIterator *iterator);
 
 /**
  * Free back a list iterator.
@@ -296,7 +296,7 @@ void slist_iter_remove(SListIterator *iter);
  * @param iterator       The list iterator.
  */
 
-void slist_iter_free(SListIterator *iter);
+void slist_iter_free(SListIterator *iterator);
 
 #endif /* #ifndef ALGORITHM_SLIST_H */
 
