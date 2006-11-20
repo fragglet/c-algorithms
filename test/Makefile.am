@@ -3,6 +3,7 @@ TESTS =                          \
         test-arraylist           \
         test-avltree             \
         test-binary-heap         \
+        test-bloom-filter        \
         test-list                \
         test-slist               \
         test-queue               \
