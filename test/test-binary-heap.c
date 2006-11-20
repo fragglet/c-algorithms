@@ -129,6 +129,7 @@ void test_max_heap(void)
 int main(int argc, char *argv[])
 {
 	test_binary_heap_new_free();
+	test_binary_heap_insert();
 	test_min_heap();
 	test_max_heap();
 

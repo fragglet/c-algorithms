@@ -40,7 +40,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "trie.h"
 
-void test_trie_new()
+void test_trie_new(void)
 {
 	Trie *trie;
 
@@ -49,7 +49,7 @@ void test_trie_new()
 	assert(trie != NULL);
 }
 
-void test_trie_free()
+void test_trie_free(void)
 {
 	Trie *trie;
 	
@@ -80,7 +80,7 @@ void test_trie_free()
 	trie_free(trie);
 }
 
-void test_trie_insert_lookup_remove()
+void test_trie_insert_lookup_remove(void)
 {
 	Trie *trie;
 	char buf[10];

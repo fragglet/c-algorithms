@@ -388,6 +388,7 @@ int main(int argc, char *argv[])
 	test_set_union();
 	test_set_iterating();
 	test_set_iterating_remove();
+	test_set_to_array();
 
 	return 0;
 }
