@@ -99,6 +99,7 @@ BloomFilter *bloom_filter_new(unsigned int table_size,
 		return NULL;
 	}
 
+	filter->hash_func = hash_func;
 	filter->num_functions = num_functions;
 	filter->table_size = table_size;
 
