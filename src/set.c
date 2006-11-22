@@ -408,7 +408,7 @@ SetValue *set_to_array(Set *set)
 
 	/* Iterate over all entries in all chains */
 	
-	for (i=0; i<set->entries; ++i) {
+	for (i=0; i<set->table_size; ++i) {
 
 		rover = set->table[i];
 
