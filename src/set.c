@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 typedef struct _SetEntry SetEntry;
 
 struct _SetEntry {
-	void *data;
+	SetValue data;
 	SetEntry *next;
 };
 
@@ -241,7 +241,7 @@ static int set_enlarge(Set *set)
 	return 1;
 }
 
-int set_insert(Set *set, void *data)
+int set_insert(Set *set, SetValue data)
 {
 	SetEntry *newentry;
 	SetEntry *rover;
@@ -307,7 +307,7 @@ int set_insert(Set *set, void *data)
 	return 1;
 }
 
-int set_remove(Set *set, void *data)
+int set_remove(Set *set, SetValue data)
 {
 	SetEntry **rover;
 	SetEntry *entry;
@@ -353,7 +353,7 @@ int set_remove(Set *set, void *data)
 	return 0;
 }
 
-int set_query(Set *set, void *data)
+int set_query(Set *set, SetValue data)
 {
 	SetEntry *rover;
 	int index;
@@ -389,16 +389,16 @@ int set_num_entries(Set *set)
 	return set->entries;
 }
 
-void **set_to_array(Set *set)
+SetValue *set_to_array(Set *set)
 {
-	void **array;
+	SetValue *array;
 	int array_counter;
 	int i;
 	SetEntry *rover;
 	
 	/* Create an array to hold the set entries */
 	
-	array = malloc(sizeof(void *) * set->entries);
+	array = malloc(sizeof(SetValue) * set->entries);
 
 	if (array == NULL) {
 		return NULL;
@@ -432,7 +432,7 @@ Set *set_union(Set *set1, Set *set2)
 {
 	SetIterator *iterator;
 	Set *new_set;
-	void *value;
+	SetValue value;
 
 	new_set = set_new(set1->hash_func, set1->equal_func);
 
@@ -496,7 +496,7 @@ Set *set_intersection(Set *set1, Set *set2)
 {
 	Set *new_set;
 	SetIterator *iterator;
-	void *value;
+	SetValue value;
 
 	new_set = set_new(set1->hash_func, set2->equal_func);
 
@@ -569,10 +569,10 @@ SetIterator *set_iterate(Set *set)
 	return iter;
 }
 
-void *set_iter_next(SetIterator *iterator)
+SetValue set_iter_next(SetIterator *iterator)
 {
 	Set *set;
-	void *result;
+	SetValue result;
 	int chain;
 
 	set = iterator->set;
@@ -580,7 +580,7 @@ void *set_iter_next(SetIterator *iterator)
 	/* No more entries? */
 	
 	if (iterator->next_entry == NULL) {
-		return NULL;
+		return SET_NULL;
 	}
 
 	/* We have the result immediately */

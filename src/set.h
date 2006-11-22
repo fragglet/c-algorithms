@@ -79,25 +79,37 @@ typedef struct _Set Set;
 
 typedef struct _SetIterator SetIterator;
 
+/**
+ * A value stored in a @ref Set.
+ */
+
+typedef void *SetValue;
+
+/**
+ * A null @ref SetValue.
+ */
+
+#define SET_NULL ((void *) 0)
+
 /** 
  * Hash function.  Generates a hash key for data to be stored in a set.
  */
 
-typedef unsigned long (*SetHashFunc)(void *data);
+typedef unsigned long (*SetHashFunc)(SetValue data);
 
 /** 
  * Equality function.  Compares two values to determine if they are
  * equivalent.
  */
 
-typedef int (*SetEqualFunc)(void *data1, void *data2);
+typedef int (*SetEqualFunc)(SetValue data1, SetValue data2);
 
 /**
  * Function used to free values stored in a set.  See
  * @ref set_register_free_function.
  */
 
-typedef void (*SetFreeFunc)(void *data);
+typedef void (*SetFreeFunc)(SetValue data);
 
 /**
  * Create a new set.
@@ -141,7 +153,7 @@ void set_register_free_function(Set *set, SetFreeFunc free_func);
  *                      new entry.
  */
 
-int set_insert(Set *set, void *data);
+int set_insert(Set *set, SetValue data);
 
 /**
  * Remove a value from a set.
@@ -153,7 +165,7 @@ int set_insert(Set *set, void *data);
  *                      found in the set.
  */
 
-int set_remove(Set *set, void *data);
+int set_remove(Set *set, SetValue data);
 
 /** 
  * Query if a particular value is in a set.
@@ -164,7 +176,7 @@ int set_remove(Set *set, void *data);
  *                      data is in the set.
  */
 
-int set_query(Set *set, void *data);
+int set_query(Set *set, SetValue data);
 
 /**
  * Retrieve the number of entries in a set
@@ -182,7 +194,7 @@ int set_num_entries(Set *set);
  * @return                 An array containing all entries in the set.
  */
 
-void **set_to_array(Set *set);
+SetValue *set_to_array(Set *set);
 
 /**
  * Perform a union of two sets.  
@@ -236,11 +248,11 @@ int set_iter_has_more(SetIterator *iterator);
  * Using a set iterator, retrieve the next value from the set.
  *
  * @param iterator         The set iterator.
- * @return                 The next value from the set, or NULL if no
+ * @return                 The next value from the set, or SET_NULL if no
  *                         more values are available.
  */
 
-void *set_iter_next(SetIterator *iterator);
+SetValue set_iter_next(SetIterator *iterator);
 
 /**
  * Free back a set iterator object. 
