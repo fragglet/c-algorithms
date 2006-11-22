@@ -128,7 +128,8 @@ static BinomialTree *binomial_tree_merge(BinomialHeap *heap,
 	if (new_tree == NULL) {
 		return NULL;
 	}
-	
+
+	new_tree->refcount = 0;
 	new_tree->order = tree1->order + 1;
 
 	/* Take the smallest value of the two trees */
