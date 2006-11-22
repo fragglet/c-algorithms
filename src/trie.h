@@ -62,6 +62,18 @@ extern "C" {
 typedef struct _Trie Trie;
 
 /**
+ * Value stored in a @ref Trie.
+ */
+
+typedef void *TrieValue;
+
+/**
+ * A null @ref TrieValue.
+ */
+
+#define TRIE_NULL ((void *) 0)
+
+/**
  * Create a new trie.
  *
  * @return                   Pointer to a new trie structure, or NULL if it
@@ -90,18 +102,18 @@ void trie_free(Trie *trie);
  *                           memory for the new entry.
  */
 
-int trie_insert(Trie *trie, char *key, void *value);
+int trie_insert(Trie *trie, char *key, TrieValue value);
 
 /**
  * Look up a value from its key in a trie.
  *
  * @param trie               The trie.
  * @param key                The key.
- * @return                   The value associated with the key, or NULL if
- *                           not found in the trie.
+ * @return                   The value associated with the key, or 
+ *                           TRIE_NULL if not found in the trie.
  */
 
-void *trie_lookup(Trie *trie, char *key);
+TrieValue trie_lookup(Trie *trie, char *key);
 
 /**
  * Remove an entry from a trie.

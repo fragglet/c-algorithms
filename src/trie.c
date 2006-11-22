@@ -43,7 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
 typedef struct _TrieNode TrieNode;
 
 struct _TrieNode {
-	void *data;
+	TrieValue data;
 	unsigned int use_count;
 	TrieNode *next[256];
 };
@@ -163,7 +163,7 @@ static void trie_insert_rollback(Trie *trie, char *key)
 	}
 }
 
-int trie_insert(Trie *trie, char *key, void *value)
+int trie_insert(Trie *trie, char *key, TrieValue value)
 {
 	TrieNode **rover;
 	TrieNode *node;
@@ -172,7 +172,7 @@ int trie_insert(Trie *trie, char *key, void *value)
 
 	/* Cannot insert NULL values */
 
-	if (value == NULL) {
+	if (value == TRIE_NULL) {
 		return 0;
 	}
 		
@@ -183,7 +183,7 @@ int trie_insert(Trie *trie, char *key, void *value)
 	/* Already in the tree? If so, replace the existing value and 
 	 * return success. */
 
-	if (node != NULL && node->data != NULL) {
+	if (node != NULL && node->data != TRIE_NULL) {
 		node->data = value;
 		return 1;
 	}
@@ -259,8 +259,8 @@ int trie_remove(Trie *trie, char *key)
 
 	node = trie_find_end(trie, key);
 
-	if (node != NULL && node->data != NULL) {
-		node->data = NULL;
+	if (node != NULL && node->data != TRIE_NULL) {
+		node->data = TRIE_NULL;
 	} else {
 		return 0;
 	}
@@ -324,7 +324,7 @@ int trie_remove(Trie *trie, char *key)
 	return 1;
 }
 
-void *trie_lookup(Trie *trie, char *key)
+TrieValue trie_lookup(Trie *trie, char *key)
 {
 	TrieNode *node;
 
@@ -333,7 +333,7 @@ void *trie_lookup(Trie *trie, char *key)
 	if (node != NULL) {
 		return node->data;
 	} else {
-		return NULL;
+		return TRIE_NULL;
 	}
 }
 

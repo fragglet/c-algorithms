@@ -83,6 +83,24 @@ extern "C" {
 typedef struct _AVLTree AVLTree;
 
 /**
+ * A key for an @ref AVLTree.
+ */
+
+typedef void *AVLTreeKey;
+
+/**
+ * A value stored in an @ref AVLTree.
+ */
+
+typedef void *AVLTreeValue;
+
+/**
+ * A null @ref AVLTreeValue.
+ */
+
+#define AVL_TREE_NULL ((void *) 0)
+
+/**
  * A node in an AVL tree.
  *
  * @see avltree_node_left_child
@@ -105,13 +123,13 @@ typedef struct _AVLTreeNode AVLTreeNode;
  *                         are equal.
  */
 
-typedef int (*AVLTreeCompareFunc)(void *data1, void *data2);
+typedef int (*AVLTreeCompareFunc)(AVLTreeValue data1, AVLTreeValue data2);
 
 /**
  * Create a new AVL tree.
  *
  * @param compare_func    Function to use when comparing keys in the tree.
- * @return                A new AVL tree, or NULL if it was not possible
+ * @return                A new AVL tree, or NULL if it was not possible 
  *                        to allocate the memory.
  */
 
@@ -136,7 +154,7 @@ void avltree_free(AVLTree *tree);
  *                        to allocate the new memory.
  */
 
-AVLTreeNode *avltree_insert(AVLTree *tree, void *key, void *value);
+AVLTreeNode *avltree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value);
 
 /**
  * Remove a node from a tree.
@@ -158,7 +176,7 @@ void avltree_remove_node(AVLTree *tree, AVLTreeNode *node);
  *                        the specified key was removed.
  */
 
-int avltree_remove(AVLTree *tree, void *key);
+int avltree_remove(AVLTree *tree, AVLTreeKey key);
 
 /**
  * Search an AVL tree for a node with a particular key.  This uses
@@ -170,7 +188,7 @@ int avltree_remove(AVLTree *tree, void *key);
  *                        if no entry with the given key is found.
  */
 
-AVLTreeNode *avltree_lookup_node(AVLTree *tree, void *key);
+AVLTreeNode *avltree_lookup_node(AVLTree *tree, AVLTreeKey key);
 
 /**
  * Search an AVL tree for a value corresponding to a particular key.
@@ -180,11 +198,12 @@ AVLTreeNode *avltree_lookup_node(AVLTree *tree, void *key);
  *
  * @param tree            The AVL tree to search.
  * @param key             The key to search for.
- * @return                The value associated with the given key, or NULL
- *                        if no entry with the given key is found.
+ * @return                The value associated with the given key, or 
+ *                        AVLTREE_NULL if no entry with the given key is 
+ *                        found.
  */
 
-void *avltree_lookup(AVLTree *tree, void *key);
+AVLTreeValue avltree_lookup(AVLTree *tree, AVLTreeKey key);
 
 /**
  * Find the root node of a tree.
@@ -203,7 +222,7 @@ AVLTreeNode *avltree_root_node(AVLTree *tree);
  * @return                The key to the given node.
  */
 
-void *avltree_node_key(AVLTreeNode *node);
+AVLTreeKey avltree_node_key(AVLTreeNode *node);
 
 /** 
  * Retrieve the value at a given tree node.
@@ -212,7 +231,7 @@ void *avltree_node_key(AVLTreeNode *node);
  * @return                The value at the given node.
  */
 
-void *avltree_node_value(AVLTreeNode *node);
+AVLTreeValue avltree_node_value(AVLTreeNode *node);
 
 /**
  * Find the left child of a given tree node.
@@ -264,7 +283,7 @@ int avltree_subtree_height(AVLTreeNode *node);
  *                        (see @ref avltree_num_entries).
  */
 
-void **avltree_to_array(AVLTree *tree);
+AVLTreeValue *avltree_to_array(AVLTree *tree);
 
 /**
  * Retrieve the number of entries in the tree.

@@ -72,6 +72,24 @@ typedef struct _HashTable HashTable;
 typedef struct _HashTableIterator HashTableIterator;
 
 /**
+ * A key to look up a value in a @ref HashTable.
+ */
+
+typedef void *HashTableKey;
+
+/**
+ * A value stored in a @ref HashTable.
+ */
+
+typedef void *HashTableValue;
+
+/**
+ * A null @ref HashTableValue. 
+ */
+
+#define HASH_TABLE_NULL ((void *) 0)
+
+/**
  * Hash function used to generate hash values for keys used in a hash
  * table.
  *
@@ -79,7 +97,7 @@ typedef struct _HashTableIterator HashTableIterator;
  * @return       The hash value.
  */
 
-typedef unsigned long (*HashTableHashFunc)(void *data);
+typedef unsigned long (*HashTableHashFunc)(HashTableKey data);
 
 /**
  * Function used to compare two keys for equality.
@@ -88,14 +106,21 @@ typedef unsigned long (*HashTableHashFunc)(void *data);
  *           not equal.
  */
 
-typedef int (*HashTableEqualFunc)(void *data1, void *data2);
+typedef int (*HashTableEqualFunc)(HashTableKey data1, HashTableKey data2);
 
 /**
- * Type of function used to free keys and values when entries are
- * removed from a hash table.
+ * Type of function used to free keys when entries are removed from a 
+ * hash table.
  */
 
-typedef void (*HashTableFreeFunc)(void *data);
+typedef void (*HashTableKeyFreeFunc)(HashTableKey data);
+
+/**
+ * Type of function used to free values when entries are removed from a 
+ * hash table.
+ */
+
+typedef void (*HashTableValueFreeFunc)(HashTableValue data);
 
 /**
  * Create a new hash table.
@@ -130,8 +155,8 @@ void hash_table_free(HashTable *hashtable);
  */
 
 void hash_table_register_free_functions(HashTable *hashtable,
-                                        HashTableFreeFunc key_free_func,
-                                        HashTableFreeFunc value_free_func);
+                                        HashTableKeyFreeFunc key_free_func,
+                                        HashTableValueFreeFunc value_free_func);
 
 /**
  * Insert a value into a hash table, overwriting any existing entry 
@@ -145,18 +170,18 @@ void hash_table_register_free_functions(HashTable *hashtable,
  *                             memory for the new entry.
  */
 
-int hash_table_insert(HashTable *hashtable, void *key, void *value);
+int hash_table_insert(HashTable *hashtable, HashTableKey key, HashTableValue value);
 
 /**
  * Look up a value in a hash table by key.
  *
  * @param hashtable           The hash table.
  * @param key                 The key of the value to look up.
- * @return                    The value, or NULL if there is no value with
- *                            that key in the hash table.
+ * @return                    The value, or @ref HASH_TABLE_NULL if there 
+ *                            is no value with that key in the hash table.
  */
 
-void *hash_table_lookup(HashTable *hashtable, void *key);
+HashTableValue hash_table_lookup(HashTable *hashtable, HashTableKey key);
 
 /**
  * Remove a value from a hash table.
@@ -167,7 +192,7 @@ void *hash_table_lookup(HashTable *hashtable, void *key);
  *                            specified key was not found in the hash table.
  */
 
-int hash_table_remove(HashTable *hashtable, void *key);
+int hash_table_remove(HashTable *hashtable, HashTableKey key);
 
 /** 
  * Retrieve the number of entries in a hash table.
@@ -208,11 +233,12 @@ int hash_table_iter_has_more(HashTableIterator *iterator);
  * Using a hash table iterator, retrieve the next key.
  *
  * @param iterator            The hash table iterator.
- * @return                    The next key from the hash table, or NULL
- *                            if there are no more keys to iterate over.
+ * @return                    The next key from the hash table, or 
+ *                            @ref HASH_TABLE_NULL if there are no more 
+ *                            keys to iterate over.
  */
 
-void *hash_table_iter_next(HashTableIterator *iterator);
+HashTableValue hash_table_iter_next(HashTableIterator *iterator);
 
 /**
  * Free back a hash table iterator object.  This must be done once

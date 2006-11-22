@@ -66,6 +66,12 @@ extern "C" {
 typedef struct _BloomFilter BloomFilter;
 
 /**
+ * A value stored in a @ref BloomFilter.
+ */
+
+typedef void *BloomFilterValue;
+
+/**
  * Hash function used to generate hash values for values inserted into a 
  * bloom filter.
  *
@@ -73,7 +79,7 @@ typedef struct _BloomFilter BloomFilter;
  * @return       The hash value.
  */
 
-typedef unsigned long (*BloomFilterHashFunc)(void *data);
+typedef unsigned long (*BloomFilterHashFunc)(BloomFilterValue data);
 
 /**
  * Create a new bloom filter.
@@ -114,7 +120,7 @@ void bloom_filter_free(BloomFilter *bloomfilter);
  * @param value                The value to insert.
  */
 
-void bloom_filter_insert(BloomFilter *bloomfilter, void *value);
+void bloom_filter_insert(BloomFilter *bloomfilter, BloomFilterValue value);
 
 /**
  * Query a bloom filter for a particular value.
@@ -127,7 +133,7 @@ void bloom_filter_insert(BloomFilter *bloomfilter, void *value);
  *                             have been inserted.
  */
 
-int bloom_filter_query(BloomFilter *bloomfilter, void *value);
+int bloom_filter_query(BloomFilter *bloomfilter, BloomFilterValue value);
 
 /**
  * Read the contents of a bloom filter into an array.

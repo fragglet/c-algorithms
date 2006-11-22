@@ -64,7 +64,7 @@ ArrayList *arraylist_new(int length)
 
 	/* Allocate the data array */
 
-	new_arraylist->data = malloc(length * sizeof(void *));
+	new_arraylist->data = malloc(length * sizeof(ArrayListValue));
 
 	if (new_arraylist->data == NULL) {
 		free(new_arraylist);
@@ -86,7 +86,7 @@ void arraylist_free(ArrayList *arraylist)
 
 static int arraylist_enlarge(ArrayList *arraylist)
 {
-	void **data;
+	ArrayListValue *data;
 	int newsize;
 
 	/* Double the allocated size */
@@ -95,7 +95,7 @@ static int arraylist_enlarge(ArrayList *arraylist)
 	
 	/* Reallocate the array to the new size */
 
-	data = realloc(arraylist->data, sizeof(void *) * newsize);
+	data = realloc(arraylist->data, sizeof(ArrayListValue) * newsize);
 
 	if (data == NULL) {
 		return 0;
@@ -107,7 +107,7 @@ static int arraylist_enlarge(ArrayList *arraylist)
 	}
 }
 
-int arraylist_insert(ArrayList *arraylist, int index, void *data)
+int arraylist_insert(ArrayList *arraylist, int index, ArrayListValue data)
 {
 	/* Sanity check the index */
 
@@ -128,7 +128,7 @@ int arraylist_insert(ArrayList *arraylist, int index, void *data)
 
 	memmove(&arraylist->data[index + 1], 
 	        &arraylist->data[index],
-	        (arraylist->length - index) * sizeof(void *));
+	        (arraylist->length - index) * sizeof(ArrayListValue));
 
 	/* Insert the new entry at the index */
 
@@ -138,12 +138,12 @@ int arraylist_insert(ArrayList *arraylist, int index, void *data)
 	return 1;
 }
 
-int arraylist_append(ArrayList *arraylist, void *data)
+int arraylist_append(ArrayList *arraylist, ArrayListValue data)
 {
 	return arraylist_insert(arraylist, arraylist->length, data);
 }
 
-int arraylist_prepend(ArrayList *arraylist, void *data)
+int arraylist_prepend(ArrayList *arraylist, ArrayListValue data)
 {
 	return arraylist_insert(arraylist, 0, data);
 }
@@ -160,7 +160,7 @@ void arraylist_remove_range(ArrayList *arraylist, int index, int length)
 
 	memmove(&arraylist->data[index],
 	        &arraylist->data[index + length],
-	        (arraylist->length - (index + length)) * sizeof(void *));
+	        (arraylist->length - (index + length)) * sizeof(ArrayListValue));
 
 	/* Decrease the counter */
 
@@ -174,7 +174,7 @@ void arraylist_remove(ArrayList *arraylist, int index)
 
 int arraylist_index_of(ArrayList *arraylist, 
                        ArrayListEqualFunc callback,
-                       void *data)
+                       ArrayListValue data)
 {
 	int i;
 
@@ -193,11 +193,11 @@ void arraylist_clear(ArrayList *arraylist)
 	arraylist->length = 0;
 }
 
-static void arraylist_sort_internal(void **list_data, int list_length,
+static void arraylist_sort_internal(ArrayListValue *list_data, int list_length,
                                     ArrayListCompareFunc compare_func)
 {
-	void *pivot;
-	void *tmp;
+	ArrayListValue pivot;
+	ArrayListValue tmp;
 	int i;
 	int list1_length;
 	int list2_length;

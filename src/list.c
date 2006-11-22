@@ -40,7 +40,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* A doubly-linked list */
 
 struct _ListEntry {
-	void *data;
+	ListValue data;
 	ListEntry *prev;
 	ListEntry *next;
 };
@@ -73,7 +73,7 @@ void list_free(ListEntry *list)
 	}
 }
 
-ListEntry *list_prepend(ListEntry **list, void *data)
+ListEntry *list_prepend(ListEntry **list, ListValue data)
 {
 	ListEntry *newentry;
 
@@ -99,7 +99,7 @@ ListEntry *list_prepend(ListEntry **list, void *data)
 	return newentry;
 }
 
-ListEntry *list_append(ListEntry **list, void *data)
+ListEntry *list_append(ListEntry **list, ListValue data)
 {
 	ListEntry *rover;
 	ListEntry *newentry;
@@ -139,7 +139,7 @@ ListEntry *list_append(ListEntry **list, void *data)
 	return newentry;
 }
 
-void *list_data(ListEntry *listentry)
+ListValue list_data(ListEntry *listentry)
 {
 	return listentry->data;
 }
@@ -181,7 +181,7 @@ ListEntry *list_nth_entry(ListEntry *list, int n)
 	return entry;
 }
 
-void *list_nth_data(ListEntry *list, int n)
+ListValue list_nth_data(ListEntry *list, int n)
 {
 	ListEntry *entry;
 
@@ -192,7 +192,7 @@ void *list_nth_data(ListEntry *list, int n)
 	/* If out of range, return NULL, otherwise return the data */
 
 	if (entry == NULL) {
-		return NULL;
+		return LIST_NULL;
 	} else {
 		return entry->data;
 	}
@@ -218,18 +218,18 @@ int list_length(ListEntry *list)
 	return length;
 }
 
-void **list_to_array(ListEntry *list)
+ListValue *list_to_array(ListEntry *list)
 {
 	ListEntry *rover;
 	int listlen;
-	void **array;
+	ListValue *array;
 	int i;
 
 	/* Allocate an array equal in size to the list length */
 	
 	listlen = list_length(list);
 
-	array = malloc(sizeof(void *) * listlen);
+	array = malloc(sizeof(ListValue) * listlen);
 
 	if (array == NULL) {
 		return NULL;
@@ -301,7 +301,7 @@ int list_remove_entry(ListEntry **list, ListEntry *entry)
 	return 1;
 }
 
-int list_remove_data(ListEntry **list, ListEqualFunc callback, void *data)
+int list_remove_data(ListEntry **list, ListEqualFunc callback, ListValue data)
 {
 	int entries_removed;
 	ListEntry *rover;
@@ -458,7 +458,7 @@ void list_sort(ListEntry **list, ListCompareFunc compare_func)
 
 ListEntry *list_find_data(ListEntry *list,
                           ListEqualFunc callback,
-                          void *data)
+                          ListValue data)
 {
 	ListEntry *rover;
 
@@ -525,7 +525,7 @@ int list_iter_has_more(ListIterator *iter)
 	}
 }
 
-void *list_iter_next(ListIterator *iter)
+ListValue list_iter_next(ListIterator *iter)
 {
 	if (iter->prev_next == NULL) {
 		/* First call to list_iter_next.  Initialise. */
@@ -560,7 +560,7 @@ void *list_iter_next(ListIterator *iter)
 	/* Return data from the current entry */
 
 	if (iter->current == NULL) {
-		return NULL;
+		return LIST_NULL;
 	} else {
 		return iter->current->data;
 	}

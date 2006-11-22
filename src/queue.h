@@ -68,6 +68,18 @@ extern "C" {
 typedef struct _Queue Queue;
 
 /**
+ * A value stored in a @ref Queue.
+ */
+
+typedef void *QueueValue;
+
+/**
+ * A null @ref QueueValue.
+ */
+
+#define QUEUE_NULL ((void *) 0)
+
+/**
  * Create a new double-ended queue.
  *
  * @return           A new queue, or NULL if it was not possible to allocate
@@ -94,28 +106,28 @@ void queue_free(Queue *queue);
  *                   new entry. 
  */
 
-int queue_push_head(Queue *queue, void *data);
+int queue_push_head(Queue *queue, QueueValue data);
 
 /**
  * Remove data from the head of a queue.
  *
  * @param queue      The queue.
- * @return           Data at the head of the queue, or NULL if the 
+ * @return           Data at the head of the queue, or QUEUE_NULL if the 
  *                   queue is empty.
  */
 
-void *queue_pop_head(Queue *queue);
+QueueValue queue_pop_head(Queue *queue);
 
 /**
  * Read data from the head of queue, without removing it from
  * the queue.
  *
  * @param queue      The queue.
- * @return           Data at the head of the queue, or NULL if the 
+ * @return           Data at the head of the queue, or QUEUE_NULL if the 
  *                   queue is empty.
  */
 
-void *queue_peek_head(Queue *queue);
+QueueValue queue_peek_head(Queue *queue);
 
 /**
  * Add data to the tail of a queue.
@@ -127,28 +139,28 @@ void *queue_peek_head(Queue *queue);
  *                   new entry. 
  */
 
-int queue_push_tail(Queue *queue, void *data);
+int queue_push_tail(Queue *queue, QueueValue data);
 
 /**
  * Remove data from the tail of a queue.
  *
  * @param queue      The queue.
- * @return           Data at the head of the queue, or NULL if the 
+ * @return           Data at the head of the queue, or QUEUE_NULL if the 
  *                   queue is empty.
  */
 
-void *queue_pop_tail(Queue *queue);
+QueueValue queue_pop_tail(Queue *queue);
 
 /**
  * Read data from the tail of queue, without removing it from
  * the queue.
  *
  * @param queue      The queue.
- * @return           Data at the tail of the queue, or NULL if the 
+ * @return           Data at the tail of the queue, or QUEUE_NULL if the 
  *                   queue is empty.
  */
 
-void *queue_peek_tail(Queue *queue);
+QueueValue queue_peek_tail(Queue *queue);
 
 /**
  * Query if any data is currently in a queue.

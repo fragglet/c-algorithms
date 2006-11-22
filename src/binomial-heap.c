@@ -42,7 +42,7 @@ typedef struct _BinomialTree BinomialTree;
 
 struct _BinomialTree
 {
-	void *value;
+	BinomialHeapValue value;
 	unsigned short order;
 	unsigned short refcount;
 	BinomialTree **subtrees;
@@ -57,7 +57,9 @@ struct _BinomialHeap
 	int roots_length;
 };
 
-static int binomial_heap_cmp(BinomialHeap *heap, void *data1, void *data2)
+static int binomial_heap_cmp(BinomialHeap *heap, 
+                             BinomialHeapValue data1, 
+                             BinomialHeapValue data2)
 {
 	if (heap->heap_type == BINOMIAL_HEAP_TYPE_MIN) {
 		return heap->compare_func(data1, data2);
@@ -351,7 +353,7 @@ void binomial_heap_free(BinomialHeap *heap)
 	free(heap);
 }
 
-int binomial_heap_insert(BinomialHeap *heap, void *value)
+int binomial_heap_insert(BinomialHeap *heap, BinomialHeapValue value)
 {
 	BinomialHeap fake_heap;
 	BinomialTree *new_tree;
@@ -397,16 +399,16 @@ int binomial_heap_insert(BinomialHeap *heap, void *value)
 	return result;
 }
 
-void *binomial_heap_pop(BinomialHeap *heap)
+BinomialHeapValue binomial_heap_pop(BinomialHeap *heap)
 {
 	BinomialTree *least_tree;
 	BinomialHeap fake_heap;
-	void *result;
+	BinomialHeapValue result;
 	int least;
 	int i;
 
 	if (heap->num_values == 0) {
-		return NULL;
+		return BINOMIAL_HEAP_NULL;
 	}
 	
 	/* Find the tree with the lowest root value */
@@ -464,7 +466,7 @@ void *binomial_heap_pop(BinomialHeap *heap)
 
 		/* Pop failed */
 
-		return NULL;
+		return BINOMIAL_HEAP_NULL;
 	}
 }
 

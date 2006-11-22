@@ -43,8 +43,8 @@ POSSIBILITY OF SUCH DAMAGE.
 typedef struct _HashTableEntry HashTableEntry;
 
 struct _HashTableEntry {
-	void *key;
-	void *value;
+	HashTableKey key;
+	HashTableValue value;
 	HashTableEntry *next;
 };
 
@@ -53,8 +53,8 @@ struct _HashTable {
 	int table_size;
 	HashTableHashFunc hash_func;
 	HashTableEqualFunc equal_func;
-	HashTableFreeFunc key_free_func;
-	HashTableFreeFunc value_free_func;
+	HashTableKeyFreeFunc key_free_func;
+	HashTableValueFreeFunc value_free_func;
 	int entries;
 	int prime_index;
 };
@@ -185,8 +185,8 @@ void hash_table_free(HashTable *hashtable)
 }
 
 void hash_table_register_free_functions(HashTable *hashtable,
-                                        HashTableFreeFunc key_free_func,
-                                        HashTableFreeFunc value_free_func)
+                                        HashTableKeyFreeFunc key_free_func,
+                                        HashTableValueFreeFunc value_free_func)
 {
 	hashtable->key_free_func = key_free_func;
 	hashtable->value_free_func = value_free_func;
@@ -250,7 +250,7 @@ static int hash_table_enlarge(HashTable *hashtable)
 	return 1;
 }
 
-int hash_table_insert(HashTable *hashtable, void *key, void *value) 
+int hash_table_insert(HashTable *hashtable, HashTableKey key, HashTableValue value) 
 {
 	HashTableEntry *rover;
 	HashTableEntry *newentry;
@@ -335,7 +335,7 @@ int hash_table_insert(HashTable *hashtable, void *key, void *value)
 	return 1;
 }
 
-void *hash_table_lookup(HashTable *hashtable, void *key)
+HashTableValue hash_table_lookup(HashTable *hashtable, HashTableKey key)
 {
 	HashTableEntry *rover;
 	int index;
@@ -361,10 +361,10 @@ void *hash_table_lookup(HashTable *hashtable, void *key)
 
 	/* Not found */
 
-	return NULL;
+	return HASH_TABLE_NULL;
 }
 
-int hash_table_remove(HashTable *hashtable, void *key)
+int hash_table_remove(HashTable *hashtable, HashTableKey key)
 {
 	HashTableEntry **rover;
 	HashTableEntry *entry;
@@ -458,10 +458,10 @@ int hash_table_iter_has_more(HashTableIterator *iterator)
 	return iterator->next_entry != NULL;
 }
 
-void *hash_table_iter_next(HashTableIterator *iterator)
+HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 {
 	HashTable *hashtable;
-	void *result;
+	HashTableValue result;
 	int chain;
 
 	hashtable = iterator->hashtable;
@@ -469,7 +469,7 @@ void *hash_table_iter_next(HashTableIterator *iterator)
 	/* No more entries? */
 	
 	if (iterator->next_entry == NULL) {
-		return NULL;
+		return HASH_TABLE_NULL;
 	}
 	
 	/* Result is immediately available */

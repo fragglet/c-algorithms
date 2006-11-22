@@ -91,6 +91,18 @@ typedef struct _SListEntry SListEntry;
 typedef struct _SListIterator SListIterator;
 
 /**
+ * Value stored in a @ref SList.
+ */
+
+typedef void *SListValue;
+
+/**
+ * A null @ref SListValue.
+ */
+
+#define SLIST_NULL ((void *) 0)
+
+/**
  * Callback function used to compare values in a list when sorting.
  *
  * @return   A negative value if data1 should be sorted before data2, 
@@ -98,7 +110,7 @@ typedef struct _SListIterator SListIterator;
  *           zero if data1 and data2 are equal.
  */
 
-typedef int (*SListCompareFunc)(void *data1, void *data2);
+typedef int (*SListCompareFunc)(SListValue data1, SListValue data2);
 
 /**
  * Callback function used to determine of two values in a list are
@@ -108,7 +120,7 @@ typedef int (*SListCompareFunc)(void *data1, void *data2);
  *           are not equal.
  */
 
-typedef int (*SListEqualFunc)(void *data1, void *data2);
+typedef int (*SListEqualFunc)(SListValue data1, SListValue data2);
 
 /**
  * Free an entire list.
@@ -127,7 +139,7 @@ void slist_free(SListEntry *list);
  *                  to allocate a new entry.
  */
 
-SListEntry *slist_prepend(SListEntry **list, void *data);
+SListEntry *slist_prepend(SListEntry **list, SListValue data);
 
 /**
  * Append data to the end of a list.
@@ -138,7 +150,7 @@ SListEntry *slist_prepend(SListEntry **list, void *data);
  *                  to allocate a new entry.
  */
 
-SListEntry *slist_append(SListEntry **list, void *data);
+SListEntry *slist_append(SListEntry **list, SListValue data);
 
 /** 
  * Retrieve the next entry in a list.
@@ -156,7 +168,7 @@ SListEntry *slist_next(SListEntry *listentry);
  * @return             The data at the list entry.
  */
 
-void *slist_data(SListEntry *listentry);
+SListValue slist_data(SListEntry *listentry);
 
 /** 
  * Retrieve the entry at a specified index in a list.
@@ -173,11 +185,11 @@ SListEntry *slist_nth_entry(SListEntry *list, int n);
  *
  * @param list       The list.
  * @param n          The index into the list .
- * @return           The data at the specified index, or NULL if 
+ * @return           The data at the specified index, or @ref SLIST_NULL if 
  *                   unsuccessful.
  */
 
-void *slist_nth_data(SListEntry *list, int n);
+SListValue slist_nth_data(SListEntry *list, int n);
 
 /** 
  * Find the length of a list.
@@ -198,7 +210,7 @@ int slist_length(SListEntry *list);
  *                   equal to the length of the list (see @ref slist_length).
  */
 
-void **slist_to_array(SListEntry *list);
+SListValue *slist_to_array(SListEntry *list);
 
 /**
  * Remove an entry from a list.
@@ -221,7 +233,7 @@ int slist_remove_entry(SListEntry **list, SListEntry *entry);
  * @return           The number of entries removed from the list.
  */
 
-int slist_remove_data(SListEntry **list, SListEqualFunc callback, void *data);
+int slist_remove_data(SListEntry **list, SListEqualFunc callback, SListValue data);
 
 /**
  * Sort a list.
@@ -245,7 +257,7 @@ void slist_sort(SListEntry **list, SListCompareFunc compare_func);
 
 SListEntry *slist_find_data(SListEntry *list, 
                             SListEqualFunc callback,
-                            void *data);
+                            SListValue data);
 
 /** 
  * Create a new @ref SListIterator structure to iterate over a list.
@@ -275,11 +287,11 @@ int slist_iter_has_more(SListIterator *iterator);
  * Using a list iterator, retrieve the next value from the list. 
  *
  * @param iterator       The list iterator.
- * @return               The next value from the list, or NULL if there are
- *                       no more values in the list.
+ * @return               The next value from the list, or SLIST_NULL if 
+ *                       there are no more values in the list.
  */
         
-void *slist_iter_next(SListIterator *iterator);
+SListValue slist_iter_next(SListIterator *iterator);
 
 /** 
  * Delete the current entry in the list (the value last returned from

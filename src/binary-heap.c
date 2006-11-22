@@ -39,13 +39,13 @@ POSSIBILITY OF SUCH DAMAGE.
 
 struct _BinaryHeap {
 	BinaryHeapType heap_type;
-	void **values;
+	BinaryHeapValue *values;
 	int num_values;
 	int alloced_size;
 	BinaryHeapCompareFunc compare_func;
 };
 
-static int binary_heap_cmp(BinaryHeap *heap, void *data1, void *data2)
+static int binary_heap_cmp(BinaryHeap *heap, BinaryHeapValue data1, BinaryHeapValue data2)
 {
 	if (heap->heap_type == BINARY_HEAP_TYPE_MIN) {
 		return heap->compare_func(data1, data2);
@@ -72,7 +72,7 @@ BinaryHeap *binary_heap_new(BinaryHeapType heap_type,
 	/* Initial size of 16 elements */
 
 	heap->alloced_size = 16;
-	heap->values = malloc(sizeof(void *) * heap->alloced_size);
+	heap->values = malloc(sizeof(BinaryHeapValue) * heap->alloced_size);
 
 	if (heap->values == NULL) {
 		free(heap);
@@ -88,9 +88,9 @@ void binary_heap_free(BinaryHeap *heap)
 	free(heap);
 }
 
-int binary_heap_insert(BinaryHeap *heap, void *value)
+int binary_heap_insert(BinaryHeap *heap, BinaryHeapValue value)
 {
-	void **new_values;
+	BinaryHeapValue *new_values;
 	int index;
 	int newsize;
 	int parent;
@@ -102,7 +102,7 @@ int binary_heap_insert(BinaryHeap *heap, void *value)
 		/* Double the table size */
 		
 		newsize = heap->alloced_size * 2;
-		new_values = realloc(heap->values, sizeof(void *) * newsize);
+		new_values = realloc(heap->values, sizeof(BinaryHeapValue) * newsize);
 
 		if (new_values == NULL) {
 			return 0;
@@ -152,10 +152,10 @@ int binary_heap_insert(BinaryHeap *heap, void *value)
 	return 1;
 }
 
-void *binary_heap_pop(BinaryHeap *heap)
+BinaryHeapValue binary_heap_pop(BinaryHeap *heap)
 {
-	void *result;
-	void *new_value;
+	BinaryHeapValue result;
+	BinaryHeapValue new_value;
 	int index;
 	int next_index;
 	int child1, child2;
@@ -163,7 +163,7 @@ void *binary_heap_pop(BinaryHeap *heap)
 	/* Empty heap? */
 
 	if (heap->num_values == 0) {
-		return NULL;
+		return BINARY_HEAP_NULL;
 	}
 
 	/* Take the value from the top of the heap */

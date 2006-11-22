@@ -40,7 +40,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* A singly-linked list */
 
 struct _SListEntry {
-	void *data;
+	SListValue data;
 	SListEntry *next;
 };
 
@@ -72,7 +72,7 @@ void slist_free(SListEntry *list)
 	}
 }
 
-SListEntry *slist_prepend(SListEntry **list, void *data)
+SListEntry *slist_prepend(SListEntry **list, SListValue data)
 {
 	SListEntry *newentry;
 
@@ -94,7 +94,7 @@ SListEntry *slist_prepend(SListEntry **list, void *data)
 	return newentry;
 }
 
-SListEntry *slist_append(SListEntry **list, void *data)
+SListEntry *slist_append(SListEntry **list, SListValue data)
 {
 	SListEntry *rover;
 	SListEntry *newentry;
@@ -132,7 +132,7 @@ SListEntry *slist_append(SListEntry **list, void *data)
 	return newentry;
 }
 
-void *slist_data(SListEntry *listentry)
+SListValue slist_data(SListEntry *listentry)
 {
 	return listentry->data;
 }
@@ -169,7 +169,7 @@ SListEntry *slist_nth_entry(SListEntry *list, int n)
 	return entry;
 }
 
-void *slist_nth_data(SListEntry *list, int n)
+SListValue slist_nth_data(SListEntry *list, int n)
 {
 	SListEntry *entry;
 
@@ -180,7 +180,7 @@ void *slist_nth_data(SListEntry *list, int n)
 	/* If out of range, return NULL, otherwise return the data */
 
 	if (entry == NULL) {
-		return NULL;
+		return SLIST_NULL;
 	} else {
 		return entry->data;
 	}
@@ -206,18 +206,18 @@ int slist_length(SListEntry *list)
 	return length;
 }
 
-void **slist_to_array(SListEntry *list)
+SListValue *slist_to_array(SListEntry *list)
 {
 	SListEntry *rover;
 	int listlen;
-	void **array;
+	SListValue *array;
 	int i;
 
 	/* Allocate an array equal in size to the list length */
 	
 	listlen = slist_length(list);
 
-	array = malloc(sizeof(void *) * listlen);
+	array = malloc(sizeof(SListValue) * listlen);
 
 	if (array == NULL) {
 		return NULL;
@@ -293,7 +293,7 @@ int slist_remove_entry(SListEntry **list, SListEntry *entry)
 	return 1;
 }
 
-int slist_remove_data(SListEntry **list, SListEqualFunc callback, void *data)
+int slist_remove_data(SListEntry **list, SListEqualFunc callback, SListValue data)
 {
 	SListEntry **rover;
 	SListEntry *next;
@@ -425,7 +425,7 @@ void slist_sort(SListEntry **list, SListCompareFunc compare_func)
 
 SListEntry *slist_find_data(SListEntry *list,
                             SListEqualFunc callback,
-                            void *data)
+                            SListValue data)
 {
 	SListEntry *rover;
 
@@ -493,7 +493,7 @@ int slist_iter_has_more(SListIterator *iter)
 	}
 }
 
-void *slist_iter_next(SListIterator *iter)
+SListValue slist_iter_next(SListIterator *iter)
 {
 	if (iter->prev_next == NULL) {
 
@@ -527,7 +527,7 @@ void *slist_iter_next(SListIterator *iter)
 	}
 
 	if (iter->current == NULL) {
-		return NULL;
+		return SLIST_NULL;
 	} else {
 		return iter->current->data;
 	}

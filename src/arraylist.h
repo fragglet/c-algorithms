@@ -59,6 +59,12 @@ extern "C" {
 #endif
 
 /**
+ * A value to be stored in an @ref ArrayList.
+ */
+
+typedef void *ArrayListValue;
+
+/**
  * An ArrayList structure.  New ArrayLists can be created using the 
  * arraylist_new function.
  *
@@ -69,7 +75,7 @@ typedef struct _ArrayList {
 
 	/** Entries in the array */
 	
-	void **data;
+	ArrayListValue *data;
 
 	/** Length of the array */
 	
@@ -86,7 +92,7 @@ typedef struct _ArrayList {
  * @return Non-zero if the values are not equal, zero if they are equal.
  */
 
-typedef int (*ArrayListEqualFunc)(void *data1, void *data2);
+typedef int (*ArrayListEqualFunc)(ArrayListValue data1, ArrayListValue data2);
 
 /**
  * Compare two values in an arraylist.  Used by @ref arraylist_sort
@@ -100,7 +106,7 @@ typedef int (*ArrayListEqualFunc)(void *data1, void *data2);
  *                            are equal.
  */
 
-typedef int (*ArrayListCompareFunc)(void *data1, void *data2);
+typedef int (*ArrayListCompareFunc)(ArrayListValue data1, ArrayListValue data2);
 
 /**
  * Allocate a new ArrayList for use.
@@ -132,7 +138,7 @@ void arraylist_free(ArrayList *arraylist);
  *                       for the new entry.
  */
 
-int arraylist_append(ArrayList *arraylist, void *data);
+int arraylist_append(ArrayList *arraylist, ArrayListValue data);
 
 /** 
  * Prepend data to the beginning of an ArrayList.
@@ -144,7 +150,7 @@ int arraylist_append(ArrayList *arraylist, void *data);
  *                       for the new entry.
  */
 
-int arraylist_prepend(ArrayList *arraylist, void *data);
+int arraylist_prepend(ArrayList *arraylist, ArrayListValue data);
 
 /**
  * Remove the entry at the specified location in an ArrayList.
@@ -178,7 +184,7 @@ void arraylist_remove_range(ArrayList *arraylist, int index, int length);
  *                       if it was impossible to allocate more memory).
  */
 
-int arraylist_insert(ArrayList *arraylist, int index, void *data);
+int arraylist_insert(ArrayList *arraylist, int index, ArrayListValue data);
 
 /**
  * Find the index of a particular pointer in an ArrayList.
@@ -192,7 +198,7 @@ int arraylist_insert(ArrayList *arraylist, int index, void *data);
 
 int arraylist_index_of(ArrayList *arraylist, 
                        ArrayListEqualFunc callback, 
-                       void *data);
+                       ArrayListValue data);
 
 /** 
  * Remove all entries from an ArrayList.

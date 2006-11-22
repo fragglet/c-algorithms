@@ -65,9 +65,21 @@ extern "C" {
  */
 
 typedef enum {
-    BINOMIAL_HEAP_TYPE_MIN,
-    BINOMIAL_HEAP_TYPE_MAX,
+	BINOMIAL_HEAP_TYPE_MIN,
+	BINOMIAL_HEAP_TYPE_MAX,
 } BinomialHeapType;
+
+/**
+ * A value stored in a @ref BinomialHeap.
+ */
+
+typedef void *BinomialHeapValue;
+
+/**
+ * A null @ref BinomialHeapValue.
+ */
+
+#define BINOMIAL_HEAP_NULL ((void *) 0)
 
 /**
  * Type of function used to compare values in a binomial heap.
@@ -79,7 +91,8 @@ typedef enum {
  *                         zero if the two are equal.
  */
 
-typedef int (*BinomialHeapCompareFunc)(void *data1, void *data2);
+typedef int (*BinomialHeapCompareFunc)(BinomialHeapValue data1, 
+                                       BinomialHeapValue data2);
 
 /** 
  * A binomial heap data structure.
@@ -118,7 +131,7 @@ void binomial_heap_free(BinomialHeap *heap);
  *                         entry.
  */
 
-int binomial_heap_insert(BinomialHeap *heap, void *value);
+int binomial_heap_insert(BinomialHeap *heap, BinomialHeapValue value);
 
 /**
  * Remove the first value from a binomial heap.
@@ -127,7 +140,7 @@ int binomial_heap_insert(BinomialHeap *heap, void *value);
  * @return                 The first value in the heap.
  */
 
-void *binomial_heap_pop(BinomialHeap *heap);
+BinomialHeapValue binomial_heap_pop(BinomialHeap *heap);
 
 /**
  * Find the number of values stored in a binomial heap.

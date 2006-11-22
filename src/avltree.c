@@ -43,8 +43,8 @@ struct _AVLTreeNode {
 	AVLTreeNode *left_child;
 	AVLTreeNode *right_child;
 	AVLTreeNode *parent;
-	void *key;
-	void *value;
+	AVLTreeKey key;
+	AVLTreeValue value;
 	int height;
 };
 
@@ -334,7 +334,7 @@ static AVLTreeNode *avltree_node_balance(AVLTree *tree, AVLTreeNode *node)
 	return node;
 }
 
-AVLTreeNode *avltree_insert(AVLTree *tree, void *key, void *value)
+AVLTreeNode *avltree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value)
 {
 	AVLTreeNode **rover;
 	AVLTreeNode *new_node;
@@ -553,7 +553,7 @@ void avltree_remove_node(AVLTree *tree, AVLTreeNode *node)
 
 /* Remove a node by key */
 
-int avltree_remove(AVLTree *tree, void *key)
+int avltree_remove(AVLTree *tree, AVLTreeKey key)
 {
 	AVLTreeNode *node;
 
@@ -574,7 +574,7 @@ int avltree_remove(AVLTree *tree, void *key)
 	return 1;
 }
 
-AVLTreeNode *avltree_lookup_node(AVLTree *tree, void *key)
+AVLTreeNode *avltree_lookup_node(AVLTree *tree, AVLTreeKey key)
 {
 	AVLTreeNode *node;
 	int diff;
@@ -606,7 +606,7 @@ AVLTreeNode *avltree_lookup_node(AVLTree *tree, void *key)
 	return NULL;
 }
 
-void *avltree_lookup(AVLTree *tree, void *key)
+AVLTreeValue avltree_lookup(AVLTree *tree, AVLTreeKey key)
 {
 	AVLTreeNode *node;
 
@@ -615,7 +615,7 @@ void *avltree_lookup(AVLTree *tree, void *key)
 	node = avltree_lookup_node(tree, key);
 
 	if (node == NULL) {
-		return NULL;
+		return AVL_TREE_NULL;
 	} else {
 		return node->value;
 	}
@@ -626,13 +626,12 @@ AVLTreeNode *avltree_root_node(AVLTree *tree)
 	return tree->root_node;
 }
 
-
-void *avltree_node_key(AVLTreeNode *node)
+AVLTreeKey avltree_node_key(AVLTreeNode *node)
 {
 	return node->key;
 }
 
-void *avltree_node_value(AVLTreeNode *node)
+AVLTreeValue avltree_node_value(AVLTreeNode *node)
 {
 	return node->value;
 }
@@ -658,7 +657,7 @@ int avltree_num_entries(AVLTree *tree)
 }
 
 static void avltree_to_array_add_subtree(AVLTreeNode *subtree, 
-                                         void **array, 
+                                         AVLTreeValue *array, 
                                          int *index)
 {
 	if (subtree == NULL) {
@@ -679,14 +678,14 @@ static void avltree_to_array_add_subtree(AVLTreeNode *subtree,
 	avltree_to_array_add_subtree(subtree->right_child, array, index);
 }
 
-void **avltree_to_array(AVLTree *tree)
+AVLTreeValue *avltree_to_array(AVLTree *tree)
 {
-	void **array;
+	AVLTreeValue *array;
 	int index;
 
 	/* Allocate the array */
 	
-	array = malloc(sizeof(void *) * tree->num_nodes);
+	array = malloc(sizeof(AVLTreeValue) * tree->num_nodes);
 
 	if (array == NULL) {
 		return NULL;

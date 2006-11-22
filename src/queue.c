@@ -42,7 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 typedef struct _QueueEntry QueueEntry;
 
 struct _QueueEntry {
-	void *data;
+	QueueValue data;
 	QueueEntry *prev;
 	QueueEntry *next;
 };
@@ -81,7 +81,7 @@ void queue_free(Queue *queue)
 	free(queue);
 }
 
-int queue_push_head(Queue *queue, void *data)
+int queue_push_head(Queue *queue, QueueValue data)
 {
 	QueueEntry *new_entry;
 
@@ -122,15 +122,15 @@ int queue_push_head(Queue *queue, void *data)
 	return 1;
 }
 
-void *queue_pop_head(Queue *queue)
+QueueValue queue_pop_head(Queue *queue)
 {
 	QueueEntry *entry;
-	void *result;
+	QueueValue result;
 
 	/* Check the queue is not empty */
 
 	if (queue_is_empty(queue)) {
-		return NULL;
+		return QUEUE_NULL;
 	}
 
 	/* Unlink the first entry from the head of the queue */
@@ -159,16 +159,16 @@ void *queue_pop_head(Queue *queue)
 	return result;    
 }
 
-void *queue_peek_head(Queue *queue)
+QueueValue queue_peek_head(Queue *queue)
 {
 	if (queue_is_empty(queue)) {
-		return NULL;
+		return QUEUE_NULL;
 	} else {
 		return queue->head->data;
 	}
 }
 
-int queue_push_tail(Queue *queue, void *data)
+int queue_push_tail(Queue *queue, QueueValue data)
 {
 	QueueEntry *new_entry;
 
@@ -209,15 +209,15 @@ int queue_push_tail(Queue *queue, void *data)
 	return 1;
 }
 
-void *queue_pop_tail(Queue *queue)
+QueueValue queue_pop_tail(Queue *queue)
 {
 	QueueEntry *entry;
-	void *result;
+	QueueValue result;
 
 	/* Check the queue is not empty */
 
 	if (queue_is_empty(queue)) {
-		return NULL;
+		return QUEUE_NULL;
 	}
 
 	/* Unlink the first entry from the tail of the queue */
@@ -247,10 +247,10 @@ void *queue_pop_tail(Queue *queue)
 	return result;    
 }
 
-void *queue_peek_tail(Queue *queue)
+QueueValue queue_peek_tail(Queue *queue)
 {
 	if (queue_is_empty(queue)) {
-		return NULL;
+		return QUEUE_NULL;
 	} else {
 		return queue->tail->data;
 	}

@@ -65,9 +65,21 @@ extern "C" {
  */
 
 typedef enum {
-    BINARY_HEAP_TYPE_MIN,
-    BINARY_HEAP_TYPE_MAX,
+	BINARY_HEAP_TYPE_MIN,
+	BINARY_HEAP_TYPE_MAX,
 } BinaryHeapType;
+
+/**
+ * A value stored in a @ref BinaryHeap.
+ */
+
+typedef void *BinaryHeapValue;
+
+/**
+ * A null @ref BinaryHeapValue.
+ */
+
+#define BINARY_HEAP_NULL ((void *) 0)
 
 /**
  * Type of function used to compare values in a binary heap.
@@ -79,7 +91,7 @@ typedef enum {
  *                         zero if the two are equal.
  */
 
-typedef int (*BinaryHeapCompareFunc)(void *data1, void *data2);
+typedef int (*BinaryHeapCompareFunc)(BinaryHeapValue data1, BinaryHeapValue data2);
 
 /** 
  * A binary heap data structure.
@@ -118,7 +130,7 @@ void binary_heap_free(BinaryHeap *heap);
  *                         entry.
  */
 
-int binary_heap_insert(BinaryHeap *heap, void *value);
+int binary_heap_insert(BinaryHeap *heap, BinaryHeapValue value);
 
 /**
  * Remove the first value from a binary heap.
@@ -127,7 +139,7 @@ int binary_heap_insert(BinaryHeap *heap, void *value);
  * @return                 The first value in the heap.
  */
 
-void *binary_heap_pop(BinaryHeap *heap);
+BinaryHeapValue binary_heap_pop(BinaryHeap *heap);
 
 /**
  * Find the number of values stored in a binary heap.
