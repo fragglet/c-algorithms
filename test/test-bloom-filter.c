@@ -14,9 +14,13 @@ void test_bloom_filter_new_free(void)
 
 	assert(filter != NULL);
 
+	bloom_filter_free(filter);
+
 	filter = bloom_filter_new(128, string_hash, 64);
 
 	assert(filter != NULL);
+
+	bloom_filter_free(filter);
 }
 
 void test_bloom_filter_insert_query(void)
