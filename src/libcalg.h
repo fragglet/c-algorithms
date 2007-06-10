@@ -46,7 +46,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <libcalg/hash-string.h>
 
 #include <libcalg/arraylist.h>
-#include <libcalg/avltree.h>
+#include <libcalg/avl-tree.h>
 #include <libcalg/binary-heap.h>
 #include <libcalg/binomial-heap.h>
 #include <libcalg/bloom-filter.h>

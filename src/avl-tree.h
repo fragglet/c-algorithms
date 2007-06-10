@@ -33,7 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-/** @file avltree.h
+/** @file avl-tree.h
  *
  * @brief Balanced binary tree
  *
@@ -49,22 +49,22 @@ POSSIBILITY OF SUCH DAMAGE.
  * as a mapping (searching for a value based on its key), or
  * as a set of keys which is always ordered.
  *
- * To create a new AVL tree, use @ref avltree_new.  To destroy
- * an AVL tree, use @ref avltree_free.
+ * To create a new AVL tree, use @ref avl_tree_new.  To destroy
+ * an AVL tree, use @ref avl_tree_free.
  *
  * To insert a new key-value pair into an AVL tree, use
- * @ref avltree_insert.  To remove an entry from an
- * AVL tree, use @ref avltree_remove or @ref avltree_remove_node.
+ * @ref avl_tree_insert.  To remove an entry from an
+ * AVL tree, use @ref avl_tree_remove or @ref avl_tree_remove_node.
  *
- * To search an AVL tree, use @ref avltree_lookup or 
- * @ref avltree_lookup_node.
+ * To search an AVL tree, use @ref avl_tree_lookup or 
+ * @ref avl_tree_lookup_node.
  *
  * Tree nodes can be queried using the 
- * @ref avltree_node_left_child,
- * @ref avltree_node_right_child,
- * @ref avltree_node_parent,
- * @ref avltree_node_key and
- * @ref avltree_node_value functions.
+ * @ref avl_tree_node_left_child,
+ * @ref avl_tree_node_right_child,
+ * @ref avl_tree_node_parent,
+ * @ref avl_tree_node_key and
+ * @ref avl_tree_node_value functions.
  */
 
 #ifndef ALGORITHM_AVLTREE_H
@@ -77,7 +77,7 @@ extern "C" {
 /**
  * An AVL tree balanced binary tree.
  *
- * @see avltree_new
+ * @see avl_tree_new
  */
 
 typedef struct _AVLTree AVLTree;
@@ -103,11 +103,11 @@ typedef void *AVLTreeValue;
 /**
  * A node in an AVL tree.
  *
- * @see avltree_node_left_child
- * @see avltree_node_right_child
- * @see avltree_node_parent
- * @see avltree_node_key 
- * @see avltree_node_value
+ * @see avl_tree_node_left_child
+ * @see avl_tree_node_right_child
+ * @see avl_tree_node_parent
+ * @see avl_tree_node_key 
+ * @see avl_tree_node_value
  */
 
 typedef struct _AVLTreeNode AVLTreeNode;
@@ -133,7 +133,7 @@ typedef int (*AVLTreeCompareFunc)(AVLTreeValue data1, AVLTreeValue data2);
  *                        to allocate the memory.
  */
 
-AVLTree *avltree_new(AVLTreeCompareFunc compare_func);
+AVLTree *avl_tree_new(AVLTreeCompareFunc compare_func);
 
 /**
  * Destroy an AVL tree.
@@ -141,7 +141,7 @@ AVLTree *avltree_new(AVLTreeCompareFunc compare_func);
  * @param tree            The tree to destroy.
  */
 
-void avltree_free(AVLTree *tree);
+void avl_tree_free(AVLTree *tree);
 
 /**
  * Insert a new key-value pair into an AVL tree.
@@ -154,7 +154,7 @@ void avltree_free(AVLTree *tree);
  *                        to allocate the new memory.
  */
 
-AVLTreeNode *avltree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value);
+AVLTreeNode *avl_tree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value);
 
 /**
  * Remove a node from a tree.
@@ -163,7 +163,7 @@ AVLTreeNode *avltree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value);
  * @param node            The node to remove
  */
 
-void avltree_remove_node(AVLTree *tree, AVLTreeNode *node);
+void avl_tree_remove_node(AVLTree *tree, AVLTreeNode *node);
 
 /**
  * Remove an entry from a tree, specifying the key of the node to
@@ -176,7 +176,7 @@ void avltree_remove_node(AVLTree *tree, AVLTreeNode *node);
  *                        the specified key was removed.
  */
 
-int avltree_remove(AVLTree *tree, AVLTreeKey key);
+int avl_tree_remove(AVLTree *tree, AVLTreeKey key);
 
 /**
  * Search an AVL tree for a node with a particular key.  This uses
@@ -188,12 +188,12 @@ int avltree_remove(AVLTree *tree, AVLTreeKey key);
  *                        if no entry with the given key is found.
  */
 
-AVLTreeNode *avltree_lookup_node(AVLTree *tree, AVLTreeKey key);
+AVLTreeNode *avl_tree_lookup_node(AVLTree *tree, AVLTreeKey key);
 
 /**
  * Search an AVL tree for a value corresponding to a particular key.
  * This uses the tree as a mapping.  Note that this performs 
- * identically to @ref avltree_lookup_node, except that the value
+ * identically to @ref avl_tree_lookup_node, except that the value
  * at the node is returned rather than the node itself.
  *
  * @param tree            The AVL tree to search.
@@ -203,7 +203,7 @@ AVLTreeNode *avltree_lookup_node(AVLTree *tree, AVLTreeKey key);
  *                        found.
  */
 
-AVLTreeValue avltree_lookup(AVLTree *tree, AVLTreeKey key);
+AVLTreeValue avl_tree_lookup(AVLTree *tree, AVLTreeKey key);
 
 /**
  * Find the root node of a tree.
@@ -213,7 +213,7 @@ AVLTreeValue avltree_lookup(AVLTree *tree, AVLTreeKey key);
  *                        empty.
  */
 
-AVLTreeNode *avltree_root_node(AVLTree *tree);
+AVLTreeNode *avl_tree_root_node(AVLTree *tree);
 
 /**
  * Retrieve the key for a given tree node.
@@ -222,7 +222,7 @@ AVLTreeNode *avltree_root_node(AVLTree *tree);
  * @return                The key to the given node.
  */
 
-AVLTreeKey avltree_node_key(AVLTreeNode *node);
+AVLTreeKey avl_tree_node_key(AVLTreeNode *node);
 
 /** 
  * Retrieve the value at a given tree node.
@@ -231,7 +231,7 @@ AVLTreeKey avltree_node_key(AVLTreeNode *node);
  * @return                The value at the given node.
  */
 
-AVLTreeValue avltree_node_value(AVLTreeNode *node);
+AVLTreeValue avl_tree_node_value(AVLTreeNode *node);
 
 /**
  * Find the left child of a given tree node.
@@ -241,7 +241,7 @@ AVLTreeValue avltree_node_value(AVLTreeNode *node);
  *                        node has no left child.
  */
 
-AVLTreeNode *avltree_node_left_child(AVLTreeNode *node);
+AVLTreeNode *avl_tree_node_left_child(AVLTreeNode *node);
 
 /**
  * Find the right child of a given tree node.
@@ -251,7 +251,7 @@ AVLTreeNode *avltree_node_left_child(AVLTreeNode *node);
  *                        node has no right child.
  */
 
-AVLTreeNode *avltree_node_right_child(AVLTreeNode *node);
+AVLTreeNode *avl_tree_node_right_child(AVLTreeNode *node);
 
 /**
  * Find the parent node of a given tree node.
@@ -261,7 +261,7 @@ AVLTreeNode *avltree_node_right_child(AVLTreeNode *node);
  *                        this is the root node.
  */
 
-AVLTreeNode *avltree_node_parent(AVLTreeNode *node);
+AVLTreeNode *avl_tree_node_parent(AVLTreeNode *node);
 
 /**
  * Find the height of a subtree.
@@ -270,7 +270,7 @@ AVLTreeNode *avltree_node_parent(AVLTreeNode *node);
  * @return                The height of the subtree.
  */
 
-int avltree_subtree_height(AVLTreeNode *node);
+int avl_tree_subtree_height(AVLTreeNode *node);
 
 /**
  * Convert the keys in an AVL tree into a C array.  This allows 
@@ -280,10 +280,10 @@ int avltree_subtree_height(AVLTreeNode *node);
  * @return                A newly allocated C array containing all the keys
  *                        in the tree, in order.  The length of the array
  *                        is equal to the number of entries in the tree
- *                        (see @ref avltree_num_entries).
+ *                        (see @ref avl_tree_num_entries).
  */
 
-AVLTreeValue *avltree_to_array(AVLTree *tree);
+AVLTreeValue *avl_tree_to_array(AVLTree *tree);
 
 /**
  * Retrieve the number of entries in the tree.
@@ -292,7 +292,7 @@ AVLTreeValue *avltree_to_array(AVLTree *tree);
  * @return                The number of key-value pairs stored in the tree.
  */
 
-int avltree_num_entries(AVLTree *tree);
+int avl_tree_num_entries(AVLTree *tree);
 
 #ifdef __cplusplus
 }

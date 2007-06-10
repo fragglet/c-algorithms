@@ -1,7 +1,7 @@
 
 TESTS =                          \
         test-arraylist           \
-        test-avltree             \
+        test-avl-tree            \
         test-binary-heap         \
         test-binomial-heap       \
         test-bloom-filter        \

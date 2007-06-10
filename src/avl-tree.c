@@ -35,7 +35,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include <stdlib.h>
 
-#include "avltree.h"
+#include "avl-tree.h"
 
 /* AVL Tree (balanced binary search tree) */
 
@@ -54,7 +54,7 @@ struct _AVLTree {
 	int num_nodes;
 };
 
-AVLTree *avltree_new(AVLTreeCompareFunc compare_func)
+AVLTree *avl_tree_new(AVLTreeCompareFunc compare_func)
 {
 	AVLTree *new_tree;
 
@@ -71,30 +71,30 @@ AVLTree *avltree_new(AVLTreeCompareFunc compare_func)
 	return new_tree;
 }
 
-static void avltree_free_subtree(AVLTree *tree, AVLTreeNode *node)
+static void avl_tree_free_subtree(AVLTree *tree, AVLTreeNode *node)
 {
 	if (node == NULL) {
 		return;
 	}
 
-	avltree_free_subtree(tree, node->left_child);
-	avltree_free_subtree(tree, node->right_child);
+	avl_tree_free_subtree(tree, node->left_child);
+	avl_tree_free_subtree(tree, node->right_child);
 
 	free(node);
 }
 
-void avltree_free(AVLTree *tree)
+void avl_tree_free(AVLTree *tree)
 {
 	/* Destroy all nodes */
 	
-	avltree_free_subtree(tree, tree->root_node);
+	avl_tree_free_subtree(tree, tree->root_node);
 
 	/* Free back the main tree data structure */
 
 	free(tree);
 }
 
-int avltree_subtree_height(AVLTreeNode *node)
+int avl_tree_subtree_height(AVLTreeNode *node)
 {
 	if (node == NULL) {
 		return 0;
@@ -107,12 +107,12 @@ int avltree_subtree_height(AVLTreeNode *node)
  * children.  This does not update the height variable of any parent
  * nodes. */
 
-static void avltree_update_height(AVLTreeNode *node)
+static void avl_tree_update_height(AVLTreeNode *node)
 {
 	int left_height, right_height;
 
-	left_height = avltree_subtree_height(node->left_child);
-	right_height = avltree_subtree_height(node->right_child);
+	left_height = avl_tree_subtree_height(node->left_child);
+	right_height = avl_tree_subtree_height(node->right_child);
 
 	if (left_height > right_height) {
 		node->height = left_height + 1;
@@ -139,7 +139,7 @@ static void avltree_update_height(AVLTreeNode *node)
  *    A   C
  */
 
-static void avltree_rotate_left(AVLTree *tree, AVLTreeNode *node)
+static void avl_tree_rotate_left(AVLTree *tree, AVLTreeNode *node)
 {
 	AVLTreeNode *parent;
 	AVLTreeNode *new_root;
@@ -187,8 +187,8 @@ static void avltree_rotate_left(AVLTree *tree, AVLTreeNode *node)
 
 	/* Update heights of the affected nodes */
 
-	avltree_update_height(new_root);
-	avltree_update_height(node);
+	avl_tree_update_height(new_root);
+	avl_tree_update_height(node);
 }
 
 /* Rotate a section of the tree right.  'node' is the node at the top
@@ -209,7 +209,7 @@ static void avltree_rotate_left(AVLTree *tree, AVLTreeNode *node)
  *       C   E 
  */
 
-static void avltree_rotate_right(AVLTree *tree, AVLTreeNode *node)
+static void avl_tree_rotate_right(AVLTree *tree, AVLTreeNode *node)
 {
 	AVLTreeNode *parent;
 	AVLTreeNode *new_root;
@@ -257,8 +257,8 @@ static void avltree_rotate_right(AVLTree *tree, AVLTreeNode *node)
 
 	/* Update heights of the affected nodes */
 
-	avltree_update_height(new_root);
-	avltree_update_height(node);
+	avl_tree_update_height(new_root);
+	avl_tree_update_height(node);
 }
 
 /* Balance a particular tree node.
@@ -266,7 +266,7 @@ static void avltree_rotate_right(AVLTree *tree, AVLTreeNode *node)
  * Returns the root node of the new subtree which is replacing the
  * old one. */
 
-static AVLTreeNode *avltree_node_balance(AVLTree *tree, AVLTreeNode *node)
+static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 {
 	AVLTreeNode *new_root;
 	int diff;
@@ -275,21 +275,21 @@ static AVLTreeNode *avltree_node_balance(AVLTree *tree, AVLTreeNode *node)
 	 * (difference between left and right > 2), then rotate nodes
 	 * around to fix it */
 
-	diff = avltree_subtree_height(node->right_child)
-		 - avltree_subtree_height(node->left_child);
+	diff = avl_tree_subtree_height(node->right_child)
+	     - avl_tree_subtree_height(node->left_child);
 
 	if (diff >= 2) {
 		
 		/* Biased toward the right side too much. */
 
-		if (avltree_subtree_height(node->right_child->right_child)
-		 <= avltree_subtree_height(node->right_child->left_child)) {
+		if (avl_tree_subtree_height(node->right_child->right_child)
+		 <= avl_tree_subtree_height(node->right_child->left_child)) {
 
 			/* If the right child is biased toward the left
 			 * side, it must be rotated right first (double
 			 * rotation) */
 
-			avltree_rotate_right(tree, node->right_child);
+			avl_tree_rotate_right(tree, node->right_child);
 		}
 
 		/* Perform a left rotation.  After this, the right child will
@@ -298,7 +298,7 @@ static AVLTreeNode *avltree_node_balance(AVLTree *tree, AVLTreeNode *node)
 
 		new_root = node->right_child;
 		
-		avltree_rotate_left(tree, node);
+		avl_tree_rotate_left(tree, node);
 
 		node = new_root;
 
@@ -306,14 +306,14 @@ static AVLTreeNode *avltree_node_balance(AVLTree *tree, AVLTreeNode *node)
 
 		/* Biased toward the left side too much. */
 
-		if (avltree_subtree_height(node->left_child->left_child)
-		 <= avltree_subtree_height(node->left_child->right_child)) {
+		if (avl_tree_subtree_height(node->left_child->left_child)
+		 <= avl_tree_subtree_height(node->left_child->right_child)) {
 
 			/* If the left child is biased toward the right
 			 * side, it must be rotated right left (double
 			 * rotation) */
 
-			avltree_rotate_left(tree, node->left_child);
+			avl_tree_rotate_left(tree, node->left_child);
 		}
 
 		/* Perform a right rotation.  After this, the left child
@@ -322,19 +322,19 @@ static AVLTreeNode *avltree_node_balance(AVLTree *tree, AVLTreeNode *node)
 
 		new_root = node->left_child;
 
-		avltree_rotate_right(tree, node);
+		avl_tree_rotate_right(tree, node);
 
 		node = new_root;
 	}
 
 	/* Update the height of this node */
 
-	avltree_update_height(node);
+	avl_tree_update_height(node);
 
 	return node;
 }
 
-AVLTreeNode *avltree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value)
+AVLTreeNode *avl_tree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value)
 {
 	AVLTreeNode **rover;
 	AVLTreeNode *new_node;
@@ -382,7 +382,7 @@ AVLTreeNode *avltree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value)
 
 		/* Balance this node if necessary */
 
-		node = avltree_node_balance(tree, node);
+		node = avl_tree_node_balance(tree, node);
 
 		/* Go to this node's parent */
 
@@ -398,7 +398,7 @@ AVLTreeNode *avltree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value)
 
 /* Remove a node from a tree */
 
-void avltree_remove_node(AVLTree *tree, AVLTreeNode *node)
+void avl_tree_remove_node(AVLTree *tree, AVLTreeNode *node)
 {
 	AVLTreeNode *swap_node;
 	AVLTreeNode *rover;
@@ -543,7 +543,7 @@ void avltree_remove_node(AVLTree *tree, AVLTreeNode *node)
 
 		/* Possibly rebalance this subtree */
 		
-		rover = avltree_node_balance(tree, rover);
+		rover = avl_tree_node_balance(tree, rover);
 
 		/* Go to the node's parent */
 
@@ -553,13 +553,13 @@ void avltree_remove_node(AVLTree *tree, AVLTreeNode *node)
 
 /* Remove a node by key */
 
-int avltree_remove(AVLTree *tree, AVLTreeKey key)
+int avl_tree_remove(AVLTree *tree, AVLTreeKey key)
 {
 	AVLTreeNode *node;
 
 	/* Find the node to remove */
 
-	node = avltree_lookup_node(tree, key);
+	node = avl_tree_lookup_node(tree, key);
 
 	if (node == NULL) {
 		/* Not found in tree */
@@ -569,12 +569,12 @@ int avltree_remove(AVLTree *tree, AVLTreeKey key)
 
 	/* Remove the node */
 
-	avltree_remove_node(tree, node);
+	avl_tree_remove_node(tree, node);
 
 	return 1;
 }
 
-AVLTreeNode *avltree_lookup_node(AVLTree *tree, AVLTreeKey key)
+AVLTreeNode *avl_tree_lookup_node(AVLTree *tree, AVLTreeKey key)
 {
 	AVLTreeNode *node;
 	int diff;
@@ -606,13 +606,13 @@ AVLTreeNode *avltree_lookup_node(AVLTree *tree, AVLTreeKey key)
 	return NULL;
 }
 
-AVLTreeValue avltree_lookup(AVLTree *tree, AVLTreeKey key)
+AVLTreeValue avl_tree_lookup(AVLTree *tree, AVLTreeKey key)
 {
 	AVLTreeNode *node;
 
 	/* Find the node */
 
-	node = avltree_lookup_node(tree, key);
+	node = avl_tree_lookup_node(tree, key);
 
 	if (node == NULL) {
 		return AVL_TREE_NULL;
@@ -621,42 +621,42 @@ AVLTreeValue avltree_lookup(AVLTree *tree, AVLTreeKey key)
 	}
 }
 
-AVLTreeNode *avltree_root_node(AVLTree *tree)
+AVLTreeNode *avl_tree_root_node(AVLTree *tree)
 {
 	return tree->root_node;
 }
 
-AVLTreeKey avltree_node_key(AVLTreeNode *node)
+AVLTreeKey avl_tree_node_key(AVLTreeNode *node)
 {
 	return node->key;
 }
 
-AVLTreeValue avltree_node_value(AVLTreeNode *node)
+AVLTreeValue avl_tree_node_value(AVLTreeNode *node)
 {
 	return node->value;
 }
 
-AVLTreeNode *avltree_node_left_child(AVLTreeNode *node)
+AVLTreeNode *avl_tree_node_left_child(AVLTreeNode *node)
 {
 	return node->left_child;
 }
 
-AVLTreeNode *avltree_node_right_child(AVLTreeNode *node)
+AVLTreeNode *avl_tree_node_right_child(AVLTreeNode *node)
 {
 	return node->right_child;
 }
 
-AVLTreeNode *avltree_node_parent(AVLTreeNode *node)
+AVLTreeNode *avl_tree_node_parent(AVLTreeNode *node)
 {
 	return node->parent;
 }
 
-int avltree_num_entries(AVLTree *tree)
+int avl_tree_num_entries(AVLTree *tree)
 {
 	return tree->num_nodes;
 }
 
-static void avltree_to_array_add_subtree(AVLTreeNode *subtree, 
+static void avl_tree_to_array_add_subtree(AVLTreeNode *subtree, 
                                          AVLTreeValue *array, 
                                          int *index)
 {
@@ -666,7 +666,7 @@ static void avltree_to_array_add_subtree(AVLTreeNode *subtree,
 		
 	/* Add left subtree first */
 
-	avltree_to_array_add_subtree(subtree->left_child, array, index);
+	avl_tree_to_array_add_subtree(subtree->left_child, array, index);
 	
 	/* Add this node */
 	
@@ -675,10 +675,10 @@ static void avltree_to_array_add_subtree(AVLTreeNode *subtree,
 
 	/* Finally add right subtree */
 
-	avltree_to_array_add_subtree(subtree->right_child, array, index);
+	avl_tree_to_array_add_subtree(subtree->right_child, array, index);
 }
 
-AVLTreeValue *avltree_to_array(AVLTree *tree)
+AVLTreeValue *avl_tree_to_array(AVLTree *tree)
 {
 	AVLTreeValue *array;
 	int index;
@@ -695,7 +695,7 @@ AVLTreeValue *avltree_to_array(AVLTree *tree)
 
 	/* Add all keys */
 	
-	avltree_to_array_add_subtree(tree->root_node, array, &index);
+	avl_tree_to_array_add_subtree(tree->root_node, array, &index);
 
 	return array;
 }

@@ -70,7 +70,7 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  * @subsection Binary_search_trees Binary search trees
  *
- * @li @link avltree.h AVL tree @endlink: Balanced binary search tree 
+ * @li @link avl-tree.h AVL tree @endlink: Balanced binary search tree 
  * with O(log n) worst case performance.
  *
  * @section Utility_functions Utility functions
