@@ -42,6 +42,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "compare-int.h"
 
 int value1 = 1, value2 = 2, value3 = 3, value4 = 4;
+int allocated_keys = 0;
+int allocated_values = 0;
 
 /* Generates a hashtable for use in tests containing 10,000 entries */
 
@@ -258,6 +260,109 @@ void test_hash_table_iterating_remove(void)
 	}
 }
 
+/* Create a new key */
+
+int *new_key(int value)
+{
+	int *result;
+
+	result = malloc(sizeof(int));
+	*result = value;
+
+	++allocated_keys;
+
+	return result;
+}
+
+/* Callback function invoked when a key is freed */
+
+void free_key(void *key)
+{
+	free(key);
+
+	--allocated_keys;
+}
+
+/* Create a new value */
+
+int *new_value(int value)
+{
+	int *result;
+
+	result = malloc(sizeof(int));
+	*result = value;
+
+	++allocated_values;
+
+	return result;
+}
+
+/* Callback function invoked when a value is freed */
+
+void free_value(void *value)
+{
+	free(value);
+
+	--allocated_values;
+}
+
+/* Test the use of functions to free keys / values when they are removed. */
+
+void test_hash_table_free_functions(void)
+{
+	HashTable *hashtable;
+	int *key;
+	int *value;
+	int i;
+
+	/* Create a hash table, fill it with values */
+
+	hashtable = hash_table_new(int_hash, int_equal);
+
+	hash_table_register_free_functions(hashtable, free_key, free_value);
+
+        allocated_values = 0;
+
+	for (i=0; i<1000; ++i)
+	{
+		key = new_key(i);
+		value = new_value(99);
+
+		hash_table_insert(hashtable, key, value);
+	}
+
+	assert(allocated_keys == 1000);
+	assert(allocated_values == 1000);
+
+	/* Check that removing a key works */
+
+	i = 500;
+	hash_table_remove(hashtable, &i);
+
+	assert(allocated_keys == 999);
+	assert(allocated_values == 999);
+
+	/* Check that replacing an existing key works */
+
+	key = new_key(600);
+	value = new_value(999);
+
+	assert(allocated_keys == 1000);
+	assert(allocated_values == 1000);
+
+	hash_table_insert(hashtable, key, value);
+
+	assert(allocated_keys == 999);
+	assert(allocated_values == 999);
+
+	/* A free of the hash table should free all of the keys and values */
+
+	hash_table_free(hashtable);
+
+	assert(allocated_keys == 0);
+	assert(allocated_values == 0);
+}
+
 int main(int argc, char *argv[])
 {
 	test_hash_table_new();
@@ -266,6 +371,7 @@ int main(int argc, char *argv[])
 	test_hash_table_remove();
 	test_hash_table_iterating();
 	test_hash_table_iterating_remove();
+	test_hash_table_free_functions();
 	
 	return 0;
 }
