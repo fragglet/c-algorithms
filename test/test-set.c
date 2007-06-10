@@ -43,6 +43,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "compare-pointer.h"
 #include "hash-pointer.h"
 
+int allocated_values;
+
 Set *generate_set(void)
 {
 	Set *set;
@@ -377,6 +379,61 @@ void test_set_iterating_remove(void)
 	set_free(set);
 }
 
+int *new_value(int value)
+{
+	int *result;
+
+	result = malloc(sizeof(int));
+	*result = value;
+
+	++allocated_values;
+
+	return result;
+}
+
+void free_value(void *value)
+{
+	free(value);
+
+	--allocated_values;
+}
+
+void test_set_free_function(void)
+{
+	Set *set;
+	int i;
+	int *value;
+
+	/* Create a set and fill it with 1000 values */
+
+	set = set_new(int_hash, int_equal);
+
+	set_register_free_function(set, free_value);
+
+	allocated_values = 0;
+
+	for (i=0; i<1000; ++i) {
+		value = new_value(i);
+
+		set_insert(set, value);
+	}
+
+	assert(allocated_values == 1000);
+
+	/* Test removing a value */
+
+	i = 500;
+	set_remove(set, &i);
+
+	assert(allocated_values == 999);
+
+	/* Test freeing the set */
+
+	set_free(set);
+
+	assert(allocated_values == 0);
+}
+
 int main(int argc, char *argv[])
 {
 	test_set_new();
@@ -389,6 +446,7 @@ int main(int argc, char *argv[])
 	test_set_iterating();
 	test_set_iterating_remove();
 	test_set_to_array();
+	test_set_free_function();
 
 	return 0;
 }
