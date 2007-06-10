@@ -50,7 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <libcalg/binary-heap.h>
 #include <libcalg/binomial-heap.h>
 #include <libcalg/bloom-filter.h>
-#include <libcalg/hashtable.h>
+#include <libcalg/hash-table.h>
 #include <libcalg/list.h>
 #include <libcalg/queue.h>
 #include <libcalg/set.h>

@@ -64,8 +64,8 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  * @subsection Mappings
  *
- * @li @link hashtable.h Hash table @endlink: Collection of values which can be
- * addressed using a key.
+ * @li @link hash-table.h Hash table @endlink: Collection of values which 
+ * can be addressed using a key.
  * @li @link trie.h Trie @endlink: Fast mapping using strings as keys.
  *
  * @subsection Binary_search_trees Binary search trees

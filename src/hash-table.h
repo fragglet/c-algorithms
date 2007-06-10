@@ -34,7 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 /**
- * @file hashtable.h
+ * @file hash-table.h
  *
  * @brief Hash table.
  *
@@ -52,8 +52,8 @@ POSSIBILITY OF SUCH DAMAGE.
  * To look up a value by its key, use @ref hash_table_lookup.
  */
 
-#ifndef ALGORITHM_HASHTABLE_H
-#define ALGORITHM_HASHTABLE_H
+#ifndef ALGORITHM_HASH_TABLE_H
+#define ALGORITHM_HASH_TABLE_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -140,21 +140,21 @@ HashTable *hash_table_new(HashTableHashFunc hash_func,
 /**
  * Destroy a hash table.
  *
- * @param hashtable            The hash table to destroy.
+ * @param hash_table           The hash table to destroy.
  */
 
-void hash_table_free(HashTable *hashtable);
+void hash_table_free(HashTable *hash_table);
 
 /**
  * Register functions used to free the key and value when an entry is
  * removed from a hash table.
  *
- * @param hashtable            The hash table.
+ * @param hash_table           The hash table.
  * @param key_free_func        Function used to free keys.
  * @param value_free_func      Function used to free values.
  */
 
-void hash_table_register_free_functions(HashTable *hashtable,
+void hash_table_register_free_functions(HashTable *hash_table,
                                         HashTableKeyFreeFunc key_free_func,
                                         HashTableValueFreeFunc value_free_func);
 
@@ -162,7 +162,7 @@ void hash_table_register_free_functions(HashTable *hashtable,
  * Insert a value into a hash table, overwriting any existing entry 
  * using the same key.
  *
- * @param hashtable            The hash table.
+ * @param hash_table           The hash table.
  * @param key                  The key for the new value.
  * @param value                The value to insert.
  * @return                     Non-zero if the value was added successfully,
@@ -170,52 +170,55 @@ void hash_table_register_free_functions(HashTable *hashtable,
  *                             memory for the new entry.
  */
 
-int hash_table_insert(HashTable *hashtable, HashTableKey key, HashTableValue value);
+int hash_table_insert(HashTable *hash_table, 
+                      HashTableKey key, 
+                      HashTableValue value);
 
 /**
  * Look up a value in a hash table by key.
  *
- * @param hashtable           The hash table.
+ * @param hash_table          The hash table.
  * @param key                 The key of the value to look up.
  * @return                    The value, or @ref HASH_TABLE_NULL if there 
  *                            is no value with that key in the hash table.
  */
 
-HashTableValue hash_table_lookup(HashTable *hashtable, HashTableKey key);
+HashTableValue hash_table_lookup(HashTable *hash_table, 
+                                 HashTableKey key);
 
 /**
  * Remove a value from a hash table.
  *
- * @param hashtable           The hash table.
+ * @param hash_table          The hash table.
  * @param key                 The key of the value to remove.
  * @return                    Non-zero if a key was removed, or zero if the
  *                            specified key was not found in the hash table.
  */
 
-int hash_table_remove(HashTable *hashtable, HashTableKey key);
+int hash_table_remove(HashTable *hash_table, HashTableKey key);
 
 /** 
  * Retrieve the number of entries in a hash table.
  *
- * @param hashtable           The hash table.
+ * @param hash_table          The hash table.
  * @return                    The number of entries in the hash table.
  */
 
-int hash_table_num_entries(HashTable *hashtable);
+int hash_table_num_entries(HashTable *hash_table);
 
 /**
  * Create a new @ref HashTableIterator to iterate over a hash table.
  * Note: iterators should be freed back with 
  * @ref hash_table_iter_free once iterating has completed.
  *
- * @param hashtable           The hash table.
+ * @param hash_table          The hash table.
  * @return                    A pointer to a new @ref HashTableIterator 
  *                            to iterate over the hash table, or NULL
  *                            if it was not possible to allocate the
  *                            memory.
  */
 
-HashTableIterator *hash_table_iterate(HashTable *hashtable);
+HashTableIterator *hash_table_iterate(HashTable *hash_table);
 
 /**
  * Determine if there are more keys in the hash table to iterate
@@ -253,5 +256,5 @@ void hash_table_iter_free(HashTableIterator *iterator);
 }
 #endif
 
-#endif /* #ifndef ALGORITHM_HASHTABLE_H */
+#endif /* #ifndef ALGORITHM_HASH_TABLE_H */
 

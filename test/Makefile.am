@@ -10,7 +10,7 @@ TESTS =                          \
         test-queue               \
         test-compare-functions   \
         test-hash-functions      \
-        test-hashtable           \
+        test-hash-table          \
         test-set                 \
         test-trie
 
