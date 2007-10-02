@@ -479,7 +479,7 @@ HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 	/* Result is immediately available */
 
 	iterator->current_entry = iterator->next_entry;
-	result = iterator->current_entry->key;
+	result = iterator->current_entry->value;
 
 	/* Find the next entry */
 
