@@ -80,10 +80,26 @@ typedef struct _Set Set;
 typedef struct _SetIterator SetIterator;
 
 /**
+ * Internal structure representing an entry in the set.
+ */
+
+typedef struct _SetEntry SetEntry;
+
+/**
  * A value stored in a @ref Set.
  */
 
 typedef void *SetValue;
+
+/**
+ * Definition of a @ref SetIterator.
+ */
+
+struct _SetIterator {
+	Set *set;
+	SetEntry *next_entry;
+	int next_chain;
+};
 
 /**
  * A null @ref SetValue.
@@ -221,15 +237,14 @@ Set *set_union(Set *set1, Set *set2);
 Set *set_intersection(Set *set1, Set *set2); 
 
 /**
- * Create an iterator to iterate over the values in a set.
- * It should be noted that a set iterator must be freed once iterating
- * has been completed.  This should be done using @ref set_iter_free.
+ * Initialise a @ref SetIterator structure to iterate over the values
+ * in a set.
  *
  * @param set              The set to iterate over.
- * @return                 A new iterator object.
+ * @param iter             Pointer to an iterator structure to initialise.
  */
 
-SetIterator *set_iterate(Set *set);
+void set_iterate(Set *set, SetIterator *iter);
 
 /**
  * Determine if there are more values in the set to iterate over.
@@ -253,14 +268,6 @@ int set_iter_has_more(SetIterator *iterator);
  */
 
 SetValue set_iter_next(SetIterator *iterator);
-
-/**
- * Free back a set iterator object. 
- * 
- * @param iterator         The iterator to free.
- */
-
-void set_iter_free(SetIterator *iterator);
 
 #ifdef __cplusplus
 }

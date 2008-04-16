@@ -294,7 +294,7 @@ void test_set_to_array(void)
 void test_set_iterating(void)
 {
 	Set *set;
-	SetIterator *iterator;
+	SetIterator iterator;
 	int count;
 
 	set = generate_set();
@@ -302,17 +302,15 @@ void test_set_iterating(void)
 	/* Iterate over all values in the set */
 
 	count = 0;
-	iterator = set_iterate(set);
+	set_iterate(set, &iterator);
 
-	while (set_iter_has_more(iterator)) {
+	while (set_iter_has_more(&iterator)) {
 
-		set_iter_next(iterator);
+		set_iter_next(&iterator);
 
 		++count;
 	}
 
-	set_iter_free(iterator);
-	
 	/* Check final count */
 
 	assert(count == 10000);
@@ -323,11 +321,10 @@ void test_set_iterating(void)
 
 	set = set_new(int_hash, int_equal);
 
-	iterator = set_iterate(set);
+	set_iterate(set, &iterator);
 
-	assert(set_iter_has_more(iterator) == 0);
+	assert(set_iter_has_more(&iterator) == 0);
 	
-	set_iter_free(iterator);
 	set_free(set);
 }
 
@@ -338,7 +335,7 @@ void test_set_iterating(void)
 void test_set_iterating_remove(void)
 {
 	Set *set;
-	SetIterator *iterator;
+	SetIterator iterator;
 	int count;
 	int removed;
 	int *val;
@@ -350,11 +347,11 @@ void test_set_iterating_remove(void)
 
 	/* Iterate over all values in the set */
 
-	iterator = set_iterate(set);
+	set_iterate(set, &iterator);
 
-	while (set_iter_has_more(iterator)) {
+	while (set_iter_has_more(&iterator)) {
 
-		val = (int *) set_iter_next(iterator);
+		val = (int *) set_iter_next(&iterator);
 
 		if ((*val % 100) == 0) {
 
@@ -368,8 +365,6 @@ void test_set_iterating_remove(void)
 		++count;
 	}
 
-	set_iter_free(iterator);
-	
 	/* Check final counts */
 
 	assert(count == 10000);

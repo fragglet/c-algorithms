@@ -39,8 +39,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* A set */
 
-typedef struct _SetEntry SetEntry;
-
 struct _SetEntry {
 	SetValue data;
 	SetEntry *next;
@@ -54,13 +52,6 @@ struct _Set {
 	SetHashFunc hash_func;
 	SetEqualFunc equal_func;
 	SetFreeFunc free_func;
-};
-
-struct _SetIterator {
-	Set *set;
-	SetEntry *current_entry;
-	SetEntry *next_entry;
-	int next_chain;
 };
 
 /* This is a set of good hash table prime numbers, from:
@@ -430,7 +421,7 @@ SetValue *set_to_array(Set *set)
 
 Set *set_union(Set *set1, Set *set2)
 {
-	SetIterator *iterator;
+	SetIterator iterator;
 	Set *new_set;
 	SetValue value;
 
@@ -442,13 +433,13 @@ Set *set_union(Set *set1, Set *set2)
 
 	/* Add all values from the first set */
 	
-	iterator = set_iterate(set1);
+        set_iterate(set1, &iterator);
 
-	while (set_iter_has_more(iterator)) {
+	while (set_iter_has_more(&iterator)) {
 
 		/* Read the next value */
 
-		value = set_iter_next(iterator);
+		value = set_iter_next(&iterator);
 
 		/* Copy the value into the new set */
 
@@ -460,18 +451,16 @@ Set *set_union(Set *set1, Set *set2)
 			return NULL;
 		}
 	}
-
-	set_iter_free(iterator);
 	
 	/* Add all values from the second set */
 	
-	iterator = set_iterate(set2);
+	set_iterate(set2, &iterator);
 
-	while (set_iter_has_more(iterator)) {
+	while (set_iter_has_more(&iterator)) {
 
 		/* Read the next value */
 
-		value = set_iter_next(iterator);
+		value = set_iter_next(&iterator);
 
 		/* Has this value been put into the new set already? 
 		 * If so, do not insert this again */
@@ -487,15 +476,13 @@ Set *set_union(Set *set1, Set *set2)
 		}
 	}
 
-	set_iter_free(iterator);
-
 	return new_set;
 }
 
 Set *set_intersection(Set *set1, Set *set2)
 {
 	Set *new_set;
-	SetIterator *iterator;
+	SetIterator iterator;
 	SetValue value;
 
 	new_set = set_new(set1->hash_func, set2->equal_func);
@@ -506,13 +493,13 @@ Set *set_intersection(Set *set1, Set *set2)
 
 	/* Iterate over all values in set 1. */
 
-	iterator = set_iterate(set1);
+	set_iterate(set1, &iterator);
 
-	while (set_iter_has_more(iterator)) {
+	while (set_iter_has_more(&iterator)) {
 
 		/* Get the next value */
 
-		value = set_iter_next(iterator);
+		value = set_iter_next(&iterator);
 
 		/* Is this value in set 2 as well?  If so, it should be 
 		 * in the new set. */
@@ -530,26 +517,14 @@ Set *set_intersection(Set *set1, Set *set2)
 		}
 	}
 
-	set_iter_free(iterator);
-
 	return new_set;
 }
 
-SetIterator *set_iterate(Set *set)
+void set_iterate(Set *set, SetIterator *iter)
 {
-	SetIterator *iter;
 	int chain;
 	
-	/* Create a new iterator object */
-	
-	iter = malloc(sizeof(SetIterator));
-
-	if (iter == NULL) {
-		return NULL;
-	}
-
 	iter->set = set;
-	iter->current_entry = NULL;
 	iter->next_entry = NULL;
 
 	/* Find the first entry */
@@ -565,14 +540,13 @@ SetIterator *set_iterate(Set *set)
 	}
 	
 	iter->next_chain = chain;
-
-	return iter;
 }
 
 SetValue set_iter_next(SetIterator *iterator)
 {
 	Set *set;
 	SetValue result;
+        SetEntry *current_entry;
 	int chain;
 
 	set = iterator->set;
@@ -585,16 +559,16 @@ SetValue set_iter_next(SetIterator *iterator)
 
 	/* We have the result immediately */
 
-	iterator->current_entry = iterator->next_entry;
-	result = iterator->current_entry->data;
+	current_entry = iterator->next_entry;
+	result = current_entry->data;
 
 	/* Advance next_entry to the next SetEntry in the Set. */
 
-	if (iterator->current_entry->next != NULL) {
+	if (current_entry->next != NULL) {
 
 		/* Use the next value in this chain */
 
-		iterator->next_entry = iterator->current_entry->next;
+		iterator->next_entry = current_entry->next;
 
 	} else {
 		
@@ -633,10 +607,5 @@ SetValue set_iter_next(SetIterator *iterator)
 int set_iter_has_more(SetIterator *iterator)
 {
 	return iterator->next_entry != NULL;
-}
-
-void set_iter_free(SetIterator *iterator)
-{
-	free(iterator);
 }
 
