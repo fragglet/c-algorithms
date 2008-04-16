@@ -72,6 +72,12 @@ typedef struct _HashTable HashTable;
 typedef struct _HashTableIterator HashTableIterator;
 
 /**
+ * Internal structure representing an entry in a hash table.
+ */
+
+typedef struct _HashTableEntry HashTableEntry;
+
+/**
  * A key to look up a value in a @ref HashTable.
  */
 
@@ -82,6 +88,16 @@ typedef void *HashTableKey;
  */
 
 typedef void *HashTableValue;
+
+/**
+ * Definition of a @ref HashTableIterator.
+ */
+
+struct _HashTableIterator {
+	HashTable *hash_table;
+	HashTableEntry *next_entry;
+	int next_chain;
+};
 
 /**
  * A null @ref HashTableValue. 
@@ -207,18 +223,15 @@ int hash_table_remove(HashTable *hash_table, HashTableKey key);
 int hash_table_num_entries(HashTable *hash_table);
 
 /**
- * Create a new @ref HashTableIterator to iterate over a hash table.
- * Note: iterators should be freed back with 
- * @ref hash_table_iter_free once iterating has completed.
+ * Initialise a @ref HashTableIterator to iterate over a hash table.
  *
  * @param hash_table          The hash table.
- * @return                    A pointer to a new @ref HashTableIterator 
- *                            to iterate over the hash table, or NULL
- *                            if it was not possible to allocate the
- *                            memory.
+ * @param iter                Pointer to an iterator structure to 
+ *                            initialise.
+ * @param
  */
 
-HashTableIterator *hash_table_iterate(HashTable *hash_table);
+void hash_table_iterate(HashTable *hash_table, HashTableIterator *iter);
 
 /**
  * Determine if there are more keys in the hash table to iterate
@@ -242,15 +255,6 @@ int hash_table_iter_has_more(HashTableIterator *iterator);
  */
 
 HashTableValue hash_table_iter_next(HashTableIterator *iterator);
-
-/**
- * Free back a hash table iterator object.  This must be done once
- * iterating has completed.
- * 
- * @param iterator            The hash table iterator.
- */
-
-void hash_table_iter_free(HashTableIterator *iterator);
 
 #ifdef __cplusplus
 }

@@ -40,8 +40,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "hash-table.h"
 
-typedef struct _HashTableEntry HashTableEntry;
-
 struct _HashTableEntry {
 	HashTableKey key;
 	HashTableValue value;
@@ -57,13 +55,6 @@ struct _HashTable {
 	HashTableValueFreeFunc value_free_func;
 	int entries;
 	int prime_index;
-};
-
-struct _HashTableIterator {
-	HashTable *hash_table;
-	HashTableEntry *current_entry;
-	HashTableEntry *next_entry;
-	int next_chain;
 };
 
 /* This is a set of good hash table prime numbers, from:
@@ -425,19 +416,11 @@ int hash_table_num_entries(HashTable *hash_table)
 	return hash_table->entries;
 }
 
-HashTableIterator *hash_table_iterate(HashTable *hash_table)
+void hash_table_iterate(HashTable *hash_table, HashTableIterator *iterator)
 {
-	HashTableIterator *iterator;
 	int chain;
 	
-	iterator = (HashTableIterator *) malloc(sizeof(HashTableIterator));
-
-	if (iterator == NULL) {
-		return NULL;
-	}
-	
 	iterator->hash_table = hash_table;
-	iterator->current_entry = NULL;
 
 	/* Default value of next if no entries are found. */
 	
@@ -453,8 +436,6 @@ HashTableIterator *hash_table_iterate(HashTable *hash_table)
 			break;
 		}
 	}
-
-	return iterator;
 }
 
 int hash_table_iter_has_more(HashTableIterator *iterator)
@@ -464,6 +445,7 @@ int hash_table_iter_has_more(HashTableIterator *iterator)
 
 HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 {
+        HashTableEntry *current_entry;
 	HashTable *hash_table;
 	HashTableValue result;
 	int chain;
@@ -478,16 +460,16 @@ HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 	
 	/* Result is immediately available */
 
-	iterator->current_entry = iterator->next_entry;
-	result = iterator->current_entry->value;
+	current_entry = iterator->next_entry;
+	result = current_entry->value;
 
 	/* Find the next entry */
 
-	if (iterator->current_entry->next != NULL) {
+	if (current_entry->next != NULL) {
 		
 		/* Next entry in current chain */
 
-		iterator->next_entry = iterator->current_entry->next;
+		iterator->next_entry = current_entry->next;
 		
 	} else {
 	
@@ -517,10 +499,5 @@ HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 	}
 
 	return result;
-}
-
-void hash_table_iter_free(HashTableIterator *iterator)
-{
-	free(iterator);
 }
 
