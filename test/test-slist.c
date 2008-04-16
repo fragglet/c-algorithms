@@ -364,7 +364,7 @@ void test_slist_to_array(void)
 void test_slist_iterate(void)
 {
 	SListEntry *list;
-	SListIterator *iter;
+	SListIterator iter;
 	int *data;
 	int a;
 	int i;
@@ -382,38 +382,34 @@ void test_slist_iterate(void)
 
 	counter = 0;
 
-	iter = slist_iterate(&list);
+	slist_iterate(&list, &iter);
 
 	/* Test remove before slist_iter_next has been called */
 
-	slist_iter_remove(iter);
+	slist_iter_remove(&iter);
 
 	/* Iterate over the list */
 
-	while (slist_iter_has_more(iter)) {
+	while (slist_iter_has_more(&iter)) {
 
-		data = (int *) slist_iter_next(iter);
+		data = (int *) slist_iter_next(&iter);
 
 		++counter;
 
 		/* Remove half the entries from the list */
 
 		if ((counter % 2) == 0) {
-			slist_iter_remove(iter);
+			slist_iter_remove(&iter);
 
 			/* Test double remove */
 
-			slist_iter_remove(iter);
+			slist_iter_remove(&iter);
 		}
 	}
 	
 	/* Test remove at the end of a list */
 
-	slist_iter_remove(iter);
-
-	/* Destroy the iterator */
-	
-	slist_iter_free(iter);
+	slist_iter_remove(&iter);
 
 	assert(counter == 50);
 	assert(slist_length(list) == 25);
@@ -423,22 +419,20 @@ void test_slist_iterate(void)
 	list = NULL;
 	counter = 0;
 
-	iter = slist_iterate(&list);
+	slist_iterate(&list, &iter);
 
-	while (slist_iter_has_more(iter)) {
+	while (slist_iter_has_more(&iter)) {
 
-		data = (int *) slist_iter_next(iter);
+		data = (int *) slist_iter_next(&iter);
 
 		++counter;
 
 		/* Remove half the entries from the list */
 
 		if ((counter % 2) == 0) {
-			slist_iter_remove(iter);
+			slist_iter_remove(&iter);
 		}
 	}
-	
-	slist_iter_free(iter);
 
 	assert(counter == 0);
 }

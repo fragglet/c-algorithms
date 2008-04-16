@@ -97,6 +97,16 @@ typedef struct _SListIterator SListIterator;
 typedef void *SListValue;
 
 /**
+ * Definition of a @ref SListIterator.
+ */
+
+struct _SListIterator {
+	SListEntry **list;
+	SListEntry **prev_next;
+	SListEntry *current;
+};
+
+/**
  * A null @ref SListValue.
  */
 
@@ -260,15 +270,14 @@ SListEntry *slist_find_data(SListEntry *list,
                             SListValue data);
 
 /** 
- * Create a new @ref SListIterator structure to iterate over a list.
- * The iterator should be freed once iterating has completed, using
- * the function @ref list_iter_free.
+ * Initialise a @ref SListIterator structure to iterate over a list.
  *
  * @param list           Pointer to the list to iterate over.
- * @return               A new @ref SListIterator.
+ * @param iter           Pointer to a @ref SListIterator structure to
+ *                       initialise.
  */
 
-SListIterator *slist_iterate(SListEntry **list);
+void slist_iterate(SListEntry **list, SListIterator *iter);
 
 /**
  * Determine if there are more values in the list to iterate over.  When
@@ -301,14 +310,6 @@ SListValue slist_iter_next(SListIterator *iterator);
  */
 
 void slist_iter_remove(SListIterator *iterator);
-
-/**
- * Free back a list iterator.
- *
- * @param iterator       The list iterator.
- */
-
-void slist_iter_free(SListIterator *iterator);
 
 #endif /* #ifndef ALGORITHM_SLIST_H */
 

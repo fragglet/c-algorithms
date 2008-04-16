@@ -44,14 +44,6 @@ struct _SListEntry {
 	SListEntry *next;
 };
 
-/* Iterator for iterating over a singly-linked list. */
-
-struct _SListIterator {
-	SListEntry **list;
-	SListEntry **prev_next;
-	SListEntry *current;
-};
-
 void slist_free(SListEntry *list)
 {
 	SListEntry *entry;
@@ -442,18 +434,8 @@ SListEntry *slist_find_data(SListEntry *list,
 	return NULL;
 }
 
-SListIterator *slist_iterate(SListEntry **list)
+void slist_iterate(SListEntry **list, SListIterator *iter)
 {
-	SListIterator *iter;
-
-	/* Allocate the new structure */
-
-	iter = malloc(sizeof(SListIterator));
-
-	if (iter == NULL) {
-		return NULL;
-	}
-
 	/* Save the list location */
 
 	iter->list = list;
@@ -462,8 +444,6 @@ SListIterator *slist_iterate(SListEntry **list)
 
 	iter->prev_next = NULL;
 	iter->current = NULL;
-
-	return iter;
 }
 
 int slist_iter_has_more(SListIterator *iter)
@@ -553,10 +533,5 @@ void slist_iter_remove(SListIterator *iter)
 			free(iter->current);
 		}
 	}
-}
-
-void slist_iter_free(SListIterator *iter)
-{
-	free(iter);
 }
 
