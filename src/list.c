@@ -45,14 +45,6 @@ struct _ListEntry {
 	ListEntry *next;
 };
 
-/* Iterator for iterating over a doubly-linked list. */
-
-struct _ListIterator {
-	ListEntry **list;
-	ListEntry **prev_next;
-	ListEntry *current;
-};
-
 void list_free(ListEntry *list)
 {
 	ListEntry *entry;
@@ -475,18 +467,8 @@ ListEntry *list_find_data(ListEntry *list,
 	return NULL;
 }
 
-ListIterator *list_iterate(ListEntry **list)
+void list_iterate(ListEntry **list, ListIterator *iter)
 {
-	ListIterator *iter;
-
-	/* Create a new iterator */
-
-	iter = malloc(sizeof(ListIterator));
-
-	if (iter == NULL) {
-		return NULL;
-	}
-
 	/* Save pointer to the list */
 	
 	iter->list = list;
@@ -495,8 +477,6 @@ ListIterator *list_iterate(ListEntry **list)
 
 	iter->prev_next = NULL;
 	iter->current = NULL;
-
-	return iter;
 }
 
 int list_iter_has_more(ListIterator *iter)
@@ -584,10 +564,5 @@ void list_iter_remove(ListIterator *iter)
 			list_remove_entry(iter->list, iter->current);
 		}
 	}
-}
-
-void list_iter_free(ListIterator *iter)
-{
-	free(iter);
 }
 

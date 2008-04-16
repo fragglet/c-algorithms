@@ -389,7 +389,7 @@ void test_list_to_array(void)
 void test_list_iterate(void)
 {
 	ListEntry *list;
-	ListIterator *iter;
+	ListIterator iter;
 	int i;
 	int a;
 	int counter;
@@ -407,36 +407,32 @@ void test_list_iterate(void)
 
 	counter = 0;
 
-	iter = list_iterate(&list);
+	list_iterate(&list, &iter);
 
 	/* Test remove before list_iter_next has been called */
 
-	list_iter_remove(iter);
+	list_iter_remove(&iter);
 
 	/* Iterate over the list */
 
-	while (list_iter_has_more(iter)) {
-		data = (int *) list_iter_next(iter);
+	while (list_iter_has_more(&iter)) {
+		data = (int *) list_iter_next(&iter);
 		++counter;
 
 		if ((counter % 2) == 0) {
 			/* Delete half the entries in the list.  */
 
-			list_iter_remove(iter);
+			list_iter_remove(&iter);
 
 			/* Test double remove */
 
-			list_iter_remove(iter);
+			list_iter_remove(&iter);
 		}
 	}
 
 	/* Test remove at the end of a list */
 
-	list_iter_remove(iter);
-
-	/* Destroy the iterator */
-	
-	list_iter_free(iter);
+	list_iter_remove(&iter);
 
 	assert(counter == 50);
 	assert(list_length(list) == 25);
@@ -446,10 +442,10 @@ void test_list_iterate(void)
 	list = NULL;
 	counter = 0;
 
-	iter = list_iterate(&list);
+	list_iterate(&list, &iter);
 
-	while (list_iter_has_more(iter)) {
-		data = (int *) list_iter_next(iter);
+	while (list_iter_has_more(&iter)) {
+		data = (int *) list_iter_next(&iter);
 		++counter;
 	}
 

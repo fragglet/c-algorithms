@@ -88,6 +88,16 @@ typedef struct _ListIterator ListIterator;
 typedef void *ListValue;
 
 /**
+ * Definition of a @ref ListIterator.
+ */
+
+struct _ListIterator {
+	ListEntry **list;
+	ListEntry **prev_next;
+	ListEntry *current;
+};
+
+/**
  * A null @ref ListValue.
  */
 
@@ -266,16 +276,13 @@ ListEntry *list_find_data(ListEntry *list,
                           ListValue data);
 
 /** 
- * Create an iterator to iterate over the values in a list.
- * The iterator should be freed once iterating has completed, using
- * the function @ref list_iter_free.
+ * Initialise a @ref ListIterator structure to iterate over a list.
  *
  * @param list           A pointer to the list to iterate over.
- * @return               A new iterator, or NULL if it was not possible
- *                       to allocate the memory for the iterator.
+ * @param iter           A pointer to an iterator structure to initialise.
  */
 
-ListIterator *list_iterate(ListEntry **list);
+void list_iterate(ListEntry **list, ListIterator *iter);
 
 /**
  * Determine if there are more values in the list to iterate over.  When
@@ -308,14 +315,6 @@ ListValue list_iter_next(ListIterator *iterator);
  */
 
 void list_iter_remove(ListIterator *iterator);
-
-/**
- * Free back a list iterator.
- *
- * @param iterator       The list iterator.
- */
-
-void list_iter_free(ListIterator *iterator);
 
 #endif /* #ifndef ALGORITHM_LIST_H */
 
