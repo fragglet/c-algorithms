@@ -92,7 +92,6 @@ typedef void *ListValue;
  */
 
 struct _ListIterator {
-	ListEntry **list;
 	ListEntry **prev_next;
 	ListEntry *current;
 };

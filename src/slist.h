@@ -101,7 +101,6 @@ typedef void *SListValue;
  */
 
 struct _SListIterator {
-	SListEntry **list;
 	SListEntry **prev_next;
 	SListEntry *current;
 };

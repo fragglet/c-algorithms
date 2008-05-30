@@ -469,30 +469,23 @@ ListEntry *list_find_data(ListEntry *list,
 
 void list_iterate(ListEntry **list, ListIterator *iter)
 {
-	/* Save pointer to the list */
-	
-	iter->list = list;
+	/* Start iterating from the beginning of the list. */
 
-	/* These are NULL until the first call to list_iter_next: */
+	iter->prev_next = list;
 
-	iter->prev_next = NULL;
+	/* We have not yet read the first item. */
+
 	iter->current = NULL;
 }
 
 int list_iter_has_more(ListIterator *iter)
 {
-	if (iter->prev_next == NULL) {
-	       
-		/* The list has just been created.  list_iter_next
-		 * has not been called yet.  There are more entries 
-		 * if the list is not empty. */
-		
-		return *iter->list != NULL;
+	if (iter->current == NULL) {
 
-	} else if (*iter->prev_next != iter->current) {
-
-		/* The entry last returned by list_iter_next has been
-		 * deleted.  The next entry is indincated by prev_next. */
+                /* Either we have not read the first entry, the current
+                 * item was removed or we have reached the end of the
+                 * list.  Use prev_next to determine if we have a next
+                 * value to iterate over. */
 
 		return *iter->prev_next != NULL;
 
@@ -507,22 +500,11 @@ int list_iter_has_more(ListIterator *iter)
 
 ListValue list_iter_next(ListIterator *iter)
 {
-	if (iter->prev_next == NULL) {
-		/* First call to list_iter_next.  Initialise. */
+	if (iter->current == NULL) {
 
-		/* Initial previous next link is the pointer to the list 
-		 * start variable */
-
-		iter->prev_next = iter->list;
-
-		/* Start at the first element */
-
-		iter->current = *iter->list;
-
-	} else if (*iter->prev_next != iter->current) {
-
-		/* The value last returned by list_iter_next was deleted.
-		 * Use prev_next to find the next entry. */
+                /* Either we are reading the first entry, we have reached
+                 * the end of the list, or the previous entry was removed.
+                 * Get the next entry with iter->prev_next. */
 
 		iter->current = *iter->prev_next;
 
@@ -531,13 +513,11 @@ ListValue list_iter_next(ListIterator *iter)
 		/* Last value returned from list_iter_next was not deleted.
 		 * Advance to the next entry. */
 
-		if (iter->current != NULL) {
-			iter->prev_next = &iter->current->next;
-			iter->current = iter->current->next;
-		}
+		iter->prev_next = &iter->current->next;
+		iter->current = iter->current->next;
 	}
 	
-	/* Return data from the current entry */
+	/* Have we reached the end of the list? */
 
 	if (iter->current == NULL) {
 		return LIST_NULL;
@@ -548,21 +528,24 @@ ListValue list_iter_next(ListIterator *iter)
 
 void list_iter_remove(ListIterator *iter)
 {
-	if (iter->prev_next == NULL) {
+	if (iter->current == NULL) {
 
-		/* list_iter_next has not been called yet. */
-
-	} else if (*iter->prev_next != iter->current) {
-
-		/* Current entry was already deleted. */
+                /* Either we have not yet read the first item, we have 
+                 * reached the end of the list, or we have already removed
+                 * the current value.  Either way, do nothing. */
 
 	} else {
 		
 		/* Remove the current entry */
 
-		if (iter->current != NULL) {
-			list_remove_entry(iter->list, iter->current);
+		*iter->prev_next = iter->current->next;
+
+		if (iter->current->next != NULL) {
+			iter->current->next->prev = iter->current->prev;
 		}
+
+		free(iter->current);
+		iter->current = NULL;
 	}
 }
 
