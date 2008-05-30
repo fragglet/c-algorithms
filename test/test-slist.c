@@ -437,6 +437,45 @@ void test_slist_iterate(void)
 	assert(counter == 0);
 }
 
+/* Test that the iterator functions can survive removal of the current
+ * value using the normal remove functions. */
+
+void test_slist_iterate_bad_remove(void)
+{
+	SListEntry *list;
+	SListIterator iter;
+	int values[49];
+	int i;
+	int *val;
+
+	/* Create a list with 49 entries */
+
+	list = NULL;
+
+	for (i=0; i<49; ++i) {
+		values[i] = i;
+		slist_prepend(&list, &values[i]);
+	}
+
+	/* Iterate over the list, removing each element in turn.  We
+	 * use an odd number of list elements so that the first and 
+	 * last entries are removed. */
+
+	slist_iterate(&list, &iter);
+
+	while (slist_iter_has_more(&iter)) {
+		val = slist_iter_next(&iter);
+
+		/* Remove all the even numbers. Check that slist_iter_remove
+		 * can cope with the fact that the current element has
+		 * already been removed. */
+
+		if ((*val % 2) == 0) {
+			assert(slist_remove_data(&list, int_equal, val) != 0);
+			slist_iter_remove(&iter);
+		}
+	}
+}
 
 int main(int argc, char *argv[])
 {
@@ -453,6 +492,7 @@ int main(int argc, char *argv[])
 	test_slist_find_data();
 	test_slist_to_array();
 	test_slist_iterate();
+	test_slist_iterate_bad_remove();
 
 	return 0;
 }

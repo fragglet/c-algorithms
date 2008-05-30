@@ -452,6 +452,47 @@ void test_list_iterate(void)
 	assert(counter == 0);
 }
 
+/* Test that the iterator functions can survive removal of the current
+ * value using the normal remove functions. */
+
+void test_list_iterate_bad_remove(void)
+{
+	ListEntry *list;
+	ListIterator iter;
+	int values[49];
+	int i;
+	int *val;
+
+	/* Create a list with 49 entries */
+
+	list = NULL;
+
+	for (i=0; i<49; ++i) {
+		values[i] = i;
+		list_prepend(&list, &values[i]);
+	}
+
+	/* Iterate over the list, removing each element in turn.  We
+	 * use an odd number of list elements so that the first and 
+	 * last entries are removed. */
+
+	list_iterate(&list, &iter);
+
+	while (list_iter_has_more(&iter)) {
+		val = list_iter_next(&iter);
+
+		/* Remove all the even numbers. Check that list_iter_remove
+		 * can cope with the fact that the current element has
+		 * already been removed. */
+
+		if ((*val % 2) == 0) {
+			assert(list_remove_data(&list, int_equal, val) != 0);
+			list_iter_remove(&iter);
+		}
+	}
+}
+
+
 int main(int argc, char *argv[])
 {
 	test_list_append();
@@ -467,6 +508,7 @@ int main(int argc, char *argv[])
 	test_list_find_data();
 	test_list_to_array();
 	test_list_iterate();
+	test_list_iterate_bad_remove();
 
 	return 0;
 }

@@ -480,7 +480,7 @@ void list_iterate(ListEntry **list, ListIterator *iter)
 
 int list_iter_has_more(ListIterator *iter)
 {
-	if (iter->current == NULL) {
+	if (iter->current == NULL || iter->current != *iter->prev_next) {
 
                 /* Either we have not read the first entry, the current
                  * item was removed or we have reached the end of the
@@ -500,7 +500,7 @@ int list_iter_has_more(ListIterator *iter)
 
 ListValue list_iter_next(ListIterator *iter)
 {
-	if (iter->current == NULL) {
+	if (iter->current == NULL || iter->current != *iter->prev_next) {
 
                 /* Either we are reading the first entry, we have reached
                  * the end of the list, or the previous entry was removed.
@@ -528,7 +528,7 @@ ListValue list_iter_next(ListIterator *iter)
 
 void list_iter_remove(ListIterator *iter)
 {
-	if (iter->current == NULL) {
+	if (iter->current == NULL || iter->current != *iter->prev_next) {
 
                 /* Either we have not yet read the first item, we have 
                  * reached the end of the list, or we have already removed
