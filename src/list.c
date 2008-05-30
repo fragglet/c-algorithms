@@ -482,10 +482,10 @@ int list_iter_has_more(ListIterator *iter)
 {
 	if (iter->current == NULL || iter->current != *iter->prev_next) {
 
-                /* Either we have not read the first entry, the current
-                 * item was removed or we have reached the end of the
-                 * list.  Use prev_next to determine if we have a next
-                 * value to iterate over. */
+		/* Either we have not read the first entry, the current
+		 * item was removed or we have reached the end of the
+		 * list.  Use prev_next to determine if we have a next
+		 * value to iterate over. */
 
 		return *iter->prev_next != NULL;
 
@@ -502,9 +502,9 @@ ListValue list_iter_next(ListIterator *iter)
 {
 	if (iter->current == NULL || iter->current != *iter->prev_next) {
 
-                /* Either we are reading the first entry, we have reached
-                 * the end of the list, or the previous entry was removed.
-                 * Get the next entry with iter->prev_next. */
+		/* Either we are reading the first entry, we have reached
+		 * the end of the list, or the previous entry was removed.
+		 * Get the next entry with iter->prev_next. */
 
 		iter->current = *iter->prev_next;
 
@@ -530,9 +530,9 @@ void list_iter_remove(ListIterator *iter)
 {
 	if (iter->current == NULL || iter->current != *iter->prev_next) {
 
-                /* Either we have not yet read the first item, we have 
-                 * reached the end of the list, or we have already removed
-                 * the current value.  Either way, do nothing. */
+		/* Either we have not yet read the first item, we have 
+		 * reached the end of the list, or we have already removed
+		 * the current value.  Either way, do nothing. */
 
 	} else {
 		

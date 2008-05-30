@@ -315,7 +315,7 @@ void test_hash_table_free_functions(void)
 
 	hash_table_register_free_functions(hash_table, free_key, free_value);
 
-        allocated_values = 0;
+	allocated_values = 0;
 
 	for (i=0; i<1000; ++i) {
 		key = new_key(i);

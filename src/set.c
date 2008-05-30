@@ -433,7 +433,7 @@ Set *set_union(Set *set1, Set *set2)
 
 	/* Add all values from the first set */
 	
-        set_iterate(set1, &iterator);
+	set_iterate(set1, &iterator);
 
 	while (set_iter_has_more(&iterator)) {
 
@@ -546,7 +546,7 @@ SetValue set_iter_next(SetIterator *iterator)
 {
 	Set *set;
 	SetValue result;
-        SetEntry *current_entry;
+	SetEntry *current_entry;
 	int chain;
 
 	set = iterator->set;
