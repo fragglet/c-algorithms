@@ -110,7 +110,7 @@ int trie_insert(Trie *trie, char *key, TrieValue value);
  * @param trie               The trie.
  * @param key                The key.
  * @return                   The value associated with the key, or 
- *                           TRIE_NULL if not found in the trie.
+ *                           @ref TRIE_NULL if not found in the trie.
  */
 
 TrieValue trie_lookup(Trie *trie, char *key);

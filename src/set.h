@@ -67,11 +67,8 @@ extern "C" {
 #endif
 
 /**
- * Represents a set of data.  Created using the set_new function and destroyed
- * using the set_free function.
- *
- * @see set_new
- * @see set_free
+ * Represents a set of values.  Created using the @ref set_new function and
+ * destroyed using the @ref set_free function.
  */
 
 typedef struct _Set Set;
@@ -113,29 +110,29 @@ struct _SetIterator {
 #define SET_NULL ((void *) 0)
 
 /** 
- * Hash function.  Generates a hash key for data to be stored in a set.
+ * Hash function.  Generates a hash key for values to be stored in a set.
  */
 
-typedef unsigned long (*SetHashFunc)(SetValue data);
+typedef unsigned long (*SetHashFunc)(SetValue value);
 
 /** 
  * Equality function.  Compares two values to determine if they are
  * equivalent.
  */
 
-typedef int (*SetEqualFunc)(SetValue data1, SetValue data2);
+typedef int (*SetEqualFunc)(SetValue value1, SetValue value2);
 
 /**
  * Function used to free values stored in a set.  See
  * @ref set_register_free_function.
  */
 
-typedef void (*SetFreeFunc)(SetValue data);
+typedef void (*SetFreeFunc)(SetValue value);
 
 /**
  * Create a new set.
  *
- * @param hash_func     Hash function used on data in the set .
+ * @param hash_func     Hash function used on values in the set.
  * @param equal_func    Compares two values in the set to determine
  *                      if they are equal.
  * @return              A new set, or NULL if it was not possible to 
@@ -167,7 +164,7 @@ void set_register_free_function(Set *set, SetFreeFunc free_func);
  * Add a value to a set.
  *
  * @param set           The set.
- * @param data          The data to add to the set .
+ * @param data          The value to add to the set.
  * @return              Non-zero (true) if the value was added to the set,
  *                      zero (false) if it already exists in the set, or 
  *                      if it was not possible to allocate memory for the
@@ -180,9 +177,9 @@ int set_insert(Set *set, SetValue data);
  * Remove a value from a set.
  *
  * @param set           The set.
- * @param data          The data to remove from the set.
- * @return              Non-zero (true) if the data was found and removed
- *                      from the set, zero (false) if the data was not
+ * @param data          The value to remove from the set.
+ * @return              Non-zero (true) if the value was found and removed
+ *                      from the set, zero (false) if the value was not
  *                      found in the set.
  */
 
@@ -192,9 +189,9 @@ int set_remove(Set *set, SetValue data);
  * Query if a particular value is in a set.
  *
  * @param set           The set.
- * @param data          The data to query for.
- * @return              Zero if the data is not in the set, non-zero if the
- *                      data is in the set.
+ * @param data          The value to query for.
+ * @return              Zero if the value is not in the set, non-zero if the
+ *                      value is in the set.
  */
 
 int set_query(Set *set, SetValue data);
@@ -212,7 +209,9 @@ int set_num_entries(Set *set);
  * Create an array containing all entries in a set.
  *
  * @param set              The set.
- * @return                 An array containing all entries in the set.
+ * @return                 An array containing all entries in the set,
+ *			   or NULL if it was not possible to allocate
+ *			   memory for the array.
  */
 
 SetValue *set_to_array(Set *set);
@@ -268,7 +267,7 @@ int set_iter_has_more(SetIterator *iterator);
  * Using a set iterator, retrieve the next value from the set.
  *
  * @param iterator         The set iterator.
- * @return                 The next value from the set, or SET_NULL if no
+ * @return                 The next value from the set, or @ref SET_NULL if no
  *                         more values are available.
  */
 

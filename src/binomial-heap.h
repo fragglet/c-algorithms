@@ -85,15 +85,15 @@ typedef void *BinomialHeapValue;
 /**
  * Type of function used to compare values in a binomial heap.
  *
- * @param data1            The first value.
- * @param data2            The second value.
- * @return                 A negative number if data1 is less than data2,
- *                         a positive number if data1 is greater than data2,
+ * @param value1           The first value.
+ * @param value2           The second value.
+ * @return                 A negative number if value1 is less than value2,
+ *                         a positive number if value1 is greater than value2,
  *                         zero if the two are equal.
  */
 
-typedef int (*BinomialHeapCompareFunc)(BinomialHeapValue data1, 
-                                       BinomialHeapValue data2);
+typedef int (*BinomialHeapCompareFunc)(BinomialHeapValue value1, 
+                                       BinomialHeapValue value2);
 
 /** 
  * A binomial heap data structure.
@@ -138,7 +138,8 @@ int binomial_heap_insert(BinomialHeap *heap, BinomialHeapValue value);
  * Remove the first value from a binomial heap.
  *
  * @param heap             The heap.
- * @return                 The first value in the heap.
+ * @return                 The first value in the heap, or 
+ *			   @ref BINOMIAL_HEAP_NULL if the heap is empty.
  */
 
 BinomialHeapValue binomial_heap_pop(BinomialHeap *heap);

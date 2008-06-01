@@ -48,9 +48,9 @@ POSSIBILITY OF SUCH DAMAGE.
  * a @ref ListEntry structure, and initialise it to NULL.
  * To destroy an entire list, use @ref list_free.
  *
- * To add data to a list, use @ref list_append or @ref list_prepend.
+ * To add a value to a list, use @ref list_append or @ref list_prepend.
  *
- * To remove data from a list, use @ref list_remove_entry or 
+ * To remove a value from a list, use @ref list_remove_entry or 
  * @ref list_remove_data.
  *
  * To iterate over entries in a list, use @ref list_iterate to initialise
@@ -107,26 +107,26 @@ struct _ListIterator {
 /**
  * Callback function used to compare values in a list when sorting.
  *
- * @param data1       The first value to compare.
- * @param data2       The second value to compare.
- * @return            A negative value if data1 should be sorted before 
- *                    data2, a positive value if data1 should be sorted 
- *                    after data2, zero if data1 and data2 are equal.
+ * @param value1      The first value to compare.
+ * @param value2      The second value to compare.
+ * @return            A negative value if value1 should be sorted before 
+ *                    value2, a positive value if value1 should be sorted 
+ *                    after value2, zero if value1 and value2 are equal.
  */
 
-typedef int (*ListCompareFunc)(ListValue data1, ListValue data2);
+typedef int (*ListCompareFunc)(ListValue value1, ListValue value2);
 
 /**
  * Callback function used to determine of two values in a list are
  * equal.
  *
- * @param data1       The first value to compare.
- * @param data2       The second value to compare.
- * @return            A non-zero value if data1 and data2 are equal, zero
+ * @param value1      The first value to compare.
+ * @param value2      The second value to compare.
+ * @return            A non-zero value if value1 and value2 are equal, zero
  *                    if they are not equal.
  */
 
-typedef int (*ListEqualFunc)(ListValue data1, ListValue data2);
+typedef int (*ListEqualFunc)(ListValue value1, ListValue value2);
 
 /**
  * Free an entire list.
@@ -137,23 +137,23 @@ typedef int (*ListEqualFunc)(ListValue data1, ListValue data2);
 void list_free(ListEntry *list);
 
 /**
- * Prepend data to the start of a list.
+ * Prepend a value to the start of a list.
  *
  * @param list         Pointer to the list to prepend to.
- * @param data         Data to prepend.
- * @return             The new entry in the list, or NULL if it was not possible
- *                     to allocate the memory for the new entry.
+ * @param data         The value to prepend.
+ * @return             The new entry in the list, or NULL if it was not
+ *                     possible to allocate the memory for the new entry.
  */
 
 ListEntry *list_prepend(ListEntry **list, ListValue data);
 
 /**
- * Append data to the end of a list.
+ * Append a value to the end of a list.
  *
  * @param list         Pointer to the list to append to.
- * @param data         Data to append.
- * @return             The new entry in the list, or NULL if it was not possible
- *                     to allocate the memory for the new entry.
+ * @param value        The value to append.
+ * @return             The new entry in the list, or NULL if it was not
+ *		       possible to allocate the memory for the new entry.
  */
 
 ListEntry *list_append(ListEntry **list, ListValue data);
@@ -179,10 +179,10 @@ ListEntry *list_prev(ListEntry *listentry);
 ListEntry *list_next(ListEntry *listentry);
 
 /**
- * Retrieve the data at a list entry.
+ * Retrieve the value at a list entry.
  *
  * @param listentry    Pointer to the list entry.
- * @return             The data at the list entry.
+ * @return             The value stored at the list entry.
  */
 
 ListValue list_data(ListEntry *listentry);
@@ -198,11 +198,11 @@ ListValue list_data(ListEntry *listentry);
 ListEntry *list_nth_entry(ListEntry *list, int n);
 
 /** 
- * Retrieve the data at a specified entry in the list.
+ * Retrieve the value at a specified index in the list.
  *
  * @param list       The list.
- * @param n          The index into the list .
- * @return           The data at the specified index, or LIST_NULL if 
+ * @param n          The index into the list.
+ * @return           The value at the specified index, or @ref LIST_NULL if 
  *                   unsuccessful.
  */
 
@@ -241,12 +241,12 @@ ListValue *list_to_array(ListEntry *list);
 int list_remove_entry(ListEntry **list, ListEntry *entry);
 
 /**
- * Remove all occurrences of a particular piece of data from a list.
+ * Remove all occurrences of a particular value from a list.
  *
  * @param list       Pointer to the list.
- * @param callback   Function to invoke to compare data against the 
- *                   data to be removed.
- * @param data       The data to remove from the list.
+ * @param callback   Function to invoke to compare values in the list
+ *                   with the value to be removed.
+ * @param data       The value to remove from the list.
  * @return           The number of entries removed from the list.
  */
 
@@ -262,12 +262,12 @@ int list_remove_data(ListEntry **list, ListEqualFunc callback, ListValue data);
 void list_sort(ListEntry **list, ListCompareFunc compare_func);
 
 /**
- * Find the entry for a particular data item in a list.
+ * Find the entry for a particular value in a list.
  *
  * @param list           The list to search.
- * @param callback       Callback function to be invoked to determine if
- *                       values are equal to the data to search for.
- * @param data           The data to search for.
+ * @param callback       Function to invoke to compare values in the list
+ *                       with the value to be searched for.
+ * @param data           The value to search for.
  * @return               The list entry of the item being searched for, or
  *                       NULL if not found.
  */
@@ -300,7 +300,7 @@ int list_iter_has_more(ListIterator *iterator);
  * Using a list iterator, retrieve the next value from the list. 
  *
  * @param iterator       The list iterator.
- * @return               The next value from the list, or LIST_NULL if 
+ * @return               The next value from the list, or @ref LIST_NULL if 
  *                       there are no more values in the list.
  */
         

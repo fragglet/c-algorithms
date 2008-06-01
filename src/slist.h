@@ -49,15 +49,15 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  * To destroy a singly linked list, use @ref slist_free.
  *
- * To add new data at the start of a list, use @ref slist_prepend.
- * To add new data at the end of a list, use @ref slist_append.
+ * To add a new value at the start of a list, use @ref slist_prepend.
+ * To add a new value at the end of a list, use @ref slist_append.
  *
  * To find the length of a list, use @ref slist_length.
  *
- * To access data in a list by its index in the list, use 
+ * To access a value in a list by its index in the list, use 
  * @ref slist_nth_data.
  *
- * To search a list for data, use @ref slist_find_data.
+ * To search a list for a value, use @ref slist_find_data.
  *
  * To sort a list into an order, use @ref slist_sort.
  *
@@ -73,7 +73,7 @@ POSSIBILITY OF SUCH DAMAGE.
  * Given a particular entry in a list (@ref SListEntry):
  *
  * @li To find the next entry, use @ref slist_next.
- * @li To access the data stored at the entry, use @ref slist_data.
+ * @li To access the value stored at the entry, use @ref slist_data.
  * @li To remove the entry, use @ref slist_remove_entry.
  *
  */
@@ -120,22 +120,22 @@ struct _SListIterator {
 /**
  * Callback function used to compare values in a list when sorting.
  *
- * @return   A negative value if data1 should be sorted before data2, 
- *           a positive value if data1 should be sorted after data2, 
- *           zero if data1 and data2 are equal.
+ * @return   A negative value if value1 should be sorted before value2, 
+ *           a positive value if value1 should be sorted after value2, 
+ *           zero if value1 and value2 are equal.
  */
 
-typedef int (*SListCompareFunc)(SListValue data1, SListValue data2);
+typedef int (*SListCompareFunc)(SListValue value1, SListValue value2);
 
 /**
  * Callback function used to determine of two values in a list are
  * equal.
  *
- * @return   A non-zero value if data1 and data2 are equal, zero if they
+ * @return   A non-zero value if value1 and value2 are equal, zero if they
  *           are not equal.
  */
 
-typedef int (*SListEqualFunc)(SListValue data1, SListValue data2);
+typedef int (*SListEqualFunc)(SListValue value1, SListValue value2);
 
 /**
  * Free an entire list.
@@ -146,10 +146,10 @@ typedef int (*SListEqualFunc)(SListValue data1, SListValue data2);
 void slist_free(SListEntry *list);
 
 /**
- * Prepend data to the start of a list.
+ * Prepend a value to the start of a list.
  *
  * @param list      Pointer to the list to prepend to.
- * @param data      Data to prepend.
+ * @param data      The value to prepend.
  * @return          The new entry in the list, or NULL if it was not possible
  *                  to allocate a new entry.
  */
@@ -157,10 +157,10 @@ void slist_free(SListEntry *list);
 SListEntry *slist_prepend(SListEntry **list, SListValue data);
 
 /**
- * Append data to the end of a list.
+ * Append a value to the end of a list.
  *
  * @param list      Pointer to the list to append to.
- * @param data      Data to append.
+ * @param data      The value to append.
  * @return          The new entry in the list, or NULL if it was not possible
  *                  to allocate a new entry.
  */
@@ -177,10 +177,10 @@ SListEntry *slist_append(SListEntry **list, SListValue data);
 SListEntry *slist_next(SListEntry *listentry);
 
 /**
- * Retrieve the data at a list entry.
+ * Retrieve the value stored at a list entry.
  *
  * @param listentry    Pointer to the list entry.
- * @return             The data at the list entry.
+ * @return             The value at the list entry.
  */
 
 SListValue slist_data(SListEntry *listentry);
@@ -196,12 +196,12 @@ SListValue slist_data(SListEntry *listentry);
 SListEntry *slist_nth_entry(SListEntry *list, int n);
 
 /** 
- * Retrieve the data at a specified entry in the list.
+ * Retrieve the value stored at a specified index in the list.
  *
  * @param list       The list.
- * @param n          The index into the list .
- * @return           The data at the specified index, or @ref SLIST_NULL if 
- *                   unsuccessful.
+ * @param n          The index into the list.
+ * @return           The value stored at the specified index, or
+ *		     @ref SLIST_NULL if unsuccessful.
  */
 
 SListValue slist_nth_data(SListEntry *list, int n);
@@ -239,16 +239,18 @@ SListValue *slist_to_array(SListEntry *list);
 int slist_remove_entry(SListEntry **list, SListEntry *entry);
 
 /**
- * Remove all occurrences of a particular piece of data from a list.
+ * Remove all occurrences of a particular value from a list.
  *
  * @param list       Pointer to the list.
- * @param callback   Callback function to invoke to compare data in the 
- *                   list with the data to remove.
- * @param data       The data to remove from the list.
+ * @param callback   Callback function to invoke to compare values in the 
+ *                   list with the value to remove.
+ * @param data       The value to remove from the list.
  * @return           The number of entries removed from the list.
  */
 
-int slist_remove_data(SListEntry **list, SListEqualFunc callback, SListValue data);
+int slist_remove_data(SListEntry **list,
+		      SListEqualFunc callback,
+		      SListValue data);
 
 /**
  * Sort a list.
@@ -260,13 +262,14 @@ int slist_remove_data(SListEntry **list, SListEqualFunc callback, SListValue dat
 void slist_sort(SListEntry **list, SListCompareFunc compare_func);
 
 /**
- * Find the entry for a particular data item in a list.
+ * Find the entry for a particular value in a list.
  *
  * @param list           The list to search.
  * @param callback       Callback function to be invoked to determine if
- *                       values are equal to the data to search for.
- * @param data           The data to search for.
- * @return               The list entry of the item being searched for, or
+ *                       values in the list are equal to the value to be
+ *			 searched for.
+ * @param data           The value to search for.
+ * @return               The list entry of the value being searched for, or
  *                       NULL if not found.
  */
 

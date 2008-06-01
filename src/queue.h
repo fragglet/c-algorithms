@@ -39,17 +39,17 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  * @brief Double-ended queue.
  *
- * A double ended queue stores a list of pointers in order.  New data
+ * A double ended queue stores a list of values in order.  New values
  * can be added and removed from either end of the queue.
  *
  * To create a new queue, use @ref queue_new.  To destroy a queue, use
  * @ref queue_free.
  *
- * To add data to a queue, use @ref queue_push_head and
+ * To add values to a queue, use @ref queue_push_head and
  * @ref queue_push_tail.
  *
- * To read data from the ends of a queue, use @ref queue_pop_head
- * and @ref queue_pop_tail.  To examine the ends without removing data
+ * To read values from the ends of a queue, use @ref queue_pop_head
+ * and @ref queue_pop_tail.  To examine the ends without removing values
  * from the queue, use @ref queue_peek_head and @ref queue_peek_tail.
  *
  */
@@ -97,10 +97,10 @@ Queue *queue_new(void);
 void queue_free(Queue *queue);
 
 /**
- * Add data to the head of a queue.
+ * Add a value to the head of a queue.
  *
  * @param queue      The queue.
- * @param data       The data to add.
+ * @param data       The value to add.
  * @return           Non-zero if the value was added successfully, or zero
  *                   if it was not possible to allocate the memory for the
  *                   new entry. 
@@ -109,31 +109,31 @@ void queue_free(Queue *queue);
 int queue_push_head(Queue *queue, QueueValue data);
 
 /**
- * Remove data from the head of a queue.
+ * Remove a value from the head of a queue.
  *
  * @param queue      The queue.
- * @return           Data at the head of the queue, or QUEUE_NULL if the 
- *                   queue is empty.
+ * @return           Value that was at the head of the queue, or
+ *                   @ref QUEUE_NULL if the queue is empty.
  */
 
 QueueValue queue_pop_head(Queue *queue);
 
 /**
- * Read data from the head of queue, without removing it from
+ * Read value from the head of a queue, without removing it from
  * the queue.
  *
  * @param queue      The queue.
- * @return           Data at the head of the queue, or QUEUE_NULL if the 
+ * @return           Value at the head of the queue, or @ref QUEUE_NULL if the 
  *                   queue is empty.
  */
 
 QueueValue queue_peek_head(Queue *queue);
 
 /**
- * Add data to the tail of a queue.
+ * Add a value to the tail of a queue.
  *
  * @param queue      The queue.
- * @param data       The data to add.
+ * @param data       The value to add.
  * @return           Non-zero if the value was added successfully, or zero
  *                   if it was not possible to allocate the memory for the
  *                   new entry. 
@@ -142,28 +142,28 @@ QueueValue queue_peek_head(Queue *queue);
 int queue_push_tail(Queue *queue, QueueValue data);
 
 /**
- * Remove data from the tail of a queue.
+ * Remove a value from the tail of a queue.
  *
  * @param queue      The queue.
- * @return           Data at the head of the queue, or QUEUE_NULL if the 
- *                   queue is empty.
+ * @return           Value that was at the head of the queue, or
+ *                   @ref QUEUE_NULL if the queue is empty.
  */
 
 QueueValue queue_pop_tail(Queue *queue);
 
 /**
- * Read data from the tail of queue, without removing it from
+ * Read a value from the tail of a queue, without removing it from
  * the queue.
  *
  * @param queue      The queue.
- * @return           Data at the tail of the queue, or QUEUE_NULL if the 
+ * @return           Value at the tail of the queue, or QUEUE_NULL if the 
  *                   queue is empty.
  */
 
 QueueValue queue_peek_tail(Queue *queue);
 
 /**
- * Query if any data is currently in a queue.
+ * Query if any values are currently in a queue.
  *
  * @param queue      The queue.
  * @return           Zero if the queue is not empty, non-zero if the queue

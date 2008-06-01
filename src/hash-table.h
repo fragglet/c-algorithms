@@ -114,11 +114,11 @@ struct _HashTableIterator {
  * Hash function used to generate hash values for keys used in a hash
  * table.
  *
- * @param data   The value to generate a hash value for.
+ * @param value  The value to generate a hash value for.
  * @return       The hash value.
  */
 
-typedef unsigned long (*HashTableHashFunc)(HashTableKey data);
+typedef unsigned long (*HashTableHashFunc)(HashTableKey value);
 
 /**
  * Function used to compare two keys for equality.
@@ -127,21 +127,21 @@ typedef unsigned long (*HashTableHashFunc)(HashTableKey data);
  *           not equal.
  */
 
-typedef int (*HashTableEqualFunc)(HashTableKey data1, HashTableKey data2);
+typedef int (*HashTableEqualFunc)(HashTableKey value1, HashTableKey value2);
 
 /**
  * Type of function used to free keys when entries are removed from a 
  * hash table.
  */
 
-typedef void (*HashTableKeyFreeFunc)(HashTableKey data);
+typedef void (*HashTableKeyFreeFunc)(HashTableKey value);
 
 /**
  * Type of function used to free values when entries are removed from a 
  * hash table.
  */
 
-typedef void (*HashTableValueFreeFunc)(HashTableValue data);
+typedef void (*HashTableValueFreeFunc)(HashTableValue value);
 
 /**
  * Create a new hash table.

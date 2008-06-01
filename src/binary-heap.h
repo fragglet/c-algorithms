@@ -85,14 +85,15 @@ typedef void *BinaryHeapValue;
 /**
  * Type of function used to compare values in a binary heap.
  *
- * @param data1            The first value.
- * @param data2            The second value.
- * @return                 A negative number if data1 is less than data2,
- *                         a positive number if data1 is greater than data2,
+ * @param value1           The first value.
+ * @param value2           The second value.
+ * @return                 A negative number if value1 is less than value2,
+ *                         a positive number if value1 is greater than value2,
  *                         zero if the two are equal.
  */
 
-typedef int (*BinaryHeapCompareFunc)(BinaryHeapValue data1, BinaryHeapValue data2);
+typedef int (*BinaryHeapCompareFunc)(BinaryHeapValue value1,
+				     BinaryHeapValue value2);
 
 /** 
  * A binary heap data structure.
@@ -137,7 +138,8 @@ int binary_heap_insert(BinaryHeap *heap, BinaryHeapValue value);
  * Remove the first value from a binary heap.
  *
  * @param heap             The heap.
- * @return                 The first value in the heap.
+ * @return                 The first value in the heap, or 
+ *			   @ref BINARY_HEAP_NULL if the heap is empty.
  */
 
 BinaryHeapValue binary_heap_pop(BinaryHeap *heap);

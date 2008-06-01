@@ -115,15 +115,15 @@ typedef struct _AVLTreeNode AVLTreeNode;
 /**
  * Type of function used to compare keys in an AVL tree.
  *
- * @param data1            The first key.
- * @param data2            The second key.
- * @return                 A negative number if data1 should be sorted
- *                         before data2, a positive number if data2 should 
- *                         be sorted before data1, zero if the two keys
+ * @param value1           The first key.
+ * @param value2           The second key.
+ * @return                 A negative number if value1 should be sorted
+ *                         before value2, a positive number if value2 should 
+ *                         be sorted before value1, zero if the two keys
  *                         are equal.
  */
 
-typedef int (*AVLTreeCompareFunc)(AVLTreeValue data1, AVLTreeValue data2);
+typedef int (*AVLTreeCompareFunc)(AVLTreeValue value1, AVLTreeValue value2);
 
 /**
  * Create a new AVL tree.
@@ -199,7 +199,7 @@ AVLTreeNode *avl_tree_lookup_node(AVLTree *tree, AVLTreeKey key);
  * @param tree            The AVL tree to search.
  * @param key             The key to search for.
  * @return                The value associated with the given key, or 
- *                        AVLTREE_NULL if no entry with the given key is 
+ *                        @ref AVLTREE_NULL if no entry with the given key is 
  *                        found.
  */
 
