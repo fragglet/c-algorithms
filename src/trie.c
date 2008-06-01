@@ -214,6 +214,8 @@ int trie_insert(Trie *trie, char *key, TrieValue value)
 				return 0;
 			}
 
+			node->data = TRIE_NULL;
+
 			/* Link in to the trie */
 
 			*rover = node;
