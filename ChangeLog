@@ -1,364 +1,656 @@
-Fri Dec 23 23:19:01 2005 fraggle
+2008-06-01 20:27:48 fraggle
+	
+	Fix smart-indent to expand tabs to the next tab point rather than
+	doing a simple replace.
+
+2008-06-01 20:27:02 fraggle
+	
+	Smart indent headers.
+
+2008-06-01 20:08:47 fraggle
+	
+	Documentation fixes: "data"->"value".
+
+2008-06-01 19:39:28 fraggle
+	
+	Fix documentation error.
+
+2008-06-01 19:36:05 fraggle
+	
+	Documentation fixes.
+
+2008-06-01 19:16:21 fraggle
+	
+	Initialise new trie nodes with TRIE_NULL.
+
+2008-06-01 19:15:49 fraggle
+	
+	Use 8 space tabs, replace cvshistory with svnhistory.
+
+2008-06-01 19:14:30 fraggle
+	
+	Remove coverage testing CFLAGS.
+
+2008-06-01 17:49:12 fraggle
+	
+	Add tests for some uncovered code.
+
+2008-06-01 16:41:54 fraggle
+	
+	Use string keys for test cases to ensure hash collisions occur and are
+	tested.
+
+2008-06-01 15:41:25 fraggle
+	
+	Indentation fixes.
+
+2008-05-30 21:26:07 fraggle
+	
+	Fix tabs/spaces.
+
+2008-05-30 21:23:33 fraggle
+	
+	Make list iterators cope with the current element being removed
+	independent of the iterator remove function.  Add test cases for this.
+
+2008-05-30 01:51:18 fraggle
+	
+	Simplify linked list iterators and reduce iterator structure size.
+
+2008-04-16 21:41:46 fraggle
+	
+	Make the doubly-linked list type take a pointer to a structure to
+	initialise rather than allocating an iterator.
+
+2008-04-16 21:25:12 fraggle
+	
+	Make the singly-linked list type take a pointer to a structure to
+	initialise rather than allocating an iterator.
+
+2008-04-16 21:08:05 fraggle
+	
+	Make the set type take a pointer to a structure to initialise rather
+	than allocating an iterator.
+
+2008-04-16 20:57:09 fraggle
+	
+	Don't allocate hash table iterators; take a pointer to a structure to
+	initialise.
+
+2007-10-02 01:13:07 fraggle
+	
+	Return the value from the hash table iterator, not the key.
+
+2007-09-09 22:02:42 fraggle
+	
+	Add missing copyright notice.
+
+2007-06-10 04:22:20 fraggle
+	
+	Rename hashtable.[ch] -> hash-table.[ch] for consistency.  Rename all
+	instances of hashtable to hash_table.
+
+2007-06-10 03:57:45 fraggle
+	
+	Test hash_table_register_free_functions.
+
+2007-06-10 03:56:57 fraggle
+	
+	Test set_register_free_function.
+
+2007-06-10 03:55:59 fraggle
+	
+	Test bloom_filter_free.
+
+2007-06-10 03:17:05 fraggle
+	
+	Rename avltree_* -> avl_tree_*, avltree.[ch] -> avl-tree.[ch] for
+	consistency with other files.
+
+2007-06-10 03:07:20 fraggle
+	
+	Set svn:ignore property on all directories.
+
+2006-11-22 00:41:28 fraggle
+	
+	Set reference count when allocating new trees.
+
+2006-11-22 00:31:34 fraggle
+	
+	Add new headers to libcalg.h.
+
+2006-11-22 00:15:27 fraggle
+	
+	Fix bug in set_to_array.
+
+2006-11-22 00:06:44 fraggle
+	
+	Separate out set value type to a separate type.
+
+2006-11-22 00:04:55 fraggle
+	
+	Abstract key/values into separate types, so that these can be changed
+	from "void *" if desired.
+
+2006-11-20 17:58:58 fraggle
+	
+	Test formatting cleanups.
+
+2006-11-20 17:55:53 fraggle
+	
+	Add binomial heap.
+
+2006-11-20 17:54:29 fraggle
+	
+	Fix bloom filter.
+
+2006-11-20 17:54:07 fraggle
+	
+	Add bloom filter test case.
+
+2006-11-15 23:35:18 fraggle
+	
+	Add bloom filter to front page in documentation.  Fix documentation
+	warnings.
+
+2006-11-15 23:34:14 fraggle
+	
+	Rename bloom_filter_lookup to bloom_filter_query to be consistent with
+	the set data structure.
+
+2006-11-15 19:56:21 fraggle
+	
+	Add bloom filter union/intersection functions.
+
+2006-11-15 19:43:25 fraggle
+	
+	Add bloom filter read/load functions.
+
+2006-11-15 19:32:53 fraggle
+	
+	Make salts unsigned.
+
+2006-11-15 19:32:01 fraggle
+	
+	Add bloom filter.
+
+2006-10-30 20:15:18 fraggle
+	
+	Fix indentation.
+
+2006-10-30 20:13:10 fraggle
+	
+	Improved trie test cases.
+
+2006-10-30 20:12:29 fraggle
+	
+	Indentation fixes.
+
+2006-10-30 20:11:34 fraggle
+	
+	Trie fixes: recover properly from failed mallocs.  Fix insert that
+	replaces an existing value.
+
+2006-10-30 20:09:29 fraggle
+	
+	Fix allocation size on reallocs.
+
+2006-10-28 13:21:26 fraggle
+	
+	Fix up indentation.
+
+2006-10-28 13:18:05 fraggle
+	
+	Reword comments.
+
+2006-10-28 13:17:45 fraggle
+	
+	Improve list iterate test case.
+
+2006-10-28 13:10:43 fraggle
+	
+	Convert slist_foreach to iterators.
+
+2006-10-27 20:57:06 fraggle
+	
+	Smart indent all source code.
+
+2006-10-27 20:50:36 fraggle
+	
+	Check the return value from malloc() and return error conditions if it
+	fails.
+
+2006-10-27 19:34:18 fraggle
+	
+	Replace list_foreach with iterator objects.
+
+2006-10-27 18:23:14 fraggle
+	
+	Improve the set_remove test function.
+
+2006-10-27 18:16:26 fraggle
+	
+	Fix lockup when removing entries from sets.
+
+2006-10-26 19:39:38 fraggle
+	
+	Use "good hash table primes" from
+	http://planetmath.org/encyclopedia/GoodHashTablePrimes.html
+
+2006-10-22 02:49:08 fraggle
+	
+	Add test suite for binary heap.
+
+2006-10-22 02:45:15 fraggle
+	
+	Fix errors: (i - 1) / 2 to get parent index, do not use child 2 when
+	it does not exist.
+
+2006-10-22 01:04:59 fraggle
+	
+	Add binary_heap_free.
+
+2006-10-21 23:27:40 fraggle
+	
+	Use calloc/malloc more appropriately (don't clear memory
+	unnecessarily), don't use memset where it isn't needed.
+
+2006-10-21 00:34:08 fraggle
+	
+	Add a binary heap implementation.
+
+2006-06-19 18:50:38 fraggle
+	
+	Remove the double-pointer usage (breaks remove while iterating).
+
+2006-06-19 18:32:33 fraggle
+	
+	Add test cases for set iterator functions.
+
+2006-06-19 18:22:21 fraggle
+	
+	Convert spaces to tabs.
+
+2006-06-19 18:18:14 fraggle
+	
+	Rename functions with _iterator_ to _iter_ for shorter names.
+
+2006-06-19 18:11:03 fraggle
+	
+	Convert hash table structure to use iterator objects instead of
+	foreach with callback functions.
+
+2006-06-17 20:23:11 fraggle
+	
+	Change set iteration to use iterator objects rather than foreach with
+	callback functions.
+
+2006-01-30 18:52:43 fraggle
+	
+	v1.0.0
+
+2005-12-23 23:19:02 fraggle
 	
 	Make compare/hash functions take void pointers, removing the need to
 	cast the functions to the appropriate type when used.
 
-Fri Dec 23 22:39:38 2005 fraggle
+2005-12-23 22:39:39 fraggle
 	
 	Fix bug in list iterator, add test cases for iterator
 
-Fri Dec 23 19:08:17 2005 fraggle
+2005-12-23 19:08:17 fraggle
 	
 	Do not include complete path in Doxygen documentation
 
-Fri Dec 23 19:07:57 2005 fraggle
+2005-12-23 19:07:57 fraggle
 	
 	Add AVL tree to main documentation list; split data structures into
 	categories
 
-Fri Dec 23 18:57:38 2005 fraggle
+2005-12-23 18:57:38 fraggle
 	
 	List to array conversion functions
 
-Fri Dec 23 18:44:15 2005 fraggle
+2005-12-23 18:44:15 fraggle
 	
 	to_array conversion function.
 
-Fri Dec 23 18:25:36 2005 fraggle
+2005-12-23 18:25:36 fraggle
 	
 	Turn on warnings; remove unneeded variables.  Add more test cases.
 
-Fri Dec 23 18:24:43 2005 fraggle
+2005-12-23 18:24:43 fraggle
 	
 	avltree_remove, avltree_free functions.
 
-Fri Dec 23 16:07:37 2005 fraggle
+2005-12-23 16:07:38 fraggle
 	
 	AVL tree: Remove debugging functions, fix bug with parent references
 	not updated on rotate.  Add "remove" function and test cases.
 
-Fri Dec 23 02:11:27 2005 fraggle
+2005-12-23 02:11:27 fraggle
 	
 	More AVL tree documentation.
 
-Fri Dec 23 01:51:34 2005 fraggle
+2005-12-23 01:51:34 fraggle
 	
 	Update NEWS, ChangeLog
 
-Fri Dec 23 01:49:54 2005 fraggle
+2005-12-23 01:49:54 fraggle
 	
 	CVS history script
 
-Wed Dec 21 21:39:17 2005 fraggle
+2005-12-21 21:39:17 fraggle
 	
 	Add missing function declarations and some documentation.
 
-Tue Dec 20 23:21:36 2005 fraggle
+2005-12-20 23:21:36 fraggle
 	
 	Style cleanups: always use {} blocks for if statements.
 
-Tue Dec 20 23:20:23 2005 fraggle
+2005-12-20 23:20:23 fraggle
 	
 	Main header
 
-Sat Dec 17 13:45:52 2005 fraggle
+2005-12-17 13:45:52 fraggle
 	
 	Add trie
 
-Tue Dec 13 22:02:22 2005 fraggle
+2005-12-13 22:02:22 fraggle
 	
 	Smart indent all source code
 
-Tue Dec 13 21:54:51 2005 fraggle
+2005-12-13 21:54:51 fraggle
 	
 	Maintenance scripts
 
-Tue Dec 13 20:16:30 2005 fraggle
+2005-12-13 20:16:30 fraggle
 	
 	hash_table_foreach_remove function
 
-Tue Dec 13 19:57:56 2005 fraggle
+2005-12-13 19:57:56 fraggle
 	
 	Use unsigned int for prime arrays
 
-Tue Dec 13 19:54:03 2005 fraggle
+2005-12-13 19:54:03 fraggle
 	
-	Hash table iterator function; add missing num_entries function to header.
+	Hash table iterator function; add missing num_entries function to
+	header.
 
-Tue Dec 13 19:29:57 2005 fraggle
+2005-12-13 19:29:57 fraggle
 	
 	Install header files, pkgconfig .pc file
 
-Tue Dec 13 19:28:19 2005 fraggle
+2005-12-13 19:28:19 fraggle
 	
 	Sort function
 
-Tue Dec 13 19:27:15 2005 fraggle
+2005-12-13 19:27:15 fraggle
 	
 	SLIST -> LIST (prevent conflict with the real slist.h)
 
-Sun Dec 11 01:58:51 2005 fraggle
+2005-12-11 01:58:51 fraggle
 	
 	Act as a mapping.  Add a lookup function and accessor functions for
 	the nodes.
 
-Sat Dec 10 23:44:26 2005 fraggle
+2005-12-10 23:44:26 fraggle
 	
 	Set to array convertor function
 
-Sat Dec 10 23:17:40 2005 fraggle
+2005-12-10 23:17:40 fraggle
 	
 	Trie documentation
 
-Sat Dec 10 22:43:02 2005 fraggle
+2005-12-10 22:43:02 fraggle
 	
 	Trie testcase
 
-Sat Dec 10 22:42:18 2005 fraggle
+2005-12-10 22:42:18 fraggle
 	
 	Add remove, free functions, entries count
 
-Sat Dec 10 21:47:39 2005 fraggle
+2005-12-10 21:47:39 fraggle
 	
 	terminology: "duplicate" -> "copy"
 
-Thu Dec  1 17:47:42 2005 fraggle
+2005-12-01 17:47:42 fraggle
 	
 	Fix error in documentation
 
-Thu Dec  1 17:46:24 2005 fraggle
+2005-12-01 17:46:25 fraggle
 	
 	Move Doxyfile to the doc/ directory, only generate HTML documentation.
 	Include docs in dist.
 
-Wed Nov 30 00:58:02 2005 fraggle
+2005-11-30 00:58:02 fraggle
 	
 	First implementation of a trie
 
-Tue Nov 29 23:30:51 2005 fraggle
+2005-11-29 23:30:51 fraggle
 	
 	Algorithms -> data structures
 
-Tue Nov 29 23:25:59 2005 fraggle
+2005-11-29 23:25:59 fraggle
 	
-	When overwriting an existing value in a hashtable, use the new key
-	and not the old one.
+	When overwriting an existing value in a hashtable, use the new key and
+	not the old one.
 
-Tue Nov 29 23:24:01 2005 fraggle
+2005-11-29 23:24:01 fraggle
 	
 	Return results for set_remove and set_insert.  Add free function
 	registration to free values.
 
-Tue Nov 29 23:03:06 2005 fraggle
+2005-11-29 23:03:07 fraggle
 	
 	Test cases for hash functions
 
-Tue Nov 29 22:49:17 2005 fraggle
+2005-11-29 22:49:17 fraggle
 	
 	Add test cases for case insensitive string compare functions
 
-Tue Nov 29 22:47:07 2005 fraggle
+2005-11-29 22:47:07 fraggle
 	
 	Fix case insensitive string compare
 
-Tue Nov 29 00:00:12 2005 fraggle
+2005-11-29 00:00:12 fraggle
 	
 	Key/value free functions
 
-Mon Nov 28 18:25:45 2005 fraggle
+2005-11-28 18:25:45 fraggle
 	
 	Case insensitive string hash and comparison functions
 
-Mon Nov 28 18:23:43 2005 fraggle
+2005-11-28 18:23:43 fraggle
 	
 	Duplicator functions for union and intersection calls to copy values.
 
-Mon Nov 28 18:20:59 2005 fraggle
+2005-11-28 18:20:59 fraggle
 	
 	Hashtable -> HashTable, hashtable_ -> hash_table_ - consistent naming
 	scheme and consistent with glib
 
-Sat Nov 26 23:27:57 2005 fraggle
+2005-11-26 23:27:57 fraggle
 	
 	First implementation of an AVL Tree
 
-Sat Nov 26 20:13:18 2005 fraggle
+2005-11-26 20:13:18 fraggle
 	
 	Exit with an error code of 0 if completed successfully
 
-Sat Nov 26 19:04:40 2005 fraggle
+2005-11-26 19:04:40 fraggle
 	
 	Set unit tests
 
-Sat Nov 26 19:03:18 2005 fraggle
+2005-11-26 19:03:18 fraggle
 	
 	Add union and intersection functions, fix bug in set_query
 
-Sat Nov 26 18:20:16 2005 fraggle
+2005-11-26 18:20:16 fraggle
 	
 	Rename set functions to be consistent with hashtable function names
 
-Sat Nov 26 18:11:26 2005 fraggle
+2005-11-26 18:11:26 fraggle
 	
 	Hash table test suite
 
-Sat Nov 26 18:11:01 2005 fraggle
+2005-11-26 18:11:01 fraggle
 	
-	Keep track of the number of entries in a hash table correctly.
-	Add num_entries function to retrieve the number of entries.
+	Keep track of the number of entries in a hash table correctly.  Add
+	num_entries function to retrieve the number of entries.
 
-Sat Nov 26 17:46:54 2005 fraggle
+2005-11-26 17:46:54 fraggle
 	
 	Test cases for the compare functions
 
-Sat Nov 26 16:59:07 2005 fraggle
+2005-11-26 16:59:07 fraggle
 	
 	Include the doc directory in distributions
 
-Sat Nov 26 16:13:08 2005 fraggle
+2005-11-26 16:13:08 fraggle
 	
 	Improve documentation, add an introduction page
 
-Sat Nov 26 15:21:53 2005 fraggle
+2005-11-26 15:21:53 fraggle
 	
 	Always show all warnings
 
-Sat Nov 26 15:21:40 2005 fraggle
+2005-11-26 15:21:40 fraggle
 	
 	Generate a configuration file so that the compiler command line is not
 	so cluttered.
 
-Sat Nov 26 15:18:40 2005 fraggle
+2005-11-26 15:18:40 fraggle
 	
 	Include the autotools directory in distribution
 
-Sat Nov 26 15:14:53 2005 fraggle
+2005-11-26 15:14:53 fraggle
 	
 	Use comparison functions from the library instead of duplicating
 	declarations
 
-Sat Nov 26 15:12:31 2005 fraggle
+2005-11-26 15:12:32 fraggle
 	
 	Add build system
 
-Sat Nov 26 15:11:30 2005 fraggle
+2005-11-26 15:11:30 fraggle
 	
 	AUTHORS file
 
-Sat Nov 26 14:42:55 2005 fraggle
+2005-11-26 14:42:55 fraggle
 	
 	Include manpage links for function names
 
-Sat Nov 26 14:38:07 2005 fraggle
+2005-11-26 14:38:07 fraggle
 	
 	Documentation improvements
 
-Sat Nov 26 14:27:30 2005 fraggle
+2005-11-26 14:27:30 fraggle
 	
 	Use prime numbered table sizes
 
-Sat Nov 26 13:34:42 2005 fraggle
+2005-11-26 13:34:42 fraggle
 	
 	Restructure directories
 
-Mon Nov 21 16:09:37 2005 fraggle
+2005-11-21 16:09:37 fraggle
 	
 	Implementation of a set
 
-Mon Nov 21 16:09:16 2005 fraggle
+2005-11-21 16:09:16 fraggle
 	
 	Function to retrieve a count of the number of entries
 
-Sun Nov 20 12:11:59 2005 fraggle
+2005-11-20 12:11:59 fraggle
 	
 	A set of values
 
-Sun Nov 20 02:47:04 2005 fraggle
+2005-11-20 02:47:04 fraggle
 	
 	Wording fix
 
-Sun Nov 20 02:43:46 2005 fraggle
+2005-11-20 02:43:46 fraggle
 	
 	Generate brief descriptions automatically
 
-Sun Nov 20 02:43:33 2005 fraggle
+2005-11-20 02:43:33 fraggle
 	
 	Documentation wording fixes
 
-Sun Nov 20 02:40:07 2005 fraggle
+2005-11-20 02:40:07 fraggle
 	
-	Do not display directories.  Remove my local build dirs from the file and
-	use relative paths.
+	Do not display directories.  Remove my local build dirs from the file
+	and use relative paths.
 
-Sun Nov 20 02:27:22 2005 fraggle
+2005-11-20 02:27:22 fraggle
 	
 	Documentation improvements; generate documentation through Doxygen
 
-Sun Nov 20 01:21:34 2005 fraggle
+2005-11-20 01:21:34 fraggle
 	
 	Hash table implementation
 
-Sat Nov 19 19:29:00 2005 fraggle
+2005-11-19 19:29:00 fraggle
 	
 	rm -f
 
-Sat Nov 19 19:28:24 2005 fraggle
+2005-11-19 19:28:24 fraggle
 	
 	Shut up compiler warnings
 
-Sat Nov 19 19:25:01 2005 fraggle
+2005-11-19 19:25:01 fraggle
 	
 	Turn on warnings on all makefiles
 
-Sat Nov 19 19:24:10 2005 fraggle
+2005-11-19 19:24:10 fraggle
 	
 	Use callback to determine data to remove with slist_remove_data
 
-Sat Nov 19 19:14:32 2005 fraggle
+2005-11-19 19:14:32 fraggle
 	
 	Split hash functions into a separate hash-functions directory
 
-Sat Nov 19 19:07:52 2005 fraggle
+2005-11-19 19:07:52 fraggle
 	
 	Doubly-linked list implementation
 
-Sat Nov 19 13:21:42 2005 fraggle
+2005-11-19 13:21:42 fraggle
 	
 	Add README
 
-Sat Nov 19 13:18:34 2005 fraggle
+2005-11-19 13:18:34 fraggle
 	
 	Add new test functions
 
-Sat Nov 19 13:18:23 2005 fraggle
+2005-11-19 13:18:23 fraggle
 	
 	Use callback functions when searching
 
-Sat Nov 19 13:10:54 2005 fraggle
+2005-11-19 13:10:54 fraggle
 	
 	Add a search function
 
-Sat Nov 19 12:47:34 2005 fraggle
+2005-11-19 12:47:34 fraggle
 	
 	Queue test cases
 
-Sat Nov 19 12:36:25 2005 fraggle
+2005-11-19 12:36:25 fraggle
 	
 	queue_empty -> queue_is_empty
 
-Sat Nov 19 12:28:34 2005 fraggle
+2005-11-19 12:28:35 fraggle
 	
 	Rename files, add headers and documentation
 
-Fri Nov 18 16:41:20 2005 fraggle
+2005-11-18 16:41:20 fraggle
 	
 	Update license to match source files
 
-Fri Nov 18 16:40:27 2005 fraggle
+2005-11-18 16:40:27 fraggle
 	
 	Compare functions for different types
 
-Fri Nov 18 16:37:23 2005 fraggle
+2005-11-18 16:37:23 fraggle
 	
 	Initial revision
 
