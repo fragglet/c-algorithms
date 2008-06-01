@@ -320,6 +320,10 @@ void test_set_iterating(void)
 		++count;
 	}
 
+	/* Test iter_next after iteration has completed. */
+
+	assert(set_iter_next(&iterator) == NULL);
+
 	/* Check final count */
 
 	assert(count == 10000);

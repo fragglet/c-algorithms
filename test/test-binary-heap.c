@@ -94,6 +94,11 @@ void test_min_heap(void)
 		i = *val;
 	}
 
+	/* Test popping from an empty heap */
+
+	assert(binary_heap_num_entries(heap) == 0);
+	assert(binary_heap_pop(heap) == BINARY_HEAP_NULL);
+
 	binary_heap_free(heap);
 }
 

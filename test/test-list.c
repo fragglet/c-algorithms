@@ -430,6 +430,10 @@ void test_list_iterate(void)
 		}
 	}
 
+	/* Test iter_next after iteration has completed. */
+
+	assert(list_iter_next(&iter) == NULL);
+
 	/* Test remove at the end of a list */
 
 	list_iter_remove(&iter);

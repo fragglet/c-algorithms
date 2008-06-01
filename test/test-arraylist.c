@@ -158,6 +158,13 @@ void test_arraylist_insert(void)
 
 	arraylist = generate_arraylist();
 
+	/* Check for out of range insert */
+
+	assert(arraylist->length == 16);
+	assert(arraylist_insert(arraylist, -1, &variable1) == 0);
+	assert(arraylist_insert(arraylist, 17, &variable1) == 0);
+	assert(arraylist->length == 16);
+
 	/* Insert a new entry at index 5 */
 
 	assert(arraylist->length == 16);
@@ -165,7 +172,7 @@ void test_arraylist_insert(void)
 	assert(arraylist->data[5] == &variable2);
 	assert(arraylist->data[6] == &variable3);
 
-	arraylist_insert(arraylist, 5, &variable4);
+	assert(arraylist_insert(arraylist, 5, &variable4) != 0);
 
 	assert(arraylist->length == 17);
 	assert(arraylist->data[4] == &variable1);
@@ -179,7 +186,7 @@ void test_arraylist_insert(void)
 	assert(arraylist->data[1] == &variable2);
 	assert(arraylist->data[2] == &variable3);
 
-	arraylist_insert(arraylist, 0, &variable4);
+	assert(arraylist_insert(arraylist, 0, &variable4) != 0);
 
 	assert(arraylist->length == 18);
 	assert(arraylist->data[0] == &variable4);
@@ -193,7 +200,7 @@ void test_arraylist_insert(void)
 	assert(arraylist->data[16] == &variable3);
 	assert(arraylist->data[17] == &variable4);
 
-	arraylist_insert(arraylist, 18, &variable1);
+	assert(arraylist_insert(arraylist, 18, &variable1) != 0);
 
 	assert(arraylist->length == 19);
 	assert(arraylist->data[15] == &variable2);

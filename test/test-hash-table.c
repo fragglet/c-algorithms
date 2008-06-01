@@ -196,6 +196,10 @@ void test_hash_table_iterating(void)
 
 	assert(count == 10000);
 
+	/* Test iter_next after iteration has completed. */
+
+	assert(hash_table_iter_next(&iterator) == HASH_TABLE_NULL);
+
 	/* Test iterating over an empty table */
 
 	hash_table = hash_table_new(int_hash, int_equal);

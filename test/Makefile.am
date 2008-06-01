@@ -16,7 +16,7 @@ TESTS =                          \
 
 noinst_PROGRAMS = $(TESTS)
 
-AM_CFLAGS = -I../src -Wall
+AM_CFLAGS = -I../src -Wall -fprofile-arcs -ftest-coverage
 LDADD = $(top_builddir)/src/libcalg.la
 
 test_arraylist_SOURCES = test-arraylist.c

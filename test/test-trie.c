@@ -109,6 +109,11 @@ void test_trie_insert_lookup_remove(void)
 		assert(trie_num_entries(trie) == entries);
 	}
 
+	/* Test lookup for non-existent values */
+
+	assert(trie_lookup(trie, "000000000000000") == TRIE_NULL);
+	assert(trie_lookup(trie, "") == TRIE_NULL);
+
 	/* Test remove on non-existent values. */
 
 	assert(trie_remove(trie, "000000000000000") == 0);

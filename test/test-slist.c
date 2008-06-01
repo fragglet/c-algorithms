@@ -406,6 +406,10 @@ void test_slist_iterate(void)
 			slist_iter_remove(&iter);
 		}
 	}
+
+	/* Test iter_next after iteration has completed. */
+
+	assert(slist_iter_next(&iter) == SLIST_NULL);
 	
 	/* Test remove at the end of a list */
 
