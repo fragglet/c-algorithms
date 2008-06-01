@@ -29,7 +29,12 @@ def fix_file(filename)
 
         # expand tabs
 
-        s = s.gsub(/\t/, " " * TAB_SIZE)
+	while s =~ /\t/
+	    lead_text = $`
+	    lead_len = lead_text.length
+	    replace_len = TAB_SIZE - (lead_len % TAB_SIZE)
+	    s[0, lead_len + 1] = lead_text + " " * replace_len
+	end
 
         # replace leading spaces with the appropriate combination
         # of tabs and spaces
