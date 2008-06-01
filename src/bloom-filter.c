@@ -89,8 +89,8 @@ BloomFilter *bloom_filter_new(unsigned int table_size,
 	}
 
 	/* Allocate table, each entry is one bit; these are packed into
- 	 * bytes.  When allocating we must round the length up to the nearest
- 	 * byte. */
+	 * bytes.  When allocating we must round the length up to the nearest
+	 * byte. */
 
 	filter->table = calloc((table_size + 7) / 8, 1);
 
@@ -124,7 +124,7 @@ void bloom_filter_insert(BloomFilter *bloomfilter, BloomFilterValue value)
 	hash = bloomfilter->hash_func(value);
 
 	/* Generate multiple unique hashes by XORing with values in the
- 	 * salt table. */
+	 * salt table. */
 
 	for (i=0; i<bloomfilter->num_functions; ++i) {
 
@@ -158,7 +158,7 @@ int bloom_filter_query(BloomFilter *bloomfilter, BloomFilterValue value)
 	hash = bloomfilter->hash_func(value);
 
 	/* Generate multiple unique hashes by XORing with values in the
- 	 * salt table. */
+	 * salt table. */
 
 	for (i=0; i<bloomfilter->num_functions; ++i) {
 

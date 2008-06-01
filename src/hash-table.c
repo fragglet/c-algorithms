@@ -445,7 +445,7 @@ int hash_table_iter_has_more(HashTableIterator *iterator)
 
 HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 {
-        HashTableEntry *current_entry;
+	HashTableEntry *current_entry;
 	HashTable *hash_table;
 	HashTableValue result;
 	int chain;
