@@ -58,10 +58,11 @@ extern "C" {
 #endif
 
 /**
- * Heap type.  If a heap is a min heap, the values with the lowest 
- * priority are stored at the top of the heap and will be the first
- * returned.  If a heap is a max heap, the values with the 
- * greatest priority are stored at the top of the heap.
+ * Heap type.  If a heap is a min heap (@ref BINOMIAL_HEAP_TYPE_MIN), the 
+ * values with the lowest priority are stored at the top of the heap and
+ * will be the first returned.  If a heap is a max heap
+ * (@ref BINOMIAL_HEAP_TYPE_MAX), the values with the greatest priority
+ * are stored at the top of the heap.
  */
 
 typedef enum {

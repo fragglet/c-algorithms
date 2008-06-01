@@ -64,7 +64,13 @@ POSSIBILITY OF SUCH DAMAGE.
  * To find a particular entry in a list by its index, use 
  * @ref slist_nth_entry.
  *
- * Given a particular entry in a list:
+ * To iterate over each value in a list, use @ref slist_iterate to 
+ * initialise a @ref SListIterator structure, with @ref slist_iter_next
+ * and @ref slist_iter_has_more to retrieve each value in turn.
+ * @ref slist_iter_remove can be used to efficiently remove the 
+ * current entry from the list.
+ *
+ * Given a particular entry in a list (@ref SListEntry):
  *
  * @li To find the next entry, use @ref slist_next.
  * @li To access the data stored at the entry, use @ref slist_data.
@@ -279,9 +285,7 @@ SListEntry *slist_find_data(SListEntry *list,
 void slist_iterate(SListEntry **list, SListIterator *iter);
 
 /**
- * Determine if there are more values in the list to iterate over.  When
- * iteration is finished, the iterator should be freed using 
- * @ref slist_iter_free.
+ * Determine if there are more values in the list to iterate over.
  *
  * @param iterator       The list iterator.
  * @return               Zero if there are no more values in the list to

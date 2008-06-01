@@ -51,7 +51,12 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  * To query if a particular value is in a set, use @ref set_query.
  *
- * To iterate over all values in a set, use @ref set_iterate.
+ * To iterate over all values in a set, use @ref set_iterate to initialise
+ * a @ref SetIterator structure, with @ref set_iter_next and 
+ * @ref set_iter_has_more to read each value in turn.
+ *
+ * Two sets can be combined (union) using @ref set_union, while the
+ * intersection of two sets can be generated using @ref set_intersection.
  */
 
 #ifndef ALGORITHM_SET_H

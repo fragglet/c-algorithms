@@ -53,8 +53,10 @@ POSSIBILITY OF SUCH DAMAGE.
  * To remove data from a list, use @ref list_remove_entry or 
  * @ref list_remove_data.
  *
- * To iterate over entries in a list, use @ref list_next and @ref list_prev,
- * along with the @ref list_data function to access data.
+ * To iterate over entries in a list, use @ref list_iterate to initialise
+ * a @ref ListIterator structure, with @ref list_iter_next 
+ * @ref list_iter_has_more to retrieve each value in turn. 
+ * @list_iter_remove can be used to remove the current entry.
  *
  * To access an entry in the list by index, use @ref list_nth_entry or
  * @ref list_nth_data.
@@ -284,9 +286,7 @@ ListEntry *list_find_data(ListEntry *list,
 void list_iterate(ListEntry **list, ListIterator *iter);
 
 /**
- * Determine if there are more values in the list to iterate over.  When
- * iteration is finished, the iterator should be freed using 
- * @ref list_iter_free.
+ * Determine if there are more values in the list to iterate over.
  *
  * @param iterator       The list iterator.
  * @return               Zero if there are no more values in the list to

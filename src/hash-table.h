@@ -50,6 +50,11 @@ POSSIBILITY OF SUCH DAMAGE.
  * To remove a value from a hash table, use @ref hash_table_remove.
  *
  * To look up a value by its key, use @ref hash_table_lookup.
+ *
+ * To iterate over all values in a hash table, use 
+ * @ref hash_table_iterate to initialise a @ref HashTableIterator
+ * structure.  Each value can then be read in turn using 
+ * @ref hash_table_iter_next and @ref hash_table_iter_has_more.
  */
 
 #ifndef ALGORITHM_HASH_TABLE_H
