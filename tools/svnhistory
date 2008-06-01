@@ -1,0 +1,189 @@
+#!/usr/bin/env ruby
+#
+# Copyright(C) Simon Howard
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a 
+# copy of this software and associated documentation files (the "Software"), 
+# to deal in the Software without restriction, including without limitation 
+# the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+# and/or sell copies of the Software, and to permit persons to whom the 
+# Software is furnished to do so, subject to the following conditions: 
+# 
+# The above copyright notice and this permission notice shall be included in 
+# all copies or substantial portions of the Software. 
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL 
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+# DEALINGS IN THE SOFTWARE. 
+#
+
+class Change
+    attr_accessor :author, :time, :description
+
+    def initialize
+        @description = ""
+    end
+
+    # Combine multiple lines of text into long run-on lines.  Empty
+    # lines of text denote paragraphs.  Lines beginning with '*' 
+    # are also recognised as bullet point lists.
+
+    def combine_lines(input)
+        result = ""
+
+        input.each_line do |s|
+            s = s.chomp
+
+            if result.length > 0 && result[-1, 1] != "\n"
+
+                # Don't do any of this if we just started a new line
+
+                if s =~ /^\s*$/
+                    # empty line; make this break a paragraph.
+                    result += "\n\n"
+                elsif s =~ /^\s*\*/
+                    # bullet point
+                    result += "\n"
+                else
+                    result += " "
+                end
+            end
+
+            result += s
+        end
+
+        result
+    end
+
+    # Reformat the description and break into lines
+
+    def break_lines(input)
+        result = ""
+
+        input.each_line do |s|
+
+            if s =~ /^\s*$/
+                # empty line
+                result += "\n"
+            else
+
+                # Amount to indent each line by so that they align
+                # with the initial bullet point (if this line is a
+                # bullet point)
+
+                indent_length = if s =~ /^(\s*\*\s*)/
+                                    $1.length
+                                else
+                                    0
+                                end
+
+                # Split this line into words, then add them to nextline
+                # one at a time until it reaches a 70 character limit.
+
+                nextline = s[0, indent_length]
+                s = s[indent_length, s.length]
+    
+                words = s.split(/\s+/)
+    
+                words.each do |word|
+
+                    # If the next word will run over the limit, break
+                    # onto a new line.  
+
+                    if nextline.length > indent_length \
+                    && nextline.length + word.length + 1 > 70
+
+                        result += nextline + "\n"
+                        nextline = " " * indent_length
+                    end
+
+                    # Space to separate from the previous word, but only
+		    # if this is not the start of a line
+
+                    if nextline.length > indent_length
+		        if nextline[-1, 1] == "."
+
+			    # Two spaces after a period
+
+			    nextline += " "
+			end
+                        nextline += " "
+                    end
+
+                    nextline += word
+                end
+    
+                # Print the last "unfinished" line
+
+                if nextline.length > indent_length
+                    result += nextline + "\n"
+                end
+            end
+        end
+
+        result
+    end
+
+    def remove_trailing_newlines(s)
+        while s[-2, 2] == "\n\n"
+            s = s.chop
+        end
+
+        s
+    end
+
+    def print_change
+        puts "#{@time} #{@author}"
+        puts "\t"
+
+        munged = combine_lines(@description)
+        munged = break_lines(munged)
+        munged = remove_trailing_newlines(munged)
+        munged.each_line do |s|
+            puts "\t" + s
+        end
+
+        puts
+    end
+end
+
+changes = []
+
+IO.popen("svn log .") do |io|
+
+    current_change = nil
+
+    io.each_line do |s|
+
+        s = s.chomp
+
+        if s =~ /^-+$/
+            # start of a new change
+
+            if current_change != nil
+                changes.push(current_change)
+            end
+            current_change = Change.new
+        elsif current_change.author == nil
+            # first line of new change
+
+            fields = s.split(/ \| /)
+            current_change.author = fields[1]
+
+            # time
+            timebits = fields[2].split(/\s+/)
+            current_change.time = timebits[0] + " " + timebits[1]
+        else
+            current_change.description += s + "\n"
+        end
+    end
+end
+
+changes.each do |change|
+    change.print_change
+end
+

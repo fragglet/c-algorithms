@@ -8,7 +8,7 @@
 # view properly in any editor regardless of tab size.
 #
 
-TAB_SIZE = 4
+TAB_SIZE = 8
 
 def tab_out_to(characters)
     tabs = (characters / TAB_SIZE).to_i
