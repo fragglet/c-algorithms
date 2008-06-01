@@ -35,11 +35,14 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <assert.h>
 
 #include "hash-table.h"
 #include "hash-int.h"
 #include "compare-int.h"
+#include "hash-string.h"
+#include "compare-string.h"
 
 int value1 = 1, value2 = 2, value3 = 3, value4 = 4;
 int allocated_keys = 0;
@@ -50,19 +53,23 @@ int allocated_values = 0;
 HashTable *generate_hash_table(void)
 {
 	HashTable *hash_table;
-	int *value;
+	char buf[10];
+	char *value;
 	int i;
 	
-	/* Allocate a new hash table */
+	/* Allocate a new hash table.  We use a hash table with keys that are
+	 * string versions of the integer values 0..9999 to ensure that there
+	 * will be collisions within the hash table (using integer values
+	 * with int_hash causes no collisions) */
 
-	hash_table = hash_table_new(int_hash, int_equal);
+	hash_table = hash_table_new(string_hash, string_equal);
 	
 	/* Insert lots of values */
 	
 	for (i=0; i<10000; ++i) {
-		value = (int *) malloc(sizeof(int));
+		sprintf(buf, "%i", i);
 
-		*value = i;
+		value = strdup(buf);
 
 		hash_table_insert(hash_table, value, value);
 	}
@@ -102,7 +109,8 @@ void test_hash_table_free(void)
 void test_hash_table_insert_lookup(void)
 {
 	HashTable *hash_table;
-	int *value;
+	char buf[10];
+	char *value;
 	int i;
 
 	/* Generate a hash table */
@@ -114,42 +122,41 @@ void test_hash_table_insert_lookup(void)
 	/* Check all values */
 
 	for (i=0; i<10000; ++i) {
-		value = (int *) hash_table_lookup(hash_table, &i);
+		sprintf(buf, "%i", i);
+		value = hash_table_lookup(hash_table, buf);
 
-		assert(*value == i);
+		assert(strcmp(value, buf) == 0);
 	}
 
 	/* Lookup on invalid values returns NULL */
 
-	i = -1;
-	assert(hash_table_lookup(hash_table, &i) == NULL);
-	i = 10000;
-	assert(hash_table_lookup(hash_table, &i) == NULL);
+	sprintf(buf, "%i", -1);
+	assert(hash_table_lookup(hash_table, buf) == NULL);
+	sprintf(buf, "%i", 10000);
+	assert(hash_table_lookup(hash_table, buf) == NULL);
 
 	/* Insert overwrites existing entries with the same key */
 
-	value = (int *) malloc(sizeof(int));
-	*value = 12345;
-	i = 5000;
-	hash_table_insert(hash_table, &i, value);
-	value = (int *) hash_table_lookup(hash_table, &i);
-	assert(*value == 12345);
+	sprintf(buf, "%i", 12345);
+	hash_table_insert(hash_table, buf, "hello world");
+	value = hash_table_lookup(hash_table, buf);
+	assert(strcmp(value, "hello world") == 0);
 }
 
 void test_hash_table_remove(void)
 {
 	HashTable *hash_table;
-	int i;
+	char buf[10];
 
 	hash_table = generate_hash_table();
 
 	assert(hash_table_num_entries(hash_table) == 10000);
-	i = 5000;
-	assert(hash_table_lookup(hash_table, &i) != NULL);
+	sprintf(buf, "%i", 5000);
+	assert(hash_table_lookup(hash_table, buf) != NULL);
 
 	/* Remove an entry */
 
-	hash_table_remove(hash_table, &i);
+	hash_table_remove(hash_table, buf);
 
 	/* Check entry counter */
 
@@ -157,12 +164,12 @@ void test_hash_table_remove(void)
 
 	/* Check that NULL is returned now */
 
-	assert(hash_table_lookup(hash_table, &i) == NULL);
+	assert(hash_table_lookup(hash_table, buf) == NULL);
 
 	/* Try removing a non-existent entry */
 
-	i = -1;
-	hash_table_remove(hash_table, &i);
+	sprintf(buf, "%i", -1);
+	hash_table_remove(hash_table, buf);
 
 	assert(hash_table_num_entries(hash_table) == 9999);
 }
@@ -206,7 +213,8 @@ void test_hash_table_iterating_remove(void)
 {
 	HashTable *hash_table;
 	HashTableIterator iterator;
-	int *val;
+	char buf[10];
+	char *val;
 	int count;
 	int removed;
 	int i;
@@ -224,11 +232,11 @@ void test_hash_table_iterating_remove(void)
 		
 		/* Read the next value */
 		
-		val = (int *) hash_table_iter_next(&iterator);
+		val = hash_table_iter_next(&iterator);
 
 		/* Remove every hundredth entry */
 
-		if (*val % 100 == 0) {
+		if ((atoi(val) % 100) == 0) {
 			hash_table_remove(hash_table, val);
 			++removed;
 		}
@@ -238,7 +246,7 @@ void test_hash_table_iterating_remove(void)
 
 	/* Check counts */
 
-	assert(removed == removed);
+	assert(removed == 100);
 	assert(count == 10000);
 
 	assert(hash_table_num_entries(hash_table) == 10000 - removed);
@@ -246,10 +254,12 @@ void test_hash_table_iterating_remove(void)
 	/* Check all entries divisible by 100 were really removed */
 
 	for (i=0; i<10000; ++i) {
+		sprintf(buf, "%i", i);
+
 		if (i % 100 == 0) {
-			assert(hash_table_lookup(hash_table, &i) == NULL);
+			assert(hash_table_lookup(hash_table, buf) == NULL);
 		} else {
-			assert(hash_table_lookup(hash_table, &i) != NULL);
+			assert(hash_table_lookup(hash_table, buf) != NULL);
 		}
 	}
 }

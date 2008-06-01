@@ -35,6 +35,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <assert.h>
 
 #include "set.h"
@@ -42,24 +43,26 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "hash-int.h"
 #include "compare-pointer.h"
 #include "hash-pointer.h"
+#include "compare-string.h"
+#include "hash-string.h"
 
 int allocated_values;
 
 Set *generate_set(void)
 {
 	Set *set;
+	char buf[10];
 	int i;
-	int *value;
+	char *value;
 
-	set = set_new(int_hash, int_equal);
+	set = set_new(string_hash, string_equal);
 
 	/* Add 10,000 items sequentially, checking that the counter 
 	 * works properly */
 
 	for (i=0; i<10000; ++i) {
-		value = (int *) malloc(sizeof(int));
-
-		*value = i;
+		sprintf(buf, "%i", i);
+		value = strdup(buf);
 
 		set_insert(set, value);
 
@@ -106,8 +109,6 @@ void test_set_insert(void)
 	int numbers2[] = { 5, 6, 7, 8, 9, 10 };
 	int i;
 
-	set = generate_set();
-
 	/* Perform a union of numbers1 and numbers2.  Cannot add the same
 	 * value twice. */
 
@@ -126,6 +127,7 @@ void test_set_insert(void)
 void test_set_query(void)
 {
 	Set *set;
+	char buf[10];
 	int i;
 
 	set = generate_set();
@@ -133,20 +135,20 @@ void test_set_query(void)
 	/* Test all values */
 	
 	for (i=0; i<10000; ++i) {
-		assert(set_query(set, &i) != 0);
+		sprintf(buf, "%i", i);
+		assert(set_query(set, buf) != 0);
 	}
 
 	/* Test invalid values returning zero */
 
-	i = -1;
-	assert(set_query(set, &i) == 0);
-	i = 100001;
-	assert(set_query(set, &i) == 0);
+	assert(set_query(set, "-1") == 0);
+	assert(set_query(set, "100001") == 0);
 }
 
 void test_set_remove(void)
 {
 	Set *set;
+	char buf[10];
 	int i;
 	int num_entries;
 
@@ -158,13 +160,16 @@ void test_set_remove(void)
 	/* Remove some entries */
 
 	for (i=4000; i<6000; ++i) {
+
+		sprintf(buf, "%i", i);
+
 		/* Check this is in the set */
 
-		assert(set_query(set, &i) != 0);
+		assert(set_query(set, buf) != 0);
 
 		/* Remove it */
 
-		assert(set_remove(set, &i) != 0);
+		assert(set_remove(set, buf) != 0);
 
 		/* Check the number of entries decreases */
 
@@ -172,7 +177,7 @@ void test_set_remove(void)
 
 		/* Check it is no longer in the set */
 
-		assert(set_query(set, &i) == 0);
+		assert(set_query(set, buf) == 0);
 
 		--num_entries;
 	}
@@ -180,12 +185,16 @@ void test_set_remove(void)
 	/* Try to remove some invalid entries */
 
 	for (i=-1000; i<-500; ++i) {
-		assert(set_remove(set, &i) == 0);
+		sprintf(buf, "%i", i);
+
+		assert(set_remove(set, buf) == 0);
 		assert(set_num_entries(set) == num_entries);
 	}
 
 	for (i=50000; i<51000; ++i) {
-		assert(set_remove(set, &i) == 0);
+		sprintf(buf, "%i", i);
+
+		assert(set_remove(set, buf) == 0);
 		assert(set_num_entries(set) == num_entries);
 	}
 }
@@ -338,7 +347,7 @@ void test_set_iterating_remove(void)
 	SetIterator iterator;
 	int count;
 	int removed;
-	int *val;
+	char *value;
 
 	set = generate_set();
 
@@ -351,13 +360,13 @@ void test_set_iterating_remove(void)
 
 	while (set_iter_has_more(&iterator)) {
 
-		val = (int *) set_iter_next(&iterator);
+		value = set_iter_next(&iterator);
 
-		if ((*val % 100) == 0) {
+		if ((atoi(value) % 100) == 0) {
 
 			/* Remove this value */
 
-			set_remove(set, val);
+			set_remove(set, value);
 
 			++removed;
 		}
