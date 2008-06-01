@@ -54,7 +54,7 @@ POSSIBILITY OF SUCH DAMAGE.
  * @ref list_remove_data.
  *
  * To iterate over entries in a list, use @ref list_iterate to initialise
- * a @ref ListIterator structure, with @ref list_iter_next 
+ * a @ref ListIterator structure, with @ref list_iter_next and
  * @ref list_iter_has_more to retrieve each value in turn. 
  * @list_iter_remove can be used to remove the current entry.
  *
