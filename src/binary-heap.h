@@ -93,7 +93,7 @@ typedef void *BinaryHeapValue;
  */
 
 typedef int (*BinaryHeapCompareFunc)(BinaryHeapValue value1,
-				     BinaryHeapValue value2);
+                                     BinaryHeapValue value2);
 
 /** 
  * A binary heap data structure.
@@ -139,7 +139,7 @@ int binary_heap_insert(BinaryHeap *heap, BinaryHeapValue value);
  *
  * @param heap             The heap.
  * @return                 The first value in the heap, or 
- *			   @ref BINARY_HEAP_NULL if the heap is empty.
+ *                         @ref BINARY_HEAP_NULL if the heap is empty.
  */
 
 BinaryHeapValue binary_heap_pop(BinaryHeap *heap);

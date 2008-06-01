@@ -107,7 +107,7 @@ typedef int (*ArrayListEqualFunc)(ArrayListValue value1, ArrayListValue value2);
  */
 
 typedef int (*ArrayListCompareFunc)(ArrayListValue value1,
-				    ArrayListValue value2);
+                                    ArrayListValue value2);
 
 /**
  * Allocate a new ArrayList for use.

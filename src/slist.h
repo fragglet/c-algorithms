@@ -201,7 +201,7 @@ SListEntry *slist_nth_entry(SListEntry *list, int n);
  * @param list       The list.
  * @param n          The index into the list.
  * @return           The value stored at the specified index, or
- *		     @ref SLIST_NULL if unsuccessful.
+ *                   @ref SLIST_NULL if unsuccessful.
  */
 
 SListValue slist_nth_data(SListEntry *list, int n);
@@ -249,8 +249,8 @@ int slist_remove_entry(SListEntry **list, SListEntry *entry);
  */
 
 int slist_remove_data(SListEntry **list,
-		      SListEqualFunc callback,
-		      SListValue data);
+                      SListEqualFunc callback,
+                      SListValue data);
 
 /**
  * Sort a list.
@@ -267,7 +267,7 @@ void slist_sort(SListEntry **list, SListCompareFunc compare_func);
  * @param list           The list to search.
  * @param callback       Callback function to be invoked to determine if
  *                       values in the list are equal to the value to be
- *			 searched for.
+ *                       searched for.
  * @param data           The value to search for.
  * @return               The list entry of the value being searched for, or
  *                       NULL if not found.
@@ -305,7 +305,7 @@ int slist_iter_has_more(SListIterator *iterator);
  * @return               The next value from the list, or SLIST_NULL if 
  *                       there are no more values in the list.
  */
-        
+	
 SListValue slist_iter_next(SListIterator *iterator);
 
 /** 

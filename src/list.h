@@ -153,7 +153,7 @@ ListEntry *list_prepend(ListEntry **list, ListValue data);
  * @param list         Pointer to the list to append to.
  * @param value        The value to append.
  * @return             The new entry in the list, or NULL if it was not
- *		       possible to allocate the memory for the new entry.
+ *                     possible to allocate the memory for the new entry.
  */
 
 ListEntry *list_append(ListEntry **list, ListValue data);
@@ -303,7 +303,7 @@ int list_iter_has_more(ListIterator *iterator);
  * @return               The next value from the list, or @ref LIST_NULL if 
  *                       there are no more values in the list.
  */
-        
+	
 ListValue list_iter_next(ListIterator *iterator);
 
 /** 

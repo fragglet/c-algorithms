@@ -139,7 +139,7 @@ int binomial_heap_insert(BinomialHeap *heap, BinomialHeapValue value);
  *
  * @param heap             The heap.
  * @return                 The first value in the heap, or 
- *			   @ref BINOMIAL_HEAP_NULL if the heap is empty.
+ *                         @ref BINOMIAL_HEAP_NULL if the heap is empty.
  */
 
 BinomialHeapValue binomial_heap_pop(BinomialHeap *heap);

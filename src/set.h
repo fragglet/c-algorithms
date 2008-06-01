@@ -210,8 +210,8 @@ int set_num_entries(Set *set);
  *
  * @param set              The set.
  * @return                 An array containing all entries in the set,
- *			   or NULL if it was not possible to allocate
- *			   memory for the array.
+ *                         or NULL if it was not possible to allocate
+ *                         memory for the array.
  */
 
 SetValue *set_to_array(Set *set);
