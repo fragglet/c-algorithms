@@ -241,6 +241,10 @@ static int hash_table_enlarge(HashTable *hash_table)
 			rover = next;
 		}
 	}
+
+	/* Free the old table */
+
+	free(old_table);
        
 	return 1;
 }
