@@ -39,6 +39,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "binary-heap.h"
 #include "compare-int.h"
 
+int test_array[1000];
+
 void test_binary_heap_new_free(void)
 {
 	BinaryHeap *heap;
@@ -53,16 +55,15 @@ void test_binary_heap_new_free(void)
 void test_binary_heap_insert(void)
 {
 	BinaryHeap *heap;
-	int *val;
 	int i;
 
 	heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
 
 	for (i=0; i<1000; ++i) {
-		val = malloc(sizeof(int));
-		*val = i;
-		binary_heap_insert(heap, val);
+		test_array[i] = i;
+		binary_heap_insert(heap, &test_array[i]);
 	}
+
 	assert(binary_heap_num_entries(heap) == 1000);
 
 	binary_heap_free(heap);
@@ -79,9 +80,8 @@ void test_min_heap(void)
 	/* Push a load of values onto the heap */
 
 	for (i=0; i<1000; ++i) {
-		val = malloc(sizeof(int));
-		*val = i;
-		binary_heap_insert(heap, val);
+		test_array[i] = i;
+		binary_heap_insert(heap, &test_array[i]);
 	}
 
 	/* Pop values off the heap and check they are in order */
@@ -113,9 +113,8 @@ void test_max_heap(void)
 	/* Push a load of values onto the heap */
 
 	for (i=0; i<1000; ++i) {
-		val = malloc(sizeof(int));
-		*val = i;
-		binary_heap_insert(heap, val);
+		test_array[i] = i;
+		binary_heap_insert(heap, &test_array[i]);
 	}
 
 	/* Pop values off the heap and check they are in order */

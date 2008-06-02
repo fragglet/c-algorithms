@@ -61,21 +61,29 @@ ArrayList *generate_arraylist(void)
 	return arraylist;
 }
 
-void test_arraylist_new(void)
-{
-	arraylist_new(0);
-	arraylist_new(-1);
-	arraylist_new(10);
-}
-
-void test_arraylist_free(void)
+void test_arraylist_new_free(void)
 {
 	ArrayList *arraylist;
-	
+
+	/* Use a default size when given zero */
+
 	arraylist = arraylist_new(0);
+	assert(arraylist != NULL);
 	arraylist_free(arraylist);
 
-	/* Test freeing a NULL ArrayList */
+	/* Negative size also gives default */
+
+	arraylist = arraylist_new(-1);
+	assert(arraylist != NULL);
+	arraylist_free(arraylist);
+
+	/* Normal allocated */
+
+	arraylist = arraylist_new(10);
+	assert(arraylist != NULL);
+	arraylist_free(arraylist);
+
+	/* Freeing a null arraylist works */
 
 	arraylist_free(NULL);
 }
@@ -113,6 +121,8 @@ void test_arraylist_append(void)
 	for (i=0; i<10000; ++i) {
 		arraylist_append(arraylist, NULL);
 	}
+
+	arraylist_free(arraylist);
 }
 
 
@@ -149,6 +159,8 @@ void test_arraylist_prepend(void)
 	for (i=0; i<10000; ++i) {
 		arraylist_prepend(arraylist, NULL);
 	}
+
+	arraylist_free(arraylist);
 }
 
 void test_arraylist_insert(void)
@@ -213,6 +225,8 @@ void test_arraylist_insert(void)
 	for (i=0; i<10000; ++i) {
 		arraylist_insert(arraylist, 10, &variable1);
 	}
+
+	arraylist_free(arraylist);
 }
 
 void test_arraylist_remove_range(void)
@@ -243,6 +257,8 @@ void test_arraylist_remove_range(void)
 	arraylist_remove_range(arraylist, 0, -1);
 
 	assert(arraylist->length == 13);
+
+	arraylist_free(arraylist);
 }
 
 void test_arraylist_remove(void)
@@ -271,6 +287,8 @@ void test_arraylist_remove(void)
 	arraylist_remove(arraylist, 15);
 
 	assert(arraylist->length == 15);
+
+	arraylist_free(arraylist);
 }
 
 void test_arraylist_index_of(void)
@@ -308,6 +326,8 @@ void test_arraylist_index_of(void)
 	assert(arraylist_index_of(arraylist, int_equal, &val) < 0);
 	val = 57;
 	assert(arraylist_index_of(arraylist, int_equal, &val) < 0);
+
+	arraylist_free(arraylist);
 }
 
 void test_arraylist_clear(void)
@@ -331,6 +351,8 @@ void test_arraylist_clear(void)
 	arraylist_clear(arraylist);
 
 	assert(arraylist->length == 0);
+
+	arraylist_free(arraylist);
 }
 
 void test_arraylist_sort(void)
@@ -362,6 +384,8 @@ void test_arraylist_sort(void)
 		assert(*value == sorted[i]);
 	}
 
+	arraylist_free(arraylist);
+
 	/* Check sorting an empty list */
 
 	arraylist = arraylist_new(5);
@@ -369,6 +393,8 @@ void test_arraylist_sort(void)
 	arraylist_sort(arraylist, int_compare);
 
 	assert(arraylist->length == 0);
+
+	arraylist_free(arraylist);
 
 	/* Check sorting a list with 1 entry */
 
@@ -379,13 +405,13 @@ void test_arraylist_sort(void)
 
 	assert(arraylist->length == 1);
 	assert(arraylist->data[0] == &entries[0]);
-}
 
+	arraylist_free(arraylist);
+}
 
 int main(int argc, char *argv[])
 {
-	test_arraylist_new();
-	test_arraylist_free();
+	test_arraylist_new_free();
 	test_arraylist_append();
 	test_arraylist_prepend();
 	test_arraylist_insert();

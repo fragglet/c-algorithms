@@ -39,6 +39,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "binomial-heap.h"
 #include "compare-int.h"
 
+int test_array[1000];
+
 void test_binomial_heap_new_free(void)
 {
 	BinomialHeap *heap;
@@ -53,15 +55,13 @@ void test_binomial_heap_new_free(void)
 void test_binomial_heap_insert(void)
 {
 	BinomialHeap *heap;
-	int *val;
 	int i;
 
 	heap = binomial_heap_new(BINOMIAL_HEAP_TYPE_MIN, int_compare);
 
 	for (i=0; i<1000; ++i) {
-		val = malloc(sizeof(int));
-		*val = i;
-		binomial_heap_insert(heap, val);
+		test_array[i] = i;
+		binomial_heap_insert(heap, &test_array[i]);
 	}
 	assert(binomial_heap_num_entries(heap) == 1000);
 
@@ -79,9 +79,8 @@ void test_min_heap(void)
 	/* Push a load of values onto the heap */
 
 	for (i=0; i<1000; ++i) {
-		val = malloc(sizeof(int));
-		*val = i;
-		binomial_heap_insert(heap, val);
+		test_array[i] = i;
+		binomial_heap_insert(heap, &test_array[i]);
 	}
 
 	/* Pop values off the heap and check they are in order */
@@ -108,9 +107,8 @@ void test_max_heap(void)
 	/* Push a load of values onto the heap */
 
 	for (i=0; i<1000; ++i) {
-		val = malloc(sizeof(int));
-		*val = i;
-		binomial_heap_insert(heap, val);
+		test_array[i] = i;
+		binomial_heap_insert(heap, &test_array[i]);
 	}
 
 	/* Pop values off the heap and check they are in order */

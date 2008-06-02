@@ -69,23 +69,22 @@ Set *generate_set(void)
 		assert(set_num_entries(set) == i + 1);
 	}
 
+	set_register_free_function(set, free);
+
 	return set;
 }
 
-void test_set_new(void)
-{
-	Set *set;
-
-	set = set_new(int_hash, int_equal);
-}
-
-void test_set_free(void)
+void test_set_new_free(void)
 {
 	Set *set;
 	int i;
 	int *value;
 
 	set = set_new(int_hash, int_equal);
+
+	set_register_free_function(set, free);
+
+	assert(set != NULL);
 
 	/* Fill the set with many values before freeing */
 
@@ -122,6 +121,8 @@ void test_set_insert(void)
 	}
 
 	assert(set_num_entries(set) == 10);
+
+	set_free(set);
 }
 
 void test_set_query(void)
@@ -143,6 +144,8 @@ void test_set_query(void)
 
 	assert(set_query(set, "-1") == 0);
 	assert(set_query(set, "100001") == 0);
+
+	set_free(set);
 }
 
 void test_set_remove(void)
@@ -197,6 +200,8 @@ void test_set_remove(void)
 		assert(set_remove(set, buf) == 0);
 		assert(set_num_entries(set) == num_entries);
 	}
+
+	set_free(set);
 }
 
 void test_set_union(void)
@@ -234,6 +239,10 @@ void test_set_union(void)
 	for (i=0; i<11; ++i) {
 		assert(set_query(result_set, &result[i]) != 0);
 	}
+
+	set_free(set1);
+	set_free(set2);
+	set_free(result_set);
 }
 
 void test_set_intersection(void)
@@ -271,6 +280,10 @@ void test_set_intersection(void)
 	for (i=0; i<3; ++i) {
 		assert(set_query(result_set, &result[i]) != 0);
 	}
+
+	set_free(set1);
+	set_free(set2);
+	set_free(result_set);
 }
 
 void test_set_to_array(void)
@@ -298,6 +311,9 @@ void test_set_to_array(void)
 		assert(*array[i] == 1);
 		*array[i] = 0;
 	}
+
+	free(array);
+	set_free(set);
 }
 
 void test_set_iterating(void)
@@ -444,8 +460,7 @@ void test_set_free_function(void)
 
 int main(int argc, char *argv[])
 {
-	test_set_new();
-	test_set_free();
+	test_set_new_free();
 	test_set_insert();
 	test_set_query();
 	test_set_remove();

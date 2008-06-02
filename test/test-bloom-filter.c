@@ -79,6 +79,8 @@ void test_bloom_filter_insert_query(void)
 
 	assert(bloom_filter_query(filter, "test 1") != 0);
 	assert(bloom_filter_query(filter, "test 2") != 0);
+
+	bloom_filter_free(filter);
 }
 
 void test_bloom_filter_read_load(void)
@@ -98,6 +100,8 @@ void test_bloom_filter_read_load(void)
 
 	bloom_filter_read(filter1, state);
 
+	bloom_filter_free(filter1);
+
 	/* Create a new filter and load the state */
 
 	filter2 = bloom_filter_new(128, string_hash, 4);
@@ -106,8 +110,10 @@ void test_bloom_filter_read_load(void)
 
 	/* Check the values are set in the new filter */
 
-	assert(bloom_filter_query(filter1, "test 1") != 0);
-	assert(bloom_filter_query(filter1, "test 2") != 0);
+	assert(bloom_filter_query(filter2, "test 1") != 0);
+	assert(bloom_filter_query(filter2, "test 2") != 0);
+
+	bloom_filter_free(filter2);
 }
 
 void test_bloom_filter_intersection(void)
@@ -144,6 +150,10 @@ void test_bloom_filter_intersection(void)
 
 	assert(bloom_filter_query(result, "test 1") != 0);
 	assert(bloom_filter_query(result, "test 2") == 0);
+
+	bloom_filter_free(filter1);
+	bloom_filter_free(filter2);
+	bloom_filter_free(result);
 }
 
 void test_bloom_filter_union(void)
@@ -172,6 +182,10 @@ void test_bloom_filter_union(void)
 
 	assert(bloom_filter_query(result, "test 1") != 0);
 	assert(bloom_filter_query(result, "test 2") != 0);
+
+	bloom_filter_free(filter1);
+	bloom_filter_free(filter2);
+	bloom_filter_free(result);
 }
 
 int main(int argc, char *argv[])

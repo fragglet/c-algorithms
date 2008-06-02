@@ -73,24 +73,23 @@ HashTable *generate_hash_table(void)
 
 		hash_table_insert(hash_table, value, value);
 	}
+
+	/* Automatically free all the values with the hash table */
+
+	hash_table_register_free_functions(hash_table, NULL, free);
 	
 	return hash_table;
 }
 
-void test_hash_table_new(void)
+/* Basic allocate and free */
+
+void test_hash_table_new_free(void)
 {
 	HashTable *hash_table;
 
 	hash_table = hash_table_new(int_hash, int_equal);
 	
 	assert(hash_table != NULL);
-}
-
-void test_hash_table_free(void)
-{
-	HashTable *hash_table;
-
-	hash_table = hash_table_new(int_hash, int_equal);
 
 	/* Add some values */
 
@@ -138,9 +137,11 @@ void test_hash_table_insert_lookup(void)
 	/* Insert overwrites existing entries with the same key */
 
 	sprintf(buf, "%i", 12345);
-	hash_table_insert(hash_table, buf, "hello world");
+	hash_table_insert(hash_table, buf, strdup("hello world"));
 	value = hash_table_lookup(hash_table, buf);
 	assert(strcmp(value, "hello world") == 0);
+
+	hash_table_free(hash_table);
 }
 
 void test_hash_table_remove(void)
@@ -172,6 +173,8 @@ void test_hash_table_remove(void)
 	hash_table_remove(hash_table, buf);
 
 	assert(hash_table_num_entries(hash_table) == 9999);
+
+	hash_table_free(hash_table);
 }
 
 void test_hash_table_iterating(void)
@@ -200,6 +203,8 @@ void test_hash_table_iterating(void)
 
 	assert(hash_table_iter_next(&iterator) == HASH_TABLE_NULL);
 
+	hash_table_free(hash_table);
+
 	/* Test iterating over an empty table */
 
 	hash_table = hash_table_new(int_hash, int_equal);
@@ -207,6 +212,8 @@ void test_hash_table_iterating(void)
 	hash_table_iterate(hash_table, &iterator);
 
 	assert(hash_table_iter_has_more(&iterator) == 0);
+
+	hash_table_free(hash_table);
 }
 
 /* Demonstrates the ability to iteratively remove objects from
@@ -266,6 +273,8 @@ void test_hash_table_iterating_remove(void)
 			assert(hash_table_lookup(hash_table, buf) != NULL);
 		}
 	}
+
+	hash_table_free(hash_table);
 }
 
 /* Create a new key */
@@ -372,8 +381,7 @@ void test_hash_table_free_functions(void)
 
 int main(int argc, char *argv[])
 {
-	test_hash_table_new();
-	test_hash_table_free();
+	test_hash_table_new_free();
 	test_hash_table_insert_lookup();
 	test_hash_table_remove();
 	test_hash_table_iterating();

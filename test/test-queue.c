@@ -62,14 +62,7 @@ Queue *generate_queue(void)
 
 /* Test cases for the queue */
 
-void test_queue_new(void)
-{
-	Queue *queue;
-
-	queue = queue_new();
-}
-
-void test_queue_free(void)
+void test_queue_new_free(void)
 {
 	int i;
 	Queue *queue;
@@ -122,6 +115,8 @@ void test_queue_push_head(void)
 	assert(queue_pop_head(queue) == &variable3);
 	assert(queue_pop_head(queue) == &variable2);
 	assert(queue_pop_head(queue) == &variable1);
+
+	queue_free(queue);
 }
 
 void test_queue_pop_head(void)
@@ -134,9 +129,11 @@ void test_queue_pop_head(void)
 
 	assert(queue_pop_head(queue) == NULL);
 
-	queue = generate_queue();
+	queue_free(queue);
 
 	/* Pop off all the values from the queue */
+
+	queue = generate_queue();
 
 	while (!queue_is_empty(queue)) {
 		assert(queue_pop_head(queue) == &variable4);
@@ -146,6 +143,8 @@ void test_queue_pop_head(void)
 	}
 
 	assert(queue_pop_head(queue) == NULL);
+
+	queue_free(queue);
 }
 
 void test_queue_peek_head(void)
@@ -158,10 +157,12 @@ void test_queue_peek_head(void)
 
 	assert(queue_peek_head(queue) == NULL);
 
-	queue = generate_queue();
+	queue_free(queue);
 
 	/* Pop off all the values from the queue, making sure that peek
 	 * has the correct value beforehand */
+
+	queue = generate_queue();
 
 	while (!queue_is_empty(queue)) {
 		assert(queue_peek_head(queue) == &variable4);
@@ -175,6 +176,8 @@ void test_queue_peek_head(void)
 	}
 
 	assert(queue_peek_head(queue) == NULL);
+
+	queue_free(queue);
 }
 
 void test_queue_push_tail(void)
@@ -208,6 +211,8 @@ void test_queue_push_tail(void)
 	assert(queue_pop_tail(queue) == &variable3);
 	assert(queue_pop_tail(queue) == &variable2);
 	assert(queue_pop_tail(queue) == &variable1);
+
+	queue_free(queue);
 }
 
 void test_queue_pop_tail(void)
@@ -220,9 +225,11 @@ void test_queue_pop_tail(void)
 
 	assert(queue_pop_tail(queue) == NULL);
 
-	queue = generate_queue();
+	queue_free(queue);
 
 	/* Pop off all the values from the queue */
+
+	queue = generate_queue();
 
 	while (!queue_is_empty(queue)) {
 		assert(queue_pop_tail(queue) == &variable1);
@@ -232,6 +239,8 @@ void test_queue_pop_tail(void)
 	}
 
 	assert(queue_pop_tail(queue) == NULL);
+
+	queue_free(queue);
 }
 
 void test_queue_peek_tail(void)
@@ -244,10 +253,12 @@ void test_queue_peek_tail(void)
 
 	assert(queue_peek_tail(queue) == NULL);
 
-	queue = generate_queue();
+	queue_free(queue);
 
 	/* Pop off all the values from the queue, making sure that peek
 	 * has the correct value beforehand */
+
+	queue = generate_queue();
 
 	while (!queue_is_empty(queue)) {
 		assert(queue_peek_tail(queue) == &variable1);
@@ -261,6 +272,8 @@ void test_queue_peek_tail(void)
 	}
 
 	assert(queue_peek_tail(queue) == NULL);
+
+	queue_free(queue);
 }
 
 void test_queue_is_empty(void)
@@ -286,12 +299,13 @@ void test_queue_is_empty(void)
 	queue_pop_tail(queue);
 
 	assert(queue_is_empty(queue));
+
+	queue_free(queue);
 }
 
 int main(int argc, char *argv[]) 
 {
-	test_queue_new();
-	test_queue_free();
+	test_queue_new_free();
 	test_queue_push_head();
 	test_queue_pop_head();
 	test_queue_peek_head();

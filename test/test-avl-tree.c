@@ -40,6 +40,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "avl-tree.h"
 #include "compare-int.h"
 
+int test_array[1000];
+
 int find_subtree_height(AVLTreeNode *node)
 {
 	int left_height, right_height;
@@ -136,6 +138,8 @@ void test_avl_tree_new(void)
 	assert(tree != NULL);
 	assert(avl_tree_root_node(tree) == NULL);
 	assert(avl_tree_num_entries(tree) == 0);
+
+	avl_tree_free(tree);
 }
 
 void test_avl_tree_insert_lookup(void)
@@ -143,7 +147,6 @@ void test_avl_tree_insert_lookup(void)
 	AVLTree *tree;
 	AVLTreeNode *node;
 	int i;
-	int *key;
 
 	/* Create a tree containing some values. Validate the 
 	 * tree is consistent at all stages. */
@@ -151,10 +154,8 @@ void test_avl_tree_insert_lookup(void)
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
 
 	for (i=0; i<1000; ++i) {
-		key = (int *) malloc(sizeof(int));
-		*key = i;
-
-		avl_tree_insert(tree, key, NULL);
+		test_array[i] = i;
+		avl_tree_insert(tree, &test_array[i], NULL);
 
 		assert(avl_tree_num_entries(tree) == i+1);
 		validate_tree(tree);
@@ -175,12 +176,13 @@ void test_avl_tree_insert_lookup(void)
 	assert(avl_tree_lookup_node(tree, &i) == NULL);
 	i = 100000;
 	assert(avl_tree_lookup_node(tree, &i) == NULL);
+
+	avl_tree_free(tree);
 }
 
 AVLTree *create_tree(void)
 {
 	AVLTree *tree;
-	int *key;
 	int i;
 
 	/* Create a tree and fill with nodes */
@@ -188,10 +190,8 @@ AVLTree *create_tree(void)
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
 
 	for (i=0; i<1000; ++i) {
-		key = (int *) malloc(sizeof(int));
-		*key = i;
-
-		avl_tree_insert(tree, key, NULL);
+		test_array[i] = i;
+		avl_tree_insert(tree, &test_array[i], NULL);
 	}
 	
 	return tree;
@@ -241,7 +241,8 @@ void test_avl_tree_remove(void)
 	/* All entries removed, should be empty now */
 
 	assert(avl_tree_root_node(tree) == NULL);
-	
+
+	avl_tree_free(tree);
 }
 
 void test_avl_tree_to_array(void)
@@ -270,6 +271,10 @@ void test_avl_tree_to_array(void)
 	for (i=0; i<num_entries; ++i) {
 		assert(*array[i] == sorted[i]);
 	}
+
+	free(array);
+
+	avl_tree_free(tree);
 }
 
 int main(int argc, char *argv[])

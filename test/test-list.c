@@ -88,6 +88,8 @@ void test_list_append(void)
 	assert(list_nth_data(list, 1) == &variable2);
 	assert(list_nth_data(list, 2) == &variable3);
 	assert(list_nth_data(list, 3) == &variable4);
+
+	list_free(list);
 }
 
 void test_list_prepend(void)
@@ -107,6 +109,8 @@ void test_list_prepend(void)
 	assert(list_nth_data(list, 1) == &variable3);
 	assert(list_nth_data(list, 2) == &variable2);
 	assert(list_nth_data(list, 3) == &variable1);
+
+	list_free(list);
 }
 
 void test_list_free(void)
@@ -141,6 +145,8 @@ void test_list_next(void)
 	assert(list_data(rover) == &variable4);
 	rover = list_next(rover);
 	assert(rover == NULL);
+
+	list_free(list);
 }
 
 void test_list_nth_entry(void)
@@ -172,6 +178,8 @@ void test_list_nth_entry(void)
 	assert(entry == NULL);
 	entry = list_nth_entry(list, 400);
 	assert(entry == NULL);
+
+	list_free(list);
 }
 
 void test_list_nth_data(void)
@@ -192,6 +200,8 @@ void test_list_nth_data(void)
 	assert(list_nth_data(list, -1) == NULL);
 	assert(list_nth_data(list, 4) == NULL);
 	assert(list_nth_data(list, 400) == NULL);
+
+	list_free(list);
 }
 
 void test_list_length(void)
@@ -209,6 +219,8 @@ void test_list_length(void)
 	list_prepend(&list, &variable1);
 
 	assert(list_length(list) == 5);
+
+	list_free(list);
 
 	/* Check the length of the empty list */
 
@@ -246,6 +258,8 @@ void test_list_remove_entry(void)
 	/* Removing NULL from an empty list */
 
 	assert(list_remove_entry(&empty_list, NULL) == 0);
+
+	list_free(list);
 }
 
 void test_list_remove_data(void)
@@ -292,6 +306,8 @@ void test_list_remove_data(void)
 	assert(list_remove_data(&list, int_equal, &val) == 1);
 	assert(list_length(list) == num_entries - 6);
 	check_list_integrity(list);
+
+	list_free(list);
 }
 
 void test_list_sort(void)
@@ -322,6 +338,8 @@ void test_list_sort(void)
 		value = (int *) list_nth_data(list, i);
 		assert(*value == sorted[i]);
 	}
+
+	list_free(list);
 
 	/* Check sorting an empty list */
 
@@ -369,6 +387,8 @@ void test_list_find_data(void)
 	assert(list_find_data(list, int_equal, &val) == NULL);
 	val = 56;
 	assert(list_find_data(list, int_equal, &val) == NULL);
+
+	list_free(list);
 }
 
 void test_list_to_array(void)
@@ -384,6 +404,9 @@ void test_list_to_array(void)
 	assert(array[1] == &variable2);
 	assert(array[2] == &variable3);
 	assert(array[3] == &variable4);
+
+	free(array);
+	list_free(list);
 }
 
 void test_list_iterate(void)
@@ -441,6 +464,8 @@ void test_list_iterate(void)
 	assert(counter == 50);
 	assert(list_length(list) == 25);
 
+	list_free(list);
+
 	/* Test iterating over an empty list */
 
 	list = NULL;
@@ -494,6 +519,8 @@ void test_list_iterate_bad_remove(void)
 			list_iter_remove(&iter);
 		}
 	}
+
+	list_free(list);
 }
 
 

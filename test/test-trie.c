@@ -40,22 +40,47 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "trie.h"
 
-void test_trie_new(void)
+int test_array[100000];
+char test_strings[100000][10];
+
+Trie *generate_trie(void)
 {
 	Trie *trie;
+	int i;
+	int entries;
+
+	/* Create a trie and fill it with a large number of values */
 
 	trie = trie_new();
+	entries = 0;
 
-	assert(trie != NULL);
+	for (i=0; i<100000; ++i) {
+
+		/* Create a string containing a text version of i, and use
+		 * it as a key for the value */
+		
+		test_array[i] = i;
+		sprintf(test_strings[i], "%i", i);
+		
+		trie_insert(trie, test_strings[i], &test_array[i]);
+
+		++entries;
+
+		assert(trie_num_entries(trie) == entries);
+	}
+
+	return trie;
 }
 
-void test_trie_free(void)
+void test_trie_new_free(void)
 {
 	Trie *trie;
 	
 	/* Allocate and free an empty trie */
 
 	trie = trie_new();
+
+	assert(trie != NULL);
 
 	trie_free(trie);
 
@@ -80,53 +105,19 @@ void test_trie_free(void)
 	trie_free(trie);
 }
 
-void test_trie_insert_lookup_remove(void)
+void test_lookup(void)
 {
 	Trie *trie;
 	char buf[10];
 	int *val;
 	int i;
-	int entries;
 
-	/* Create a trie and fill it with a large number of values */
-
-	trie = trie_new();
-	entries = 0;
-
-	for (i=0; i<100000; ++i) {
-
-		/* Create a string containing a text version of i, and use
-		 * it as a key for the value */
-		
-		sprintf(buf, "%i", i);
-		val = (int *) malloc(sizeof(int));
-		*val = i;
-		
-		trie_insert(trie, strdup(buf), val);
-
-		++entries;
-
-		assert(trie_num_entries(trie) == entries);
-	}
+	trie = generate_trie();
 
 	/* Test lookup for non-existent values */
 
 	assert(trie_lookup(trie, "000000000000000") == TRIE_NULL);
 	assert(trie_lookup(trie, "") == TRIE_NULL);
-
-	/* Test remove on non-existent values. */
-
-	assert(trie_remove(trie, "000000000000000") == 0);
-	assert(trie_remove(trie, "") == 0);
-	assert(trie_num_entries(trie) == entries);
-
-	/* Test replacing values */
-
-	val = malloc(sizeof(int));
-	*val = 999;
-	trie_insert(trie, "999", val);
-	assert(trie_num_entries(trie) == entries);
-	assert(trie_lookup(trie, "999") == val);
 
 	/* Look up all values */
 
@@ -137,6 +128,34 @@ void test_trie_insert_lookup_remove(void)
 		val = (int *) trie_lookup(trie, buf);
 		
 		assert(*val == i);
+	}
+
+	trie_free(trie);
+}
+
+void test_remove(void)
+{
+	Trie *trie;
+	char buf[10];
+	int i;
+	int entries;
+
+	trie = generate_trie();
+
+	/* Test remove on non-existent values. */
+
+	assert(trie_remove(trie, "000000000000000") == 0);
+	assert(trie_remove(trie, "") == 0);
+
+	entries = trie_num_entries(trie);
+
+	assert(entries == 100000);
+
+	/* Remove all values */
+
+	for (i=0; i<100000; ++i) {
+
+		sprintf(buf, "%i", i);
 
 		/* Remove value and check counter */
 
@@ -144,6 +163,35 @@ void test_trie_insert_lookup_remove(void)
 		--entries;
 		assert(trie_num_entries(trie) == entries);
 	}
+
+	trie_free(trie);
+}
+
+void test_replace(void)
+{
+	Trie *trie;
+	int *val;
+
+	trie = generate_trie();
+
+	/* Test replacing values */
+
+	val = malloc(sizeof(int));
+	*val = 999;
+	trie_insert(trie, "999", val);
+	assert(trie_num_entries(trie) == 100000);
+
+	assert(trie_lookup(trie, "999") == val);
+	free(val);
+	trie_free(trie);
+}
+
+void test_insert_empty(void)
+{
+	Trie *trie;
+	char buf[10];
+
+	trie = trie_new();
 
 	/* Test insert on empty string */
 
@@ -153,13 +201,17 @@ void test_trie_insert_lookup_remove(void)
 	assert(trie_remove(trie, "") != 0);
 
 	assert(trie_num_entries(trie) == 0);
+
+	trie_free(trie);
 }
 
 int main(int argc, char *argv[])
 {
-	test_trie_new();
-	test_trie_free();
-	test_trie_insert_lookup_remove();
+	test_trie_new_free();
+	test_lookup();
+	test_remove();
+	test_replace();
+	test_insert_empty();
 
 	return 0;
 }
