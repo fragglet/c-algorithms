@@ -1,4 +1,8 @@
 
+if USE_VALGRIND
+TESTS_ENVIRONMENT=./valgrind-wrapper
+endif
+
 TESTS =                          \
         test-arraylist           \
         test-avl-tree            \
@@ -14,13 +18,10 @@ TESTS =                          \
         test-set                 \
         test-trie
 
-noinst_PROGRAMS = $(TESTS)
+check_PROGRAMS = $(TESTS)
 
 AM_CFLAGS = -I../src -Wall
-LDADD = $(top_builddir)/src/libcalg.la
+LDADD = $(top_builddir)/src/libcalgtest.a
 
-test_arraylist_SOURCES = test-arraylist.c
-test_list_SOURCES = test-list.c
-test_slist_SOURCES = test-slist.c
-test_queue_SOURCES = test-queue.c
+EXTRA_DIST=valgrind-wrapper
 

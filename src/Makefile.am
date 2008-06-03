@@ -1,6 +1,7 @@
 
 AM_CFLAGS = -Wall
 
+check_LIBRARIES=libcalgtest.a
 lib_LTLIBRARIES=libcalg.la
 
 MAIN_HEADERFILES = libcalg.h
@@ -16,6 +17,9 @@ arraylist.c    compare-pointer.c  hash-pointer.c  list.c   slist.c       \
 avl-tree.c     compare-string.c   hash-string.c   queue.c  trie.c        \
 compare-int.c  hash-int.c         hash-table.c    set.c    binary-heap.c \
 bloom-filter.c binomial-heap.c
+
+libcalgtest_a_CFLAGS=-DCALG_TEST
+libcalgtest_a_SOURCES=$(SRC) $(MAIN_HEADERFILES)
 
 libcalg_la_SOURCES=$(SRC) $(MAIN_HEADERFILES) $(CALG_HEADERFILES)
 
