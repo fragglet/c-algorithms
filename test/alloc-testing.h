@@ -33,8 +33,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-/*
- * Memory allocation testing framework.
+/**
+ * @file alloc-testing.h
+ *
+ * @brief Memory allocation testing framework.
  *
  * This file uses the preprocessor to redefine the standard C dynamic memory 
  * allocation functions for testing purposes.  This allows checking that 

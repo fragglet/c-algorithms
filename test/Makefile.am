@@ -19,9 +19,13 @@ TESTS =                          \
         test-trie
 
 check_PROGRAMS = $(TESTS)
+check_LIBRARIES = libtestframework.a
+
+libtestframework_a_SOURCES=\
+        alloc-testing.c              alloc-testing.h
 
 AM_CFLAGS = -I../src -Wall
-LDADD = $(top_builddir)/src/libcalgtest.a
+LDADD = $(top_builddir)/src/libcalgtest.a libtestframework.a
 
 EXTRA_DIST=valgrind-wrapper
 

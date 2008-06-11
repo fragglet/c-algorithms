@@ -12,17 +12,14 @@ avl-tree.h   compare-pointer.h  hash-pointer.h  list.h        slist.h       \
 queue.h      compare-string.h   hash-string.h   trie.h        binary-heap.h \
 bloom-filter.h binomial-heap.h
 
-ALLOC_TESTING_FILES=\
-alloc-testing.c alloc-testing.h
-
 SRC=\
 arraylist.c    compare-pointer.c  hash-pointer.c  list.c   slist.c       \
 avl-tree.c     compare-string.c   hash-string.c   queue.c  trie.c        \
 compare-int.c  hash-int.c         hash-table.c    set.c    binary-heap.c \
 bloom-filter.c binomial-heap.c
 
-libcalgtest_a_CFLAGS=-DALLOC_TESTING
-libcalgtest_a_SOURCES=$(SRC) $(MAIN_HEADERFILES) $(ALLOC_TESTING_FILES)
+libcalgtest_a_CFLAGS=-DALLOC_TESTING -I../test
+libcalgtest_a_SOURCES=$(SRC) $(MAIN_HEADERFILES)
 
 libcalg_la_SOURCES=$(SRC) $(MAIN_HEADERFILES) $(CALG_HEADERFILES)
 
