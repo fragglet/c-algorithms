@@ -12,7 +12,7 @@ result="$?"
 
 log_contents="`cat .valgrind-log`"
 
-if [ "$log_contents" != "" ]; then
+if [ "x$log_contents" != "x" ]; then
         cat .valgrind-log >&2
         result=1
 fi
