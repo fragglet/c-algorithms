@@ -40,6 +40,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "trie.h"
 
+/* malloc() / free() testing */
+
+#ifdef ALLOC_TESTING
+#include "alloc-testing.h"
+#endif
+
 typedef struct _TrieNode TrieNode;
 
 struct _TrieNode {

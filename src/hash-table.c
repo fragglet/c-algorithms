@@ -40,6 +40,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "hash-table.h"
 
+/* malloc() / free() testing */
+
+#ifdef ALLOC_TESTING
+#include "alloc-testing.h"
+#endif
+
 struct _HashTableEntry {
 	HashTableKey key;
 	HashTableValue value;

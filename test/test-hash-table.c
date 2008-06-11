@@ -38,6 +38,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include <assert.h>
 
+#include "alloc-testing.h"
+
 #include "hash-table.h"
 #include "hash-int.h"
 #include "compare-int.h"

@@ -36,6 +36,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include <assert.h>
 
+#include "alloc-testing.h"
+
 #include "binary-heap.h"
 #include "compare-int.h"
 

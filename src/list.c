@@ -37,6 +37,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "list.h"
 
+/* malloc() / free() testing */
+
+#ifdef ALLOC_TESTING
+#include "alloc-testing.h"
+#endif
+
 /* A doubly-linked list */
 
 struct _ListEntry {

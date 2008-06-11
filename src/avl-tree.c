@@ -37,6 +37,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "avl-tree.h"
 
+/* malloc() / free() testing */
+
+#ifdef ALLOC_TESTING
+#include "alloc-testing.h"
+#endif
+
 /* AVL Tree (balanced binary search tree) */
 
 struct _AVLTreeNode {

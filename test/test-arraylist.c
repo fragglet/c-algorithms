@@ -39,6 +39,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include <assert.h>
 
+#include "alloc-testing.h"
+
 #include "arraylist.h"
 #include "compare-int.h"
 

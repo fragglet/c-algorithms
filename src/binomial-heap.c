@@ -38,6 +38,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "binomial-heap.h"
 
+/* malloc() / free() testing */
+
+#ifdef ALLOC_TESTING
+#include "alloc-testing.h"
+#endif
+
 typedef struct _BinomialTree BinomialTree;
 
 struct _BinomialTree

@@ -37,6 +37,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include <assert.h>
 
+#include "alloc-testing.h"
+
 #include "queue.h"
 
 int variable1, variable2, variable3, variable4;

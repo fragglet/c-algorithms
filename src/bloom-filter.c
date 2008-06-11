@@ -38,6 +38,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "bloom-filter.h"
 
+/* malloc() / free() testing */
+
+#ifdef ALLOC_TESTING
+#include "alloc-testing.h"
+#endif
+
 struct _BloomFilter {
 	BloomFilterHashFunc hash_func;
 	unsigned char *table;

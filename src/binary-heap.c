@@ -37,6 +37,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "binary-heap.h"
 
+/* malloc() / free() testing */
+
+#ifdef ALLOC_TESTING
+#include "alloc-testing.h"
+#endif
+
 struct _BinaryHeap {
 	BinaryHeapType heap_type;
 	BinaryHeapValue *values;

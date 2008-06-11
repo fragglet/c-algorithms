@@ -37,6 +37,12 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include "set.h"
 
+/* malloc() / free() testing */
+
+#ifdef ALLOC_TESTING
+#include "alloc-testing.h"
+#endif
+
 /* A set */
 
 struct _SetEntry {

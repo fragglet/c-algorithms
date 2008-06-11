@@ -38,6 +38,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include <assert.h>
 
+#include "alloc-testing.h"
+
 #include "trie.h"
 
 int test_array[100000];

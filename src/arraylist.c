@@ -38,6 +38,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "arraylist.h"
 
+/* malloc() / free() testing */
+
+#ifdef ALLOC_TESTING
+#include "alloc-testing.h"
+#endif
+
 /* Automatically resizing array */
 
 ArrayList *arraylist_new(int length)

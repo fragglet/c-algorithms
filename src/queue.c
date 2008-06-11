@@ -37,6 +37,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "queue.h"
 
+/* malloc() / free() testing */
+
+#ifdef ALLOC_TESTING
+#include "alloc-testing.h"
+#endif
+
 /* A double-ended queue */
 
 typedef struct _QueueEntry QueueEntry;
