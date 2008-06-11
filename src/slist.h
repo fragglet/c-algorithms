@@ -97,7 +97,7 @@ typedef struct _SListEntry SListEntry;
 typedef struct _SListIterator SListIterator;
 
 /**
- * Value stored in a @ref SList.
+ * Value stored in a list.
  */
 
 typedef void *SListValue;

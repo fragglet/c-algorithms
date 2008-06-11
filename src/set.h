@@ -252,8 +252,6 @@ void set_iterate(Set *set, SetIterator *iter);
 
 /**
  * Determine if there are more values in the set to iterate over.
- * It should be noted that a set iterator is not freed when iterating
- * has finished.  This should be done using @ref set_iter_free.
  *
  * @param iterator         The set iterator object.
  * @return                 Zero if there are no more values in the set

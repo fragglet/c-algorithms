@@ -71,7 +71,13 @@ typedef void *ArrayListValue;
  * @see arraylist_new 
  */
 
-typedef struct _ArrayList {
+typedef struct _ArrayList ArrayList;
+
+/**
+ * Definition of an @ref ArrayList.
+ */ 
+
+struct _ArrayList {
 
 	/** Entries in the array */
 	
@@ -84,7 +90,7 @@ typedef struct _ArrayList {
 	/** Private data and should not be accessed */
 
 	int _alloced;
-} ArrayList;
+};
 
 /**
  * Compare two values in an arraylist to determine if they are equal.

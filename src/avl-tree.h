@@ -199,7 +199,7 @@ AVLTreeNode *avl_tree_lookup_node(AVLTree *tree, AVLTreeKey key);
  * @param tree            The AVL tree to search.
  * @param key             The key to search for.
  * @return                The value associated with the given key, or 
- *                        @ref AVLTREE_NULL if no entry with the given key is 
+ *                        @ref AVL_TREE_NULL if no entry with the given key is 
  *                        found.
  */
 

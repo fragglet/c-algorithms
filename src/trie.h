@@ -59,6 +59,10 @@ POSSIBILITY OF SUCH DAMAGE.
 extern "C" {
 #endif
 
+/**
+ * A trie structure.
+ */
+
 typedef struct _Trie Trie;
 
 /**

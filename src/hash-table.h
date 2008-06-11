@@ -233,7 +233,6 @@ int hash_table_num_entries(HashTable *hash_table);
  * @param hash_table          The hash table.
  * @param iter                Pointer to an iterator structure to 
  *                            initialise.
- * @param
  */
 
 void hash_table_iterate(HashTable *hash_table, HashTableIterator *iter);

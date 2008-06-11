@@ -56,7 +56,7 @@ POSSIBILITY OF SUCH DAMAGE.
  * To iterate over entries in a list, use @ref list_iterate to initialise
  * a @ref ListIterator structure, with @ref list_iter_next and
  * @ref list_iter_has_more to retrieve each value in turn. 
- * @list_iter_remove can be used to remove the current entry.
+ * @ref list_iter_remove can be used to remove the current entry.
  *
  * To access an entry in the list by index, use @ref list_nth_entry or
  * @ref list_nth_data.
@@ -84,7 +84,7 @@ typedef struct _ListEntry ListEntry;
 typedef struct _ListIterator ListIterator;
 
 /**
- * A value stored in a @ref List.
+ * A value stored in a list.
  */
 
 typedef void *ListValue;
@@ -151,7 +151,7 @@ ListEntry *list_prepend(ListEntry **list, ListValue data);
  * Append a value to the end of a list.
  *
  * @param list         Pointer to the list to append to.
- * @param value        The value to append.
+ * @param data         The value to append.
  * @return             The new entry in the list, or NULL if it was not
  *                     possible to allocate the memory for the new entry.
  */
