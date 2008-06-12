@@ -38,6 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 
 #include "alloc-testing.h"
+#include "framework.h"
 
 #include "bloom-filter.h"
 #include "hash-string.h"
@@ -190,13 +191,18 @@ void test_bloom_filter_union(void)
 	bloom_filter_free(result);
 }
 
+static UnitTestFunction tests[] = {
+	test_bloom_filter_new_free,
+	test_bloom_filter_insert_query,
+	test_bloom_filter_read_load,
+	test_bloom_filter_intersection,
+	test_bloom_filter_union,
+	NULL
+};
+
 int main(int argc, char *argv[])
 {
-	test_bloom_filter_new_free();
-	test_bloom_filter_insert_query();
-	test_bloom_filter_read_load();
-	test_bloom_filter_intersection();
-	test_bloom_filter_union();
+	run_tests(tests);
 
 	return 0;
 }

@@ -39,6 +39,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 
 #include "alloc-testing.h"
+#include "framework.h"
 
 #include "trie.h"
 
@@ -207,13 +208,18 @@ void test_insert_empty(void)
 	trie_free(trie);
 }
 
+static UnitTestFunction tests[] = {
+	test_trie_new_free,
+	test_lookup,
+	test_remove,
+	test_replace,
+	test_insert_empty,
+	NULL
+};
+
 int main(int argc, char *argv[])
 {
-	test_trie_new_free();
-	test_lookup();
-	test_remove();
-	test_replace();
-	test_insert_empty();
+	run_tests(tests);
 
 	return 0;
 }

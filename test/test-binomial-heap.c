@@ -37,6 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 
 #include "alloc-testing.h"
+#include "framework.h"
 
 #include "binomial-heap.h"
 #include "compare-int.h"
@@ -126,12 +127,17 @@ void test_max_heap(void)
 	binomial_heap_free(heap);
 }
 
+static UnitTestFunction tests[] = {
+	test_binomial_heap_new_free,
+	test_binomial_heap_insert,
+	test_min_heap,
+	test_max_heap,
+	NULL
+};
+
 int main(int argc, char *argv[])
 {
-	test_binomial_heap_new_free();
-	test_binomial_heap_insert();
-	test_min_heap();
-	test_max_heap();
+	run_tests(tests);
 
 	return 0;
 }

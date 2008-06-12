@@ -40,6 +40,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 
 #include "alloc-testing.h"
+#include "framework.h"
 
 #include "arraylist.h"
 #include "compare-int.h"
@@ -88,6 +89,16 @@ void test_arraylist_new_free(void)
 	/* Freeing a null arraylist works */
 
 	arraylist_free(NULL);
+
+	/* Test low memory scenarios (failed malloc) */
+
+	alloc_test_set_limit(0);
+	arraylist = arraylist_new(0);
+	assert(arraylist == NULL);
+
+	alloc_test_set_limit(100 * sizeof(void *));
+	arraylist = arraylist_new(100);
+	assert(arraylist == NULL);
 }
 
 void test_arraylist_append(void)
@@ -101,16 +112,16 @@ void test_arraylist_append(void)
 
 	/* Append some entries */
 
-	arraylist_append(arraylist, &variable1);
+	assert(arraylist_append(arraylist, &variable1) != 0);
 	assert(arraylist->length == 1);
 
-	arraylist_append(arraylist, &variable2);
+	assert(arraylist_append(arraylist, &variable2) != 0);
 	assert(arraylist->length == 2);
 
-	arraylist_append(arraylist, &variable3);
+	assert(arraylist_append(arraylist, &variable3) != 0);
 	assert(arraylist->length == 3);
 
-	arraylist_append(arraylist, &variable4);
+	assert(arraylist_append(arraylist, &variable4) != 0);
 	assert(arraylist->length == 4);
 
 	assert(arraylist->data[0] == &variable1);
@@ -121,8 +132,24 @@ void test_arraylist_append(void)
 	/* Test appending many entries */
 
 	for (i=0; i<10000; ++i) {
-		arraylist_append(arraylist, NULL);
+		assert(arraylist_append(arraylist, NULL) != 0);
 	}
+
+	arraylist_free(arraylist);
+
+	/* Test low memory scenario */
+
+	arraylist = arraylist_new(100);
+
+	alloc_test_set_limit(0);
+
+	for (i=0; i<100; ++i) {
+		assert(arraylist_append(arraylist, NULL) != 0);
+	}
+
+	assert(arraylist->length == 100);
+	assert(arraylist_append(arraylist, NULL) == 0);
+	assert(arraylist->length == 100);
 
 	arraylist_free(arraylist);
 }
@@ -139,16 +166,16 @@ void test_arraylist_prepend(void)
 
 	/* Append some entries */
 
-	arraylist_prepend(arraylist, &variable1);
+	assert(arraylist_prepend(arraylist, &variable1) != 0);
 	assert(arraylist->length == 1);
 
-	arraylist_prepend(arraylist, &variable2);
+	assert(arraylist_prepend(arraylist, &variable2) != 0);
 	assert(arraylist->length == 2);
 
-	arraylist_prepend(arraylist, &variable3);
+	assert(arraylist_prepend(arraylist, &variable3) != 0);
 	assert(arraylist->length == 3);
 
-	arraylist_prepend(arraylist, &variable4);
+	assert(arraylist_prepend(arraylist, &variable4) != 0);
 	assert(arraylist->length == 4);
 
 	assert(arraylist->data[0] == &variable4);
@@ -159,8 +186,24 @@ void test_arraylist_prepend(void)
 	/* Test prepending many entries */
 
 	for (i=0; i<10000; ++i) {
-		arraylist_prepend(arraylist, NULL);
+		assert(arraylist_prepend(arraylist, NULL) != 0);
 	}
+
+	arraylist_free(arraylist);
+
+	/* Test low memory scenario */
+
+	arraylist = arraylist_new(100);
+
+	alloc_test_set_limit(0);
+
+	for (i=0; i<100; ++i) {
+		assert(arraylist_prepend(arraylist, NULL) != 0);
+	}
+
+	assert(arraylist->length == 100);
+	assert(arraylist_prepend(arraylist, NULL) == 0);
+	assert(arraylist->length == 100);
 
 	arraylist_free(arraylist);
 }
@@ -411,17 +454,22 @@ void test_arraylist_sort(void)
 	arraylist_free(arraylist);
 }
 
+static UnitTestFunction tests[] = {
+	test_arraylist_new_free,
+	test_arraylist_append,
+	test_arraylist_prepend,
+	test_arraylist_insert,
+	test_arraylist_remove,
+	test_arraylist_remove_range,
+	test_arraylist_index_of,
+	test_arraylist_clear,
+	test_arraylist_sort,
+	NULL
+};
+
 int main(int argc, char *argv[])
 {
-	test_arraylist_new_free();
-	test_arraylist_append();
-	test_arraylist_prepend();
-	test_arraylist_insert();
-	test_arraylist_remove();
-	test_arraylist_remove_range();
-	test_arraylist_index_of();
-	test_arraylist_clear();
-	test_arraylist_sort();
+	run_tests(tests);
 
 	return 0;
 }

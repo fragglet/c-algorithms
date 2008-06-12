@@ -38,6 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 
 #include "alloc-testing.h"
+#include "framework.h"
 
 #include "queue.h"
 
@@ -84,6 +85,12 @@ void test_queue_new_free(void)
 	}
 
 	queue_free(queue);
+
+	/* Test allocation when there is no free memory */
+
+	alloc_test_set_limit(0);
+	queue = queue_new();
+	assert(queue == NULL);
 }
 
 void test_queue_push_head(void)
@@ -117,6 +124,15 @@ void test_queue_push_head(void)
 	assert(queue_pop_head(queue) == &variable3);
 	assert(queue_pop_head(queue) == &variable2);
 	assert(queue_pop_head(queue) == &variable1);
+
+	queue_free(queue);
+
+	/* Test behavior when running out of memory. */
+
+	queue = queue_new();
+
+	alloc_test_set_limit(0);
+	assert(!queue_push_head(queue, &variable1));
 
 	queue_free(queue);
 }
@@ -215,6 +231,15 @@ void test_queue_push_tail(void)
 	assert(queue_pop_tail(queue) == &variable1);
 
 	queue_free(queue);
+
+	/* Test behavior when running out of memory. */
+
+	queue = queue_new();
+
+	alloc_test_set_limit(0);
+	assert(!queue_push_tail(queue, &variable1));
+
+	queue_free(queue);
 }
 
 void test_queue_pop_tail(void)
@@ -305,16 +330,21 @@ void test_queue_is_empty(void)
 	queue_free(queue);
 }
 
+static UnitTestFunction tests[] = {
+	test_queue_new_free,
+	test_queue_push_head,
+	test_queue_pop_head,
+	test_queue_peek_head,
+	test_queue_push_tail,
+	test_queue_pop_tail,
+	test_queue_peek_tail,
+	test_queue_is_empty,
+	NULL
+};
+
 int main(int argc, char *argv[]) 
 {
-	test_queue_new_free();
-	test_queue_push_head();
-	test_queue_pop_head();
-	test_queue_peek_head();
-	test_queue_push_tail();
-	test_queue_pop_tail();
-	test_queue_peek_tail();
-	test_queue_is_empty();
+	run_tests(tests);
 
 	return 0;
 }

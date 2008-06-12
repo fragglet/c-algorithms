@@ -38,6 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 
 #include "alloc-testing.h"
+#include "framework.h"
 
 #include "avl-tree.h"
 #include "compare-int.h"
@@ -279,14 +280,18 @@ void test_avl_tree_to_array(void)
 	avl_tree_free(tree);
 }
 
+static UnitTestFunction tests[] = {
+	test_avl_tree_new,
+	test_avl_tree_free,
+	test_avl_tree_insert_lookup,
+	test_avl_tree_remove,
+	test_avl_tree_to_array,
+	NULL
+};
+	
 int main(int argc, char *argv[])
 {
-	test_avl_tree_new();
-	test_avl_tree_free();
-	test_avl_tree_insert_lookup();
-	test_avl_tree_remove();
-	test_avl_tree_to_array();
-	
+	run_tests(tests);
 	return 0;
 }
 

@@ -39,6 +39,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 
 #include "alloc-testing.h"
+#include "framework.h"
 
 #include "hash-table.h"
 #include "hash-int.h"
@@ -381,14 +382,19 @@ void test_hash_table_free_functions(void)
 	assert(allocated_values == 0);
 }
 
+static UnitTestFunction tests[] = {
+	test_hash_table_new_free,
+	test_hash_table_insert_lookup,
+	test_hash_table_remove,
+	test_hash_table_iterating,
+	test_hash_table_iterating_remove,
+	test_hash_table_free_functions,
+	NULL
+};
+
 int main(int argc, char *argv[])
 {
-	test_hash_table_new_free();
-	test_hash_table_insert_lookup();
-	test_hash_table_remove();
-	test_hash_table_iterating();
-	test_hash_table_iterating_remove();
-	test_hash_table_free_functions();
+	run_tests(tests);
 	
 	return 0;
 }

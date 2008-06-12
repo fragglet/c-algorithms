@@ -38,6 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 
 #include "alloc-testing.h"
+#include "framework.h"
 
 #include "hash-pointer.h"
 #include "hash-int.h"
@@ -140,12 +141,17 @@ void test_string_nocase_hash(void)
 	assert(string_nocase_hash(test1) == string_nocase_hash(test4));
 }
 
+static UnitTestFunction tests[] = {
+	test_pointer_hash,
+	test_int_hash,
+	test_string_hash,
+	test_string_nocase_hash,
+	NULL
+};
+
 int main(int argc, char *argv[])
 {
-	test_pointer_hash();
-	test_int_hash();
-	test_string_hash();
-	test_string_nocase_hash();
+	run_tests(tests);
 
 	return 0;
 }

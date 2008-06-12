@@ -40,6 +40,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 
 #include "alloc-testing.h"
+#include "framework.h"
 
 #include "compare-int.h"
 #include "compare-pointer.h"
@@ -201,17 +202,21 @@ void test_string_nocase_equal(void)
 	assert(string_nocase_equal(test1, test4) != 0);
 }
 
+static UnitTestFunction tests[] = {
+	test_int_compare,
+	test_int_equal,
+	test_pointer_compare,
+	test_pointer_equal,
+	test_string_compare,
+	test_string_equal,
+	test_string_nocase_compare,
+	test_string_nocase_equal,
+	NULL
+};
 
 int main(int argc, char *argv[])
 {
-	test_int_compare();
-	test_int_equal();
-	test_pointer_compare();
-	test_pointer_equal();
-	test_string_compare();
-	test_string_equal();
-	test_string_nocase_compare();
-	test_string_nocase_equal();
+	run_tests(tests);
 
 	return 0;
 }

@@ -38,6 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 
 #include "alloc-testing.h"
+#include "framework.h"
 
 #include "slist.h"
 #include "compare-int.h"
@@ -510,22 +511,27 @@ void test_slist_iterate_bad_remove(void)
 	slist_free(list);
 }
 
+static UnitTestFunction tests[] = {
+	test_slist_append,
+	test_slist_prepend,
+	test_slist_free,
+	test_slist_next,
+	test_slist_nth_entry,
+	test_slist_nth_data,
+	test_slist_length,
+	test_slist_remove_entry,
+	test_slist_remove_data,
+	test_slist_sort,
+	test_slist_find_data,
+	test_slist_to_array,
+	test_slist_iterate,
+	test_slist_iterate_bad_remove,
+	NULL
+};
+
 int main(int argc, char *argv[])
 {
-	test_slist_append();
-	test_slist_prepend();
-	test_slist_free();
-	test_slist_next();
-	test_slist_nth_entry();
-	test_slist_nth_data();
-	test_slist_length();
-	test_slist_remove_entry();
-	test_slist_remove_data();
-	test_slist_sort();
-	test_slist_find_data();
-	test_slist_to_array();
-	test_slist_iterate();
-	test_slist_iterate_bad_remove();
+	run_tests(tests);
 
 	return 0;
 }

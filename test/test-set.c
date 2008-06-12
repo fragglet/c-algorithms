@@ -39,6 +39,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 
 #include "alloc-testing.h"
+#include "framework.h"
 
 #include "set.h"
 #include "compare-int.h"
@@ -460,18 +461,23 @@ void test_set_free_function(void)
 	assert(allocated_values == 0);
 }
 
+static UnitTestFunction tests[] = {
+	test_set_new_free,
+	test_set_insert,
+	test_set_query,
+	test_set_remove,
+	test_set_intersection,
+	test_set_union,
+	test_set_iterating,
+	test_set_iterating_remove,
+	test_set_to_array,
+	test_set_free_function,
+	NULL
+};
+
 int main(int argc, char *argv[])
 {
-	test_set_new_free();
-	test_set_insert();
-	test_set_query();
-	test_set_remove();
-	test_set_intersection();
-	test_set_union();
-	test_set_iterating();
-	test_set_iterating_remove();
-	test_set_to_array();
-	test_set_free_function();
+	run_tests(tests);
 
 	return 0;
 }

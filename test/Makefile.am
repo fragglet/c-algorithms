@@ -22,7 +22,8 @@ check_PROGRAMS = $(TESTS)
 check_LIBRARIES = libtestframework.a
 
 libtestframework_a_SOURCES=\
-        alloc-testing.c              alloc-testing.h
+alloc-testing.c      alloc-testing.h        \
+framework.c          framework.h
 
 AM_CFLAGS = -I../src -Wall
 LDADD = $(top_builddir)/src/libcalgtest.a libtestframework.a
