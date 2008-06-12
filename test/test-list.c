@@ -51,10 +51,10 @@ ListEntry *generate_list(void)
 {
 	ListEntry *list = NULL;
 
-	list_append(&list, &variable1);
-	list_append(&list, &variable2);
-	list_append(&list, &variable3);
-	list_append(&list, &variable4);
+	assert(list_append(&list, &variable1) != NULL);
+	assert(list_append(&list, &variable2) != NULL);
+	assert(list_append(&list, &variable3) != NULL);
+	assert(list_append(&list, &variable4) != NULL);
 
 	return list;
 }
@@ -78,19 +78,29 @@ void test_list_append(void)
 {
 	ListEntry *list = NULL;
 
-	list_append(&list, &variable1);
+	assert(list_append(&list, &variable1) != NULL);
 	check_list_integrity(list);
-	list_append(&list, &variable2);
+	assert(list_append(&list, &variable2) != NULL);
 	check_list_integrity(list);
-	list_append(&list, &variable3);
+	assert(list_append(&list, &variable3) != NULL);
 	check_list_integrity(list);
-	list_append(&list, &variable4);
+	assert(list_append(&list, &variable4) != NULL);
 	check_list_integrity(list);
+
+	assert(list_length(list) == 4);
 
 	assert(list_nth_data(list, 0) == &variable1);
 	assert(list_nth_data(list, 1) == &variable2);
 	assert(list_nth_data(list, 2) == &variable3);
 	assert(list_nth_data(list, 3) == &variable4);
+
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+	assert(list_length(list) == 4);
+	assert(list_append(&list, &variable1) == NULL);
+	assert(list_length(list) == 4);
+	check_list_integrity(list);
 
 	list_free(list);
 }
@@ -99,19 +109,27 @@ void test_list_prepend(void)
 {
 	ListEntry *list = NULL;
 
-	list_prepend(&list, &variable1);
+	assert(list_prepend(&list, &variable1) != NULL);
 	check_list_integrity(list);
-	list_prepend(&list, &variable2);
+	assert(list_prepend(&list, &variable2) != NULL);
 	check_list_integrity(list);
-	list_prepend(&list, &variable3);
+	assert(list_prepend(&list, &variable3) != NULL);
 	check_list_integrity(list);
-	list_prepend(&list, &variable4);
+	assert(list_prepend(&list, &variable4) != NULL);
 	check_list_integrity(list);
 
 	assert(list_nth_data(list, 0) == &variable4);
 	assert(list_nth_data(list, 1) == &variable3);
 	assert(list_nth_data(list, 2) == &variable2);
 	assert(list_nth_data(list, 3) == &variable1);
+
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+	assert(list_length(list) == 4);
+	assert(list_prepend(&list, &variable1) == NULL);
+	assert(list_length(list) == 4);
+	check_list_integrity(list);
 
 	list_free(list);
 }
@@ -219,7 +237,7 @@ void test_list_length(void)
 
 	/* Add an entry and check that it still works properly */
 
-	list_prepend(&list, &variable1);
+	assert(list_prepend(&list, &variable1) != NULL);
 
 	assert(list_length(list) == 5);
 
@@ -278,7 +296,7 @@ void test_list_remove_data(void)
 	list = NULL;
 
 	for (i=0; i<num_entries; ++i) {
-		list_prepend(&list, &entries[i]);
+		assert(list_prepend(&list, &entries[i]) != NULL);
 	}
 
 	/* Test removing invalid data */
@@ -324,7 +342,7 @@ void test_list_sort(void)
 	list = NULL;
 
 	for (i=0; i<num_entries; ++i) {
-		list_prepend(&list, &entries[i]);
+		assert(list_prepend(&list, &entries[i]) != NULL);
 	}
 
 	list_sort(&list, int_compare);
@@ -367,7 +385,7 @@ void test_list_find_data(void)
 
 	list = NULL;
 	for (i=0; i<num_entries; ++i) {
-		list_append(&list, &entries[i]);
+		assert(list_append(&list, &entries[i]) != NULL);
 	}
 
 	/* Check that each value can be searched for correctly */
@@ -409,6 +427,14 @@ void test_list_to_array(void)
 	assert(array[3] == &variable4);
 
 	free(array);
+
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+
+	array = list_to_array(list);
+	assert(array == NULL);
+
 	list_free(list);
 }
 
@@ -426,7 +452,7 @@ void test_list_iterate(void)
 	list = NULL;
 
 	for (i=0; i<50; ++i) {
-		list_prepend(&list, &a);
+		assert(list_prepend(&list, &a) != NULL);
 	}
 
 	/* Iterate over the list and count the number of entries visited */
@@ -501,7 +527,7 @@ void test_list_iterate_bad_remove(void)
 
 	for (i=0; i<49; ++i) {
 		values[i] = i;
-		list_prepend(&list, &values[i]);
+		assert(list_prepend(&list, &values[i]) != NULL);
 	}
 
 	/* Iterate over the list, removing each element in turn.  We

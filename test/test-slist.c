@@ -51,10 +51,10 @@ SListEntry *generate_list(void)
 {
 	SListEntry *list = NULL;
 
-	slist_append(&list, &variable1);
-	slist_append(&list, &variable2);
-	slist_append(&list, &variable3);
-	slist_append(&list, &variable4);
+	assert(slist_append(&list, &variable1) != NULL);
+	assert(slist_append(&list, &variable2) != NULL);
+	assert(slist_append(&list, &variable3) != NULL);
+	assert(slist_append(&list, &variable4) != NULL);
 
 	return list;
 }
@@ -63,15 +63,23 @@ void test_slist_append(void)
 {
 	SListEntry *list = NULL;
 
-	slist_append(&list, &variable1);
-	slist_append(&list, &variable2);
-	slist_append(&list, &variable3);
-	slist_append(&list, &variable4);
+	assert(slist_append(&list, &variable1) != NULL);
+	assert(slist_append(&list, &variable2) != NULL);
+	assert(slist_append(&list, &variable3) != NULL);
+	assert(slist_append(&list, &variable4) != NULL);
+	assert(slist_length(list) == 4);
 
 	assert(slist_nth_data(list, 0) == &variable1);
 	assert(slist_nth_data(list, 1) == &variable2);
 	assert(slist_nth_data(list, 2) == &variable3);
 	assert(slist_nth_data(list, 3) == &variable4);
+
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+	assert(slist_length(list) == 4);
+	assert(slist_append(&list, &variable1) == NULL);
+	assert(slist_length(list) == 4);
 
 	slist_free(list);
 }
@@ -80,15 +88,22 @@ void test_slist_prepend(void)
 {
 	SListEntry *list = NULL;
 
-	slist_prepend(&list, &variable1);
-	slist_prepend(&list, &variable2);
-	slist_prepend(&list, &variable3);
-	slist_prepend(&list, &variable4);
+	assert(slist_prepend(&list, &variable1) != NULL);
+	assert(slist_prepend(&list, &variable2) != NULL);
+	assert(slist_prepend(&list, &variable3) != NULL);
+	assert(slist_prepend(&list, &variable4) != NULL);
 
 	assert(slist_nth_data(list, 0) == &variable4);
 	assert(slist_nth_data(list, 1) == &variable3);
 	assert(slist_nth_data(list, 2) == &variable2);
 	assert(slist_nth_data(list, 3) == &variable1);
+
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+	assert(slist_length(list) == 4);
+	assert(slist_prepend(&list, &variable1) == NULL);
+	assert(slist_length(list) == 4);
 
 	slist_free(list);
 }
@@ -384,6 +399,14 @@ void test_slist_to_array(void)
 	assert(array[3] == &variable4);
 
 	free(array);
+
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+
+	array = slist_to_array(list);
+	assert(array == NULL);
+
 	slist_free(list);
 }
 
