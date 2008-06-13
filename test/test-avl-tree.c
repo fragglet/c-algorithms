@@ -30,6 +30,31 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 int test_array[1000];
 
+#if 0
+/* Tree print function - useful for debugging. */
+
+static void print_tree(AVLTreeNode *node, int depth)
+{
+        int *value;
+        int i;
+
+        if (node == NULL) {
+                return;
+        }
+
+        print_tree(avl_tree_node_left_child(node), depth + 1);
+
+        for (i=0; i<depth*6; ++i) {
+                printf(" ");
+        }
+
+        value = avl_tree_node_key(node);
+        printf("%i\n", *value);
+
+        print_tree(avl_tree_node_right_child(node), depth + 1);
+}
+#endif
+
 int find_subtree_height(AVLTreeNode *node)
 {
 	int left_height, right_height;
@@ -110,8 +135,14 @@ int validate_subtree(AVLTreeNode *node)
 void validate_tree(AVLTree *tree)
 {
 	AVLTreeNode *root_node;
+        int height;
 
 	root_node = avl_tree_root_node(tree);
+
+        if (root_node != NULL) {
+                height = find_subtree_height(root_node);
+                assert(avl_tree_subtree_height(root_node) == height);
+        }
 
 	counter = -1;
 	validate_subtree(root_node);
@@ -204,6 +235,9 @@ void test_avl_tree_remove(void)
 {
 	AVLTree *tree;
 	int i;
+        int x, y, z;
+        int value;
+        int expected_entries;
 
 	tree = create_tree();
 
@@ -216,15 +250,23 @@ void test_avl_tree_remove(void)
 
 	/* Delete the nodes from the tree */
 
-	for (i=0; i<1000; ++i) {
-		/* Remove this entry */
+        expected_entries = 1000;
 
-		assert(avl_tree_remove(tree, &i) != 0);
+        /* This looping arrangement causes nodes to be removed in a 
+         * randomish fashion from all over the tree. */
 
-		validate_tree(tree);
-
-		assert(avl_tree_num_entries(tree) == 1000 - (i+1));
-	}
+        for (x=0; x<10; ++x) {
+                for (y=0; y<10; ++y) {
+                        for (z=0; z<10; ++z) {
+                                value = z * 100 + (9 - y) * 10 + x;
+                                assert(avl_tree_remove(tree, &value) != 0);
+                                validate_tree(tree);
+                                expected_entries -= 1;
+                                assert(avl_tree_num_entries(tree)
+                                       == expected_entries);
+                        }
+                }
+        }
 
 	/* All entries removed, should be empty now */
 
