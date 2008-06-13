@@ -131,6 +131,12 @@ static BinomialTree *binomial_tree_merge(BinomialHeap *heap,
 	 * array is the larger tree */
 
 	new_tree->subtrees = malloc(sizeof(BinomialTree *) * new_tree->order);
+
+        if (new_tree->subtrees == NULL) {
+                free(new_tree);
+                return NULL;
+        }
+
 	memcpy(new_tree->subtrees, tree1->subtrees, 
 	       sizeof(BinomialTree *) * tree1->order);
 	new_tree->subtrees[new_tree->order - 1] = tree2;
