@@ -254,7 +254,7 @@ void test_list_remove_entry(void)
 	assert(list_remove_entry(&list, entry) != 0);
 	assert(list_length(list) == 2);
 	check_list_integrity(list);
-	
+
 	/* Try some invalid removes */
 
 	/* NULL */
@@ -265,6 +265,22 @@ void test_list_remove_entry(void)
 
 	assert(list_remove_entry(&empty_list, NULL) == 0);
 
+	list_free(list);
+
+	/* Test removing an entry when it is the only entry. */
+
+	list = NULL;
+	assert(list_append(&list, &variable1) != NULL);
+	assert(list != NULL);
+	assert(list_remove_entry(&list, list) != 0);
+	assert(list == NULL);
+
+	/* Test removing the last entry */
+
+	list = generate_list();
+	entry = list_nth_entry(list, 3);
+	assert(list_remove_entry(&list, entry) != 0);
+	check_list_integrity(list);
 	list_free(list);
 }
 

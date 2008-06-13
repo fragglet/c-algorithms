@@ -32,17 +32,41 @@ void test_bloom_filter_new_free(void)
 {
 	BloomFilter *filter;
 
+	/* One salt */
+
 	filter = bloom_filter_new(128, string_hash, 1);
 
 	assert(filter != NULL);
 
 	bloom_filter_free(filter);
 
+	/* Maximum number of salts */
+
 	filter = bloom_filter_new(128, string_hash, 64);
 
 	assert(filter != NULL);
 
 	bloom_filter_free(filter);
+
+	/* Test creation with too many salts */
+
+	filter = bloom_filter_new(128, string_hash, 50000);
+
+	assert(filter == NULL);
+
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+
+	filter = bloom_filter_new(128, string_hash, 1);
+
+	assert(filter == NULL);
+
+	alloc_test_set_limit(sizeof(void *) * 4);
+
+	filter = bloom_filter_new(128, string_hash, 1);
+
+	assert(filter == NULL);
 }
 
 void test_bloom_filter_insert_query(void)
@@ -139,9 +163,16 @@ void test_bloom_filter_intersection(void)
 	assert(bloom_filter_query(result, "test 1") != 0);
 	assert(bloom_filter_query(result, "test 2") == 0);
 
+	bloom_filter_free(result);
+
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+	result = bloom_filter_intersection(filter1, filter2);
+	assert(result == NULL);
+
 	bloom_filter_free(filter1);
 	bloom_filter_free(filter2);
-	bloom_filter_free(result);
 }
 
 void test_bloom_filter_union(void)
@@ -171,9 +202,51 @@ void test_bloom_filter_union(void)
 	assert(bloom_filter_query(result, "test 1") != 0);
 	assert(bloom_filter_query(result, "test 2") != 0);
 
+	bloom_filter_free(result);
+
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+	result = bloom_filter_union(filter1, filter2);
+	assert(result == NULL);
+
 	bloom_filter_free(filter1);
 	bloom_filter_free(filter2);
-	bloom_filter_free(result);
+}
+
+/* Test attempts to do union/intersection of mismatched filters */
+
+void test_bloom_filter_mismatch(void)
+{
+	BloomFilter *filter1;
+	BloomFilter *filter2;
+
+	/* Create one filter with both values set */
+
+	filter1 = bloom_filter_new(128, string_hash, 4);
+
+	/* Different buffer size. */
+
+	filter2 = bloom_filter_new(64, string_hash, 4);
+	assert(bloom_filter_intersection(filter1, filter2) == NULL);
+	assert(bloom_filter_union(filter1, filter2) == NULL);
+	bloom_filter_free(filter2);
+
+	/* Different hash function */
+
+	filter2 = bloom_filter_new(128, string_nocase_hash, 4);
+	assert(bloom_filter_intersection(filter1, filter2) == NULL);
+	assert(bloom_filter_union(filter1, filter2) == NULL);
+	bloom_filter_free(filter2);
+
+	/* Different number of salts */
+
+	filter2 = bloom_filter_new(128, string_hash, 32);
+	assert(bloom_filter_intersection(filter1, filter2) == NULL);
+	assert(bloom_filter_union(filter1, filter2) == NULL);
+	bloom_filter_free(filter2);
+
+	bloom_filter_free(filter1);
 }
 
 static UnitTestFunction tests[] = {
@@ -182,6 +255,7 @@ static UnitTestFunction tests[] = {
 	test_bloom_filter_read_load,
 	test_bloom_filter_intersection,
 	test_bloom_filter_union,
+	test_bloom_filter_mismatch,
 	NULL
 };
 
