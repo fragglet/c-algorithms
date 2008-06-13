@@ -274,7 +274,7 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 		/* Biased toward the right side too much. */
 
 		if (avl_tree_subtree_height(node->right_child->right_child)
-		 <= avl_tree_subtree_height(node->right_child->left_child)) {
+		  < avl_tree_subtree_height(node->right_child->left_child)) {
 
 			/* If the right child is biased toward the left
 			 * side, it must be rotated right first (double
@@ -298,7 +298,7 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 		/* Biased toward the left side too much. */
 
 		if (avl_tree_subtree_height(node->left_child->left_child)
-		 <= avl_tree_subtree_height(node->left_child->right_child)) {
+		  < avl_tree_subtree_height(node->left_child->right_child)) {
 
 			/* If the left child is biased toward the right
 			 * side, it must be rotated right left (double
@@ -455,7 +455,7 @@ void avl_tree_remove_node(AVLTree *tree, AVLTreeNode *node)
 		/* This is a leaf node and has no children, therefore
 		 * it can be immediately removed. */
 
-		/* Unlink this node from its parent */
+		/* Unlink this node from its parent and update tree height */
 
 		if (node->parent != NULL) {
 			if (node->parent->left_child == node) {
@@ -463,6 +463,8 @@ void avl_tree_remove_node(AVLTree *tree, AVLTreeNode *node)
 			} else {
 				node->parent->right_child = NULL;
 			}
+
+			avl_tree_update_height(node->parent);
 		} else {
 			/* Root node */
 
@@ -472,22 +474,38 @@ void avl_tree_remove_node(AVLTree *tree, AVLTreeNode *node)
 		/* "swap" stage is skipped. */
 
 		swap_node = NULL;
+	}
 
-		/* Start balancing from the node's parent */
+	/* Calculate where we will need to start rebalancing the tree.
+	 * If it was a leaf node, start from the parent of the node
+	 * we are removing.  Otherwise, use the old parent of the node we
+	 * swapped out.  In some cases this is the node we are swapping
+	 * back in again. */
 
+	if (swap_node == NULL) {
 		balance_startpoint = node->parent;
+	} else if (swap_node->parent == node) {
+		balance_startpoint = swap_node;
+	} else {
+		balance_startpoint = swap_node->parent;
 	}
 
 	/* Link the "swap" node into the tree, at the position where
 	 * "node" previously was. */
 
 	if (swap_node != NULL) {
-		
+
+		/* Update the subtree height for the swap node's old
+		 * parent. */
+
+		avl_tree_update_height(swap_node->parent);
+
 		/* Copy references in the node into the swap node */
 
 		swap_node->left_child = node->left_child;
 		swap_node->right_child = node->right_child;
 		swap_node->parent = node->parent;
+		swap_node->height = node->height;
 
 		/* Link the parent's reference to this node */
 
@@ -512,10 +530,6 @@ void avl_tree_remove_node(AVLTree *tree, AVLTreeNode *node)
 		if (node->right_child != NULL) {
 			node->right_child->parent = swap_node;
 		}
-
-		/* Start balancing from the swap node's former parent */
-
-		balance_startpoint = swap_node->parent;
 	}
 
 	/* Destroy the node */
