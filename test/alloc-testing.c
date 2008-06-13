@@ -88,7 +88,7 @@ static BlockHeader *alloc_test_get_header(void *ptr)
 static int alloc_test_new_size_allowed(size_t new_size)
 {
 	return allocation_limit < 0
-	    || new_size < allocation_limit;
+	    || new_size <= allocation_limit;
 }
 
 /* Overwrite a block of memory with a repeated pattern. */
