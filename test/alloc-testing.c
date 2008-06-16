@@ -53,12 +53,7 @@ typedef struct _BlockHeader BlockHeader;
 struct _BlockHeader {
 	unsigned int magic_number;
 	size_t bytes;
-	BlockHeader *prev, *next;
 };
-
-/* Head of a linked list of allocated blocks. */
-
-static BlockHeader *allocated_blocks = NULL;
 
 /* Count of the current number of allocated bytes. */
 
@@ -128,16 +123,6 @@ BlockHeader *alloc_test_base_malloc(size_t bytes)
 	header->magic_number = ALLOC_TEST_MAGIC;
 	header->bytes = bytes;
 	
-	/* Hook the new block into the linked list. */
-
-	header->prev = NULL;
-	header->next = allocated_blocks;
-	allocated_blocks = header;
-
-	if (header->next != NULL) {
-		header->next->prev = header;
-	}
-
 	/* Fill memory with MALLOC_PATTERN, to ensure that code under test
 	 * does not rely on memory being initialised to zero. */
 
@@ -153,18 +138,6 @@ void alloc_test_base_free(BlockHeader *header)
 {
 	void *ptr;
 
-	/* Unlink from the linked list. */
-
-	if (header->prev != NULL) {
-		header->prev->next = header->next;
-	} else {
-		allocated_blocks = header->next;
-	}
-
-	if (header->next != NULL) {
-		header->next->prev = header->prev;
-	}
-	
 	/* Trash the allocated block to foil any code that relies on memory 
 	 * that has been freed. */
 
