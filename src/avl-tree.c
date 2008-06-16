@@ -249,8 +249,7 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 		}
 
 		/* Perform a left rotation.  After this, the right child will
-		 * take the place of this node.  Store a pointer to the right
-		 * child so that we can continue where we left off. */
+		 * take the place of this node.  Update the node pointer. */
 
 		node = avl_tree_rotate(tree, node, AVL_TREE_NODE_LEFT);
 
@@ -271,9 +270,8 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
                                         AVL_TREE_NODE_LEFT);
 		}
 
-		/* Perform a right rotation.  After this, the left child
-		 * will take the place of this node.  Store a pointer to the
-		 * left child so that we can continue where we left off. */
+		/* Perform a right rotation.  After this, the left child will
+		 * take the place of this node.  Update the node pointer. */
 
 		node = avl_tree_rotate(tree, node, AVL_TREE_NODE_RIGHT);
 	}
@@ -285,12 +283,31 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 	return node;
 }
 
+/* Walk up the tree from the given node, performing any needed rotations */
+
+static void avl_tree_balance_to_root(AVLTree *tree, AVLTreeNode *node)
+{
+        AVLTreeNode *rover;
+
+	rover = node;
+
+	while (rover != NULL) {
+
+		/* Balance this node if necessary */
+
+		rover = avl_tree_node_balance(tree, rover);
+
+		/* Go to this node's parent */
+
+		rover = rover->parent;
+	}
+}
+
 AVLTreeNode *avl_tree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value)
 {
 	AVLTreeNode **rover;
 	AVLTreeNode *new_node;
 	AVLTreeNode *previous_node;
-	AVLTreeNode *node;
 
 	/* Walk down the tree until we reach a NULL pointer */
 
@@ -325,20 +342,9 @@ AVLTreeNode *avl_tree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value)
 
 	*rover = new_node;
 
-	/* Walk up the tree performing any needed rotations */
+        /* Rebalance the tree, starting from the previous node. */
 
-	node = previous_node;
-
-	while (node != NULL) {
-
-		/* Balance this node if necessary */
-
-		node = avl_tree_node_balance(tree, node);
-
-		/* Go to this node's parent */
-
-		node = node->parent;
-	}
+        avl_tree_balance_to_root(tree, previous_node);
 
 	/* Keep track of the number of entries */
 
@@ -408,7 +414,6 @@ static AVLTreeNode *avl_tree_node_get_replacement(AVLTree *tree,
 void avl_tree_remove_node(AVLTree *tree, AVLTreeNode *node)
 {
 	AVLTreeNode *swap_node;
-	AVLTreeNode *rover;
 	AVLTreeNode *balance_startpoint;
 	int i;
 
@@ -470,18 +475,7 @@ void avl_tree_remove_node(AVLTree *tree, AVLTreeNode *node)
 
 	/* Rebalance the tree */
 
-	rover = balance_startpoint;
-
-	while (rover != NULL) {
-
-		/* Possibly rebalance this subtree */
-		
-		rover = avl_tree_node_balance(tree, rover);
-
-		/* Go to the node's parent */
-
-		rover = rover->parent;
-	}
+        avl_tree_balance_to_root(tree, balance_startpoint);
 }
 
 /* Remove a node by key */
