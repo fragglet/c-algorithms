@@ -151,31 +151,37 @@ static void avl_tree_node_replace(AVLTree *tree, AVLTreeNode *node1,
 	}
 }
 
-/* Rotate a section of the tree left.  'node' is the node at the top
- * of the section to be rotated. 
- * 
- *      B
- *     / \
- *    A   D
- *       / \ 
- *      C   E 
+/* Rotate a section of the tree.  'node' is the node at the top
+ * of the section to be rotated.  'direction' is the direction in
+ * which to rotate the tree: left or right, as shown in the following
+ * diagram:
  *
- * is rotated to:
+ * Left rotation:              Right rotation:
  *
- *        D
- *       / \
- *      B   E
- *     / \
- *    A   C
+ *      B                             D
+ *     / \                           / \
+ *    A   D                         B   E
+ *       / \                       / \
+ *      C   E                     A   C
+ 
+ * is rotated to:              is rotated to:
+ *
+ *        D                           B
+ *       / \                         / \
+ *      B   E                       A   D
+ *     / \                             / \
+ *    A   C                           C   E
  */
 
-static void avl_tree_rotate_left(AVLTree *tree, AVLTreeNode *node)
+static AVLTreeNode *avl_tree_rotate(AVLTree *tree, AVLTreeNode *node,
+                                    AVLTreeNodeSide direction)
 {
 	AVLTreeNode *new_root;
 
-	/* The right child will take the place of this node */
+	/* The child of this node will take its place:
+           for a left rotation, it is the right child, and vice versa. */
 
-	new_root = node->children[AVL_TREE_NODE_RIGHT];
+	new_root = node->children[1-direction];
 	
 	/* Make new_root the root, update parent pointers. */
 	
@@ -183,71 +189,25 @@ static void avl_tree_rotate_left(AVLTree *tree, AVLTreeNode *node)
 
 	/* Rearrange pointers */
 
-	node->children[AVL_TREE_NODE_RIGHT] = new_root->children[AVL_TREE_NODE_LEFT];
-	new_root->children[AVL_TREE_NODE_LEFT] = node;
+	node->children[1-direction] = new_root->children[direction];
+	new_root->children[direction] = node;
 
 	/* Update parent references */
 
 	node->parent = new_root;
 
-	if (node->children[AVL_TREE_NODE_RIGHT] != NULL) {
-		node->children[AVL_TREE_NODE_RIGHT]->parent = node;
+	if (node->children[1-direction] != NULL) {
+		node->children[1-direction]->parent = node;
 	}
 
 	/* Update heights of the affected nodes */
 
 	avl_tree_update_height(new_root);
 	avl_tree_update_height(node);
+
+        return new_root;
 }
 
-/* Rotate a section of the tree right.  'node' is the node at the top
- * of the section to be rotated. 
- * 
- *        D
- *       / \
- *      B   E
- *     / \
- *    A   C
- *
- * is rotated to:
- *
- *      B
- *     /  \
- *    A    D
- *        / \ 
- *       C   E 
- */
-
-static void avl_tree_rotate_right(AVLTree *tree, AVLTreeNode *node)
-{
-	AVLTreeNode *new_root;
-
-	/* The left child will now take the place of this node */
-
-	new_root = node->children[AVL_TREE_NODE_LEFT];
-	
-	/* Make new_root the root, update parent pointers. */
-	
-	avl_tree_node_replace(tree, node, new_root);
-
-	/* Rearrange pointers */
-
-	node->children[AVL_TREE_NODE_LEFT] = new_root->children[AVL_TREE_NODE_RIGHT];
-	new_root->children[AVL_TREE_NODE_RIGHT] = node;
-
-	/* Update parent references */
-
-	node->parent = new_root;
-
-	if (node->children[AVL_TREE_NODE_LEFT] != NULL) {
-		node->children[AVL_TREE_NODE_LEFT]->parent = node;
-	}
-
-	/* Update heights of the affected nodes */
-
-	avl_tree_update_height(new_root);
-	avl_tree_update_height(node);
-}
 
 /* Balance a particular tree node.
  *
@@ -258,7 +218,6 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 {
 	AVLTreeNode *left_subtree;
 	AVLTreeNode *right_subtree;
-	AVLTreeNode *new_root;
 	AVLTreeNode *child;
 	int diff;
 
@@ -285,18 +244,15 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 			 * side, it must be rotated right first (double
 			 * rotation) */
 
-			avl_tree_rotate_right(tree, right_subtree);
+			avl_tree_rotate(tree, right_subtree,
+                                        AVL_TREE_NODE_RIGHT);
 		}
 
 		/* Perform a left rotation.  After this, the right child will
 		 * take the place of this node.  Store a pointer to the right
 		 * child so that we can continue where we left off. */
 
-		new_root = node->children[AVL_TREE_NODE_RIGHT];
-		
-		avl_tree_rotate_left(tree, node);
-
-		node = new_root;
+		node = avl_tree_rotate(tree, node, AVL_TREE_NODE_LEFT);
 
 	} else if (diff <= -2) {
 
@@ -311,18 +267,15 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 			 * side, it must be rotated right left (double
 			 * rotation) */
 
-			avl_tree_rotate_left(tree, left_subtree);
+			avl_tree_rotate(tree, left_subtree,
+                                        AVL_TREE_NODE_LEFT);
 		}
 
 		/* Perform a right rotation.  After this, the left child
 		 * will take the place of this node.  Store a pointer to the
 		 * left child so that we can continue where we left off. */
 
-		new_root = node->children[AVL_TREE_NODE_LEFT];
-
-		avl_tree_rotate_right(tree, node);
-
-		node = new_root;
+		node = avl_tree_rotate(tree, node, AVL_TREE_NODE_RIGHT);
 	}
 
 	/* Update the height of this node */
