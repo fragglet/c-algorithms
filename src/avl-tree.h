@@ -98,6 +98,15 @@ typedef void *AVLTreeValue;
 typedef struct _AVLTreeNode AVLTreeNode;
 
 /**
+ * An @ref AVLTreeNode can have left and right children.
+ */
+
+typedef enum {
+        AVL_TREE_NODE_LEFT = 0,
+        AVL_TREE_NODE_RIGHT = 1
+} AVLTreeNodeSide;
+
+/**
  * Type of function used to compare keys in an AVL tree.
  *
  * @param value1           The first key.
@@ -219,24 +228,15 @@ AVLTreeKey avl_tree_node_key(AVLTreeNode *node);
 AVLTreeValue avl_tree_node_value(AVLTreeNode *node);
 
 /**
- * Find the left child of a given tree node.
+ * Find the child of a given tree node.
  *
  * @param node            The tree node.
- * @return                The left child of the tree node, or NULL if the
- *                        node has no left child.
+ * @param side            Which child node to get (left or right)
+ * @return                The child of the tree node, or NULL if the
+ *                        node has no child on the given side.
  */
 
-AVLTreeNode *avl_tree_node_left_child(AVLTreeNode *node);
-
-/**
- * Find the right child of a given tree node.
- *
- * @param node            The tree node.
- * @return                The right child of the tree node, or NULL if the
- *                        node has no right child.
- */
-
-AVLTreeNode *avl_tree_node_right_child(AVLTreeNode *node);
+AVLTreeNode *avl_tree_node_child(AVLTreeNode *node, AVLTreeNodeSide);
 
 /**
  * Find the parent node of a given tree node.

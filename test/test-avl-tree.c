@@ -42,7 +42,7 @@ static void print_tree(AVLTreeNode *node, int depth)
 		return;
 	}
 
-	print_tree(avl_tree_node_left_child(node), depth + 1);
+	print_tree(avl_tree_node_child(node, AVL_TREE_NODE_LEFT), depth + 1);
 
 	for (i=0; i<depth*6; ++i) {
 		printf(" ");
@@ -51,20 +51,24 @@ static void print_tree(AVLTreeNode *node, int depth)
 	value = avl_tree_node_key(node);
 	printf("%i\n", *value);
 
-	print_tree(avl_tree_node_right_child(node), depth + 1);
+	print_tree(avl_tree_node_child(node, AVL_TREE_NODE_RIGHT), depth + 1);
 }
 #endif
 
 int find_subtree_height(AVLTreeNode *node)
 {
+	AVLTreeNode *left_subtree;
+	AVLTreeNode *right_subtree;
 	int left_height, right_height;
 
 	if (node == NULL) {
 		return 0;
 	}
 
-	left_height = find_subtree_height(avl_tree_node_left_child(node));
-	right_height = find_subtree_height(avl_tree_node_right_child(node));
+	left_subtree = avl_tree_node_child(node, AVL_TREE_NODE_LEFT);
+	right_subtree = avl_tree_node_child(node, AVL_TREE_NODE_RIGHT);
+	left_height = find_subtree_height(left_subtree);
+	right_height = find_subtree_height(right_subtree);
 
 	if (left_height > right_height) {
 		return left_height + 1;
@@ -87,8 +91,10 @@ int validate_subtree(AVLTreeNode *node)
 		return 0;
 	}
 
-	left_node = avl_tree_node_left_child(node);
-	right_node = avl_tree_node_right_child(node);
+	left_node = avl_tree_node_child(node, AVL_TREE_NODE_LEFT);
+	right_node = avl_tree_node_child(node, AVL_TREE_NODE_RIGHT);
+	left_height = find_subtree_height(left_node);
+	right_height = find_subtree_height(right_node);
 
 	/* Check the parent references of the children */
 
@@ -226,6 +232,49 @@ void test_avl_tree_insert_lookup(void)
 	assert(avl_tree_lookup_node(tree, &i) == NULL);
 	i = 100000;
 	assert(avl_tree_lookup_node(tree, &i) == NULL);
+
+	avl_tree_free(tree);
+}
+
+void test_avl_tree_child(void)
+{
+	AVLTree *tree;
+	AVLTreeNode *root;
+	AVLTreeNode *left;
+	AVLTreeNode *right;
+	int values[] = { 1, 2, 3 };
+	int *p;
+	int i;
+
+	/* Create a tree containing some values. Validate the 
+	 * tree is consistent at all stages. */
+
+	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
+
+	for (i=0; i<3; ++i) {
+		avl_tree_insert(tree, &values[i], &values[i]);
+	}
+
+	/* Check the tree */
+
+	root = avl_tree_root_node(tree);
+	p = avl_tree_node_value(root);
+	assert(*p == 2);
+
+	left = avl_tree_node_child(root, AVL_TREE_NODE_LEFT);
+	p = avl_tree_node_value(left);
+	assert(*p == 1);
+
+	right = avl_tree_node_child(root, AVL_TREE_NODE_RIGHT);
+	p = avl_tree_node_value(right);
+	assert(*p == 3);
+
+	/* Check invalid values */
+
+	assert(avl_tree_node_child(root, -1) == NULL);
+	assert(avl_tree_node_child(root, 10000) == NULL);
+	assert(avl_tree_node_child(root, 2) == NULL);
+	assert(avl_tree_node_child(root, -100000) == NULL);
 
 	avl_tree_free(tree);
 }
@@ -386,6 +435,7 @@ void test_avl_tree_to_array(void)
 static UnitTestFunction tests[] = {
 	test_avl_tree_new,
 	test_avl_tree_free,
+	test_avl_tree_child,
 	test_avl_tree_insert_lookup,
 	test_avl_tree_lookup,
 	test_avl_tree_remove,
