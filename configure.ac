@@ -15,9 +15,11 @@ AC_ARG_ENABLE(coverage,
 [  --enable-coverage       Enable coverage testing. ],
 [ coverage=yes ])
 
+COV_FLAGS=""
+
 if [[ "$coverage" = "yes" ]]; then
         if [[ "$GCC" = "yes" ]]; then
-                CFLAGS="-fprofile-arcs -ftest-coverage $CFLAGS"
+                COV_FLAGS="-fprofile-arcs -ftest-coverage"
         else
                 AC_MSG_ERROR([Can only enable coverage when using gcc.])
         fi
@@ -42,6 +44,7 @@ AM_CONDITIONAL(USE_VALGRIND, $use_valgrind)
 
 AM_CONFIG_HEADER(config.h:config.h.in)
 
+AC_SUBST(COV_FLAGS)
 AC_SUBST(ac_aux_dir)
 
 AC_OUTPUT([
