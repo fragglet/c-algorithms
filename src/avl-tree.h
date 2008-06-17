@@ -45,8 +45,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * @ref avl_tree_lookup_node.
  *
  * Tree nodes can be queried using the 
- * @ref avl_tree_node_left_child,
- * @ref avl_tree_node_right_child,
+ * @ref avl_tree_node_child,
  * @ref avl_tree_node_parent,
  * @ref avl_tree_node_key and
  * @ref avl_tree_node_value functions.
@@ -236,7 +235,7 @@ AVLTreeValue avl_tree_node_value(AVLTreeNode *node);
  *                        node has no child on the given side.
  */
 
-AVLTreeNode *avl_tree_node_child(AVLTreeNode *node, AVLTreeNodeSide);
+AVLTreeNode *avl_tree_node_child(AVLTreeNode *node, AVLTreeNodeSide side);
 
 /**
  * Find the parent node of a given tree node.
