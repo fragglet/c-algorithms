@@ -4,6 +4,7 @@ TESTS_ENVIRONMENT=./valgrind-wrapper
 endif
 
 TESTS =                          \
+        test-alloc-testing       \
         test-arraylist           \
         test-avl-tree            \
         test-binary-heap         \
