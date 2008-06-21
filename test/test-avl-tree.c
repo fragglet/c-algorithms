@@ -93,8 +93,6 @@ int validate_subtree(AVLTreeNode *node)
 
 	left_node = avl_tree_node_child(node, AVL_TREE_NODE_LEFT);
 	right_node = avl_tree_node_child(node, AVL_TREE_NODE_RIGHT);
-	left_height = find_subtree_height(left_node);
-	right_height = find_subtree_height(right_node);
 
 	/* Check the parent references of the children */
 
