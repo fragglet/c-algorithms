@@ -87,6 +87,17 @@ void test_set_new_free(void)
 	/* Free the set */
 
 	set_free(set);
+
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+	set = set_new(int_hash, int_equal);
+	assert(set == NULL);
+
+	alloc_test_set_limit(7 * sizeof(void *));
+	set = set_new(int_hash, int_equal);
+	assert(set == NULL);
+	assert(alloc_test_get_allocated() == 0);
 }
 
 void test_set_insert(void)
@@ -446,6 +457,52 @@ void test_set_free_function(void)
 	assert(allocated_values == 0);
 }
 
+/* Test for out of memory scenario */
+
+void test_set_out_of_memory(void)
+{
+	Set *set;
+	int values[66];
+	int i;
+
+	set = set_new(int_hash, int_equal);
+
+	/* Test normal failure */
+
+	alloc_test_set_limit(0);
+	values[0] = 0;
+	assert(set_insert(set, &values[0]) == 0);
+	assert(set_num_entries(set) == 0);
+
+	alloc_test_set_limit(-1);
+
+	/* Test failure when increasing table size.
+	 * The initial table size is 193 entries.  The table increases in
+	 * size when 1/3 full, so the 66th entry should cause the insert
+	 * to fail. */
+
+	for (i=0; i<65; ++i) {
+		values[i] = i;
+
+		assert(set_insert(set, &values[i]) != 0);
+		assert(set_num_entries(set) == i + 1);
+	}
+
+	assert(set_num_entries(set) == 65);
+
+	/* Test the 66th insert */
+
+	alloc_test_set_limit(0);
+
+	values[65] = 65;
+
+	assert(set_insert(set, &values[65]) == 0);
+	assert(set_num_entries(set) == 65);
+
+	set_free(set);
+}
+
+
 static UnitTestFunction tests[] = {
 	test_set_new_free,
 	test_set_insert,
@@ -457,6 +514,7 @@ static UnitTestFunction tests[] = {
 	test_set_iterating_remove,
 	test_set_to_array,
 	test_set_free_function,
+	test_set_out_of_memory,
 	NULL
 };
 
