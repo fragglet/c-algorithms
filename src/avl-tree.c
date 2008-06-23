@@ -117,7 +117,7 @@ static void avl_tree_update_height(AVLTreeNode *node)
 
 /* Find what side a node is relative to its parent */
 
-AVLTreeNodeSide avl_tree_node_parent_side(AVLTreeNode *node)
+static AVLTreeNodeSide avl_tree_node_parent_side(AVLTreeNode *node)
 {
 	if (node->parent->children[AVL_TREE_NODE_LEFT] == node) {
 		return AVL_TREE_NODE_LEFT;
