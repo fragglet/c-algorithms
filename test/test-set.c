@@ -212,6 +212,7 @@ void test_set_union(void)
 	Set *set1;
 	Set *set2;
 	Set *result_set;
+	int allocated;
 
 	/* Create the first set */
 
@@ -239,9 +240,30 @@ void test_set_union(void)
 		assert(set_query(result_set, &result[i]) != 0);
 	}
 
+	set_free(result_set);
+
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+	assert(set_union(set1, set2) == NULL);
+
+	/* Can allocate set, can't copy all set1 values */
+
+	alloc_test_set_limit(sizeof(void *) * (7 + 193 + 6));
+	allocated = alloc_test_get_allocated();
+	assert(set_union(set1, set2) == NULL);
+	assert(alloc_test_get_allocated() == allocated);
+
+	/* Can allocate set, can copy set1 values, 
+	 * can't copy all set2 values */
+
+	alloc_test_set_limit(sizeof(void *) * (7 + 193 + 15));
+	allocated = alloc_test_get_allocated();
+	assert(set_union(set1, set2) == NULL);
+	assert(alloc_test_get_allocated() == allocated);
+
 	set_free(set1);
 	set_free(set2);
-	set_free(result_set);
 }
 
 void test_set_intersection(void)
@@ -253,6 +275,7 @@ void test_set_intersection(void)
 	Set *set1;
 	Set *set2;
 	Set *result_set;
+	int allocated;
 
 	/* Create the first set */
 
@@ -279,6 +302,18 @@ void test_set_intersection(void)
 	for (i=0; i<3; ++i) {
 		assert(set_query(result_set, &result[i]) != 0);
 	}
+
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+	assert(set_intersection(set1, set2) == NULL);
+
+	/* Can allocate set, can't copy all values */
+
+	alloc_test_set_limit(sizeof(void *) * (7 + 193 + 2));
+	allocated = alloc_test_get_allocated();
+	assert(set_intersection(set1, set2) == NULL);
+	assert(alloc_test_get_allocated() == allocated);
 
 	set_free(set1);
 	set_free(set2);
@@ -311,6 +346,11 @@ void test_set_to_array(void)
 		*array[i] = 0;
 	}
 
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+	assert(set_to_array(set) == NULL);
+	
 	free(array);
 	set_free(set);
 }
