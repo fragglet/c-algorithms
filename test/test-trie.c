@@ -99,7 +99,7 @@ void test_trie_new_free(void)
 	assert(trie == NULL);
 }
 
-void test_insert(void)
+void test_trie_insert(void)
 {
 	Trie *trie;
 	int entries;
@@ -130,7 +130,7 @@ void test_insert(void)
 	trie_free(trie);
 }
 
-void test_lookup(void)
+void test_trie_lookup(void)
 {
 	Trie *trie;
 	char buf[10];
@@ -158,7 +158,7 @@ void test_lookup(void)
 	trie_free(trie);
 }
 
-void test_remove(void)
+void test_trie_remove(void)
 {
 	Trie *trie;
 	char buf[10];
@@ -192,7 +192,7 @@ void test_remove(void)
 	trie_free(trie);
 }
 
-void test_replace(void)
+void test_trie_replace(void)
 {
 	Trie *trie;
 	int *val;
@@ -211,7 +211,7 @@ void test_replace(void)
 	trie_free(trie);
 }
 
-void test_insert_empty(void)
+void test_trie_insert_empty(void)
 {
 	Trie *trie;
 	char buf[10];
@@ -232,11 +232,11 @@ void test_insert_empty(void)
 
 static UnitTestFunction tests[] = {
 	test_trie_new_free,
-	test_insert,
-	test_lookup,
-	test_remove,
-	test_replace,
-	test_insert_empty,
+	test_trie_insert,
+	test_trie_lookup,
+	test_trie_remove,
+	test_trie_replace,
+	test_trie_insert_empty,
 	NULL
 };
 
