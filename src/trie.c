@@ -120,8 +120,10 @@ static TrieNode *trie_find_end(Trie *trie, char *key)
 
 static void trie_insert_rollback(Trie *trie, char *key)
 {
-	TrieNode **rover;
 	TrieNode *node;
+	TrieNode **prev_ptr;
+	TrieNode *next_node;
+	TrieNode **next_prev_ptr;
 	char *p;
 
 	/* Follow the chain along.  We know that we will never reach the 
@@ -129,28 +131,37 @@ static void trie_insert_rollback(Trie *trie, char *key)
 	 * result, it is not necessary to check for the end of string
 	 * delimiter (NUL) */
 
-	rover = &trie->root_node;
+	node = trie->root_node;
+	prev_ptr = &trie->root_node;
 	p = key;
 
-	while (*rover != NULL) {
+	while (node != NULL) {
 
-		/* Advance to the next node in the chain.  Do this now,
-		 * before we potentially free this node. */
+		/* Find the next node now. We might free this node. */
 
-		node = *rover;
-		rover = &node->next[(int) *p];
+		next_prev_ptr = &node->next[(int) *p];
+		next_node = *next_prev_ptr;
 		++p;
-		
-		/* Decrement the use count at this node back to what it 
-		 * previously was. */
+
+		/* Decrease the use count and free the node if it 
+		 * reaches zero. */
 
 		--node->use_count;
 
-		if (node->use_count <= 0) {
-			/* This has just been allocated.  Free it back. */
+		if (node->use_count == 0) {
+ 			free(node);
 
-			free(node);
+			if (prev_ptr != NULL) {
+				*prev_ptr = NULL;
+			}
+
+			next_prev_ptr = NULL;
 		}
+
+		/* Update pointers */
+
+		node = next_node;
+		prev_ptr = next_prev_ptr;
 	}
 }
 

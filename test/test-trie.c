@@ -50,7 +50,7 @@ Trie *generate_trie(void)
 		test_array[i] = i;
 		sprintf(test_strings[i], "%i", i);
 		
-		trie_insert(trie, test_strings[i], &test_array[i]);
+		assert(trie_insert(trie, test_strings[i], &test_array[i]) != 0);
 
 		++entries;
 
@@ -90,6 +90,43 @@ void test_trie_new_free(void)
 	trie_insert(trie, "hello", "there");
 	assert(trie_remove(trie, "hello") == 1);
 	
+	trie_free(trie);
+
+	/* Test out of memory scenario */
+
+	alloc_test_set_limit(0);
+	trie = trie_new();
+	assert(trie == NULL);
+}
+
+void test_insert(void)
+{
+	Trie *trie;
+	int entries;
+	int allocated;
+
+	trie = generate_trie();
+
+	/* Test insert of NULL value has no effect */
+
+	entries = trie_num_entries(trie);
+	assert(trie_insert(trie, "hello world", NULL) == 0);
+	assert(trie_num_entries(trie) == entries);
+	
+	/* Test out of memory scenario */
+
+	allocated = alloc_test_get_allocated();
+	alloc_test_set_limit(0);
+	assert(trie_insert(trie, "a", "test value") == 0);
+	assert(trie_num_entries(trie) == entries);
+
+	/* Test rollback */
+
+	alloc_test_set_limit(5 * 258 * sizeof(void *));
+	assert(trie_insert(trie, "hello world", "test value") == 0);
+	assert(alloc_test_get_allocated() == allocated);
+	assert(trie_num_entries(trie) == entries);
+
 	trie_free(trie);
 }
 
@@ -195,6 +232,7 @@ void test_insert_empty(void)
 
 static UnitTestFunction tests[] = {
 	test_trie_new_free,
+	test_insert,
 	test_lookup,
 	test_remove,
 	test_replace,
