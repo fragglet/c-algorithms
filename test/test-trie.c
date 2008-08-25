@@ -76,10 +76,10 @@ void test_trie_new_free(void)
 
 	trie = trie_new();
 
-	trie_insert(trie, "hello", "there");
-	trie_insert(trie, "hell", "testing");
-	trie_insert(trie, "testing", "testing");
-	trie_insert(trie, "", "asfasf");
+	assert(trie_insert(trie, "hello", "there") != 0);
+	assert(trie_insert(trie, "hell", "testing") != 0);
+	assert(trie_insert(trie, "testing", "testing") != 0);
+	assert(trie_insert(trie, "", "asfasf") != 0);
 
 	trie_free(trie);
 
@@ -87,8 +87,8 @@ void test_trie_new_free(void)
 
 	trie = trie_new();
 
-	trie_insert(trie, "hello", "there");
-	assert(trie_remove(trie, "hello") == 1);
+	assert(trie_insert(trie, "hello", "there") != 0);
+	assert(trie_remove(trie, "hello") != 0);
 	
 	trie_free(trie);
 
@@ -203,7 +203,7 @@ void test_replace(void)
 
 	val = malloc(sizeof(int));
 	*val = 999;
-	trie_insert(trie, "999", val);
+	assert(trie_insert(trie, "999", val) != 0);
 	assert(trie_num_entries(trie) == 100000);
 
 	assert(trie_lookup(trie, "999") == val);
@@ -220,8 +220,8 @@ void test_insert_empty(void)
 
 	/* Test insert on empty string */
 
-	trie_insert(trie, "", buf);
-	assert(trie_num_entries(trie) == 1);
+	assert(trie_insert(trie, "", buf) != 0);
+	assert(trie_num_entries(trie) != 0);
 	assert(trie_lookup(trie, "") == buf);
 	assert(trie_remove(trie, "") != 0);
 
