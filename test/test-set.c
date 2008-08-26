@@ -94,7 +94,7 @@ void test_set_new_free(void)
 	set = set_new(int_hash, int_equal);
 	assert(set == NULL);
 
-	alloc_test_set_limit(7 * sizeof(void *));
+	alloc_test_set_limit(1);
 	set = set_new(int_hash, int_equal);
 	assert(set == NULL);
 	assert(alloc_test_get_allocated() == 0);
@@ -249,7 +249,7 @@ void test_set_union(void)
 
 	/* Can allocate set, can't copy all set1 values */
 
-	alloc_test_set_limit(sizeof(void *) * (7 + 193 + 6));
+	alloc_test_set_limit(2 + 2);
 	allocated = alloc_test_get_allocated();
 	assert(set_union(set1, set2) == NULL);
 	assert(alloc_test_get_allocated() == allocated);
@@ -257,7 +257,7 @@ void test_set_union(void)
 	/* Can allocate set, can copy set1 values, 
 	 * can't copy all set2 values */
 
-	alloc_test_set_limit(sizeof(void *) * (7 + 193 + 15));
+	alloc_test_set_limit(2 + 7 + 2);
 	allocated = alloc_test_get_allocated();
 	assert(set_union(set1, set2) == NULL);
 	assert(alloc_test_get_allocated() == allocated);
@@ -310,7 +310,7 @@ void test_set_intersection(void)
 
 	/* Can allocate set, can't copy all values */
 
-	alloc_test_set_limit(sizeof(void *) * (7 + 193 + 2));
+	alloc_test_set_limit(2 + 2);
 	allocated = alloc_test_get_allocated();
 	assert(set_intersection(set1, set2) == NULL);
 	assert(alloc_test_get_allocated() == allocated);

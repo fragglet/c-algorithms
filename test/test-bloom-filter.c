@@ -62,7 +62,7 @@ void test_bloom_filter_new_free(void)
 
 	assert(filter == NULL);
 
-	alloc_test_set_limit(sizeof(void *) * 4);
+	alloc_test_set_limit(1);
 
 	filter = bloom_filter_new(128, string_hash, 1);
 

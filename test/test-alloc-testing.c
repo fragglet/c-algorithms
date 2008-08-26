@@ -30,7 +30,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 static void test_malloc_free(void)
 {
-	void *block;
+	void *block, *block2, *block3, *block4;
 	unsigned char *ptr;
 	int i;
 
@@ -59,13 +59,20 @@ static void test_malloc_free(void)
 
 	/* Try setting a limit */
 
-	alloc_test_set_limit(1024);
+	alloc_test_set_limit(3);
 
-	block = malloc(1025);
-	assert(block == NULL);
 	block = malloc(1024);
 	assert(block != NULL);
+	block2 = malloc(1024);
+	assert(block2 != NULL);
+	block3 = malloc(1024);
+	assert(block3 != NULL);
+	block4 = malloc(1024);
+	assert(block4 == NULL);
 	free(block);
+	free(block2);
+	free(block3);
+	free(block4);
 }
 
 static void test_realloc(void)
@@ -117,17 +124,17 @@ static void test_realloc(void)
 
 	/* Test realloc with a limit set */
 
-	alloc_test_set_limit(1024);
-
 	block = malloc(512);
 	assert(block != NULL);
 	assert(alloc_test_get_allocated() == 512);
+
+	alloc_test_set_limit(1);
 
 	block = realloc(block, 1024);
 	assert(block != NULL);
 	assert(alloc_test_get_allocated() == 1024);
 
-	assert(realloc(block, 1025) == NULL);
+	assert(realloc(block, 2048) == NULL);
 	assert(alloc_test_get_allocated() == 1024);
 
 	free(block);
@@ -135,12 +142,13 @@ static void test_realloc(void)
 
 	/* Test NULL realloc with limit */
 
-	block = realloc(NULL, 1025);
-	assert(block == NULL);
-	assert(alloc_test_get_allocated() == 0);
+	alloc_test_set_limit(1);
 
 	block = realloc(NULL, 1024);
 	assert(block != NULL);
+	assert(alloc_test_get_allocated() == 1024);
+
+	assert(realloc(NULL, 1024) == NULL);
 	assert(alloc_test_get_allocated() == 1024);
 
 	free(block);
@@ -173,14 +181,13 @@ static void test_calloc(void)
 
 	/* Test calloc with limit */
 
-	alloc_test_set_limit(1024);
-
-	block = calloc(1025, 1);
-	assert(block == NULL);
-	assert(alloc_test_get_allocated() == 0);
+	alloc_test_set_limit(1);
 
 	block = calloc(1024, 1);
 	assert(block != NULL);
+	assert(alloc_test_get_allocated() == 1024);
+
+	assert(calloc(1024, 1) == NULL);
 	assert(alloc_test_get_allocated() == 1024);
 
 	free(block);
@@ -207,14 +214,13 @@ static void test_strdup(void)
 
 	/* Test strdup with limit */
 
-	alloc_test_set_limit(12);
-
-	str = strdup("hello world1");
-	assert(str == NULL);
-	assert(alloc_test_get_allocated() == 0);
+	alloc_test_set_limit(1);
 
 	str = strdup("hello world");
 	assert(str != NULL);
+	assert(alloc_test_get_allocated() == 12);
+
+	assert(strdup("hello world") == NULL);
 	assert(alloc_test_get_allocated() == 12);
 
 	free(str);
@@ -223,7 +229,6 @@ static void test_strdup(void)
 static void test_limits(void)
 {
 	void *block;
-	void *block2;
 
 	/* Test normal malloc */
 
@@ -233,29 +238,18 @@ static void test_limits(void)
 
 	/* Test malloc with limit */
 
-	alloc_test_set_limit(1024);
-	assert(malloc(2048) == NULL);
+	alloc_test_set_limit(1);
 	block = malloc(1024);
 	assert(block != NULL);
+	assert(malloc(1024) == NULL);
 	free(block);
 
 	/* Check that it is possible to remove the limit */
 
 	alloc_test_set_limit(-1);
-	block = malloc(2048);
+	block = malloc(1024);
 	assert(block != NULL);
 	free(block);
-
-	/* Check that limits are set _relative_ to the currently allocated
-	   amount of memory */
-
-	block2 = malloc(1024);
-	assert(alloc_test_get_allocated() == 1024);
-	alloc_test_set_limit(2048);
-	block = malloc(2048);
-	assert(block != NULL);
-	free(block);
-	free(block2);
 }
 
 static UnitTestFunction tests[] = {

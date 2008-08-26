@@ -81,7 +81,7 @@ void test_arraylist_new_free(void)
 	arraylist = arraylist_new(0);
 	assert(arraylist == NULL);
 
-	alloc_test_set_limit(100 * sizeof(void *));
+	alloc_test_set_limit(1);
 	arraylist = arraylist_new(100);
 	assert(arraylist == NULL);
 }

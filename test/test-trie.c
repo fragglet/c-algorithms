@@ -122,7 +122,7 @@ void test_trie_insert(void)
 
 	/* Test rollback */
 
-	alloc_test_set_limit(5 * 258 * sizeof(void *));
+	alloc_test_set_limit(5);
 	assert(trie_insert(trie, "hello world", "test value") == 0);
 	assert(alloc_test_get_allocated() == allocated);
 	assert(trie_num_entries(trie) == entries);

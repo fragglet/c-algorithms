@@ -97,7 +97,7 @@ void test_hash_table_new_free(void)
 	assert(hash_table == NULL);
 	assert(alloc_test_get_allocated() == 0);
 
-	alloc_test_set_limit(8 * sizeof(void *));
+	alloc_test_set_limit(1);
 	hash_table = hash_table_new(int_hash, int_equal);
 	assert(hash_table == NULL);
 	assert(alloc_test_get_allocated() == 0);

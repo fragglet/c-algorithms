@@ -45,7 +45,7 @@ void test_binary_heap_new_free(void)
 	heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
 	assert(heap == NULL);
 
-	alloc_test_set_limit(16 * sizeof(void *));
+	alloc_test_set_limit(1);
 	heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
 	assert(heap == NULL);
 }

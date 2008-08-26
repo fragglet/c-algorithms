@@ -59,7 +59,9 @@ struct _BlockHeader {
 
 static size_t allocated_bytes = 0;
 
-/* Allocation limit, negative value means no limit. */
+/* Limit on number of allocations that are possible.  Each time an allocation
+ * is made, this is decremented.  When it reaches zero, no more allocations
+ * are allowed.  If this has a negative value, the limit is disabled. */
 
 signed int allocation_limit = -1;
 
@@ -76,14 +78,6 @@ static BlockHeader *alloc_test_get_header(void *ptr)
 	assert(result->magic_number == ALLOC_TEST_MAGIC);
 	
 	return result;
-}
-
-/* Test whether a new value of allocated_bytes would be valid. */
-
-static int alloc_test_new_size_allowed(size_t new_size)
-{
-	return allocation_limit < 0
-	    || new_size <= allocation_limit;
 }
 
 /* Overwrite a block of memory with a repeated pattern. */
@@ -106,10 +100,16 @@ static void alloc_test_overwrite(void *ptr, size_t length, unsigned int pattern)
 
 /* Base malloc function used by other functions. */
 
-BlockHeader *alloc_test_base_malloc(size_t bytes)
+void *alloc_test_malloc(size_t bytes)
 {
 	BlockHeader *header;
 	void *ptr;
+
+	/* Check if we have reached the allocation limit. */
+
+	if (allocation_limit == 0) {
+		return NULL;
+	}
 
 	/* Allocate the requested block with enough room for the block header
 	 * as well. */
@@ -129,61 +129,22 @@ BlockHeader *alloc_test_base_malloc(size_t bytes)
 	ptr = header + 1;
 	alloc_test_overwrite(ptr, bytes, MALLOC_PATTERN);
 
-	return header;
-}
-
-/* Base free function */
-
-void alloc_test_base_free(BlockHeader *header)
-{
-	void *ptr;
-
-	/* Trash the allocated block to foil any code that relies on memory 
-	 * that has been freed. */
-
-	ptr = header + 1;
-	alloc_test_overwrite(ptr, header->bytes, FREE_PATTERN);
-
-	/* Trash the magic number in the block header to stop the same block
-	 * from being freed again. */
-
-	header->magic_number = 0;
-
-	/* Free the allocated memory. */
-
-	free(header);
-}
-
-/* Main malloc function */
-
-void *alloc_test_malloc(size_t bytes)
-{
-	BlockHeader *header;
-	void *result;
-
-	/* Check if we have reached the allocation limit. */
-
-	if (!alloc_test_new_size_allowed(allocated_bytes + bytes)) {
-		return NULL;
-	}
-
-	/* Do the allocation */
-
-	header = alloc_test_base_malloc(bytes);
-
-	if (header == NULL) {
-		return NULL;
-	}
-
 	/* Update counter */
 
 	allocated_bytes += bytes;
 
+	/* Decrease the allocation limit */
+
+	if (allocation_limit > 0) {
+		--allocation_limit;
+	}
+
 	/* Skip past the header and return the block itself */
 
-	result = header + 1;
-	return result;
+	return header + 1;
 }
+
+/* Base free function */
 
 void alloc_test_free(void *ptr)
 {
@@ -196,13 +157,25 @@ void alloc_test_free(void *ptr)
 		return;
 	}
 
-	/* Free the block */
+	/* Get the block header and do a sanity check */
 
 	header = alloc_test_get_header(ptr);
 	block_size = header->bytes;
 	assert(allocated_bytes >= block_size);
 
-	alloc_test_base_free(header);
+	/* Trash the allocated block to foil any code that relies on memory 
+	 * that has been freed. */
+
+	alloc_test_overwrite(ptr, header->bytes, FREE_PATTERN);
+
+	/* Trash the magic number in the block header to stop the same block
+	 * from being freed again. */
+
+	header->magic_number = 0;
+
+	/* Free the allocated memory. */
+
+	free(header);
 
 	/* Update counter */
 
@@ -211,67 +184,33 @@ void alloc_test_free(void *ptr)
 
 void *alloc_test_realloc(void *ptr, size_t bytes)
 {
-	BlockHeader *old_block, *new_block;
+	BlockHeader *header;
 	void *new_ptr;
-	size_t old_bytes;
-	size_t new_allocated_bytes;
 	size_t bytes_to_copy;
 
-	/* A NULL value can be passed to ptr to make realloc behave
-	 * like malloc(). */
+	/* Allocate the new block */
+
+	new_ptr = alloc_test_malloc(bytes);
+
+	if (new_ptr == NULL) {
+		return NULL;
+	}
+
+	/* Copy over the old data and free the old block, if there was any. */
 
 	if (ptr != NULL) {
-		old_block = alloc_test_get_header(ptr);
-		old_bytes = old_block->bytes;
-	} else {
-		old_block = NULL;
-		old_bytes = 0;
+		header = alloc_test_get_header(ptr);
+
+		bytes_to_copy = header->bytes;
+
+		if (bytes_to_copy > bytes) {
+			bytes_to_copy = bytes;
+		}
+
+		memcpy(new_ptr, ptr, bytes_to_copy);
+
+		alloc_test_free(ptr);
 	}
-
-	/* Sanity check the new allocated_bytes value */
-
-	assert(allocated_bytes + bytes >= old_bytes);
-	
-	/* Check the new value for allocated bytes is within the 
-	 * allocation limit. */
-
-	new_allocated_bytes = allocated_bytes + bytes - old_bytes;
-
-	if (!alloc_test_new_size_allowed(new_allocated_bytes)) {
-		return NULL;
-	}
-
-	/* Always allocate a new block, to ensure that code does not rely
-	 * on reallocated blocks having the same memory location. */
-
-	new_block = alloc_test_base_malloc(bytes);
-
-	if (new_block == NULL) {
-		return NULL;
-	}
-
-	/* Work out how many bytes to copy. */
-
-	if (bytes < old_bytes) {
-		bytes_to_copy = bytes;
-	} else {
-		bytes_to_copy = old_bytes;
-	}
-
-	/* Copy the old block to the new block. */
-
-	new_ptr = new_block + 1;
-	memcpy(new_ptr, ptr, bytes_to_copy);
-
-	/* Free the old block. */
-	
-	if (old_block != NULL) {
-		alloc_test_base_free(old_block);
-	}
-
-	/* Update allocated_bytes counter. */
-
-	allocated_bytes = new_allocated_bytes;
 
 	return new_ptr;
 }
@@ -311,13 +250,9 @@ char *alloc_test_strdup(const char *string)
 	return result;
 }
 
-void alloc_test_set_limit(signed int bytes)
+void alloc_test_set_limit(signed int alloc_count)
 {
-	if (bytes < 0) {
-		allocation_limit = -1;
-	} else {
-		allocation_limit = allocated_bytes + bytes;
-	}
+	allocation_limit = alloc_count;
 }
 
 size_t alloc_test_get_allocated(void)

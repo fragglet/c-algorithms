@@ -107,14 +107,15 @@ char *alloc_test_strdup(const char *string);
  * Set an artificial limit on the amount of memory that can be 
  * allocated.  
  *
- * @param bytes          The maximum number of bytes that may be allocated,
- *                       relative to the currently allocated number of bytes.
- *                       For example, if this has a value of 100, 100 more
- *                       bytes may be allocated. If this has a negative
- *                       value, any current limit is disabled.
+ * @param alloc_count    Number of allocations that are possible after
+ *                       this call.  For example, if this has a value 
+ *                       of 3, malloc() can be called successfully 
+ *                       three times, but all allocation attempts 
+ *                       after this will fail.  If this has a negative
+ *                       value, the allocation limit is disabled.
  */
 
-void alloc_test_set_limit(signed int bytes);
+void alloc_test_set_limit(signed int alloc_count);
 
 /**
  * Get a count of the number of bytes currently allocated.
