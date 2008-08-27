@@ -53,6 +53,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifndef ALGORITHM_LIST_H
 #define ALGORITHM_LIST_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Represents an entry in a doubly-linked list.  The empty list is
  * represented by a NULL pointer. To initialise a new doubly linked 
@@ -299,6 +303,10 @@ ListValue list_iter_next(ListIterator *iterator);
  */
 
 void list_iter_remove(ListIterator *iterator);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* #ifndef ALGORITHM_LIST_H */
 

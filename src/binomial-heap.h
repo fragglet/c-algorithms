@@ -143,5 +143,9 @@ BinomialHeapValue binomial_heap_pop(BinomialHeap *heap);
 
 int binomial_heap_num_entries(BinomialHeap *heap);
 
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* #ifndef ALGORITHM_BINOMIAL_HEAP_H */
 

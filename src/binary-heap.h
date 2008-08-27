@@ -143,5 +143,9 @@ BinaryHeapValue binary_heap_pop(BinaryHeap *heap);
 
 int binary_heap_num_entries(BinaryHeap *heap);
 
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* #ifndef ALGORITHM_BINARY_HEAP_H */
 

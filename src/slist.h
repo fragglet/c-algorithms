@@ -66,6 +66,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifndef ALGORITHM_SLIST_H
 #define ALGORITHM_SLIST_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Represents an entry in a singly-linked list.  The empty list is
  * represented by a NULL pointer. To initialise a new singly linked 
@@ -301,6 +305,10 @@ SListValue slist_iter_next(SListIterator *iterator);
  */
 
 void slist_iter_remove(SListIterator *iterator);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* #ifndef ALGORITHM_SLIST_H */
 
