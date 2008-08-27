@@ -21,6 +21,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifndef TEST_FRAMEWORK_H
 #define TEST_FRAMEWORK_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @file framework.h
  *
@@ -42,6 +46,10 @@ typedef void (*UnitTestFunction)(void);
  */
 
 void run_tests(UnitTestFunction *tests);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* #ifndef TEST_FRAMEWORK_H */
 

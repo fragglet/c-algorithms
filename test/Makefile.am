@@ -10,6 +10,7 @@ TESTS =                          \
         test-binary-heap         \
         test-binomial-heap       \
         test-bloom-filter        \
+        test-cpp                 \
         test-list                \
         test-slist               \
         test-queue               \
@@ -30,4 +31,7 @@ AM_CFLAGS = $(COV_FLAGS) -I../src -Wall
 LDADD = $(top_builddir)/src/libcalgtest.a libtestframework.a
 
 EXTRA_DIST=valgrind-wrapper
+
+test-cpp: test-cpp.cpp
+	$(CXX) $(AM_CFLAGS) $^ -o $@ $(LDADD)
 
