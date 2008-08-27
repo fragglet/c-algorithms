@@ -149,7 +149,7 @@ static void trie_insert_rollback(Trie *trie, char *key)
 		--node->use_count;
 
 		if (node->use_count == 0) {
- 			free(node);
+			free(node);
 
 			if (prev_ptr != NULL) {
 				*prev_ptr = NULL;

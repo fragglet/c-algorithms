@@ -179,7 +179,7 @@ static AVLTreeNode *avl_tree_rotate(AVLTree *tree, AVLTreeNode *node,
 	AVLTreeNode *new_root;
 
 	/* The child of this node will take its place:
-           for a left rotation, it is the right child, and vice versa. */
+	   for a left rotation, it is the right child, and vice versa. */
 
 	new_root = node->children[1-direction];
 	
@@ -205,7 +205,7 @@ static AVLTreeNode *avl_tree_rotate(AVLTree *tree, AVLTreeNode *node,
 	avl_tree_update_height(new_root);
 	avl_tree_update_height(node);
 
-        return new_root;
+	return new_root;
 }
 
 
@@ -245,7 +245,7 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 			 * rotation) */
 
 			avl_tree_rotate(tree, right_subtree,
-                                        AVL_TREE_NODE_RIGHT);
+			                AVL_TREE_NODE_RIGHT);
 		}
 
 		/* Perform a left rotation.  After this, the right child will
@@ -267,7 +267,7 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 			 * rotation) */
 
 			avl_tree_rotate(tree, left_subtree,
-                                        AVL_TREE_NODE_LEFT);
+			                AVL_TREE_NODE_LEFT);
 		}
 
 		/* Perform a right rotation.  After this, the left child will
@@ -287,7 +287,7 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 
 static void avl_tree_balance_to_root(AVLTree *tree, AVLTreeNode *node)
 {
-        AVLTreeNode *rover;
+	AVLTreeNode *rover;
 
 	rover = node;
 
@@ -342,9 +342,9 @@ AVLTreeNode *avl_tree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value)
 
 	*rover = new_node;
 
-        /* Rebalance the tree, starting from the previous node. */
+	/* Rebalance the tree, starting from the previous node. */
 
-        avl_tree_balance_to_root(tree, previous_node);
+	avl_tree_balance_to_root(tree, previous_node);
 
 	/* Keep track of the number of entries */
 
@@ -475,7 +475,7 @@ void avl_tree_remove_node(AVLTree *tree, AVLTreeNode *node)
 
 	/* Rebalance the tree */
 
-        avl_tree_balance_to_root(tree, balance_startpoint);
+	avl_tree_balance_to_root(tree, balance_startpoint);
 }
 
 /* Remove a node by key */

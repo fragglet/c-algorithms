@@ -101,8 +101,8 @@ typedef struct _AVLTreeNode AVLTreeNode;
  */
 
 typedef enum {
-        AVL_TREE_NODE_LEFT = 0,
-        AVL_TREE_NODE_RIGHT = 1
+	AVL_TREE_NODE_LEFT = 0,
+	AVL_TREE_NODE_RIGHT = 1
 } AVLTreeNodeSide;
 
 /**

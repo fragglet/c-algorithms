@@ -51,11 +51,11 @@ extern "C" {
  */
 
 typedef enum {
-        /** A minimum heap. */
+	/** A minimum heap. */
 
 	BINARY_HEAP_TYPE_MIN,
 
-        /** A maximum heap. */
+	/** A maximum heap. */
 
 	BINARY_HEAP_TYPE_MAX
 } BinaryHeapType;

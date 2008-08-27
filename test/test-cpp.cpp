@@ -204,7 +204,7 @@ static void test_trie(void)
 }
 
 static UnitTestFunction tests[] = {
-        test_compare_int,
+	test_compare_int,
 	test_compare_pointer,
 	test_compare_string,
 	test_hash_int,
