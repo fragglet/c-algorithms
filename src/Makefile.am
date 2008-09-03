@@ -29,3 +29,5 @@ headerfiles_HEADERS=$(MAIN_HEADERFILES)
 calgheaderfilesdir=$(headerfilesdir)/libcalg
 calgheaderfiles_HEADERS=$(CALG_HEADERFILES)
 
+EXTRA_DIST=gencov
+

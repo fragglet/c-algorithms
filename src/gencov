@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# Simple shell script to generate a coverage report.
+#
+
+for d in *.c; do
+	obj=`echo $d | sed "s/^/libcalgtest_a-/" | sed "s/.c$/.o/"`
+
+	gcov -b -o $obj $d
+done
+
