@@ -43,24 +43,6 @@ struct _Trie {
 	TrieNode *root_node;
 };
 
-static void trie_free_node(TrieNode *node)
-{
-	int i;
-
-	if (node == NULL)
-		return;
-	
-	/* First, free all subnodes */
-
-	for (i=0; i<256; ++i) {
-		trie_free_node(node->next[i]);
-	}
-
-	/* Free this node */
-
-	free(node);
-}
-
 Trie *trie_new(void)
 {
 	Trie *new_trie;
@@ -76,11 +58,55 @@ Trie *trie_new(void)
 	return new_trie;
 }
 
+static void trie_free_list_push(TrieNode **list, TrieNode *node)
+{
+	node->data = *list;
+	*list = node;
+}
+
+static TrieNode *trie_free_list_pop(TrieNode **list)
+{
+	TrieNode *result;
+
+	result = *list;
+	*list = result->data;
+
+	return result;
+}
+
 void trie_free(Trie *trie)
 {
-	/* Free the subnode, and all others by implication */
+	TrieNode *free_list;
+	TrieNode *node;
+	int i;
 
-	trie_free_node(trie->root_node);
+	free_list = NULL;
+
+	/* Start with the root node */
+
+	if (trie->root_node != NULL) {
+		trie_free_list_push(&free_list, trie->root_node);
+	}
+
+	/* Go through the free list, freeing nodes.  We add new nodes as 
+	 * we encounter them; in this way, all the nodes are freed
+	 * non-recursively. */
+
+	while (free_list != NULL) {
+		node = trie_free_list_pop(&free_list);
+
+		/* Add all children of this node to the free list */
+
+		for (i=0; i<256; ++i) {
+			if (node->next[i] != NULL) {
+				trie_free_list_push(&free_list, node->next[i]);
+			}
+		}
+
+		/* Free the node */
+
+		free(node);
+	}
 
 	/* Free the trie */
 

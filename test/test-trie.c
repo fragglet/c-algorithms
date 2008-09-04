@@ -28,8 +28,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 #include "trie.h"
 
-int test_array[100000];
-char test_strings[100000][10];
+#define NUM_TEST_VALUES 10000
+
+int test_array[NUM_TEST_VALUES];
+char test_strings[NUM_TEST_VALUES][10];
 
 Trie *generate_trie(void)
 {
@@ -42,7 +44,7 @@ Trie *generate_trie(void)
 	trie = trie_new();
 	entries = 0;
 
-	for (i=0; i<100000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 
 		/* Create a string containing a text version of i, and use
 		 * it as a key for the value */
@@ -146,7 +148,7 @@ void test_trie_lookup(void)
 
 	/* Look up all values */
 
-	for (i=0; i<100000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 
 		sprintf(buf, "%i", i);
 
@@ -174,11 +176,11 @@ void test_trie_remove(void)
 
 	entries = trie_num_entries(trie);
 
-	assert(entries == 100000);
+	assert(entries == NUM_TEST_VALUES);
 
 	/* Remove all values */
 
-	for (i=0; i<100000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 
 		sprintf(buf, "%i", i);
 
@@ -204,7 +206,7 @@ void test_trie_replace(void)
 	val = malloc(sizeof(int));
 	*val = 999;
 	assert(trie_insert(trie, "999", val) != 0);
-	assert(trie_num_entries(trie) == 100000);
+	assert(trie_num_entries(trie) == NUM_TEST_VALUES);
 
 	assert(trie_lookup(trie, "999") == val);
 	free(val);
@@ -230,6 +232,28 @@ void test_trie_insert_empty(void)
 	trie_free(trie);
 }
 
+#define LONG_STRING_LEN 4096
+static void test_trie_free_long(void)
+{
+	char *long_string;
+	Trie *trie;
+
+	/* Generate a long string */
+
+	long_string = malloc(LONG_STRING_LEN);
+	memset(long_string, 'A', LONG_STRING_LEN);
+	long_string[LONG_STRING_LEN - 1] = '\0';
+
+	/* Create a trie and add the string */
+
+	trie = trie_new();
+	trie_insert(trie, long_string, long_string);
+
+	trie_free(trie);
+
+	free(long_string);
+}
+
 static UnitTestFunction tests[] = {
 	test_trie_new_free,
 	test_trie_insert,
@@ -237,6 +261,7 @@ static UnitTestFunction tests[] = {
 	test_trie_remove,
 	test_trie_replace,
 	test_trie_insert_empty,
+	test_trie_free_long,
 	NULL
 };
 
