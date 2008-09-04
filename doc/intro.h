@@ -32,8 +32,9 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * used in C projects.
  * 
  * The code is licensed under the ISC license (a simplified version
- * of the Modified BSD license). As such, it may be reused in any
- * project, whether Proprietary or Open Source.
+ * of the BSD license that is functionally identical). 
+ * As such, it may be reused in any project, whether Proprietary or
+ * Open Source.
  *
  * @section Data_structures Data structures
  *
