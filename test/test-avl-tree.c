@@ -28,7 +28,9 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "avl-tree.h"
 #include "compare-int.h"
 
-int test_array[1000];
+#define NUM_TEST_VALUES 1000
+
+int test_array[NUM_TEST_VALUES];
 
 #if 0
 /* Tree print function - useful for debugging. */
@@ -161,7 +163,7 @@ AVLTree *create_tree(void)
 
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		avl_tree_insert(tree, &test_array[i], &test_array[i]);
 	}
@@ -203,7 +205,7 @@ void test_avl_tree_insert_lookup(void)
 
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		avl_tree_insert(tree, &test_array[i], &test_array[i]);
 
@@ -215,7 +217,7 @@ void test_avl_tree_insert_lookup(void)
 
 	/* Check that all values can be read back again */
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		node = avl_tree_lookup_node(tree, &i);
 		assert(node != NULL);
 		value = avl_tree_node_key(node);
@@ -228,7 +230,7 @@ void test_avl_tree_insert_lookup(void)
 
 	i = -1;
 	assert(avl_tree_lookup_node(tree, &i) == NULL);
-	i = 100000;
+	i = NUM_TEST_VALUES + 100;
 	assert(avl_tree_lookup_node(tree, &i) == NULL);
 
 	avl_tree_free(tree);
@@ -327,7 +329,7 @@ void test_avl_tree_lookup(void)
 
 	tree = create_tree();
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		value = avl_tree_lookup(tree, &i);
 
 		assert(value != NULL);
@@ -338,7 +340,7 @@ void test_avl_tree_lookup(void)
 
 	i = -1;
 	assert(avl_tree_lookup(tree, &i) == NULL);
-	i = 1001;
+	i = NUM_TEST_VALUES + 1;
 	assert(avl_tree_lookup(tree, &i) == NULL);
 	i = 8724897;
 	assert(avl_tree_lookup(tree, &i) == NULL);
@@ -358,14 +360,14 @@ void test_avl_tree_remove(void)
 
 	/* Try removing invalid entries */
 
-	i = 100000;
+	i = NUM_TEST_VALUES + 100;
 	assert(avl_tree_remove(tree, &i) == 0);
 	i = -1;
 	assert(avl_tree_remove(tree, &i) == 0);
 
 	/* Delete the nodes from the tree */
 
-	expected_entries = 1000;
+	expected_entries = NUM_TEST_VALUES;
 
 	/* This looping arrangement causes nodes to be removed in a 
 	 * randomish fashion from all over the tree. */

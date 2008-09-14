@@ -29,21 +29,23 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "hash-int.h"
 #include "hash-string.h"
 
+#define NUM_TEST_VALUES 200
+
 void test_pointer_hash(void)
 {
-	int array[10];
+	int array[NUM_TEST_VALUES];
 	int i, j;
 
 	/* Initialise the array to all zeros */
 	
-	for (i=0; i<10; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		array[i] = 0;
 	}
 	
 	/* Check hashes are never the same */
 
-	for (i=0; i<10; ++i) {
-		for (j=i+1; j<10; ++j) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
+		for (j=i+1; j<NUM_TEST_VALUES; ++j) {
 			assert(pointer_hash(&array[i]) != pointer_hash(&array[j]));
 		}
 	}
@@ -51,19 +53,19 @@ void test_pointer_hash(void)
 
 void test_int_hash(void)
 {
-	int array[100];
+	int array[NUM_TEST_VALUES];
 	int i, j;
 
 	/* Initialise all entries in the array */
 
-	for (i=0; i<100; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		array[i] = i;
 	}
 
 	/* Check hashes are never the same */
 
-	for (i=0; i<100; ++i) {
-		for (j=i+1; j<100; ++j) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
+		for (j=i+1; j<NUM_TEST_VALUES; ++j) {
 			assert(int_hash(&array[i]) != int_hash(&array[j]));
 		}
 	}

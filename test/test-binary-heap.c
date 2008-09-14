@@ -27,14 +27,16 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "binary-heap.h"
 #include "compare-int.h"
 
-int test_array[1000];
+#define NUM_TEST_VALUES 10000
+
+int test_array[NUM_TEST_VALUES];
 
 void test_binary_heap_new_free(void)
 {
 	BinaryHeap *heap;
 	int i;
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
 		binary_heap_free(heap);
 	}
@@ -57,12 +59,12 @@ void test_binary_heap_insert(void)
 
 	heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		assert(binary_heap_insert(heap, &test_array[i]) != 0);
 	}
 
-	assert(binary_heap_num_entries(heap) == 1000);
+	assert(binary_heap_num_entries(heap) == NUM_TEST_VALUES);
 
 	binary_heap_free(heap);
 }
@@ -77,7 +79,7 @@ void test_min_heap(void)
 
 	/* Push a load of values onto the heap */
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		assert(binary_heap_insert(heap, &test_array[i]) != 0);
 	}
@@ -110,14 +112,14 @@ void test_max_heap(void)
 
 	/* Push a load of values onto the heap */
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		assert(binary_heap_insert(heap, &test_array[i]) != 0);
 	}
 
 	/* Pop values off the heap and check they are in order */
 
-	i = 1000;
+	i = NUM_TEST_VALUES;
 	while (binary_heap_num_entries(heap) > 0) {
 		val = (int *) binary_heap_pop(heap);
 

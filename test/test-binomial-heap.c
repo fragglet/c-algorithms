@@ -27,23 +27,25 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "binomial-heap.h"
 #include "compare-int.h"
 
-int test_array[1000];
+#define NUM_TEST_VALUES 10000
+
+int test_array[NUM_TEST_VALUES];
 
 void test_binomial_heap_new_free(void)
 {
 	BinomialHeap *heap;
 	int i;
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		heap = binomial_heap_new(BINOMIAL_HEAP_TYPE_MIN, int_compare);
 		binomial_heap_free(heap);
 	}
 
-        /* Test for out of memory */
+	/* Test for out of memory */
 
-        alloc_test_set_limit(0);
+	alloc_test_set_limit(0);
 
-        assert(binomial_heap_new(BINOMIAL_HEAP_TYPE_MIN, int_compare) == NULL);
+	assert(binomial_heap_new(BINOMIAL_HEAP_TYPE_MIN, int_compare) == NULL);
 }
 
 void test_binomial_heap_insert(void)
@@ -53,16 +55,16 @@ void test_binomial_heap_insert(void)
 
 	heap = binomial_heap_new(BINOMIAL_HEAP_TYPE_MIN, int_compare);
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		assert(binomial_heap_insert(heap, &test_array[i]) != 0);
 	}
-	assert(binomial_heap_num_entries(heap) == 1000);
+	assert(binomial_heap_num_entries(heap) == NUM_TEST_VALUES);
 
-        /* Test for out of memory */
+	/* Test for out of memory */
 
-        alloc_test_set_limit(0);
-        assert(binomial_heap_insert(heap, &i) == 0);
+	alloc_test_set_limit(0);
+	assert(binomial_heap_insert(heap, &i) == 0);
 
 	binomial_heap_free(heap);
 }
@@ -77,7 +79,7 @@ void test_min_heap(void)
 
 	/* Push a load of values onto the heap */
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		assert(binomial_heap_insert(heap, &test_array[i]) != 0);
 	}
@@ -92,10 +94,10 @@ void test_min_heap(void)
 		i = *val;
 	}
 
-        /* Test pop on an empty heap */
+	/* Test pop on an empty heap */
 
-        val = (int *) binomial_heap_pop(heap);
-        assert(val == NULL);
+	val = (int *) binomial_heap_pop(heap);
+	assert(val == NULL);
 
 	binomial_heap_free(heap);
 }
@@ -110,14 +112,14 @@ void test_max_heap(void)
 
 	/* Push a load of values onto the heap */
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		assert(binomial_heap_insert(heap, &test_array[i]) != 0);
 	}
 
 	/* Pop values off the heap and check they are in order */
 
-	i = 1000;
+	i = NUM_TEST_VALUES;
 	while (binomial_heap_num_entries(heap) > 0) {
 		val = (int *) binomial_heap_pop(heap);
 
@@ -125,13 +127,15 @@ void test_max_heap(void)
 		i = *val;
 	}
 
-        /* Test pop on an empty heap */
+	/* Test pop on an empty heap */
 
-        val = (int *) binomial_heap_pop(heap);
-        assert(val == NULL);
+	val = (int *) binomial_heap_pop(heap);
+	assert(val == NULL);
 
 	binomial_heap_free(heap);
 }
+
+#define TEST_VALUE (NUM_TEST_VALUES / 2)
 
 static BinomialHeap *generate_heap(void)
 {
@@ -142,9 +146,9 @@ static BinomialHeap *generate_heap(void)
 
 	/* Push a load of values onto the heap */
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
-		if (i != 400) {
+		if (i != TEST_VALUE) {
 			assert(binomial_heap_insert(heap, &test_array[i]) != 0);
 		}
 	}
@@ -162,10 +166,10 @@ static void verify_heap(BinomialHeap *heap)
 	int i;
 
 	numvals = binomial_heap_num_entries(heap);
-	assert(numvals == 999);
+	assert(numvals == NUM_TEST_VALUES - 1);
 
-	for (i=0; i<1000; ++i) {
-		if (i == 400) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
+		if (i == TEST_VALUE) {
 			continue;
 		}
 
@@ -197,8 +201,9 @@ static void test_insert_out_of_memory(void)
 		/* Insert should fail */
 
 		alloc_test_set_limit(i);
-		test_array[400] = 400;
-		assert(binomial_heap_insert(heap, &test_array[400]) == 0);
+		test_array[TEST_VALUE] = TEST_VALUE;
+		assert(binomial_heap_insert(heap,
+		                            &test_array[TEST_VALUE]) == 0);
 		alloc_test_set_limit(-1);
 
 		/* Check that the heap is unharmed */

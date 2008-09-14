@@ -32,6 +32,8 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "hash-string.h"
 #include "compare-string.h"
 
+#define NUM_TEST_VALUES 10000
+
 int value1 = 1, value2 = 2, value3 = 3, value4 = 4;
 int allocated_keys = 0;
 int allocated_values = 0;
@@ -54,7 +56,7 @@ HashTable *generate_hash_table(void)
 	
 	/* Insert lots of values */
 	
-	for (i=0; i<10000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		sprintf(buf, "%i", i);
 
 		value = strdup(buf);
@@ -116,11 +118,11 @@ void test_hash_table_insert_lookup(void)
 
 	hash_table = generate_hash_table();
 
-	assert(hash_table_num_entries(hash_table) == 10000);
+	assert(hash_table_num_entries(hash_table) == NUM_TEST_VALUES);
 
 	/* Check all values */
 
-	for (i=0; i<10000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		sprintf(buf, "%i", i);
 		value = hash_table_lookup(hash_table, buf);
 
@@ -131,7 +133,7 @@ void test_hash_table_insert_lookup(void)
 
 	sprintf(buf, "%i", -1);
 	assert(hash_table_lookup(hash_table, buf) == NULL);
-	sprintf(buf, "%i", 10000);
+	sprintf(buf, "%i", NUM_TEST_VALUES);
 	assert(hash_table_lookup(hash_table, buf) == NULL);
 
 	/* Insert overwrites existing entries with the same key */
@@ -151,7 +153,7 @@ void test_hash_table_remove(void)
 
 	hash_table = generate_hash_table();
 
-	assert(hash_table_num_entries(hash_table) == 10000);
+	assert(hash_table_num_entries(hash_table) == NUM_TEST_VALUES);
 	sprintf(buf, "%i", 5000);
 	assert(hash_table_lookup(hash_table, buf) != NULL);
 
@@ -197,7 +199,7 @@ void test_hash_table_iterating(void)
 		++count;
 	}
 
-	assert(count == 10000);
+	assert(count == NUM_TEST_VALUES);
 
 	/* Test iter_next after iteration has completed. */
 
@@ -258,13 +260,13 @@ void test_hash_table_iterating_remove(void)
 	/* Check counts */
 
 	assert(removed == 100);
-	assert(count == 10000);
+	assert(count == NUM_TEST_VALUES);
 
-	assert(hash_table_num_entries(hash_table) == 10000 - removed);
+	assert(hash_table_num_entries(hash_table) == NUM_TEST_VALUES - removed);
 
 	/* Check all entries divisible by 100 were really removed */
 
-	for (i=0; i<10000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		sprintf(buf, "%i", i);
 
 		if (i % 100 == 0) {
@@ -340,36 +342,36 @@ void test_hash_table_free_functions(void)
 
 	allocated_values = 0;
 
-	for (i=0; i<1000; ++i) {
+	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		key = new_key(i);
 		value = new_value(99);
 
 		hash_table_insert(hash_table, key, value);
 	}
 
-	assert(allocated_keys == 1000);
-	assert(allocated_values == 1000);
+	assert(allocated_keys == NUM_TEST_VALUES);
+	assert(allocated_values == NUM_TEST_VALUES);
 
 	/* Check that removing a key works */
 
-	i = 500;
+	i = NUM_TEST_VALUES / 2;
 	hash_table_remove(hash_table, &i);
 
-	assert(allocated_keys == 999);
-	assert(allocated_values == 999);
+	assert(allocated_keys == NUM_TEST_VALUES - 1);
+	assert(allocated_values == NUM_TEST_VALUES - 1);
 
 	/* Check that replacing an existing key works */
 
-	key = new_key(600);
+	key = new_key(NUM_TEST_VALUES / 3);
 	value = new_value(999);
 
-	assert(allocated_keys == 1000);
-	assert(allocated_values == 1000);
+	assert(allocated_keys == NUM_TEST_VALUES);
+	assert(allocated_values == NUM_TEST_VALUES);
 
 	hash_table_insert(hash_table, key, value);
 
-	assert(allocated_keys == 999);
-	assert(allocated_values == 999);
+	assert(allocated_keys == NUM_TEST_VALUES - 1);
+	assert(allocated_values == NUM_TEST_VALUES - 1);
 
 	/* A free of the hash table should free all of the keys and values */
 
