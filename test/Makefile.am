@@ -1,4 +1,8 @@
 
+AM_CFLAGS = $(TEST_CFLAGS) -I../src
+AM_CXXFLAGS = $(AM_CFLAGS)
+LDADD = $(top_builddir)/src/libcalgtest.a libtestframework.a
+
 if USE_VALGRIND
 TESTS_ENVIRONMENT=./valgrind-wrapper
 endif
@@ -27,11 +31,7 @@ libtestframework_a_SOURCES=\
 alloc-testing.c      alloc-testing.h        \
 framework.c          framework.h
 
-AM_CFLAGS = $(TEST_CFLAGS) -I../src
-LDADD = $(top_builddir)/src/libcalgtest.a libtestframework.a
+test_cpp_SOURCES = test-cpp.cpp
 
 EXTRA_DIST=valgrind-wrapper
-
-test-cpp: test-cpp.cpp
-	$(CXX) $(AM_CFLAGS) $^ -o $@ $(LDADD)
 
