@@ -1,4 +1,4 @@
-AC_INIT(C Algorithms, 1.1.0, fraggle@users.sourceforge.net, c-algorithms)
+AC_INIT(C Algorithms, 1.2.0, fraggle@users.sourceforge.net, c-algorithms)
 AC_CONFIG_AUX_DIR(autotools)
 
 AM_INIT_AUTOMAKE($PACKAGE_TARNAME, $PACKAGE_VERSION, no-define)

@@ -1,3 +1,196 @@
+2008-09-14 02:43:19 fraggle
+	
+	Fix build of test-cpp.cpp to use the proper automake method.
+
+2008-09-14 02:24:28 fraggle
+	
+	Turn off optimisation for test build.
+
+2008-09-14 02:04:48 fraggle
+	
+	Use constants for the number of test values.
+
+2008-09-13 00:54:04 fraggle
+	
+	Expand binomial heap test case to include out of memory scenarios.
+
+2008-09-04 21:06:13 fraggle
+	
+	Reword some of the text about the license.
+
+2008-09-04 20:53:44 fraggle
+	
+	Use a non-recursive algorithm for trie_free.  Add a test case for
+	this.
+
+2008-09-03 01:48:46 fraggle
+	
+	Add script for generating coverage reports from gcov files.
+
+2008-08-27 22:37:01 fraggle
+	
+	Smart indent all source.
+
+2008-08-27 22:25:09 fraggle
+	
+	Add test case for checking the library can be used from C++ programs.
+
+2008-08-27 21:29:09 fraggle
+	
+	Add missing C++ extern "C" declarations to headers.
+
+2008-08-26 14:41:39 fraggle
+	
+	Change allocation limit to limit a number of allocations, not a number
+	of bytes.
+
+2008-08-25 23:36:17 fraggle
+	
+	Improve coverage for set.
+
+2008-08-25 22:38:41 fraggle
+	
+	Rename test_ functions -> test_trie_.
+
+2008-08-25 22:36:00 fraggle
+	
+	Check return value for trie_insert.
+
+2008-08-25 22:29:58 fraggle
+	
+	Test out of memory scenario for trie, and fix rollback to work
+	properly.
+
+2008-08-25 22:28:20 fraggle
+	
+	Turn off optimisation for test library build.
+
+2008-06-23 01:45:28 fraggle
+	
+	Make avl_tree_node_parent_side function static, as it is internal.
+
+2008-06-21 21:24:28 fraggle
+	
+	Add out of memory checks for set, hash table.
+
+2008-06-21 20:05:45 fraggle
+	
+	Remove extra calls to find_subtree_height.
+
+2008-06-19 18:46:24 fraggle
+	
+	Add test cases for allocation testing framework.
+
+2008-06-18 01:36:26 fraggle
+	
+	Update Doxyfile to latest Doxygen.
+
+2008-06-17 22:11:48 fraggle
+	
+	Fix doxygen warnings.
+
+2008-06-17 22:10:58 fraggle
+	
+	Put coverage CFLAGS in COV_FLAGS rather than in main CFLAGS.
+
+2008-06-16 21:37:27 fraggle
+	
+	Update comments, add rebalance to root function.
+
+2008-06-16 20:44:55 fraggle
+	
+	Combine rotate_left and rotate_right functions into a single rotate
+	function.
+
+2008-06-16 20:24:09 fraggle
+	
+	Replace AVL tree node left/right child pointers with a two element
+	array.  Restructure remove_node function to be more obviously correct.
+
+2008-06-16 20:20:52 fraggle
+	
+	Remove alloc testing linked list, as it is unused.
+
+2008-06-13 20:54:17 fraggle
+	
+	More bloom filter and linked list tests.
+
+2008-06-13 20:53:19 fraggle
+	
+	Allow allocations to reach the limit, but not exceed it.
+
+2008-06-13 20:13:12 fraggle
+	
+	Add more AVL tree tests.
+
+2008-06-13 19:53:23 fraggle
+	
+	Improve avl_tree_remove_node testing function.
+
+2008-06-13 19:49:53 fraggle
+	
+	Fix bugs in AVL tree.
+
+2008-06-13 19:39:49 fraggle
+	
+	Add copyright header to valgrind wrapper script.
+
+2008-06-13 18:59:14 fraggle
+	
+	Add missing test framework files.
+
+2008-06-13 17:47:20 fraggle
+	
+	Add check for failed malloc().
+
+2008-06-13 01:00:21 fraggle
+	
+	Switch to ISC license, update copyright to 2005-2008.
+
+2008-06-12 20:58:31 fraggle
+	
+	Add assertations for [s]list_{prepend,append}, out of memory test
+	cases.
+
+2008-06-12 20:40:48 fraggle
+	
+	Add the ability to limit memory allocation for testing malloc() out of
+	memory conditions and a basic test framework for checking that memory
+	is correctly freed.  Add malloc test cases for the queue, binary heap,
+	and arraylist.
+
+2008-06-11 23:42:59 fraggle
+	
+	Fix Doxygen errors.
+
+2008-06-11 23:34:05 fraggle
+	
+	Move alloc-testing.[ch] to test/
+
+2008-06-11 23:18:35 fraggle
+	
+	Add initial test framework for testing memory allocation/free.
+
+2008-06-11 23:09:22 fraggle
+	
+	Prepend x to work with empty strings on old shell interpreters.
+
+2008-06-03 20:47:03 fraggle
+	
+	Add configure for compiling with profiling (gcov) and valgrind.
+
+2008-06-02 21:04:01 fraggle
+	
+	Fix memory leaks in unit tests.
+
+2008-06-02 20:45:14 fraggle
+	
+	Fix memory leak in hash table.
+
+2008-06-01 20:31:06 fraggle
+	
+	Update ChangeLog, bump to v1.1.0.
+
 2008-06-01 20:27:48 fraggle
 	
 	Fix smart-indent to expand tabs to the next tab point rather than
