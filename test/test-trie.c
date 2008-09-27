@@ -32,6 +32,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 int test_array[NUM_TEST_VALUES];
 char test_strings[NUM_TEST_VALUES][10];
+unsigned char bin_key[] = { 'a', 'b', 'c', 0, 1, 2, 0xff };
+unsigned char bin_key2[] = { 'a', 'b', 'c', 0, 1, 2, 0xff, 0 };
+unsigned char bin_key3[] = { 'a', 'b', 'c' };
+unsigned char bin_key4[] = { 'z', 0, 'z', 'z' };
 
 Trie *generate_trie(void)
 {
@@ -254,6 +258,123 @@ static void test_trie_free_long(void)
 	free(long_string);
 }
 
+/* Test the use of the trie when characters in the keys used are negative
+ * (top bit set in the character; alternative, c >= 128). */
+
+static void test_trie_negative_keys(void)
+{
+	char my_key[] = { 'a', 'b', 'c', -50, -20, '\0' };
+	Trie *trie;
+	void *value;
+
+	trie = trie_new();
+
+	assert(trie_insert(trie, my_key, "hello world") != 0);
+
+	value = trie_lookup(trie, my_key);
+
+	assert(!strcmp(value, "hello world"));
+
+	assert(trie_remove(trie, my_key) != 0);
+	assert(trie_remove(trie, my_key) == 0);
+	assert(trie_lookup(trie, my_key) == NULL);
+
+	trie_free(trie);
+}
+
+Trie *generate_binary_trie(void)
+{
+	Trie *trie;
+
+	trie = trie_new();
+
+	/* Insert some values */
+
+	assert(trie_insert_binary(trie,
+	                          bin_key2, sizeof(bin_key2),
+	                          "goodbye world") != 0);
+	assert(trie_insert_binary(trie,
+	                          bin_key, sizeof(bin_key),
+	                          "hello world") != 0);
+
+	return trie;
+}
+
+void test_trie_insert_binary(void)
+{
+	Trie *trie;
+	char *value;
+
+	trie = generate_binary_trie();
+
+	/* Overwrite a value */
+
+	assert(trie_insert_binary(trie,
+	                          bin_key, sizeof(bin_key),
+	                          "hi world") != 0);
+
+	/* Insert NULL value doesn't work */
+
+	assert(trie_insert_binary(trie, bin_key3, sizeof(bin_key3), NULL) == 0);
+
+	/* Read them back */
+
+	value = trie_lookup_binary(trie, bin_key, sizeof(bin_key));
+	assert(!strcmp(value, "hi world"));
+
+	value = trie_lookup_binary(trie, bin_key2, sizeof(bin_key2));
+	assert(!strcmp(value, "goodbye world"));
+
+	trie_free(trie);
+}
+
+void test_trie_insert_out_of_memory(void)
+{
+	Trie *trie;
+
+	trie = generate_binary_trie();
+
+	alloc_test_set_limit(3);
+
+	assert(trie_insert_binary(trie,
+	                          bin_key4, sizeof(bin_key4), 
+	                          "test value") == 0);
+
+	assert(trie_lookup_binary(trie, bin_key4, sizeof(bin_key4)) == NULL);
+	assert(trie_num_entries(trie) == 2);
+
+	trie_free(trie);
+}
+
+void test_trie_remove_binary(void)
+{
+	Trie *trie;
+	void *value;
+
+	trie = generate_binary_trie();
+
+	/* Test look up and remove of invalid values */
+
+	value = trie_lookup_binary(trie, bin_key3, sizeof(bin_key3));
+	assert(value == NULL);
+
+	assert(trie_remove_binary(trie, bin_key3, sizeof(bin_key3)) == 0);
+
+	assert(trie_lookup_binary(trie, bin_key4, sizeof(bin_key4)) == 0);
+	assert(trie_remove_binary(trie, bin_key4, sizeof(bin_key4)) == 0);
+
+	/* Remove the two values */
+
+	assert(trie_remove_binary(trie, bin_key2, sizeof(bin_key2)) != 0);
+	assert(trie_lookup_binary(trie, bin_key2, sizeof(bin_key2)) == NULL);
+	assert(trie_lookup_binary(trie, bin_key, sizeof(bin_key)) != NULL);
+
+	assert(trie_remove_binary(trie, bin_key, sizeof(bin_key)) != 0);
+	assert(trie_lookup_binary(trie, bin_key, sizeof(bin_key)) == NULL);
+
+	trie_free(trie);
+}
+
 static UnitTestFunction tests[] = {
 	test_trie_new_free,
 	test_trie_insert,
@@ -262,6 +383,10 @@ static UnitTestFunction tests[] = {
 	test_trie_replace,
 	test_trie_insert_empty,
 	test_trie_free_long,
+	test_trie_negative_keys,
+	test_trie_insert_binary,
+	test_trie_insert_out_of_memory,
+	test_trie_remove_binary,
 	NULL
 };
 

@@ -81,7 +81,8 @@ Trie *trie_new(void);
 void trie_free(Trie *trie);
 
 /**
- * Insert a new key-value pair into a trie.
+ * Insert a new key-value pair into a trie.  The key is a NUL-terminated
+ * string.  For binary strings, use @ref trie_insert_binary.
  *
  * @param trie               The trie.
  * @param key                The key to access the new value.
@@ -94,7 +95,25 @@ void trie_free(Trie *trie);
 int trie_insert(Trie *trie, char *key, TrieValue value);
 
 /**
+ * Insert a new key-value pair into a trie. The key is a sequence of bytes.
+ * For a key that is a NUL-terminated text string, use @ref trie_insert.
+ *
+ * @param trie               The trie.
+ * @param key                The key to access the new value.
+ * @param key_length         The key length in bytes.
+ * @param value              The value.
+ * @return                   Non-zero if the value was inserted successfully,
+ *                           or zero if it was not possible to allocate 
+ *                           memory for the new entry.
+ */
+
+int trie_insert_binary(Trie *trie, unsigned char *key,
+                       int key_length, TrieValue value);
+
+/**
  * Look up a value from its key in a trie.
+ * The key is a NUL-terminated string; for binary strings, use 
+ * @ref trie_lookup_binary.
  *
  * @param trie               The trie.
  * @param key                The key.
@@ -105,7 +124,23 @@ int trie_insert(Trie *trie, char *key, TrieValue value);
 TrieValue trie_lookup(Trie *trie, char *key);
 
 /**
+ * Look up a value from its key in a trie.
+ * The key is a sequence of bytes; for a key that is a NUL-terminated
+ * text string, use @ref trie_lookup.
+ *
+ * @param trie               The trie.
+ * @param key                The key.
+ * @param key_length         The key length in bytes.
+ * @return                   The value associated with the key, or 
+ *                           @ref TRIE_NULL if not found in the trie.
+ */
+
+TrieValue trie_lookup_binary(Trie *trie, unsigned char *key, int key_length);
+
+/**
  * Remove an entry from a trie.
+ * The key is a NUL-terminated string; for binary strings, use 
+ * @ref trie_lookup_binary.
  *
  * @param trie               The trie.
  * @param key                The key of the entry to remove.
@@ -114,6 +149,20 @@ TrieValue trie_lookup(Trie *trie, char *key);
  */
 
 int trie_remove(Trie *trie, char *key);
+
+/**
+ * Remove an entry from a trie.
+ * The key is a sequence of bytes; for a key that is a NUL-terminated
+ * text string, use @ref trie_lookup.
+ *
+ * @param trie               The trie.
+ * @param key                The key of the entry to remove.
+ * @param key_length         The key length in bytes.
+ * @return                   Non-zero if the key was removed successfully,
+ *                           or zero if it is not present in the trie.
+ */
+
+int trie_remove_binary(Trie *trie, unsigned char *key, int key_length);
 
 /** 
  * Find the number of entries in a trie.
