@@ -21,6 +21,7 @@ TESTS =                          \
         test-compare-functions   \
         test-hash-functions      \
         test-hash-table          \
+        test-rb-tree             \
         test-set                 \
         test-trie
 

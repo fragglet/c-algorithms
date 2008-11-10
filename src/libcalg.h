@@ -37,6 +37,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <libcalg/hash-table.h>
 #include <libcalg/list.h>
 #include <libcalg/queue.h>
+#include <libcalg/rb-tree.h>
 #include <libcalg/set.h>
 #include <libcalg/slist.h>
 #include <libcalg/trie.h>
