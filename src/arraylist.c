@@ -31,7 +31,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 /* Automatically resizing array */
 
-ArrayList *arraylist_new(int length)
+ArrayList *arraylist_new(unsigned int length)
 {
 	ArrayList *new_arraylist;
 
@@ -78,7 +78,7 @@ void arraylist_free(ArrayList *arraylist)
 static int arraylist_enlarge(ArrayList *arraylist)
 {
 	ArrayListValue *data;
-	int newsize;
+	unsigned int newsize;
 
 	/* Double the allocated size */
 
@@ -98,7 +98,8 @@ static int arraylist_enlarge(ArrayList *arraylist)
 	}
 }
 
-int arraylist_insert(ArrayList *arraylist, int index, ArrayListValue data)
+int arraylist_insert(ArrayList *arraylist, unsigned int index,
+                     ArrayListValue data)
 {
 	/* Sanity check the index */
 
@@ -139,7 +140,8 @@ int arraylist_prepend(ArrayList *arraylist, ArrayListValue data)
 	return arraylist_insert(arraylist, 0, data);
 }
 
-void arraylist_remove_range(ArrayList *arraylist, int index, int length)
+void arraylist_remove_range(ArrayList *arraylist, unsigned int index,
+                            unsigned int length)
 {
 	/* Check this is a valid range */
 
@@ -158,7 +160,7 @@ void arraylist_remove_range(ArrayList *arraylist, int index, int length)
 	arraylist->length -= length;
 }
 
-void arraylist_remove(ArrayList *arraylist, int index)
+void arraylist_remove(ArrayList *arraylist, unsigned int index)
 {
 	arraylist_remove_range(arraylist, index, 1);
 }
@@ -167,11 +169,11 @@ int arraylist_index_of(ArrayList *arraylist,
                        ArrayListEqualFunc callback,
                        ArrayListValue data)
 {
-	int i;
+	unsigned int i;
 
 	for (i=0; i<arraylist->length; ++i) {
 		if (callback(arraylist->data[i], data) != 0)
-			return i;
+			return (int) i;
 	}
 
 	return -1;
@@ -184,14 +186,15 @@ void arraylist_clear(ArrayList *arraylist)
 	arraylist->length = 0;
 }
 
-static void arraylist_sort_internal(ArrayListValue *list_data, int list_length,
+static void arraylist_sort_internal(ArrayListValue *list_data,
+                                    unsigned int list_length,
                                     ArrayListCompareFunc compare_func)
 {
 	ArrayListValue pivot;
 	ArrayListValue tmp;
-	int i;
-	int list1_length;
-	int list2_length;
+	unsigned int i;
+	unsigned int list1_length;
+	unsigned int list2_length;
 
 	/* If less than two items, it is always sorted. */
 

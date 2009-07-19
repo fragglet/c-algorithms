@@ -59,12 +59,6 @@ void test_arraylist_new_free(void)
 	assert(arraylist != NULL);
 	arraylist_free(arraylist);
 
-	/* Negative size also gives default */
-
-	arraylist = arraylist_new(-1);
-	assert(arraylist != NULL);
-	arraylist_free(arraylist);
-
 	/* Normal allocated */
 
 	arraylist = arraylist_new(10);
@@ -203,7 +197,6 @@ void test_arraylist_insert(void)
 	/* Check for out of range insert */
 
 	assert(arraylist->length == 16);
-	assert(arraylist_insert(arraylist, -1, &variable1) == 0);
 	assert(arraylist_insert(arraylist, 17, &variable1) == 0);
 	assert(arraylist->length == 16);
 
@@ -282,9 +275,7 @@ void test_arraylist_remove_range(void)
 	/* Try some invalid ones and check they don't do anything */
 
 	arraylist_remove_range(arraylist, 10, 10);
-	arraylist_remove_range(arraylist, -1, 10);
 	arraylist_remove_range(arraylist, 0, 16);
-	arraylist_remove_range(arraylist, 0, -1);
 
 	assert(arraylist->length == 13);
 
@@ -313,7 +304,6 @@ void test_arraylist_remove(void)
 
 	/* Try some invalid removes */
 
-	arraylist_remove(arraylist, -1);
 	arraylist_remove(arraylist, 15);
 
 	assert(arraylist->length == 15);
@@ -390,8 +380,8 @@ void test_arraylist_sort(void)
 	ArrayList *arraylist;
 	int entries[] = { 89, 4, 23, 42, 4, 16, 15, 4, 8, 99, 50, 30, 4 };
 	int sorted[]  = { 4, 4, 4, 4, 8, 15, 16, 23, 30, 42, 50, 89, 99 };
-	int num_entries = sizeof(entries) / sizeof(int);
-	int i;
+	unsigned int num_entries = sizeof(entries) / sizeof(int);
+	unsigned int i;
 
 	arraylist = arraylist_new(10);
 

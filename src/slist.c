@@ -125,10 +125,10 @@ SListEntry *slist_next(SListEntry *listentry)
 	return listentry->next;
 }
 
-SListEntry *slist_nth_entry(SListEntry *list, int n)
+SListEntry *slist_nth_entry(SListEntry *list, unsigned int n)
 {
 	SListEntry *entry;
-	int i;
+	unsigned int i;
 
 	/* Negative values are always out of range */
 
@@ -152,7 +152,7 @@ SListEntry *slist_nth_entry(SListEntry *list, int n)
 	return entry;
 }
 
-SListValue slist_nth_data(SListEntry *list, int n)
+SListValue slist_nth_data(SListEntry *list, unsigned int n)
 {
 	SListEntry *entry;
 
@@ -169,18 +169,18 @@ SListValue slist_nth_data(SListEntry *list, int n)
 	}
 }
 
-int slist_length(SListEntry *list)
+unsigned int slist_length(SListEntry *list)
 {
 	SListEntry *entry;
-	int length;
+	unsigned int length;
 
 	length = 0;
 	entry = list;
 
 	while (entry != NULL) {
-		
+
 		/* Count the number of entries */
-		
+
 		++length;
 
 		entry = entry->next;
@@ -192,30 +192,30 @@ int slist_length(SListEntry *list)
 SListValue *slist_to_array(SListEntry *list)
 {
 	SListEntry *rover;
-	int listlen;
 	SListValue *array;
-	int i;
+	unsigned int length;
+	unsigned int i;
 
 	/* Allocate an array equal in size to the list length */
-	
-	listlen = slist_length(list);
 
-	array = malloc(sizeof(SListValue) * listlen);
+	length = slist_length(list);
+
+	array = malloc(sizeof(SListValue) * length);
 
 	if (array == NULL) {
 		return NULL;
 	}
-	
+
 	/* Add all entries to the array */
-	
+
 	rover = list;
-	
-	for (i=0; i<listlen; ++i) {
+
+	for (i=0; i<length; ++i) {
 
 		/* Add this node's data */
 
 		array[i] = rover->data;
-		
+
 		/* Jump to the next list node */
 
 		rover = rover->next;
@@ -233,7 +233,7 @@ int slist_remove_entry(SListEntry **list, SListEntry *entry)
 	if (*list == NULL || entry == NULL) {
 		return 0;
 	}
-	
+
 	/* Action to take is different if the entry is the first in the list */
 
 	if (*list == entry) {

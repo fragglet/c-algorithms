@@ -182,7 +182,7 @@ SListValue slist_data(SListEntry *listentry);
  * @return           The entry at the specified index, or NULL if out of range.
  */
 
-SListEntry *slist_nth_entry(SListEntry *list, int n);
+SListEntry *slist_nth_entry(SListEntry *list, unsigned int n);
 
 /** 
  * Retrieve the value stored at a specified index in the list.
@@ -193,7 +193,7 @@ SListEntry *slist_nth_entry(SListEntry *list, int n);
  *                   @ref SLIST_NULL if unsuccessful.
  */
 
-SListValue slist_nth_data(SListEntry *list, int n);
+SListValue slist_nth_data(SListEntry *list, unsigned int n);
 
 /** 
  * Find the length of a list.
@@ -202,7 +202,7 @@ SListValue slist_nth_data(SListEntry *list, int n);
  * @return           The number of entries in the list.
  */
 
-int slist_length(SListEntry *list);
+unsigned int slist_length(SListEntry *list);
 
 /**
  * Create a C array containing the contents of a list.

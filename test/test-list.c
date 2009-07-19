@@ -173,11 +173,6 @@ void test_list_nth_entry(void)
 	entry = list_nth_entry(list, 3);
 	assert(list_data(entry) == &variable4);
 
-	/* Check negative values */
-
-	entry = list_nth_entry(list, -1);
-	assert(entry == NULL);
-
 	/* Check out of range values */
 
 	entry = list_nth_entry(list, 4);
@@ -203,7 +198,6 @@ void test_list_nth_data(void)
 
 	/* Check out of range values */
 
-	assert(list_nth_data(list, -1) == NULL);
 	assert(list_nth_data(list, 4) == NULL);
 	assert(list_nth_data(list, 400) == NULL);
 
@@ -287,10 +281,10 @@ void test_list_remove_entry(void)
 void test_list_remove_data(void)
 {
 	int entries[] = { 89, 4, 23, 42, 4, 16, 15, 4, 8, 99, 50, 30, 4 };
-	int num_entries = sizeof(entries) / sizeof(int);
+	unsigned int num_entries = sizeof(entries) / sizeof(int);
 	int val;
 	ListEntry *list;
-	int i;
+	unsigned int i;
 
 	/* Generate a list containing all the entries in the array */
 
@@ -337,8 +331,8 @@ void test_list_sort(void)
 	ListEntry *list;
 	int entries[] = { 89, 4, 23, 42, 4, 16, 15, 4, 8, 99, 50, 30, 4 };
 	int sorted[]  = { 4, 4, 4, 4, 8, 15, 16, 23, 30, 42, 50, 89, 99 };
-	int num_entries = sizeof(entries) / sizeof(int);
-	int i;
+	unsigned int num_entries = sizeof(entries) / sizeof(int);
+	unsigned int i;
 
 	list = NULL;
 

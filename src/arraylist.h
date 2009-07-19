@@ -70,11 +70,11 @@ struct _ArrayList {
 
 	/** Length of the array */
 	
-	int length;
+	unsigned int length;
 
 	/** Private data and should not be accessed */
 
-	int _alloced;
+	unsigned int _alloced;
 };
 
 /**
@@ -105,12 +105,14 @@ typedef int (*ArrayListCompareFunc)(ArrayListValue value1,
  *
  * @param length         Hint to the initialise function as to the amount
  *                       of memory to allocate initially to the ArrayList.
+ *                       If a value of zero is given, a sensible default
+ *                       size is used.
  * @return               A new arraylist, or NULL if it was not possible
  *                       to allocate the memory.
  * @see arraylist_free
  */
 
-ArrayList *arraylist_new(int length);
+ArrayList *arraylist_new(unsigned int length);
 
 /**
  * Destroy an ArrayList and free back the memory it uses.
@@ -151,7 +153,7 @@ int arraylist_prepend(ArrayList *arraylist, ArrayListValue data);
  * @param index          The index of the entry to remove.
  */
 
-void arraylist_remove(ArrayList *arraylist, int index);
+void arraylist_remove(ArrayList *arraylist, unsigned int index);
 
 /**
  * Remove a range of entries at the specified location in an ArrayList.
@@ -161,7 +163,8 @@ void arraylist_remove(ArrayList *arraylist, int index);
  * @param length         The length of the range to remove.
  */
 
-void arraylist_remove_range(ArrayList *arraylist, int index, int length);
+void arraylist_remove_range(ArrayList *arraylist, unsigned int index,
+                            unsigned int length);
 
 /**
  * Insert a value at the specified index in an ArrayList.
@@ -176,7 +179,8 @@ void arraylist_remove_range(ArrayList *arraylist, int index, int length);
  *                       if it was impossible to allocate more memory).
  */
 
-int arraylist_insert(ArrayList *arraylist, int index, ArrayListValue data);
+int arraylist_insert(ArrayList *arraylist, unsigned int index,
+                     ArrayListValue data);
 
 /**
  * Find the index of a particular value in an ArrayList.
@@ -189,8 +193,8 @@ int arraylist_insert(ArrayList *arraylist, int index, ArrayListValue data);
  * @return               The index of the value if found, or -1 if not found.
  */
 
-int arraylist_index_of(ArrayList *arraylist, 
-                       ArrayListEqualFunc callback, 
+int arraylist_index_of(ArrayList *arraylist,
+                       ArrayListEqualFunc callback,
                        ArrayListValue data);
 
 /** 

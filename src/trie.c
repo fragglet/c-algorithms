@@ -569,7 +569,7 @@ TrieValue trie_lookup_binary(Trie *trie, unsigned char *key, int key_length)
 	}
 }
 
-int trie_num_entries(Trie *trie)
+unsigned int trie_num_entries(Trie *trie)
 {
 	/* To find the number of entries, simply look at the use count
 	 * of the root node. */

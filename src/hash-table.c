@@ -39,13 +39,13 @@ struct _HashTableEntry {
 
 struct _HashTable {
 	HashTableEntry **table;
-	int table_size;
+	unsigned int table_size;
 	HashTableHashFunc hash_func;
 	HashTableEqualFunc equal_func;
 	HashTableKeyFreeFunc key_free_func;
 	HashTableValueFreeFunc value_free_func;
-	int entries;
-	int prime_index;
+	unsigned int entries;
+	unsigned int prime_index;
 };
 
 /* This is a set of good hash table prime numbers, from:
@@ -60,7 +60,7 @@ static const unsigned int hash_table_primes[] = {
 	402653189, 805306457, 1610612741,
 };
 
-static const int hash_table_num_primes 
+static const unsigned int hash_table_num_primes 
 	= sizeof(hash_table_primes) / sizeof(int);
 
 /* Internal function used to allocate the table on hash table creation
@@ -68,7 +68,7 @@ static const int hash_table_num_primes
 
 static int hash_table_allocate_table(HashTable *hash_table)
 {
-	int new_table_size;
+	unsigned int new_table_size;
 
 	/* Determine the table size based on the current prime index.  
 	 * An attempt is made here to ensure sensible behavior if the
@@ -148,7 +148,7 @@ void hash_table_free(HashTable *hash_table)
 {
 	HashTableEntry *rover;
 	HashTableEntry *next;
-	int i;
+	unsigned int i;
 	
 	/* Free all entries in all chains */
 
@@ -182,12 +182,12 @@ void hash_table_register_free_functions(HashTable *hash_table,
 static int hash_table_enlarge(HashTable *hash_table)
 {
 	HashTableEntry **old_table;
-	int old_table_size;
-	int old_prime_index;
+	unsigned int old_table_size;
+	unsigned int old_prime_index;
 	HashTableEntry *rover;
 	HashTableEntry *next;
-	int index;
-	int i;
+	unsigned int index;
+	unsigned int i;
 	
 	/* Store a copy of the old table */
 	
@@ -244,7 +244,7 @@ int hash_table_insert(HashTable *hash_table, HashTableKey key, HashTableValue va
 {
 	HashTableEntry *rover;
 	HashTableEntry *newentry;
-	int index;
+	unsigned int index;
 	
 	/* If there are too many items in the table with respect to the table
 	 * size, the number of hash collisions increases and performance
@@ -328,7 +328,7 @@ int hash_table_insert(HashTable *hash_table, HashTableKey key, HashTableValue va
 HashTableValue hash_table_lookup(HashTable *hash_table, HashTableKey key)
 {
 	HashTableEntry *rover;
-	int index;
+	unsigned int index;
 
 	/* Generate the hash of the key and hence the index into the table */
 	
@@ -358,7 +358,7 @@ int hash_table_remove(HashTable *hash_table, HashTableKey key)
 {
 	HashTableEntry **rover;
 	HashTableEntry *entry;
-	int index;
+	unsigned int index;
 	int result;
 
 	/* Generate the hash of the key and hence the index into the table */
@@ -406,25 +406,25 @@ int hash_table_remove(HashTable *hash_table, HashTableKey key)
 	return result;
 }
 
-int hash_table_num_entries(HashTable *hash_table)
+unsigned int hash_table_num_entries(HashTable *hash_table)
 {
 	return hash_table->entries;
 }
 
 void hash_table_iterate(HashTable *hash_table, HashTableIterator *iterator)
 {
-	int chain;
-	
+	unsigned int chain;
+
 	iterator->hash_table = hash_table;
 
 	/* Default value of next if no entries are found. */
-	
+
 	iterator->next_entry = NULL;
-	
+
 	/* Find the first entry */
-	
+
 	for (chain=0; chain<hash_table->table_size; ++chain) {
-		
+
 		if (hash_table->table[chain] != NULL) {
 			iterator->next_entry = hash_table->table[chain];
 			iterator->next_chain = chain;
@@ -443,16 +443,16 @@ HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 	HashTableEntry *current_entry;
 	HashTable *hash_table;
 	HashTableValue result;
-	int chain;
+	unsigned int chain;
 
 	hash_table = iterator->hash_table;
 
 	/* No more entries? */
-	
+
 	if (iterator->next_entry == NULL) {
 		return HASH_TABLE_NULL;
 	}
-	
+
 	/* Result is immediately available */
 
 	current_entry = iterator->next_entry;
@@ -461,19 +461,19 @@ HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 	/* Find the next entry */
 
 	if (current_entry->next != NULL) {
-		
+
 		/* Next entry in current chain */
 
 		iterator->next_entry = current_entry->next;
-		
+
 	} else {
-	
+
 		/* None left in this chain, so advance to the next chain */
 
 		chain = iterator->next_chain + 1;
 
 		/* Default value if no next chain found */
-		
+
 		iterator->next_entry = NULL;
 
 		while (chain < hash_table->table_size) {

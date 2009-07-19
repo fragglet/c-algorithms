@@ -86,7 +86,7 @@ typedef void *HashTableValue;
 struct _HashTableIterator {
 	HashTable *hash_table;
 	HashTableEntry *next_entry;
-	int next_chain;
+	unsigned int next_chain;
 };
 
 /**
@@ -210,7 +210,7 @@ int hash_table_remove(HashTable *hash_table, HashTableKey key);
  * @return                    The number of entries in the hash table.
  */
 
-int hash_table_num_entries(HashTable *hash_table);
+unsigned int hash_table_num_entries(HashTable *hash_table);
 
 /**
  * Initialise a @ref HashTableIterator to iterate over a hash table.

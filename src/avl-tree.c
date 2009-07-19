@@ -41,7 +41,7 @@ struct _AVLTreeNode {
 struct _AVLTree {
 	AVLTreeNode *root_node;
 	AVLTreeCompareFunc compare_func;
-	int num_nodes;
+	unsigned int num_nodes;
 };
 
 AVLTree *avl_tree_new(AVLTreeCompareFunc compare_func)
@@ -577,7 +577,7 @@ AVLTreeNode *avl_tree_node_parent(AVLTreeNode *node)
 	return node->parent;
 }
 
-int avl_tree_num_entries(AVLTree *tree)
+unsigned int avl_tree_num_entries(AVLTree *tree)
 {
 	return tree->num_nodes;
 }
@@ -612,17 +612,17 @@ AVLTreeValue *avl_tree_to_array(AVLTree *tree)
 	int index;
 
 	/* Allocate the array */
-	
+
 	array = malloc(sizeof(AVLTreeValue) * tree->num_nodes);
 
 	if (array == NULL) {
 		return NULL;
 	}
-	
+
 	index = 0;
 
 	/* Add all keys */
-	
+
 	avl_tree_to_array_add_subtree(tree->root_node, array, &index);
 
 	return array;

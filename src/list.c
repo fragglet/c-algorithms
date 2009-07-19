@@ -137,10 +137,10 @@ ListEntry *list_next(ListEntry *listentry)
 	return listentry->next;
 }
 
-ListEntry *list_nth_entry(ListEntry *list, int n)
+ListEntry *list_nth_entry(ListEntry *list, unsigned int n)
 {
 	ListEntry *entry;
-	int i;
+	unsigned int i;
 
 	/* Negative values are always out of range */
 
@@ -164,7 +164,7 @@ ListEntry *list_nth_entry(ListEntry *list, int n)
 	return entry;
 }
 
-ListValue list_nth_data(ListEntry *list, int n)
+ListValue list_nth_data(ListEntry *list, unsigned int n)
 {
 	ListEntry *entry;
 
@@ -181,18 +181,18 @@ ListValue list_nth_data(ListEntry *list, int n)
 	}
 }
 
-int list_length(ListEntry *list)
+unsigned int list_length(ListEntry *list)
 {
 	ListEntry *entry;
-	int length;
+	unsigned int length;
 
 	length = 0;
 	entry = list;
 
 	while (entry != NULL) {
-		
+
 		/* Count the number of entries */
-		
+
 		++length;
 
 		entry = entry->next;
@@ -204,30 +204,30 @@ int list_length(ListEntry *list)
 ListValue *list_to_array(ListEntry *list)
 {
 	ListEntry *rover;
-	int listlen;
 	ListValue *array;
-	int i;
+	unsigned int length;
+	unsigned int i;
 
 	/* Allocate an array equal in size to the list length */
-	
-	listlen = list_length(list);
 
-	array = malloc(sizeof(ListValue) * listlen);
+	length = list_length(list);
+
+	array = malloc(sizeof(ListValue) * length);
 
 	if (array == NULL) {
 		return NULL;
 	}
-	
+
 	/* Add all entries to the array */
-	
+
 	rover = list;
-	
-	for (i=0; i<listlen; ++i) {
+
+	for (i=0; i<length; ++i) {
 
 		/* Add this node's data */
 
 		array[i] = rover->data;
-		
+
 		/* Jump to the next list node */
 
 		rover = rover->next;

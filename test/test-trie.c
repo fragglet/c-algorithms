@@ -41,7 +41,7 @@ Trie *generate_trie(void)
 {
 	Trie *trie;
 	int i;
-	int entries;
+	unsigned int entries;
 
 	/* Create a trie and fill it with a large number of values */
 
@@ -108,8 +108,8 @@ void test_trie_new_free(void)
 void test_trie_insert(void)
 {
 	Trie *trie;
-	int entries;
-	int allocated;
+	unsigned int entries;
+	size_t allocated;
 
 	trie = generate_trie();
 
@@ -169,7 +169,7 @@ void test_trie_remove(void)
 	Trie *trie;
 	char buf[10];
 	int i;
-	int entries;
+	unsigned int entries;
 
 	trie = generate_trie();
 

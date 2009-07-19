@@ -184,7 +184,7 @@ ListValue list_data(ListEntry *listentry);
  * @return           The entry at the specified index, or NULL if out of range.
  */
 
-ListEntry *list_nth_entry(ListEntry *list, int n);
+ListEntry *list_nth_entry(ListEntry *list, unsigned int n);
 
 /** 
  * Retrieve the value at a specified index in the list.
@@ -195,7 +195,7 @@ ListEntry *list_nth_entry(ListEntry *list, int n);
  *                   unsuccessful.
  */
 
-ListValue list_nth_data(ListEntry *list, int n);
+ListValue list_nth_data(ListEntry *list, unsigned int n);
 
 /** 
  * Find the length of a list.
@@ -204,7 +204,7 @@ ListValue list_nth_data(ListEntry *list, int n);
  * @return           The number of entries in the list.
  */
 
-int list_length(ListEntry *list);
+unsigned int list_length(ListEntry *list);
 
 /**
  * Create a C array containing the contents of a list.

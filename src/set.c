@@ -37,9 +37,9 @@ struct _SetEntry {
 
 struct _Set {
 	SetEntry **table;
-	int entries;
-	int table_size;
-	int prime_index;
+	unsigned int entries;
+	unsigned int table_size;
+	unsigned int prime_index;
 	SetHashFunc hash_func;
 	SetEqualFunc equal_func;
 	SetFreeFunc free_func;
@@ -57,7 +57,7 @@ static const unsigned int set_primes[] = {
 	402653189, 805306457, 1610612741,
 };
 
-static const int set_num_primes = sizeof(set_primes) / sizeof(int);
+static const unsigned int set_num_primes = sizeof(set_primes) / sizeof(int);
 
 static int set_allocate_table(Set *set)
 {
@@ -125,10 +125,10 @@ void set_free(Set *set)
 {
 	SetEntry *rover;
 	SetEntry *next;
-	int i;
-	
+	unsigned int i;
+
 	/* Free all entries in all chains */
-	
+
 	for (i=0; i<set->table_size; ++i) {
 		rover = set->table[i];
 
@@ -140,11 +140,11 @@ void set_free(Set *set)
 			set_free_entry(set, rover);
 
 			/* Advance to the next entry in the chain */
-			
+
 			rover = next;
 		}
 	}
-	
+
 	/* Free the table */
 
 	free(set->table);
@@ -164,13 +164,13 @@ static int set_enlarge(Set *set)
 	SetEntry *rover;
 	SetEntry *next;
 	SetEntry **old_table;
-	int old_table_size;
-	int old_prime_index;
-	int index;
-	int i;
+	unsigned int old_table_size;
+	unsigned int old_prime_index;
+	unsigned int index;
+	unsigned int i;
 
 	/* Store the old table */
-	
+
 	old_table = set->table;
 	old_table_size = set->table_size;
 	old_prime_index = set->prime_index;
@@ -227,13 +227,13 @@ int set_insert(Set *set, SetValue data)
 {
 	SetEntry *newentry;
 	SetEntry *rover;
-	int index;
+	unsigned int index;
 
 	/* The hash table becomes less efficient as the number of entries
 	 * increases. Check if the percentage used becomes large. */
-	
+
 	if ((set->entries * 3) / set->table_size > 0) {
-		
+
 		/* The table is more than 1/3 full and must be increased in size */
 
 		if (!set_enlarge(set)) {
@@ -254,12 +254,12 @@ int set_insert(Set *set, SetValue data)
 	while (rover != NULL) {
 
 		if (set->equal_func(data, rover->data) != 0) {
-			
+
 			/* This data is already in the set */
 
 			return 0;
 		}
-		
+
 		rover = rover->next;
 	}
 
@@ -293,7 +293,7 @@ int set_remove(Set *set, SetValue data)
 {
 	SetEntry **rover;
 	SetEntry *entry;
-	int index;
+	unsigned int index;
 
 	/* Look up the data by its hash key */
 
@@ -305,7 +305,7 @@ int set_remove(Set *set, SetValue data)
 
 	while (*rover != NULL) {
 		if (set->equal_func(data, (*rover)->data) != 0) {
-			
+
 			/* Found the entry */
 
 			entry = *rover;
@@ -338,7 +338,7 @@ int set_remove(Set *set, SetValue data)
 int set_query(Set *set, SetValue data)
 {
 	SetEntry *rover;
-	int index;
+	unsigned int index;
 
 	/* Look up the data by its hash key */
 
@@ -350,7 +350,7 @@ int set_query(Set *set, SetValue data)
 
 	while (rover != NULL) {
 		if (set->equal_func(data, rover->data) != 0) {
-			
+
 			/* Found the entry */
 
 			return 1;
@@ -366,7 +366,7 @@ int set_query(Set *set, SetValue data)
 	return 0;
 }
 
-int set_num_entries(Set *set)
+unsigned int set_num_entries(Set *set)
 {
 	return set->entries;
 }
@@ -375,21 +375,21 @@ SetValue *set_to_array(Set *set)
 {
 	SetValue *array;
 	int array_counter;
-	int i;
+	unsigned int i;
 	SetEntry *rover;
-	
+
 	/* Create an array to hold the set entries */
-	
+
 	array = malloc(sizeof(SetValue) * set->entries);
 
 	if (array == NULL) {
 		return NULL;
 	}
-	
+
 	array_counter = 0;
 
 	/* Iterate over all entries in all chains */
-	
+
 	for (i=0; i<set->table_size; ++i) {
 
 		rover = set->table[i];
@@ -397,12 +397,12 @@ SetValue *set_to_array(Set *set)
 		while (rover != NULL) {
 
 			/* Add this value to the array */
-			
+
 			array[array_counter] = rover->data;
 			++array_counter;
 
 			/* Advance to the next entry */
-			
+
 			rover = rover->next;
 		}
 	}
@@ -513,13 +513,13 @@ Set *set_intersection(Set *set1, Set *set2)
 
 void set_iterate(Set *set, SetIterator *iter)
 {
-	int chain;
-	
+	unsigned int chain;
+
 	iter->set = set;
 	iter->next_entry = NULL;
 
 	/* Find the first entry */
-	
+
 	for (chain = 0; chain < set->table_size; ++chain) {
 
 		/* There is a value at the start of this chain */
@@ -529,7 +529,7 @@ void set_iterate(Set *set, SetIterator *iter)
 			break;
 		}
 	}
-	
+
 	iter->next_chain = chain;
 }
 
@@ -538,12 +538,12 @@ SetValue set_iter_next(SetIterator *iterator)
 	Set *set;
 	SetValue result;
 	SetEntry *current_entry;
-	int chain;
+	unsigned int chain;
 
 	set = iterator->set;
 
 	/* No more entries? */
-	
+
 	if (iterator->next_entry == NULL) {
 		return SET_NULL;
 	}
@@ -562,7 +562,7 @@ SetValue set_iter_next(SetIterator *iterator)
 		iterator->next_entry = current_entry->next;
 
 	} else {
-		
+
 		/* Default value if no valid chain is found */
 
 		iterator->next_entry = NULL;
@@ -576,7 +576,7 @@ SetValue set_iter_next(SetIterator *iterator)
 			/* Is there a chain at this table entry? */
 
 			if (set->table[chain] != NULL) {
-				
+
 				/* Valid chain found! */
 
 				iterator->next_entry = set->table[chain];

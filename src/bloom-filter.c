@@ -119,6 +119,7 @@ void bloom_filter_insert(BloomFilter *bloomfilter, BloomFilterValue value)
 	unsigned long subhash;
 	unsigned int index;
 	unsigned int i;
+	unsigned char b;
 
 	/* Generate hash of the value to insert */
 
@@ -141,7 +142,8 @@ void bloom_filter_insert(BloomFilter *bloomfilter, BloomFilterValue value)
 		 * index / 8 finds the byte index of the table,
 		 * index % 8 gives the bit index within that byte to set. */
 
-		bloomfilter->table[index / 8] |= 1 << (index % 8);
+		b = (unsigned char) (1 << (index % 8));
+		bloomfilter->table[index / 8] |= b;
 	}
 }
 

@@ -20,8 +20,9 @@ TEST_CFLAGS=""
 # Turn on all warnings for gcc.  Turn off optimisation for the test build.
 
 if $is_gcc; then
-	CFLAGS="$CFLAGS -Wall"
-	TEST_CFLAGS="$TEST_CFLAGS -Wall -O0"
+	WARNINGS="-Wall -Wsign-compare -Wconversion"
+	CFLAGS="$CFLAGS $WARNINGS"
+	TEST_CFLAGS="$TEST_CFLAGS $WARNINGS -O0"
 fi
 
 # Support for coverage analysis via gcov:

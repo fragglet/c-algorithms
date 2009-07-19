@@ -171,7 +171,7 @@ int trie_remove_binary(Trie *trie, unsigned char *key, int key_length);
  * @return                   Count of the number of entries in the trie.
  */
 
-int trie_num_entries(Trie *trie);
+unsigned int trie_num_entries(Trie *trie);
 
 #ifdef __cplusplus
 }

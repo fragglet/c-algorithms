@@ -276,7 +276,7 @@ AVLTreeValue *avl_tree_to_array(AVLTree *tree);
  * @return                The number of key-value pairs stored in the tree.
  */
 
-int avl_tree_num_entries(AVLTree *tree);
+unsigned int avl_tree_num_entries(AVLTree *tree);
 
 #ifdef __cplusplus
 }

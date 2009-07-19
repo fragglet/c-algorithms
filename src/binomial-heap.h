@@ -141,7 +141,7 @@ BinomialHeapValue binomial_heap_pop(BinomialHeap *heap);
  * @return                 The number of values in the heap.
  */
 
-int binomial_heap_num_entries(BinomialHeap *heap);
+unsigned int binomial_heap_num_entries(BinomialHeap *heap);
 
 #ifdef __cplusplus
 }

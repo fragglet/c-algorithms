@@ -40,7 +40,7 @@ Set *generate_set(void)
 {
 	Set *set;
 	char buf[10];
-	int i;
+	unsigned int i;
 	char *value;
 
 	set = set_new(string_hash, string_equal);
@@ -152,7 +152,7 @@ void test_set_remove(void)
 	Set *set;
 	char buf[10];
 	int i;
-	int num_entries;
+	unsigned int num_entries;
 
 	set = generate_set();
 
@@ -212,7 +212,7 @@ void test_set_union(void)
 	Set *set1;
 	Set *set2;
 	Set *result_set;
-	int allocated;
+	size_t allocated;
 
 	/* Create the first set */
 
@@ -275,7 +275,7 @@ void test_set_intersection(void)
 	Set *set1;
 	Set *set2;
 	Set *result_set;
-	int allocated;
+	size_t allocated;
 
 	/* Create the first set */
 
@@ -405,7 +405,7 @@ void test_set_iterating_remove(void)
 	Set *set;
 	SetIterator iterator;
 	int count;
-	int removed;
+	unsigned int removed;
 	char *value;
 
 	set = generate_set();
@@ -503,7 +503,7 @@ void test_set_out_of_memory(void)
 {
 	Set *set;
 	int values[66];
-	int i;
+	unsigned int i;
 
 	set = set_new(int_hash, int_equal);
 
@@ -522,7 +522,7 @@ void test_set_out_of_memory(void)
 	 * to fail. */
 
 	for (i=0; i<65; ++i) {
-		values[i] = i;
+		values[i] = (int) i;
 
 		assert(set_insert(set, &values[i]) != 0);
 		assert(set_num_entries(set) == i + 1);

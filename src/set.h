@@ -85,7 +85,7 @@ typedef void *SetValue;
 struct _SetIterator {
 	Set *set;
 	SetEntry *next_entry;
-	int next_chain;
+	unsigned int next_chain;
 };
 
 /**
@@ -188,7 +188,7 @@ int set_query(Set *set, SetValue data);
  * @return              A count of the number of entries in the set.
  */
 
-int set_num_entries(Set *set);
+unsigned int set_num_entries(Set *set);
 
 /**
  * Create an array containing all entries in a set.

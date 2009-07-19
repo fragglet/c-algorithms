@@ -229,7 +229,7 @@ void test_hash_table_iterating_remove(void)
 	char buf[10];
 	char *val;
 	int count;
-	int removed;
+	unsigned int removed;
 	int i;
 
 	hash_table = generate_hash_table();
@@ -387,7 +387,7 @@ void test_hash_table_out_of_memory(void)
 {
 	HashTable *hash_table;
 	int values[66];
-	int i;
+	unsigned int i;
 
 	hash_table = hash_table_new(int_hash, int_equal);
 
@@ -406,7 +406,7 @@ void test_hash_table_out_of_memory(void)
 	 * to fail. */
 
 	for (i=0; i<65; ++i) {
-		values[i] = i;
+		values[i] = (int) i;
 
 		assert(hash_table_insert(hash_table,
 		                         &values[i], &values[i]) != 0);

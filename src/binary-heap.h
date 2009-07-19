@@ -141,7 +141,7 @@ BinaryHeapValue binary_heap_pop(BinaryHeap *heap);
  * @return                 The number of values in the heap.
  */
 
-int binary_heap_num_entries(BinaryHeap *heap);
+unsigned int binary_heap_num_entries(BinaryHeap *heap);
 
 #ifdef __cplusplus
 }

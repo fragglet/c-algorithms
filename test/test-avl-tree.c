@@ -197,7 +197,7 @@ void test_avl_tree_insert_lookup(void)
 {
 	AVLTree *tree;
 	AVLTreeNode *node;
-	int i;
+	unsigned int i;
 	int *value;
 
 	/* Create a tree containing some values. Validate the 
@@ -206,7 +206,7 @@ void test_avl_tree_insert_lookup(void)
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
 
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
-		test_array[i] = i;
+		test_array[i] = (int) i;
 		avl_tree_insert(tree, &test_array[i], &test_array[i]);
 
 		assert(avl_tree_num_entries(tree) == i + 1);
@@ -221,15 +221,13 @@ void test_avl_tree_insert_lookup(void)
 		node = avl_tree_lookup_node(tree, &i);
 		assert(node != NULL);
 		value = avl_tree_node_key(node);
-		assert(*value == i);
+		assert(*value == (int) i);
 		value = avl_tree_node_value(node);
-		assert(*value == i);
+		assert(*value == (int) i);
 	}
 
 	/* Check that invalid nodes are not found */
 
-	i = -1;
-	assert(avl_tree_lookup_node(tree, &i) == NULL);
 	i = NUM_TEST_VALUES + 100;
 	assert(avl_tree_lookup_node(tree, &i) == NULL);
 
@@ -354,7 +352,7 @@ void test_avl_tree_remove(void)
 	int i;
 	int x, y, z;
 	int value;
-	int expected_entries;
+	unsigned int expected_entries;
 
 	tree = create_tree();
 
@@ -397,8 +395,8 @@ void test_avl_tree_to_array(void)
 	AVLTree *tree;
 	int entries[] = { 89, 23, 42, 4, 16, 15, 8, 99, 50, 30 };
 	int sorted[]  = { 4, 8, 15, 16, 23, 30, 42, 50, 89, 99 };
-	int num_entries = sizeof(entries) / sizeof(int);
-	int i;
+	unsigned int num_entries = sizeof(entries) / sizeof(int);
+	unsigned int i;
 	int **array;
 
 	/* Add all entries to the tree */

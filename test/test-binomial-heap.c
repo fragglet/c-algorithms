@@ -161,12 +161,12 @@ static BinomialHeap *generate_heap(void)
 
 static void verify_heap(BinomialHeap *heap)
 {
+	unsigned int num_vals;
 	int *val;
-	int numvals;
 	int i;
 
-	numvals = binomial_heap_num_entries(heap);
-	assert(numvals == NUM_TEST_VALUES - 1);
+	num_vals = binomial_heap_num_entries(heap);
+	assert(num_vals == NUM_TEST_VALUES - 1);
 
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		if (i == TEST_VALUE) {
@@ -180,8 +180,8 @@ static void verify_heap(BinomialHeap *heap)
 
 		/* Decrement num values counter */
 
-		--numvals;
-		assert(binomial_heap_num_entries(heap) == numvals);
+		--num_vals;
+		assert(binomial_heap_num_entries(heap) == num_vals);
 	}
 }
 

@@ -31,8 +31,8 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 struct _BinaryHeap {
 	BinaryHeapType heap_type;
 	BinaryHeapValue *values;
-	int num_values;
-	int alloced_size;
+	unsigned int num_values;
+	unsigned int alloced_size;
 	BinaryHeapCompareFunc compare_func;
 };
 
@@ -82,24 +82,24 @@ void binary_heap_free(BinaryHeap *heap)
 int binary_heap_insert(BinaryHeap *heap, BinaryHeapValue value)
 {
 	BinaryHeapValue *new_values;
-	int index;
-	int newsize;
-	int parent;
+	unsigned int index;
+	unsigned int new_size;
+	unsigned int parent;
 
 	/* Possibly realloc the heap to a larger size */
 
 	if (heap->num_values >= heap->alloced_size) {
 
 		/* Double the table size */
-		
-		newsize = heap->alloced_size * 2;
-		new_values = realloc(heap->values, sizeof(BinaryHeapValue) * newsize);
+
+		new_size = heap->alloced_size * 2;
+		new_values = realloc(heap->values, sizeof(BinaryHeapValue) * new_size);
 
 		if (new_values == NULL) {
 			return 0;
 		}
-		
-		heap->alloced_size = newsize;
+
+		heap->alloced_size = new_size;
 		heap->values = new_values;
 	}
 
@@ -147,9 +147,9 @@ BinaryHeapValue binary_heap_pop(BinaryHeap *heap)
 {
 	BinaryHeapValue result;
 	BinaryHeapValue new_value;
-	int index;
-	int next_index;
-	int child1, child2;
+	unsigned int index;
+	unsigned int next_index;
+	unsigned int child1, child2;
 
 	/* Empty heap? */
 
@@ -225,7 +225,7 @@ BinaryHeapValue binary_heap_pop(BinaryHeap *heap)
 	return result;
 }
 
-int binary_heap_num_entries(BinaryHeap *heap)
+unsigned int binary_heap_num_entries(BinaryHeap *heap)
 {
 	return heap->num_values;
 }
