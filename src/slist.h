@@ -231,15 +231,15 @@ int slist_remove_entry(SListEntry **list, SListEntry *entry);
  * Remove all occurrences of a particular value from a list.
  *
  * @param list       Pointer to the list.
- * @param callback   Callback function to invoke to compare values in the 
+ * @param callback   Callback function to invoke to compare values in the
  *                   list with the value to remove.
  * @param data       The value to remove from the list.
  * @return           The number of entries removed from the list.
  */
 
-int slist_remove_data(SListEntry **list,
-                      SListEqualFunc callback,
-                      SListValue data);
+unsigned int slist_remove_data(SListEntry **list,
+                               SListEqualFunc callback,
+                               SListValue data);
 
 /**
  * Sort a list.

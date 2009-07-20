@@ -239,7 +239,8 @@ int list_remove_entry(ListEntry **list, ListEntry *entry);
  * @return           The number of entries removed from the list.
  */
 
-int list_remove_data(ListEntry **list, ListEqualFunc callback, ListValue data);
+unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
+                              ListValue data);
 
 /**
  * Sort a list.

@@ -284,37 +284,38 @@ int list_remove_entry(ListEntry **list, ListEntry *entry)
 	return 1;
 }
 
-int list_remove_data(ListEntry **list, ListEqualFunc callback, ListValue data)
+unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
+                              ListValue data)
 {
-	int entries_removed;
+	unsigned int entries_removed;
 	ListEntry *rover;
 	ListEntry *next;
-	
+
 	entries_removed = 0;
 
 	/* Iterate over the entries in the list */
-	
+
 	rover = *list;
-	
+
 	while (rover != NULL) {
 
 		next = rover->next;
 
 		if (callback(rover->data, data)) {
 
-			/* This data needs to be removed.  Unlink this entry 
+			/* This data needs to be removed.  Unlink this entry
 			 * from the list. */
 
 			if (rover->prev == NULL) {
-				
+
 				/* This is the first entry in the list */
 
 				*list = rover->next;
 			} else {
 
-				/* Point the previous entry at its new 
+				/* Point the previous entry at its new
 				 * location */
-				
+
 				rover->prev->next = rover->next;
 			}
 
@@ -328,7 +329,7 @@ int list_remove_data(ListEntry **list, ListEqualFunc callback, ListValue data)
 
 			++entries_removed;
 		}
-		
+
 		/* Advance to the next list entry */
 
 		rover = next;

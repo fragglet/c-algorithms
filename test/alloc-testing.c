@@ -86,15 +86,15 @@ static void alloc_test_overwrite(void *ptr, size_t length, unsigned int pattern)
 {
 	unsigned char *byte_ptr;
 	unsigned int pattern_seq;
-	unsigned char pattern_byte;
+	unsigned char b;
 	size_t i;
 
 	byte_ptr = ptr;
 
 	for (i=0; i<length; ++i) {
 		pattern_seq = i & 3;
-		pattern_byte = (pattern >> (8 * pattern_seq)) & 0xff;
-		byte_ptr[i] = pattern_byte;
+		b = (unsigned char) ((pattern >> (8 * pattern_seq)) & 0xff);
+		byte_ptr[i] = b;
 	}
 }
 

@@ -276,37 +276,38 @@ int slist_remove_entry(SListEntry **list, SListEntry *entry)
 	return 1;
 }
 
-int slist_remove_data(SListEntry **list, SListEqualFunc callback, SListValue data)
+unsigned int slist_remove_data(SListEntry **list, SListEqualFunc callback,
+                               SListValue data)
 {
 	SListEntry **rover;
 	SListEntry *next;
-	int entries_removed;
+	unsigned int entries_removed;
 
 	entries_removed = 0;
 
 	/* Iterate over the list.  'rover' points at the entrypoint into the
-	 * current entry, ie. the list variable for the first entry in the 
+	 * current entry, ie. the list variable for the first entry in the
 	 * list, or the "next" field of the preceding entry. */
-	
+
 	rover = list;
 
 	while (*rover != NULL) {
-		
+
 		/* Should this entry be removed? */
-		
+
 		if (callback((*rover)->data, data) != 0) {
-			
+
 			/* Data found, so remove this entry and free */
 
 			next = (*rover)->next;
 			free(*rover);
 			*rover = next;
-			
+
 			/* Count the number of entries removed */
 
 			++entries_removed;
 		} else {
-			
+
 			/* Advance to the next entry */
 
 			rover = &((*rover)->next);
