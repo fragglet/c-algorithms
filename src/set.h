@@ -98,7 +98,7 @@ struct _SetIterator {
  * Hash function.  Generates a hash key for values to be stored in a set.
  */
 
-typedef unsigned long (*SetHashFunc)(SetValue value);
+typedef unsigned int (*SetHashFunc)(SetValue value);
 
 /** 
  * Equality function.  Compares two values to determine if they are

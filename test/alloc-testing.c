@@ -85,14 +85,14 @@ static BlockHeader *alloc_test_get_header(void *ptr)
 static void alloc_test_overwrite(void *ptr, size_t length, unsigned int pattern)
 {
 	unsigned char *byte_ptr;
-	unsigned int pattern_seq;
+	int pattern_seq;
 	unsigned char b;
 	size_t i;
 
 	byte_ptr = ptr;
 
 	for (i=0; i<length; ++i) {
-		pattern_seq = i & 3;
+		pattern_seq = (int) (i & 3);
 		b = (unsigned char) ((pattern >> (8 * pattern_seq)) & 0xff);
 		byte_ptr[i] = b;
 	}

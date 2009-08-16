@@ -103,7 +103,7 @@ struct _HashTableIterator {
  * @return       The hash value.
  */
 
-typedef unsigned long (*HashTableHashFunc)(HashTableKey value);
+typedef unsigned int (*HashTableHashFunc)(HashTableKey value);
 
 /**
  * Function used to compare two keys for equality.

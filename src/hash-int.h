@@ -39,7 +39,7 @@ extern "C" {
  * @return                A hash key for the value at the location.
  */
 
-unsigned long int_hash(void *location);
+unsigned int int_hash(void *location);
 
 #ifdef __cplusplus
 }

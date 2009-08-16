@@ -22,12 +22,12 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 /* Hash function for a pointer to an integer */
 
-unsigned long int_hash(void *vlocation)
+unsigned int int_hash(void *vlocation)
 {
 	int *location;
 
 	location = (int *) vlocation;
 
-	return (unsigned long) *location;
+	return (unsigned int) *location;
 }
 

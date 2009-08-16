@@ -39,7 +39,7 @@ extern "C" {
  * @return                A hash key for the pointer.
  */
 
-unsigned long pointer_hash(void *location);
+unsigned int pointer_hash(void *location);
 
 #ifdef __cplusplus
 }

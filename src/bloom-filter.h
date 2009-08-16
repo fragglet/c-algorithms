@@ -64,7 +64,7 @@ typedef void *BloomFilterValue;
  * @return       The hash value.
  */
 
-typedef unsigned long (*BloomFilterHashFunc)(BloomFilterValue data);
+typedef unsigned int (*BloomFilterHashFunc)(BloomFilterValue data);
 
 /**
  * Create a new bloom filter.

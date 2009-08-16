@@ -115,8 +115,8 @@ void bloom_filter_free(BloomFilter *bloomfilter)
 
 void bloom_filter_insert(BloomFilter *bloomfilter, BloomFilterValue value)
 {
-	unsigned long hash;
-	unsigned long subhash;
+	unsigned int hash;
+	unsigned int subhash;
 	unsigned int index;
 	unsigned int i;
 	unsigned char b;
@@ -149,8 +149,8 @@ void bloom_filter_insert(BloomFilter *bloomfilter, BloomFilterValue value)
 
 int bloom_filter_query(BloomFilter *bloomfilter, BloomFilterValue value)
 {
-	unsigned long hash;
-	unsigned long subhash;
+	unsigned int hash;
+	unsigned int subhash;
 	unsigned int index;
 	unsigned int i;
 	unsigned char b;
