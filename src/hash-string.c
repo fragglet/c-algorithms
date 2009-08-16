@@ -34,7 +34,7 @@ unsigned int string_hash(void *string)
 	p = (unsigned char *) string;
 
 	while (*p != '\0') {
-		result = ((result << 5) + result ) + *p;
+		result = (result << 5) + result + *p;
 		++p;
 	}
 
@@ -52,7 +52,7 @@ unsigned int string_nocase_hash(void *string)
 	p = (unsigned char *) string;
 
 	while (*p != '\0') {
-		result = ((result << 5) + result ) + tolower(*p);
+		result = (result << 5) + result + (unsigned int) tolower(*p);
 		++p;
 	}
 
