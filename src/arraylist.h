@@ -80,7 +80,7 @@ struct _ArrayList {
 /**
  * Compare two values in an arraylist to determine if they are equal.
  *
- * @return Non-zero if the values are not equal, zero if they are equal.
+ * @return Non-zero if the values are equal, zero if they are not equal.
  */
 
 typedef int (*ArrayListEqualFunc)(ArrayListValue value1, ArrayListValue value2);
