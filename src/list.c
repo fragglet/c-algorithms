@@ -72,9 +72,9 @@ ListEntry *list_prepend(ListEntry **list, ListValue data)
 
 	/* Hook into the list start */
 
-	if (*list != NULL) {
+	if (*list != NULL)
 		(*list)->prev = newentry;
-	}
+
 	newentry->prev = NULL;
 	newentry->next = *list;
 	*list = newentry;
@@ -91,9 +91,8 @@ ListEntry *list_append(ListEntry **list, ListValue data)
 
 	newentry = malloc(sizeof(ListEntry));
 
-	if (newentry == NULL) {
+	if (newentry == NULL)
 		return NULL;
-	}
 	
 	newentry->data = data;
 	newentry->next = NULL;
@@ -144,9 +143,8 @@ ListEntry *list_nth_entry(ListEntry *list, unsigned int n)
 
 	/* Negative values are always out of range */
 
-	if (n < 0) {
+	if (n < 0)
 		return NULL;
-	}
 
 	/* Iterate through n list entries to reach the desired entry.
 	 * Make sure we do not reach the end of the list. */
@@ -155,9 +153,8 @@ ListEntry *list_nth_entry(ListEntry *list, unsigned int n)
 
 	for (i=0; i<n; ++i) {
 
-		if (entry == NULL) {
+		if (entry == NULL)
 			return NULL;
-		}
 		entry = entry->next;
 	}
 
@@ -174,11 +171,9 @@ ListValue list_nth_data(ListEntry *list, unsigned int n)
 
 	/* If out of range, return NULL, otherwise return the data */
 
-	if (entry == NULL) {
+	if (entry == NULL)
 		return LIST_NULL;
-	} else {
-		return entry->data;
-	}
+	return entry->data;
 }
 
 unsigned int list_length(ListEntry *list)
@@ -214,9 +209,8 @@ ListValue *list_to_array(ListEntry *list)
 
 	array = malloc(sizeof(ListValue) * length);
 
-	if (array == NULL) {
+	if (array == NULL)
 		return NULL;
-	}
 
 	/* Add all entries to the array */
 
@@ -240,9 +234,8 @@ int list_remove_entry(ListEntry **list, ListEntry *entry)
 {
 	/* If the list is empty, or entry is NULL, always fail */
 
-	if (*list == NULL || entry == NULL) {
+	if (*list == NULL || entry == NULL)
 		return 0;
-	}
 	
 	/* Action to take is different if the entry is the first in the list */
 
@@ -255,9 +248,8 @@ int list_remove_entry(ListEntry **list, ListEntry *entry)
 		/* Update the second entry's prev pointer, if there is a second
 		 * entry */
 
-		if (entry->next != NULL) {
+		if (entry->next != NULL)
 			entry->next->prev = NULL;
-		}
 
 	} else {
 
@@ -270,9 +262,8 @@ int list_remove_entry(ListEntry **list, ListEntry *entry)
 		/* If there is an entry following this one, update its 'prev'
 		 * pointer to the new value */
 
-		if (entry->next != NULL) {
+		if (entry->next != NULL)
 			entry->next->prev = entry->prev;
-		}
 	}
 
 	/* Free the list entry */
@@ -319,9 +310,8 @@ unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
 				rover->prev->next = rover->next;
 			}
 
-			if (rover->next != NULL) {
+			if (rover->next != NULL)
 				rover->next->prev = rover->prev;
-			}
 
 			/* Free the entry */
 
@@ -352,9 +342,9 @@ static ListEntry *list_sort_internal(ListEntry **list,
 	/* If there are less than two entries in this list, it is
 	 * already sorted */
 
-	if (*list == NULL || (*list)->next == NULL) {
+	if (*list == NULL || (*list)->next == NULL)
 		return *list;
-	}
+
 
 	/* The first entry is the pivot */
 
@@ -388,9 +378,8 @@ static ListEntry *list_sort_internal(ListEntry **list,
 
 			rover->prev = NULL;
 			rover->next = more_list;
-			if (more_list != NULL) {
+			if (more_list != NULL)
 				more_list->prev = rover;
-			}
 			more_list = rover;
 		}
 
@@ -420,19 +409,16 @@ static ListEntry *list_sort_internal(ListEntry **list,
 	/* Append the more list after the pivot */
 
 	pivot->next = more_list;
-	if (more_list != NULL) {
+	if (more_list != NULL)
 		more_list->prev = pivot;
-	}
 
 	/* Work out what the last entry in the list is.  If the more list was 
 	 * empty, the pivot was the last entry.  Otherwise, the end of the 
 	 * more list is the end of the total list. */
 
-	if (more_list == NULL) {
+	if (more_list == NULL)
 		return pivot;
-	} else {
-		return more_list_end;
-	}
+	return more_list_end;
 }
 
 void list_sort(ListEntry **list, ListCompareFunc compare_func)
@@ -511,11 +497,9 @@ ListValue list_iter_next(ListIterator *iter)
 	
 	/* Have we reached the end of the list? */
 
-	if (iter->current == NULL) {
+	if (iter->current == NULL)
 		return LIST_NULL;
-	} else {
-		return iter->current->data;
-	}
+	return iter->current->data;
 }
 
 void list_iter_remove(ListIterator *iter)
@@ -532,9 +516,8 @@ void list_iter_remove(ListIterator *iter)
 
 		*iter->prev_next = iter->current->next;
 
-		if (iter->current->next != NULL) {
+		if (iter->current->next != NULL)
 			iter->current->next->prev = iter->current->prev;
-		}
 
 		free(iter->current);
 		iter->current = NULL;
