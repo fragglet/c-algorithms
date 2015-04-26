@@ -20,7 +20,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 #include <stdlib.h>
 #include <string.h>
-#include <values.h>
+#include <limits.h>
 
 #include "binomial-heap.h"
 
