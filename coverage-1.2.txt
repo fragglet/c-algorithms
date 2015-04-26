@@ -1,0 +1,117 @@
+File 'arraylist.c'
+Lines executed:100.00% of 75
+Branches executed:100.00% of 34
+Taken at least once:100.00% of 34
+Calls executed:100.00% of 17
+arraylist.c:creating 'arraylist.c.gcov'
+
+File 'avl-tree.c'
+Lines executed:100.00% of 182
+Branches executed:100.00% of 66
+Taken at least once:100.00% of 66
+Calls executed:100.00% of 45
+avl-tree.c:creating 'avl-tree.c.gcov'
+
+File 'binary-heap.c'
+Lines executed:100.00% of 61
+Branches executed:100.00% of 28
+Taken at least once:100.00% of 28
+Calls executed:100.00% of 12
+binary-heap.c:creating 'binary-heap.c.gcov'
+
+File 'binomial-heap.c'
+Lines executed:100.00% of 139
+Branches executed:100.00% of 66
+Taken at least once:98.48% of 66
+Calls executed:100.00% of 32
+binomial-heap.c:creating 'binomial-heap.c.gcov'
+
+File 'bloom-filter.c'
+Lines executed:100.00% of 63
+Branches executed:100.00% of 32
+Taken at least once:100.00% of 32
+Calls executed:100.00% of 11
+bloom-filter.c:creating 'bloom-filter.c.gcov'
+
+File 'compare-int.c'
+Lines executed:100.00% of 12
+Branches executed:100.00% of 4
+Taken at least once:100.00% of 4
+No calls
+compare-int.c:creating 'compare-int.c.gcov'
+
+File 'compare-pointer.c'
+Lines executed:100.00% of 8
+Branches executed:100.00% of 4
+Taken at least once:100.00% of 4
+No calls
+compare-pointer.c:creating 'compare-pointer.c.gcov'
+
+File 'compare-string.c'
+Lines executed:100.00% of 26
+Branches executed:100.00% of 10
+Taken at least once:100.00% of 10
+Calls executed:100.00% of 5
+compare-string.c:creating 'compare-string.c.gcov'
+
+File 'hash-int.c'
+Lines executed:100.00% of 3
+No branches
+No calls
+hash-int.c:creating 'hash-int.c.gcov'
+
+File 'hash-pointer.c'
+Lines executed:100.00% of 2
+No branches
+No calls
+hash-pointer.c:creating 'hash-pointer.c.gcov'
+
+File 'hash-string.c'
+Lines executed:100.00% of 14
+Branches executed:100.00% of 4
+Taken at least once:100.00% of 4
+Calls executed:100.00% of 1
+hash-string.c:creating 'hash-string.c.gcov'
+
+File 'hash-table.c'
+Lines executed:99.28% of 139
+Branches executed:100.00% of 54
+Taken at least once:94.44% of 54
+Calls executed:100.00% of 24
+hash-table.c:creating 'hash-table.c.gcov'
+
+File 'list.c'
+Lines executed:100.00% of 162
+Branches executed:100.00% of 82
+Taken at least once:100.00% of 82
+Calls executed:100.00% of 15
+list.c:creating 'list.c.gcov'
+
+File 'queue.c'
+Lines executed:100.00% of 70
+Branches executed:100.00% of 24
+Taken at least once:100.00% of 24
+Calls executed:100.00% of 12
+queue.c:creating 'queue.c.gcov'
+
+File 'set.c'
+Lines executed:99.40% of 167
+Branches executed:100.00% of 74
+Taken at least once:98.65% of 74
+Calls executed:100.00% of 41
+set.c:creating 'set.c.gcov'
+
+File 'slist.c'
+Lines executed:100.00% of 140
+Branches executed:100.00% of 70
+Taken at least once:100.00% of 70
+Calls executed:100.00% of 15
+slist.c:creating 'slist.c.gcov'
+
+File 'trie.c'
+Lines executed:100.00% of 109
+Branches executed:100.00% of 48
+Taken at least once:100.00% of 48
+Calls executed:100.00% of 13
+trie.c:creating 'trie.c.gcov'
+

@@ -1,0 +1,91 @@
+<html>
+
+<head>
+<title>C Algorithms: testing</title>
+</head>
+
+<body>
+
+<h1> Testing of the C Algorithms library </h1>
+
+When writing a set of general purpose data structures, correctness of the
+implementation is particularly important.  If the foundations on which a program
+is based are unsound, how can we have any confidence in its correctness or
+reliability?
+
+Edsger Dijkstra <a
+href="http://www.cs.utexas.edu/users/EWD/transcriptions/EWD10xx/EWD1036.html">remarked</a>
+that testing can never prove the absence of errors, only their presence.  
+However, somewhat paradoxically, we can never have <i>any</i> confidence in a
+program <i>unless</i> it has been tested; as Donald Knuth once humorously 
+<a
+href="http://www-cs-faculty.stanford.edu/~knuth/faq.html#asian">commented</a>:
+"beware of bugs in the above code; I have only proved it correct, not tested
+it".
+
+<p>
+
+A dual approach is used to gain confidence in the correctness of the C
+Algorithms library.  Firstly, the code is structured to be as simple as
+possible in order to be obviously correct.  Secondly, the library includes an
+extensive test suite.
+
+<h2> Coverage analysis </h2>
+
+For a test suite to be useful, it must test the entire program. If the test
+exercises some sections of the program but not others, we can only have a
+limited degree of confidence in the program as a whole.  
+
+For this reason, <a href=http://en.wikipedia.org/wiki/Code_coverage">code
+coverage</a> analysis of the source code is performed, using 
+<a href="http://gcc.gnu.org/onlinedocs/gcc-3.0/gcc_8.html">GNU gcov</a>. This
+provides a quantitative measure of the coverage providded by the test suite.
+
+<p>
+
+The aim is for 100% test coverage. The current version of the library comes very
+close to this; see <a href="coverage-1.2.txt">here</a> for the coverage report
+for the v1.2.0 release.
+
+<p>
+
+Code coverage is disabled by default, but can be enabled by passing the 
+<tt>--enable-coverage</tt> parameter to the <tt>configure</tt> script.
+
+<h2> Memory allocation testing </h2>
+
+The C programming language uses manual memory management.  As a large number of
+software bugs result from memory management errors, the test suite incorporates
+a <a
+href="https://github.com/fragglet/c-algorithms/blob/master/test/alloc-testing.c">framework</a>
+for testing memory allocation.  This consists of a header file that redirects
+all use of memory management functions test wrapper functions that track
+memory allocated during the test.  As a result, it is possible to detect memory
+leaks, doubly freed memory blocks, and memory that is used without being
+properly initialised.
+
+<p>
+
+A secondary function of the memory testing framework is the ability to
+deliberately trigger memory allocation failures.  It can therefore be confirmed
+that the library acts correctly in failure scenarios.
+
+<h2> Valgrind </h2>
+
+<a href="http://valgrind.org/">Valgrind</a> is an award-winning program for
+detecting memory errors.  The entire test suite can be run in Valgrind and it is
+used routinely during development.
+
+<p>
+
+Valgrind is disabled by default; to run the test suite in Valgrind, pass the
+<tt>--enable-valgrind</tt> command-line option to the <tt>configure</tt> script.
+
+<hr>
+
+Send comments to <a href="mailto:fraggle@removethisbit.gmail.com">Simon Howard</a>.
+
+</body>
+
+</html>
+
