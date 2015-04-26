@@ -1,0 +1,16 @@
+test-alloc-testing
+test-arraylist
+test-avl-tree
+test-binary-heap
+test-binomial-heap
+test-bloom-filter
+test-compare-functions
+test-cpp
+test-hash-functions
+test-hash-table
+test-list
+test-queue
+test-rb-tree
+test-set
+test-slist
+test-trie
