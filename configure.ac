@@ -1,11 +1,12 @@
 AC_INIT(C Algorithms, 1.2.0, fraggle@removethisbit.gmail.com, c-algorithms)
 AC_CONFIG_AUX_DIR(autotools)
 AC_CONFIG_SRCDIR([src/arraylist.c])
-AC_CONFIG_MACRO_DIRS([m4])
+AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC
+AM_PROG_CC_C_O
 AC_PROG_CXX
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
