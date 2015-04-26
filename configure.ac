@@ -1,7 +1,9 @@
 AC_INIT(C Algorithms, 1.2.0, fraggle@users.sourceforge.net, c-algorithms)
 AC_CONFIG_AUX_DIR(autotools)
+AC_CONFIG_SRCDIR([src/arraylist.c])
+AC_CONFIG_MACRO_DIRS([m4])
 
-AM_INIT_AUTOMAKE($PACKAGE_TARNAME, $PACKAGE_VERSION, no-define)
+AM_INIT_AUTOMAKE
 
 AC_PROG_CC
 AC_PROG_CXX
