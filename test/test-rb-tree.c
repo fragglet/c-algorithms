@@ -2,19 +2,19 @@
 
 Copyright (c) 2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -96,7 +96,7 @@ RBTree *create_tree(void)
 		test_array[i] = i;
 		rb_tree_insert(tree, &test_array[i], &test_array[i]);
 	}
-	
+
 	return tree;
 }
 
@@ -129,7 +129,7 @@ void test_rb_tree_insert_lookup(void)
 	int i;
 	int *value;
 
-	/* Create a tree containing some values. Validate the 
+	/* Create a tree containing some values. Validate the
 	 * tree is consistent at all stages. */
 
 	tree = rb_tree_new((RBTreeCompareFunc) int_compare);
@@ -175,7 +175,7 @@ void test_rb_tree_child(void)
 	int *p;
 	int i;
 
-	/* Create a tree containing some values. Validate the 
+	/* Create a tree containing some values. Validate the
 	 * tree is consistent at all stages. */
 
 	tree = rb_tree_new((RBTreeCompareFunc) int_compare);
@@ -234,7 +234,7 @@ void test_out_of_memory(void)
 void test_rb_tree_free(void)
 {
 	RBTree *tree;
-	
+
 	/* Try freeing an empty tree */
 
 	tree = rb_tree_new((RBTreeCompareFunc) int_compare);
@@ -296,7 +296,7 @@ void test_rb_tree_remove(void)
 
 	expected_entries = NUM_TEST_VALUES;
 
-	/* This looping arrangement causes nodes to be removed in a 
+	/* This looping arrangement causes nodes to be removed in a
 	 * randomish fashion from all over the tree. */
 
 	for (x=0; x<10; ++x) {
@@ -329,13 +329,13 @@ void test_rb_tree_to_array(void)
 	int **array;
 
 	/* Add all entries to the tree */
-	
+
 	tree = rb_tree_new((RBTreeCompareFunc) int_compare);
 
 	for (i=0; i<num_entries; ++i) {
 		rb_tree_insert(tree, &entries[i], NULL);
 	}
-	
+
 	assert(rb_tree_num_entries(tree) == num_entries);
 
 	/* Convert to an array and check the contents */
@@ -370,7 +370,7 @@ static UnitTestFunction tests[] = {
 	test_out_of_memory,
 	NULL
 };
-	
+
 int main(int argc, char *argv[])
 {
 	run_tests(tests);

@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -52,7 +52,7 @@ Trie *trie_new(void)
 	if (new_trie == NULL) {
 		return NULL;
 	}
-	
+
 	new_trie->root_node = NULL;
 
 	return new_trie;
@@ -88,7 +88,7 @@ void trie_free(Trie *trie)
 		trie_free_list_push(&free_list, trie->root_node);
 	}
 
-	/* Go through the free list, freeing nodes.  We add new nodes as 
+	/* Go through the free list, freeing nodes.  We add new nodes as
 	 * we encounter them; in this way, all the nodes are freed
 	 * non-recursively. */
 
@@ -180,7 +180,7 @@ static void trie_insert_rollback(Trie *trie, unsigned char *key)
 	TrieNode **next_prev_ptr;
 	unsigned char *p;
 
-	/* Follow the chain along.  We know that we will never reach the 
+	/* Follow the chain along.  We know that we will never reach the
 	 * end of the string because trie_insert never got that far.  As a
 	 * result, it is not necessary to check for the end of string
 	 * delimiter (NUL) */
@@ -197,7 +197,7 @@ static void trie_insert_rollback(Trie *trie, unsigned char *key)
 		next_node = *next_prev_ptr;
 		++p;
 
-		/* Decrease the use count and free the node if it 
+		/* Decrease the use count and free the node if it
 		 * reaches zero. */
 
 		--node->use_count;
@@ -231,12 +231,12 @@ int trie_insert(Trie *trie, char *key, TrieValue value)
 	if (value == TRIE_NULL) {
 		return 0;
 	}
-		
+
 	/* Search to see if this is already in the tree */
 
 	node = trie_find_end(trie, key);
 
-	/* Already in the tree? If so, replace the existing value and 
+	/* Already in the tree? If so, replace the existing value and
 	 * return success. */
 
 	if (node != NULL && node->data != TRIE_NULL) {
@@ -261,12 +261,12 @@ int trie_insert(Trie *trie, char *key, TrieValue value)
 			node = (TrieNode *) calloc(1, sizeof(TrieNode));
 
 			if (node == NULL) {
-  
+
 				/* Allocation failed.  Go back and undo
 				 * what we have done so far. */
 
 				trie_insert_rollback(trie, (unsigned char *) key);
-		
+
 				return 0;
 			}
 
@@ -318,12 +318,12 @@ int trie_insert_binary(Trie *trie, unsigned char *key, int key_length,
 	if (value == TRIE_NULL) {
 		return 0;
 	}
-		
+
 	/* Search to see if this is already in the tree */
 
 	node = trie_find_end_binary(trie, key, key_length);
 
-	/* Already in the tree? If so, replace the existing value and 
+	/* Already in the tree? If so, replace the existing value and
 	 * return success. */
 
 	if (node != NULL && node->data != TRIE_NULL) {
@@ -348,7 +348,7 @@ int trie_insert_binary(Trie *trie, unsigned char *key, int key_length,
 			node = (TrieNode *) calloc(1, sizeof(TrieNode));
 
 			if (node == NULL) {
-  
+
 				/* Allocation failed.  Go back and undo
 				 * what we have done so far. */
 
@@ -398,7 +398,7 @@ int trie_remove_binary(Trie *trie, unsigned char *key, int key_length)
 	TrieNode *next;
 	TrieNode **last_next_ptr;
 	int p, c;
-	
+
 	/* Find the end node and remove the value */
 
 	node = trie_find_end_binary(trie, key, key_length);
@@ -440,7 +440,7 @@ int trie_remove_binary(Trie *trie, unsigned char *key, int key_length)
 				last_next_ptr = NULL;
 			}
 		}
-		
+
 		/* Go to the next character or finish */
 		if (p == key_length) {
 			break;
@@ -455,7 +455,7 @@ int trie_remove_binary(Trie *trie, unsigned char *key, int key_length)
 		if (last_next_ptr != NULL) {
 			last_next_ptr = &node->next[c];
 		}
-		
+
 		/* Jump to the next node */
 
 		node = next;
@@ -473,7 +473,7 @@ int trie_remove(Trie *trie, char *key)
 	TrieNode **last_next_ptr;
 	char *p;
 	int c;
-	
+
 	/* Find the end node and remove the value */
 
 	node = trie_find_end(trie, key);
@@ -494,7 +494,7 @@ int trie_remove(Trie *trie, char *key)
 	for (;;) {
 
 		/* Find the next node */
-		
+
 		c = (unsigned char) *p;
 		next = node->next[c];
 
@@ -516,7 +516,7 @@ int trie_remove(Trie *trie, char *key)
 				last_next_ptr = NULL;
 			}
 		}
-		
+
 		/* Go to the next character or finish */
 
 		if (c == '\0') {
@@ -532,7 +532,7 @@ int trie_remove(Trie *trie, char *key)
 		if (last_next_ptr != NULL) {
 			last_next_ptr = &node->next[c];
 		}
-		
+
 		/* Jump to the next node */
 
 		node = next;

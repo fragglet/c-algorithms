@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -46,16 +46,16 @@ HashTable *generate_hash_table(void)
 	char buf[10];
 	char *value;
 	int i;
-	
+
 	/* Allocate a new hash table.  We use a hash table with keys that are
 	 * string versions of the integer values 0..9999 to ensure that there
 	 * will be collisions within the hash table (using integer values
 	 * with int_hash causes no collisions) */
 
 	hash_table = hash_table_new(string_hash, string_equal);
-	
+
 	/* Insert lots of values */
-	
+
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		sprintf(buf, "%i", i);
 
@@ -67,7 +67,7 @@ HashTable *generate_hash_table(void)
 	/* Automatically free all the values with the hash table */
 
 	hash_table_register_free_functions(hash_table, NULL, free);
-	
+
 	return hash_table;
 }
 
@@ -78,7 +78,7 @@ void test_hash_table_new_free(void)
 	HashTable *hash_table;
 
 	hash_table = hash_table_new(int_hash, int_equal);
-	
+
 	assert(hash_table != NULL);
 
 	/* Add some values */
@@ -210,7 +210,7 @@ void test_hash_table_iterating(void)
 	/* Test iterating over an empty table */
 
 	hash_table = hash_table_new(int_hash, int_equal);
-	
+
 	hash_table_iterate(hash_table, &iterator);
 
 	assert(hash_table_iter_has_more(&iterator) == 0);
@@ -219,7 +219,7 @@ void test_hash_table_iterating(void)
 }
 
 /* Demonstrates the ability to iteratively remove objects from
- * a hash table: ie. removing the current key being iterated over 
+ * a hash table: ie. removing the current key being iterated over
  * does not break the iterator. */
 
 void test_hash_table_iterating_remove(void)
@@ -242,9 +242,9 @@ void test_hash_table_iterating_remove(void)
 	hash_table_iterate(hash_table, &iterator);
 
 	while (hash_table_iter_has_more(&iterator)) {
-		
+
 		/* Read the next value */
-		
+
 		val = hash_table_iter_next(&iterator);
 
 		/* Remove every hundredth entry */
@@ -441,7 +441,7 @@ static UnitTestFunction tests[] = {
 int main(int argc, char *argv[])
 {
 	run_tests(tests);
-	
+
 	return 0;
 }
 

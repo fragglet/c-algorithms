@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -49,8 +49,8 @@ struct _BinomialHeap
 	unsigned int roots_length;
 };
 
-static int binomial_heap_cmp(BinomialHeap *heap, 
-                             BinomialHeapValue data1, 
+static int binomial_heap_cmp(BinomialHeap *heap,
+                             BinomialHeapValue data1,
                              BinomialHeapValue data2)
 {
 	if (heap->heap_type == BINOMIAL_HEAP_TYPE_MIN) {
@@ -74,7 +74,7 @@ static void binomial_tree_unref(BinomialTree *tree)
 	if (tree == NULL) {
 		return;
 	}
-	
+
 	/* Subtract a reference */
 
 	--tree->refcount;
@@ -138,7 +138,7 @@ static BinomialTree *binomial_tree_merge(BinomialHeap *heap,
 		return NULL;
 	}
 
-	memcpy(new_tree->subtrees, tree1->subtrees, 
+	memcpy(new_tree->subtrees, tree1->subtrees,
 	       sizeof(BinomialTree *) * tree1->order);
 	new_tree->subtrees[new_tree->order - 1] = tree2;
 
@@ -147,11 +147,11 @@ static BinomialTree *binomial_tree_merge(BinomialHeap *heap,
 	for (i=0; i<new_tree->order; ++i) {
 		binomial_tree_ref(new_tree->subtrees[i]);
 	}
-	
+
 	return new_tree;
 }
 
-/* Used to perform an "undo" when an error occurs during 
+/* Used to perform an "undo" when an error occurs during
  * binomial_heap_merge.  Go through the list of roots so far and remove
  * references that have been added. */
 
@@ -167,7 +167,7 @@ static void binomial_heap_merge_undo(BinomialTree **new_roots,
 	free(new_roots);
 }
 
-/* Merge the data in the 'other' heap into the 'heap' heap. 
+/* Merge the data in the 'other' heap into the 'heap' heap.
  * Returns non-zero if successful. */
 
 static int binomial_heap_merge(BinomialHeap *heap, BinomialHeap *other)
@@ -205,7 +205,7 @@ static int binomial_heap_merge(BinomialHeap *heap, BinomialHeap *other)
 	carry = NULL;
 
 	for (i=0; i<max; ++i) {
-	
+
 		/* Build up 'vals' as a list of all the values we must
 		 * merge at this step. */
 
@@ -264,8 +264,8 @@ static int binomial_heap_merge(BinomialHeap *heap, BinomialHeap *other)
 
 			if (new_carry == NULL) {
 
-				/* Remove references that we have added 
-				 * (freeing any BinomialTree structures 
+				/* Remove references that we have added
+				 * (freeing any BinomialTree structures
 				 * that were created in the process) */
 
 				binomial_heap_merge_undo(new_roots, i);
@@ -287,7 +287,7 @@ static int binomial_heap_merge(BinomialHeap *heap, BinomialHeap *other)
 		/* Unreference previous carried value */
 
 		binomial_tree_unref(carry);
-		
+
 		/* Assign the new value of carry, and add a reference */
 
 		carry = new_carry;
@@ -305,7 +305,7 @@ static int binomial_heap_merge(BinomialHeap *heap, BinomialHeap *other)
 	}
 
 	/* Free the old roots array and use the new one */
-	
+
 	free(heap->roots);
 	heap->roots = new_roots;
 	heap->roots_length = new_roots_length;
@@ -321,7 +321,7 @@ BinomialHeap *binomial_heap_new(BinomialHeapType heap_type,
 	BinomialHeap *new_heap;
 
 	/* Allocate a new heap */
-	
+
 	new_heap = calloc(1, sizeof(BinomialHeap));
 
 	if (new_heap == NULL) {
@@ -346,7 +346,7 @@ void binomial_heap_free(BinomialHeap *heap)
 	for (i=0; i<heap->roots_length; ++i) {
 		binomial_tree_unref(heap->roots[i]);
 	}
-	
+
 	/* Free the heap itself */
 
 	free(heap->roots);
@@ -368,9 +368,9 @@ int binomial_heap_insert(BinomialHeap *heap, BinomialHeapValue value)
 	}
 
 	/* Fill in values.  This has an initial reference count of 1 that
-	 * the "fake" heap holds; this will be removed at the end of 
+	 * the "fake" heap holds; this will be removed at the end of
 	 * this function. */
-	
+
 	new_tree->value = value;
 	new_tree->order = 0;
 	new_tree->refcount = 1;
@@ -457,7 +457,7 @@ BinomialHeapValue binomial_heap_pop(BinomialHeap *heap)
 		--heap->num_values;
 
 		return result;
-		
+
 	} else {
 
 		/* Add the least tree back */

@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -301,7 +301,7 @@ void test_list_remove_data(void)
 	val = 56;
 	assert(list_remove_data(&list, int_equal, &val) == 0);
 	check_list_integrity(list);
-	
+
 	/* Remove the number 8 from the list */
 
 	val = 8;
@@ -388,15 +388,15 @@ void test_list_find_data(void)
 	for (i=0; i<num_entries; ++i) {
 
 		val = entries[i];
-		
+
 		result = list_find_data(list, int_equal, &val);
-		
+
 		assert(result != NULL);
 
 		data = (int *) list_data(result);
 		assert(*data == val);
 	}
-	
+
 	/* Check some invalid values return NULL */
 
 	val = 0;
@@ -411,9 +411,9 @@ void test_list_to_array(void)
 {
 	ListEntry *list;
 	void **array;
-	
+
 	list = generate_list();
-	
+
 	array = list_to_array(list);
 
 	assert(array[0] == &variable1);
@@ -526,7 +526,7 @@ void test_list_iterate_bad_remove(void)
 	}
 
 	/* Iterate over the list, removing each element in turn.  We
-	 * use an odd number of list elements so that the first and 
+	 * use an odd number of list elements so that the first and
 	 * last entries are removed. */
 
 	list_iterate(&list, &iter);

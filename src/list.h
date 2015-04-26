@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -26,7 +26,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * A doubly-linked list stores a collection of values.  Each entry in
  * the list (represented by a pointer a @ref ListEntry structure)
  * contains a link to the next entry and the previous entry.
- * It is therefore possible to iterate over entries in the list in either 
+ * It is therefore possible to iterate over entries in the list in either
  * direction.
  *
  * To create an empty list, create a new variable which is a pointer to
@@ -35,12 +35,12 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * To add a value to a list, use @ref list_append or @ref list_prepend.
  *
- * To remove a value from a list, use @ref list_remove_entry or 
+ * To remove a value from a list, use @ref list_remove_entry or
  * @ref list_remove_data.
  *
  * To iterate over entries in a list, use @ref list_iterate to initialise
  * a @ref ListIterator structure, with @ref list_iter_next and
- * @ref list_iter_has_more to retrieve each value in turn. 
+ * @ref list_iter_has_more to retrieve each value in turn.
  * @ref list_iter_remove can be used to remove the current entry.
  *
  * To access an entry in the list by index, use @ref list_nth_entry or
@@ -59,14 +59,14 @@ extern "C" {
 
 /**
  * Represents an entry in a doubly-linked list.  The empty list is
- * represented by a NULL pointer. To initialise a new doubly linked 
- * list, simply create a variable of this type 
+ * represented by a NULL pointer. To initialise a new doubly linked
+ * list, simply create a variable of this type
  * containing a pointer to NULL.
  */
 
 typedef struct _ListEntry ListEntry;
 
-/** 
+/**
  * Structure used to iterate over a list.
  */
 
@@ -98,8 +98,8 @@ struct _ListIterator {
  *
  * @param value1      The first value to compare.
  * @param value2      The second value to compare.
- * @return            A negative value if value1 should be sorted before 
- *                    value2, a positive value if value1 should be sorted 
+ * @return            A negative value if value1 should be sorted before
+ *                    value2, a positive value if value1 should be sorted
  *                    after value2, zero if value1 and value2 are equal.
  */
 
@@ -147,17 +147,17 @@ ListEntry *list_prepend(ListEntry **list, ListValue data);
 
 ListEntry *list_append(ListEntry **list, ListValue data);
 
-/** 
+/**
  * Retrieve the previous entry in a list.
  *
  * @param listentry    Pointer to the list entry.
- * @return             The previous entry in the list, or NULL if this 
+ * @return             The previous entry in the list, or NULL if this
  *                     was the first entry in the list.
  */
 
 ListEntry *list_prev(ListEntry *listentry);
 
-/** 
+/**
  * Retrieve the next entry in a list.
  *
  * @param listentry    Pointer to the list entry.
@@ -176,7 +176,7 @@ ListEntry *list_next(ListEntry *listentry);
 
 ListValue list_data(ListEntry *listentry);
 
-/** 
+/**
  * Retrieve the entry at a specified index in a list.
  *
  * @param list       The list.
@@ -186,18 +186,18 @@ ListValue list_data(ListEntry *listentry);
 
 ListEntry *list_nth_entry(ListEntry *list, unsigned int n);
 
-/** 
+/**
  * Retrieve the value at a specified index in the list.
  *
  * @param list       The list.
  * @param n          The index into the list.
- * @return           The value at the specified index, or @ref LIST_NULL if 
+ * @return           The value at the specified index, or @ref LIST_NULL if
  *                   unsuccessful.
  */
 
 ListValue list_nth_data(ListEntry *list, unsigned int n);
 
-/** 
+/**
  * Find the length of a list.
  *
  * @param list       The list.
@@ -262,11 +262,11 @@ void list_sort(ListEntry **list, ListCompareFunc compare_func);
  *                       NULL if not found.
  */
 
-ListEntry *list_find_data(ListEntry *list, 
+ListEntry *list_find_data(ListEntry *list,
                           ListEqualFunc callback,
                           ListValue data);
 
-/** 
+/**
  * Initialise a @ref ListIterator structure to iterate over a list.
  *
  * @param list           A pointer to the list to iterate over.
@@ -287,16 +287,16 @@ void list_iterate(ListEntry **list, ListIterator *iter);
 int list_iter_has_more(ListIterator *iterator);
 
 /**
- * Using a list iterator, retrieve the next value from the list. 
+ * Using a list iterator, retrieve the next value from the list.
  *
  * @param iterator       The list iterator.
- * @return               The next value from the list, or @ref LIST_NULL if 
+ * @return               The next value from the list, or @ref LIST_NULL if
  *                       there are no more values in the list.
  */
-	
+
 ListValue list_iter_next(ListIterator *iterator);
 
-/** 
+/**
  * Delete the current entry in the list (the value last returned from
  * list_iter_next)
  *

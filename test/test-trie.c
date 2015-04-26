@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -52,10 +52,10 @@ Trie *generate_trie(void)
 
 		/* Create a string containing a text version of i, and use
 		 * it as a key for the value */
-		
+
 		test_array[i] = i;
 		sprintf(test_strings[i], "%i", i);
-		
+
 		assert(trie_insert(trie, test_strings[i], &test_array[i]) != 0);
 
 		++entries;
@@ -69,7 +69,7 @@ Trie *generate_trie(void)
 void test_trie_new_free(void)
 {
 	Trie *trie;
-	
+
 	/* Allocate and free an empty trie */
 
 	trie = trie_new();
@@ -95,7 +95,7 @@ void test_trie_new_free(void)
 
 	assert(trie_insert(trie, "hello", "there") != 0);
 	assert(trie_remove(trie, "hello") != 0);
-	
+
 	trie_free(trie);
 
 	/* Test out of memory scenario */
@@ -118,7 +118,7 @@ void test_trie_insert(void)
 	entries = trie_num_entries(trie);
 	assert(trie_insert(trie, "hello world", NULL) == 0);
 	assert(trie_num_entries(trie) == entries);
-	
+
 	/* Test out of memory scenario */
 
 	allocated = alloc_test_get_allocated();
@@ -157,7 +157,7 @@ void test_trie_lookup(void)
 		sprintf(buf, "%i", i);
 
 		val = (int *) trie_lookup(trie, buf);
-		
+
 		assert(*val == i);
 	}
 
@@ -337,7 +337,7 @@ void test_trie_insert_out_of_memory(void)
 	alloc_test_set_limit(3);
 
 	assert(trie_insert_binary(trie,
-	                          bin_key4, sizeof(bin_key4), 
+	                          bin_key4, sizeof(bin_key4),
 	                          "test value") == 0);
 
 	assert(trie_lookup_binary(trie, bin_key4, sizeof(bin_key4)) == NULL);

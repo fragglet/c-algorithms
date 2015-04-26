@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -22,11 +22,11 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * @brief Balanced binary tree
  *
- * The AVL tree structure is a balanced binary tree which stores 
+ * The AVL tree structure is a balanced binary tree which stores
  * a collection of nodes (see @ref AVLTreeNode).  Each node has
  * a key and a value associated with it.  The nodes are sorted
  * within the tree based on the order of their keys. Modifications
- * to the tree are constructed such that the tree remains 
+ * to the tree are constructed such that the tree remains
  * balanced at all times (there are always roughly equal numbers
  * of nodes on either side of the tree).
  *
@@ -41,10 +41,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * @ref avl_tree_insert.  To remove an entry from an
  * AVL tree, use @ref avl_tree_remove or @ref avl_tree_remove_node.
  *
- * To search an AVL tree, use @ref avl_tree_lookup or 
+ * To search an AVL tree, use @ref avl_tree_lookup or
  * @ref avl_tree_lookup_node.
  *
- * Tree nodes can be queried using the 
+ * Tree nodes can be queried using the
  * @ref avl_tree_node_child,
  * @ref avl_tree_node_parent,
  * @ref avl_tree_node_key and
@@ -90,7 +90,7 @@ typedef void *AVLTreeValue;
  * @see avl_tree_node_left_child
  * @see avl_tree_node_right_child
  * @see avl_tree_node_parent
- * @see avl_tree_node_key 
+ * @see avl_tree_node_key
  * @see avl_tree_node_value
  */
 
@@ -111,7 +111,7 @@ typedef enum {
  * @param value1           The first key.
  * @param value2           The second key.
  * @return                 A negative number if value1 should be sorted
- *                         before value2, a positive number if value2 should 
+ *                         before value2, a positive number if value2 should
  *                         be sorted before value1, zero if the two keys
  *                         are equal.
  */
@@ -122,7 +122,7 @@ typedef int (*AVLTreeCompareFunc)(AVLTreeValue value1, AVLTreeValue value2);
  * Create a new AVL tree.
  *
  * @param compare_func    Function to use when comparing keys in the tree.
- * @return                A new AVL tree, or NULL if it was not possible 
+ * @return                A new AVL tree, or NULL if it was not possible
  *                        to allocate the memory.
  */
 
@@ -130,7 +130,7 @@ AVLTree *avl_tree_new(AVLTreeCompareFunc compare_func);
 
 /**
  * Destroy an AVL tree.
- * 
+ *
  * @param tree            The tree to destroy.
  */
 
@@ -185,14 +185,14 @@ AVLTreeNode *avl_tree_lookup_node(AVLTree *tree, AVLTreeKey key);
 
 /**
  * Search an AVL tree for a value corresponding to a particular key.
- * This uses the tree as a mapping.  Note that this performs 
+ * This uses the tree as a mapping.  Note that this performs
  * identically to @ref avl_tree_lookup_node, except that the value
  * at the node is returned rather than the node itself.
  *
  * @param tree            The AVL tree to search.
  * @param key             The key to search for.
- * @return                The value associated with the given key, or 
- *                        @ref AVL_TREE_NULL if no entry with the given key is 
+ * @return                The value associated with the given key, or
+ *                        @ref AVL_TREE_NULL if no entry with the given key is
  *                        found.
  */
 
@@ -202,7 +202,7 @@ AVLTreeValue avl_tree_lookup(AVLTree *tree, AVLTreeKey key);
  * Find the root node of a tree.
  *
  * @param tree            The tree.
- * @return                The root node of the tree, or NULL if the tree is 
+ * @return                The root node of the tree, or NULL if the tree is
  *                        empty.
  */
 
@@ -217,7 +217,7 @@ AVLTreeNode *avl_tree_root_node(AVLTree *tree);
 
 AVLTreeKey avl_tree_node_key(AVLTreeNode *node);
 
-/** 
+/**
  * Retrieve the value at a given tree node.
  *
  * @param node            The tree node.
@@ -241,7 +241,7 @@ AVLTreeNode *avl_tree_node_child(AVLTreeNode *node, AVLTreeNodeSide side);
  * Find the parent node of a given tree node.
  *
  * @param node            The tree node.
- * @return                The parent node of the tree node, or NULL if 
+ * @return                The parent node of the tree node, or NULL if
  *                        this is the root node.
  */
 
@@ -257,7 +257,7 @@ AVLTreeNode *avl_tree_node_parent(AVLTreeNode *node);
 int avl_tree_subtree_height(AVLTreeNode *node);
 
 /**
- * Convert the keys in an AVL tree into a C array.  This allows 
+ * Convert the keys in an AVL tree into a C array.  This allows
  * the tree to be used as an ordered set.
  *
  * @param tree            The tree.

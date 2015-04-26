@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -51,9 +51,9 @@ AVLTree *avl_tree_new(AVLTreeCompareFunc compare_func)
 	new_tree = (AVLTree *) malloc(sizeof(AVLTree));
 
 	if (new_tree == NULL) {
-		return NULL; 
+		return NULL;
 	}
-	
+
 	new_tree->root_node = NULL;
 	new_tree->compare_func = compare_func;
 	new_tree->num_nodes = 0;
@@ -76,7 +76,7 @@ static void avl_tree_free_subtree(AVLTree *tree, AVLTreeNode *node)
 void avl_tree_free(AVLTree *tree)
 {
 	/* Destroy all nodes */
-	
+
 	avl_tree_free_subtree(tree, tree->root_node);
 
 	/* Free back the main tree data structure */
@@ -163,7 +163,7 @@ static void avl_tree_node_replace(AVLTree *tree, AVLTreeNode *node1,
  *    A   D                         B   E
  *       / \                       / \
  *      C   E                     A   C
- 
+
  * is rotated to:              is rotated to:
  *
  *        D                           B
@@ -182,9 +182,9 @@ static AVLTreeNode *avl_tree_rotate(AVLTree *tree, AVLTreeNode *node,
 	   for a left rotation, it is the right child, and vice versa. */
 
 	new_root = node->children[1-direction];
-	
+
 	/* Make new_root the root, update parent pointers. */
-	
+
 	avl_tree_node_replace(tree, node, new_root);
 
 	/* Rearrange pointers */
@@ -232,7 +232,7 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 	     - avl_tree_subtree_height(left_subtree);
 
 	if (diff >= 2) {
-		
+
 		/* Biased toward the right side too much. */
 
 		child = right_subtree;
@@ -330,7 +330,7 @@ AVLTreeNode *avl_tree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value)
 	if (new_node == NULL) {
 		return NULL;
 	}
-	
+
 	new_node->children[AVL_TREE_NODE_LEFT] = NULL;
 	new_node->children[AVL_TREE_NODE_RIGHT] = NULL;
 	new_node->parent = previous_node;
@@ -353,7 +353,7 @@ AVLTreeNode *avl_tree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value)
 	return new_node;
 }
 
-/* Find the nearest node to the given node, to replace it. 
+/* Find the nearest node to the given node, to replace it.
  * The node returned is unlinked from the tree.
  * Returns NULL if the node has no children. */
 
@@ -387,7 +387,7 @@ static AVLTreeNode *avl_tree_node_get_replacement(AVLTree *tree,
 	} else {
 		side = AVL_TREE_NODE_LEFT;
 	}
-	
+
 	/* Search down the tree, back towards the center. */
 
 	result = node->children[side];
@@ -398,7 +398,7 @@ static AVLTreeNode *avl_tree_node_get_replacement(AVLTree *tree,
 
 	/* Unlink the result node, and hook in its remaining child
 	 * (if it has one) to replace it. */
- 
+
 	child = result->children[side];
 	avl_tree_node_replace(tree, result, child);
 
@@ -490,7 +490,7 @@ int avl_tree_remove(AVLTree *tree, AVLTreeKey key)
 
 	if (node == NULL) {
 		/* Not found in tree */
-		
+
 		return 0;
 	}
 
@@ -505,22 +505,22 @@ AVLTreeNode *avl_tree_lookup_node(AVLTree *tree, AVLTreeKey key)
 {
 	AVLTreeNode *node;
 	int diff;
-	
-	/* Search down the tree and attempt to find the node which 
+
+	/* Search down the tree and attempt to find the node which
 	 * has the specified key */
 
 	node = tree->root_node;
 
 	while (node != NULL) {
-		
+
 		diff = tree->compare_func(key, node->key);
 
 		if (diff == 0) {
 
 			/* Keys are equal: return this node */
-			
+
 			return node;
-			
+
 		} else if (diff < 0) {
 			node = node->children[AVL_TREE_NODE_LEFT];
 		} else {
@@ -582,21 +582,21 @@ unsigned int avl_tree_num_entries(AVLTree *tree)
 	return tree->num_nodes;
 }
 
-static void avl_tree_to_array_add_subtree(AVLTreeNode *subtree, 
-                                         AVLTreeValue *array, 
+static void avl_tree_to_array_add_subtree(AVLTreeNode *subtree,
+                                         AVLTreeValue *array,
                                          int *index)
 {
 	if (subtree == NULL) {
 		return;
 	}
-		
+
 	/* Add left subtree first */
 
 	avl_tree_to_array_add_subtree(subtree->children[AVL_TREE_NODE_LEFT],
 	                              array, index);
-	
+
 	/* Add this node */
-	
+
 	array[*index] = subtree->key;
 	++*index;
 

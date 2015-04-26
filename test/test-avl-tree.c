@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -116,10 +116,10 @@ int validate_subtree(AVLTreeNode *node)
 
 	assert(*key > counter);
 	counter = *key;
-	
+
 	right_height = validate_subtree(right_node);
 
-	/* Check that the returned height value matches the 
+	/* Check that the returned height value matches the
 	 * result of avl_tree_subtree_height(). */
 
 	assert(avl_tree_subtree_height(left_node) == left_height);
@@ -167,7 +167,7 @@ AVLTree *create_tree(void)
 		test_array[i] = i;
 		avl_tree_insert(tree, &test_array[i], &test_array[i]);
 	}
-	
+
 	return tree;
 }
 
@@ -200,7 +200,7 @@ void test_avl_tree_insert_lookup(void)
 	unsigned int i;
 	int *value;
 
-	/* Create a tree containing some values. Validate the 
+	/* Create a tree containing some values. Validate the
 	 * tree is consistent at all stages. */
 
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
@@ -244,7 +244,7 @@ void test_avl_tree_child(void)
 	int *p;
 	int i;
 
-	/* Create a tree containing some values. Validate the 
+	/* Create a tree containing some values. Validate the
 	 * tree is consistent at all stages. */
 
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
@@ -303,7 +303,7 @@ void test_out_of_memory(void)
 void test_avl_tree_free(void)
 {
 	AVLTree *tree;
-	
+
 	/* Try freeing an empty tree */
 
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
@@ -365,7 +365,7 @@ void test_avl_tree_remove(void)
 
 	expected_entries = NUM_TEST_VALUES;
 
-	/* This looping arrangement causes nodes to be removed in a 
+	/* This looping arrangement causes nodes to be removed in a
 	 * randomish fashion from all over the tree. */
 
 	for (x=0; x<10; ++x) {
@@ -398,13 +398,13 @@ void test_avl_tree_to_array(void)
 	int **array;
 
 	/* Add all entries to the tree */
-	
+
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
 
 	for (i=0; i<num_entries; ++i) {
 		avl_tree_insert(tree, &entries[i], NULL);
 	}
-	
+
 	assert(avl_tree_num_entries(tree) == num_entries);
 
 	/* Convert to an array and check the contents */
@@ -439,7 +439,7 @@ static UnitTestFunction tests[] = {
 	test_out_of_memory,
 	NULL
 };
-	
+
 int main(int argc, char *argv[])
 {
 	run_tests(tests);

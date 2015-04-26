@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -23,10 +23,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * @brief Set of values.
  *
- * A set stores a collection of values.  Each value can only exist once in 
+ * A set stores a collection of values.  Each value can only exist once in
  * the set.
  *
- * To create a new set, use @ref set_new.  To destroy a set, use 
+ * To create a new set, use @ref set_new.  To destroy a set, use
  * @ref set_free.
  *
  * To add a value to a set, use @ref set_insert.  To remove a value
@@ -37,7 +37,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * To query if a particular value is in a set, use @ref set_query.
  *
  * To iterate over all values in a set, use @ref set_iterate to initialise
- * a @ref SetIterator structure, with @ref set_iter_next and 
+ * a @ref SetIterator structure, with @ref set_iter_next and
  * @ref set_iter_has_more to read each value in turn.
  *
  * Two sets can be combined (union) using @ref set_union, while the
@@ -94,13 +94,13 @@ struct _SetIterator {
 
 #define SET_NULL ((void *) 0)
 
-/** 
+/**
  * Hash function.  Generates a hash key for values to be stored in a set.
  */
 
 typedef unsigned int (*SetHashFunc)(SetValue value);
 
-/** 
+/**
  * Equality function.  Compares two values to determine if they are
  * equivalent.
  */
@@ -120,7 +120,7 @@ typedef void (*SetFreeFunc)(SetValue value);
  * @param hash_func     Hash function used on values in the set.
  * @param equal_func    Compares two values in the set to determine
  *                      if they are equal.
- * @return              A new set, or NULL if it was not possible to 
+ * @return              A new set, or NULL if it was not possible to
  *                      allocate the memory for the set.
  */
 
@@ -135,7 +135,7 @@ Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func);
 void set_free(Set *set);
 
 /**
- * Register a function to be called when values are removed from 
+ * Register a function to be called when values are removed from
  * the set.
  *
  * @param set           The set.
@@ -151,7 +151,7 @@ void set_register_free_function(Set *set, SetFreeFunc free_func);
  * @param set           The set.
  * @param data          The value to add to the set.
  * @return              Non-zero (true) if the value was added to the set,
- *                      zero (false) if it already exists in the set, or 
+ *                      zero (false) if it already exists in the set, or
  *                      if it was not possible to allocate memory for the
  *                      new entry.
  */
@@ -170,7 +170,7 @@ int set_insert(Set *set, SetValue data);
 
 int set_remove(Set *set, SetValue data);
 
-/** 
+/**
  * Query if a particular value is in a set.
  *
  * @param set           The set.
@@ -202,11 +202,11 @@ unsigned int set_num_entries(Set *set);
 SetValue *set_to_array(Set *set);
 
 /**
- * Perform a union of two sets.  
+ * Perform a union of two sets.
  *
  * @param set1             The first set.
  * @param set2             The second set.
- * @return                 A new set containing all values which are in the 
+ * @return                 A new set containing all values which are in the
  *                         first or second sets, or NULL if it was not
  *                         possible to allocate memory for the new set.
  */
@@ -223,7 +223,7 @@ Set *set_union(Set *set1, Set *set2);
  *                         memory for the new set.
  */
 
-Set *set_intersection(Set *set1, Set *set2); 
+Set *set_intersection(Set *set1, Set *set2);
 
 /**
  * Initialise a @ref SetIterator structure to iterate over the values

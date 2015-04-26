@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -33,7 +33,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #define ALLOC_TEST_MAGIC 0x72ec82d2
 
 /* This value is written to memory after it is freshly allocated, to ensure
- * that code under test does not rely on memory being initialised by 
+ * that code under test does not rely on memory being initialised by
  * malloc(). */
 
 #define MALLOC_PATTERN 0xBAADF00D
@@ -76,7 +76,7 @@ static BlockHeader *alloc_test_get_header(void *ptr)
 	result = ((BlockHeader *) ptr) - 1;
 
 	assert(result->magic_number == ALLOC_TEST_MAGIC);
-	
+
 	return result;
 }
 
@@ -122,7 +122,7 @@ void *alloc_test_malloc(size_t bytes)
 
 	header->magic_number = ALLOC_TEST_MAGIC;
 	header->bytes = bytes;
-	
+
 	/* Fill memory with MALLOC_PATTERN, to ensure that code under test
 	 * does not rely on memory being initialised to zero. */
 
@@ -163,7 +163,7 @@ void alloc_test_free(void *ptr)
 	block_size = header->bytes;
 	assert(allocated_bytes >= block_size);
 
-	/* Trash the allocated block to foil any code that relies on memory 
+	/* Trash the allocated block to foil any code that relies on memory
 	 * that has been freed. */
 
 	alloc_test_overwrite(ptr, header->bytes, FREE_PATTERN);
@@ -238,7 +238,7 @@ void *alloc_test_calloc(size_t nmemb, size_t bytes)
 char *alloc_test_strdup(const char *string)
 {
 	char *result;
-	
+
 	result = alloc_test_malloc(strlen(string) + 1);
 
 	if (result == NULL) {

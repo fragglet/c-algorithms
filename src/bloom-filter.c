@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -68,13 +68,13 @@ static const unsigned int salts[] = {
 	0xa27e2a58, 0x66866fc5, 0x12519ce7, 0x437a8456,
 };
 
-BloomFilter *bloom_filter_new(unsigned int table_size, 
+BloomFilter *bloom_filter_new(unsigned int table_size,
                               BloomFilterHashFunc hash_func,
                               unsigned int num_functions)
 {
 	BloomFilter *filter;
 
-	/* There is a limit on the number of functions which can be 
+	/* There is a limit on the number of functions which can be
 	 * applied, due to the table size */
 
 	if (num_functions > sizeof(salts) / sizeof(*salts)) {
@@ -138,7 +138,7 @@ void bloom_filter_insert(BloomFilter *bloomfilter, BloomFilterValue value)
 
 		index = subhash % bloomfilter->table_size;
 
-		/* Insert into the table.  
+		/* Insert into the table.
 		 * index / 8 finds the byte index of the table,
 		 * index % 8 gives the bit index within that byte to set. */
 
@@ -238,8 +238,8 @@ BloomFilter *bloom_filter_union(BloomFilter *filter1, BloomFilter *filter2)
 
 	/* Create a new bloom filter for the result */
 
-	result = bloom_filter_new(filter1->table_size, 
-	                          filter1->hash_func, 
+	result = bloom_filter_new(filter1->table_size,
+	                          filter1->hash_func,
 	                          filter1->num_functions);
 
 	if (result == NULL) {
@@ -260,7 +260,7 @@ BloomFilter *bloom_filter_union(BloomFilter *filter1, BloomFilter *filter2)
 	return result;
 }
 
-BloomFilter *bloom_filter_intersection(BloomFilter *filter1, 
+BloomFilter *bloom_filter_intersection(BloomFilter *filter1,
                                        BloomFilter *filter2)
 {
 	BloomFilter *result;
@@ -278,8 +278,8 @@ BloomFilter *bloom_filter_intersection(BloomFilter *filter1,
 
 	/* Create a new bloom filter for the result */
 
-	result = bloom_filter_new(filter1->table_size, 
-	                          filter1->hash_func, 
+	result = bloom_filter_new(filter1->table_size,
+	                          filter1->hash_func,
 	                          filter1->num_functions);
 
 	if (result == NULL) {

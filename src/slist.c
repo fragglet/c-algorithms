@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -46,7 +46,7 @@ void slist_free(SListEntry *list)
 
 	while (entry != NULL) {
 		SListEntry *next;
-	   
+
 		next = entry->next;
 
 		free(entry);
@@ -66,7 +66,7 @@ SListEntry *slist_prepend(SListEntry **list, SListValue data)
 	if (newentry == NULL) {
 		return NULL;
 	}
-	
+
 	newentry->data = data;
 
 	/* Hook into the list start */
@@ -89,10 +89,10 @@ SListEntry *slist_append(SListEntry **list, SListValue data)
 	if (newentry == NULL) {
 		return NULL;
 	}
-	
+
 	newentry->data = data;
 	newentry->next = NULL;
-	
+
 	/* Hooking into the list is different if the list is empty */
 
 	if (*list == NULL) {
@@ -314,14 +314,14 @@ unsigned int slist_remove_data(SListEntry **list, SListEqualFunc callback,
 /* Function used internally for sorting.  Returns the last entry in the
  * new sorted list */
 
-static SListEntry *slist_sort_internal(SListEntry **list, 
+static SListEntry *slist_sort_internal(SListEntry **list,
                                        SListCompareFunc compare_func)
 {
 	SListEntry *pivot;
 	SListEntry *rover;
 	SListEntry *less_list, *more_list;
 	SListEntry *less_list_end, *more_list_end;
-	
+
 	/* If there are less than two entries in this list, it is
 	 * already sorted */
 
@@ -385,8 +385,8 @@ static SListEntry *slist_sort_internal(SListEntry **list,
 
 	pivot->next = more_list;
 
-	/* Work out what the last entry in the list is.  If the more list was 
-	 * empty, the pivot was the last entry.  Otherwise, the end of the 
+	/* Work out what the last entry in the list is.  If the more list was
+	 * empty, the pivot was the last entry.  Otherwise, the end of the
 	 * more list is the end of the total list. */
 
 	if (more_list == NULL) {
@@ -414,7 +414,7 @@ SListEntry *slist_find_data(SListEntry *list,
 			return rover;
 		}
 	}
-	
+
 	/* Not found */
 
 	return NULL;
@@ -443,7 +443,7 @@ int slist_iter_has_more(SListIterator *iter)
 		return *iter->prev_next != NULL;
 
 	} else {
-	
+
 		/* The current entry has not been deleted.  There
 		 * is a next entry if current->next is not NULL. */
 
@@ -482,13 +482,13 @@ SListValue slist_iter_next(SListIterator *iter)
 void slist_iter_remove(SListIterator *iter)
 {
 	if (iter->current == NULL || iter->current != *iter->prev_next) {
-		
-		/* Either we have not yet read the first item, we have 
+
+		/* Either we have not yet read the first item, we have
 		 * reached the end of the list, or we have already removed
 		 * the current value.  Either way, do nothing. */
-	
+
 	} else {
-		
+
 		/* Remove the current entry */
 
 		*iter->prev_next = iter->current->next;

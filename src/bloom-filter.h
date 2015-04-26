@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -25,15 +25,15 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * A bloom filter is a space efficient data structure that can be
  * used to test whether a given element is part of a set.  Lookups
- * will occasionally generate false positives, but never false 
- * negatives. 
+ * will occasionally generate false positives, but never false
+ * negatives.
  *
- * To create a bloom filter, use @ref bloom_filter_new.  To destroy a 
+ * To create a bloom filter, use @ref bloom_filter_new.  To destroy a
  * bloom filter, use @ref bloom_filter_free.
  *
  * To insert a value into a bloom filter, use @ref bloom_filter_insert.
  *
- * To query whether a value is part of the set, use 
+ * To query whether a value is part of the set, use
  * @ref bloom_filter_query.
  */
 
@@ -44,7 +44,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 extern "C" {
 #endif
 
-/** 
+/**
  * A bloom filter structure.
  */
 
@@ -57,7 +57,7 @@ typedef struct _BloomFilter BloomFilter;
 typedef void *BloomFilterValue;
 
 /**
- * Hash function used to generate hash values for values inserted into a 
+ * Hash function used to generate hash values for values inserted into a
  * bloom filter.
  *
  * @param data   The value to generate a hash value for.
@@ -81,12 +81,12 @@ typedef unsigned int (*BloomFilterHashFunc)(BloomFilterValue data);
  *                         value.  The more functions applied, the lesser
  *                         the chance of false positives.  The maximum
  *                         number of functions is 64.
- * @return                 A new hash table structure, or NULL if it 
+ * @return                 A new hash table structure, or NULL if it
  *                         was not possible to allocate the new bloom
  *                         filter.
  */
 
-BloomFilter *bloom_filter_new(unsigned int table_size, 
+BloomFilter *bloom_filter_new(unsigned int table_size,
                               BloomFilterHashFunc hash_func,
                               unsigned int num_functions);
 
@@ -112,7 +112,7 @@ void bloom_filter_insert(BloomFilter *bloomfilter, BloomFilterValue value);
  *
  * @param bloomfilter          The bloom filter.
  * @param value                The value to look up.
- * @return                     Zero if the value was definitely not 
+ * @return                     Zero if the value was definitely not
  *                             inserted into the filter.  Non-zero
  *                             indicates that it either may or may not
  *                             have been inserted.
@@ -125,7 +125,7 @@ int bloom_filter_query(BloomFilter *bloomfilter, BloomFilterValue value);
  *
  * @param bloomfilter          The bloom filter.
  * @param array                Pointer to the array to read into.  This
- *                             should be (table_size + 7) / 8 bytes in 
+ *                             should be (table_size + 7) / 8 bytes in
  *                             length.
  */
 
@@ -138,19 +138,19 @@ void bloom_filter_read(BloomFilter *bloomfilter, unsigned char *array);
  * the original filter.
  *
  * @param bloomfilter          The bloom filter.
- * @param array                Pointer to the array to load from.  This 
- *                             should be (table_size + 7) / 8 bytes in 
+ * @param array                Pointer to the array to load from.  This
+ *                             should be (table_size + 7) / 8 bytes in
  *                             length.
  */
 
 void bloom_filter_load(BloomFilter *bloomfilter, unsigned char *array);
 
-/** 
- * Find the union of two bloom filters.  Values are present in the 
- * resulting filter if they are present in either of the original 
+/**
+ * Find the union of two bloom filters.  Values are present in the
+ * resulting filter if they are present in either of the original
  * filters.
  *
- * Both of the original filters must have been created using the 
+ * Both of the original filters must have been created using the
  * same parameters to @ref bloom_filter_new.
  *
  * @param filter1              The first filter.
@@ -159,18 +159,18 @@ void bloom_filter_load(BloomFilter *bloomfilter, unsigned char *array);
  *                             two filters, or NULL if it was not possible
  *                             to allocate memory for the new filter, or
  *                             if the two filters specified were created
- *                             with different parameters. 
+ *                             with different parameters.
  */
 
-BloomFilter *bloom_filter_union(BloomFilter *filter1, 
+BloomFilter *bloom_filter_union(BloomFilter *filter1,
                                 BloomFilter *filter2);
 
-/** 
- * Find the intersection of two bloom filters.  Values are only ever 
+/**
+ * Find the intersection of two bloom filters.  Values are only ever
  * present in the resulting filter if they are present in both of the
  * original filters.
  *
- * Both of the original filters must have been created using the 
+ * Both of the original filters must have been created using the
  * same parameters to @ref bloom_filter_new.
  *
  * @param filter1              The first filter.
@@ -179,10 +179,10 @@ BloomFilter *bloom_filter_union(BloomFilter *filter1,
  *                             two filters, or NULL if it was not possible
  *                             to allocate memory for the new filter, or
  *                             if the two filters specified were created
- *                             with different parameters. 
+ *                             with different parameters.
  */
 
-BloomFilter *bloom_filter_intersection(BloomFilter *filter1, 
+BloomFilter *bloom_filter_intersection(BloomFilter *filter1,
                                        BloomFilter *filter2);
 
 #ifdef __cplusplus

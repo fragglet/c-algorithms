@@ -2,19 +2,19 @@
 
 Copyright (c) 2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -22,11 +22,11 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * @brief Balanced binary tree
  *
- * The red-black tree structure is a balanced binary tree which stores 
+ * The red-black tree structure is a balanced binary tree which stores
  * a collection of nodes (see @ref RBTreeNode).  Each node has
  * a key and a value associated with it.  The nodes are sorted
  * within the tree based on the order of their keys. Modifications
- * to the tree are constructed such that the tree remains 
+ * to the tree are constructed such that the tree remains
  * balanced at all times (there are always roughly equal numbers
  * of nodes on either side of the tree).
  *
@@ -41,10 +41,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * @ref rb_tree_insert.  To remove an entry from a
  * red-black tree, use @ref rb_tree_remove or @ref rb_tree_remove_node.
  *
- * To search a red-black tree, use @ref rb_tree_lookup or 
+ * To search a red-black tree, use @ref rb_tree_lookup or
  * @ref rb_tree_lookup_node.
  *
- * Tree nodes can be queried using the 
+ * Tree nodes can be queried using the
  * @ref rb_tree_node_left_child,
  * @ref rb_tree_node_right_child,
  * @ref rb_tree_node_parent,
@@ -91,7 +91,7 @@ typedef void *RBTreeValue;
  * @see rb_tree_node_left_child
  * @see rb_tree_node_right_child
  * @see rb_tree_node_parent
- * @see rb_tree_node_key 
+ * @see rb_tree_node_key
  * @see rb_tree_node_value
  */
 
@@ -103,7 +103,7 @@ typedef struct _RBTreeNode RBTreeNode;
  * @param data1            The first key.
  * @param data2            The second key.
  * @return                 A negative number if data1 should be sorted
- *                         before data2, a positive number if data2 should 
+ *                         before data2, a positive number if data2 should
  *                         be sorted before data1, zero if the two keys
  *                         are equal.
  */
@@ -111,7 +111,7 @@ typedef struct _RBTreeNode RBTreeNode;
 typedef int (*RBTreeCompareFunc)(RBTreeValue data1, RBTreeValue data2);
 
 /**
- * Each node in a red-black tree is either red or black. 
+ * Each node in a red-black tree is either red or black.
  */
 
 typedef enum {
@@ -132,7 +132,7 @@ typedef enum {
  * Create a new red-black tree.
  *
  * @param compare_func    Function to use when comparing keys in the tree.
- * @return                A new red-black tree, or NULL if it was not possible 
+ * @return                A new red-black tree, or NULL if it was not possible
  *                        to allocate the memory.
  */
 
@@ -140,7 +140,7 @@ RBTree *rb_tree_new(RBTreeCompareFunc compare_func);
 
 /**
  * Destroy a red-black tree.
- * 
+ *
  * @param tree            The tree to destroy.
  */
 
@@ -195,14 +195,14 @@ RBTreeNode *rb_tree_lookup_node(RBTree *tree, RBTreeKey key);
 
 /**
  * Search a red-black tree for a value corresponding to a particular key.
- * This uses the tree as a mapping.  Note that this performs 
+ * This uses the tree as a mapping.  Note that this performs
  * identically to @ref rb_tree_lookup_node, except that the value
  * at the node is returned rather than the node itself.
  *
  * @param tree            The red-black tree to search.
  * @param key             The key to search for.
- * @return                The value associated with the given key, or 
- *                        RB_TREE_NULL if no entry with the given key is 
+ * @return                The value associated with the given key, or
+ *                        RB_TREE_NULL if no entry with the given key is
  *                        found.
  */
 
@@ -212,7 +212,7 @@ RBTreeValue rb_tree_lookup(RBTree *tree, RBTreeKey key);
  * Find the root node of a tree.
  *
  * @param tree            The tree.
- * @return                The root node of the tree, or NULL if the tree is 
+ * @return                The root node of the tree, or NULL if the tree is
  *                        empty.
  */
 
@@ -227,7 +227,7 @@ RBTreeNode *rb_tree_root_node(RBTree *tree);
 
 RBTreeKey rb_tree_node_key(RBTreeNode *node);
 
-/** 
+/**
  * Retrieve the value at a given tree node.
  *
  * @param node            The tree node.
@@ -251,7 +251,7 @@ RBTreeNode *rb_tree_node_child(RBTreeNode *node, RBTreeNodeSide side);
  * Find the parent node of a given tree node.
  *
  * @param node            The tree node.
- * @return                The parent node of the tree node, or NULL if 
+ * @return                The parent node of the tree node, or NULL if
  *                        this is the root node.
  */
 
@@ -267,7 +267,7 @@ RBTreeNode *rb_tree_node_parent(RBTreeNode *node);
 int rb_tree_subtree_height(RBTreeNode *node);
 
 /**
- * Convert the keys in a red-black tree into a C array.  This allows 
+ * Convert the keys in a red-black tree into a C array.  This allows
  * the tree to be used as an ordered set.
  *
  * @param tree            The tree.

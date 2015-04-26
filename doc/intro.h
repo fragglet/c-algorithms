@@ -2,23 +2,23 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
-/* This file is a dummy header which is used to generate the 
+/* This file is a dummy header which is used to generate the
  * introduction in Doxygen. */
 
 /**
@@ -28,11 +28,11 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * The C programming language includes a very limited standard library in
  * comparison to other modern programming languages.  This is a collection
- * of common Computer Science data structures and algorithms which may be 
+ * of common Computer Science data structures and algorithms which may be
  * used in C projects.
- * 
+ *
  * The code is licensed under the ISC license (a simplified version
- * of the BSD license that is functionally identical). 
+ * of the BSD license that is functionally identical).
  * As such, it may be reused in any project, whether Proprietary or
  * Open Source.
  *
@@ -52,22 +52,22 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * @subsection Mappings
  *
- * @li @link hash-table.h Hash table @endlink: Collection of values which 
+ * @li @link hash-table.h Hash table @endlink: Collection of values which
  * can be addressed using a key.
  * @li @link trie.h Trie @endlink: Fast mapping using strings as keys.
  *
  * @subsection Binary_search_trees Binary search trees
  *
- * @li @link avl-tree.h AVL tree @endlink: Balanced binary search tree 
+ * @li @link avl-tree.h AVL tree @endlink: Balanced binary search tree
  * with O(log n) worst case performance.
  *
  * @section Utility_functions Utility functions
  *
- * All of the above data structures operate on void pointers.  It is 
+ * All of the above data structures operate on void pointers.  It is
  * sometimes necessary to compare values (when sorting a list, for
- * example) or generate a hash key (in a hash table or set).  This 
+ * example) or generate a hash key (in a hash table or set).  This
  * is done by providing a pointer to a function which provides
- * this functionality.  The following functions provide this 
+ * this functionality.  The following functions provide this
  * functionality for some common data types.
  *
  * @li Integer @link compare-int.h comparison @endlink and

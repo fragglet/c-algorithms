@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -220,7 +220,7 @@ void test_slist_remove_entry(void)
 	entry = slist_nth_entry(list, 0);
 	assert(slist_remove_entry(&list, entry) != 0);
 	assert(slist_length(list) == 2);
-	
+
 	/* Try some invalid removes */
 
 	/* This was already removed: */
@@ -260,7 +260,7 @@ void test_slist_remove_data(void)
 	assert(slist_remove_data(&list, int_equal, &val) == 0);
 	val = 56;
 	assert(slist_remove_data(&list, int_equal, &val) == 0);
-	
+
 	/* Remove the number 8 from the list */
 
 	val = 8;
@@ -344,15 +344,15 @@ void test_slist_find_data(void)
 	for (i=0; i<num_entries; ++i) {
 
 		val = entries[i];
-		
+
 		result = slist_find_data(list, int_equal, &val);
-		
+
 		assert(result != NULL);
 
 		data = (int *) slist_data(result);
 		assert(*data == val);
 	}
-	
+
 	/* Check some invalid values return NULL */
 
 	val = 0;
@@ -367,7 +367,7 @@ void test_slist_to_array(void)
 {
 	SListEntry *list;
 	void **array;
-	   
+
 	list = generate_list();
 
 	array = slist_to_array(list);
@@ -438,7 +438,7 @@ void test_slist_iterate(void)
 	/* Test iter_next after iteration has completed. */
 
 	assert(slist_iter_next(&iter) == SLIST_NULL);
-	
+
 	/* Test remove at the end of a list */
 
 	slist_iter_remove(&iter);
@@ -492,7 +492,7 @@ void test_slist_iterate_bad_remove(void)
 	}
 
 	/* Iterate over the list, removing each element in turn.  We
-	 * use an odd number of list elements so that the first and 
+	 * use an odd number of list elements so that the first and
 	 * last entries are removed. */
 
 	slist_iterate(&list, &iter);

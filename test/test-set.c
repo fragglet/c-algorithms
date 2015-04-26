@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -45,7 +45,7 @@ Set *generate_set(void)
 
 	set = set_new(string_hash, string_equal);
 
-	/* Add 10,000 items sequentially, checking that the counter 
+	/* Add 10,000 items sequentially, checking that the counter
 	 * works properly */
 
 	for (i=0; i<10000; ++i) {
@@ -133,7 +133,7 @@ void test_set_query(void)
 	set = generate_set();
 
 	/* Test all values */
-	
+
 	for (i=0; i<10000; ++i) {
 		sprintf(buf, "%i", i);
 		assert(set_query(set, buf) != 0);
@@ -221,15 +221,15 @@ void test_set_union(void)
 	for (i=0; i<7; ++i) {
 		set_insert(set1, &numbers1[i]);
 	}
-	
+
 	/* Create the second set */
-	
+
 	set2 = set_new(int_hash, int_equal);
-	
+
 	for (i=0; i<7; ++i) {
 		set_insert(set2, &numbers2[i]);
 	}
-	
+
 	/* Perform the union */
 
 	result_set = set_union(set1, set2);
@@ -254,7 +254,7 @@ void test_set_union(void)
 	assert(set_union(set1, set2) == NULL);
 	assert(alloc_test_get_allocated() == allocated);
 
-	/* Can allocate set, can copy set1 values, 
+	/* Can allocate set, can copy set1 values,
 	 * can't copy all set2 values */
 
 	alloc_test_set_limit(2 + 7 + 2);
@@ -284,15 +284,15 @@ void test_set_intersection(void)
 	for (i=0; i<7; ++i) {
 		set_insert(set1, &numbers1[i]);
 	}
-	
+
 	/* Create the second set */
-	
+
 	set2 = set_new(int_hash, int_equal);
-	
+
 	for (i=0; i<7; ++i) {
 		set_insert(set2, &numbers2[i]);
 	}
-	
+
 	/* Perform the intersection */
 
 	result_set = set_intersection(set1, set2);
@@ -329,7 +329,7 @@ void test_set_to_array(void)
 
 	/* Create a set containing pointers to all entries in the "values"
 	 * array. */
-	
+
 	set = set_new(pointer_hash, pointer_equal);
 
 	for (i=0; i<100; ++i) {
@@ -350,7 +350,7 @@ void test_set_to_array(void)
 
 	alloc_test_set_limit(0);
 	assert(set_to_array(set) == NULL);
-	
+
 	free(array);
 	set_free(set);
 }
@@ -384,7 +384,7 @@ void test_set_iterating(void)
 	assert(count == 10000);
 
 	set_free(set);
-	
+
 	/* Test iterating over an empty set */
 
 	set = set_new(int_hash, int_equal);
@@ -392,11 +392,11 @@ void test_set_iterating(void)
 	set_iterate(set, &iterator);
 
 	assert(set_iter_has_more(&iterator) == 0);
-	
+
 	set_free(set);
 }
 
-/* Test the ability to remove the current value while iterating over 
+/* Test the ability to remove the current value while iterating over
  * a set.  ie. the act of removing the current value should not affect
  * the iterator. */
 

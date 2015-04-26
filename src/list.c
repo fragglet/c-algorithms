@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -47,7 +47,7 @@ void list_free(ListEntry *list)
 
 	while (entry != NULL) {
 		ListEntry *next;
-	   
+
 		next = entry->next;
 
 		free(entry);
@@ -67,7 +67,7 @@ ListEntry *list_prepend(ListEntry **list, ListValue data)
 	if (newentry == NULL) {
 		return NULL;
 	}
-	
+
 	newentry->data = data;
 
 	/* Hook into the list start */
@@ -94,10 +94,10 @@ ListEntry *list_append(ListEntry **list, ListValue data)
 	if (newentry == NULL) {
 		return NULL;
 	}
-	
+
 	newentry->data = data;
 	newentry->next = NULL;
-	
+
 	/* Hooking into the list is different if the list is empty */
 
 	if (*list == NULL) {
@@ -237,7 +237,7 @@ int list_remove_entry(ListEntry **list, ListEntry *entry)
 	if (*list == NULL || entry == NULL) {
 		return 0;
 	}
-	
+
 	/* Action to take is different if the entry is the first in the list */
 
 	if (entry->prev == NULL) {
@@ -255,8 +255,8 @@ int list_remove_entry(ListEntry **list, ListEntry *entry)
 
 	} else {
 
-		/* This is not the first in the list, so we must have a 
-		 * previous entry.  Update its 'next' pointer to the new 
+		/* This is not the first in the list, so we must have a
+		 * previous entry.  Update its 'next' pointer to the new
 		 * value */
 
 		entry->prev->next = entry->next;
@@ -335,14 +335,14 @@ unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
 /* Function used internally for sorting.  Returns the last entry in the
  * new sorted list */
 
-static ListEntry *list_sort_internal(ListEntry **list, 
+static ListEntry *list_sort_internal(ListEntry **list,
                                      ListCompareFunc compare_func)
 {
 	ListEntry *pivot;
 	ListEntry *rover;
 	ListEntry *less_list, *more_list;
 	ListEntry *less_list_end, *more_list_end;
-	
+
 	/* If there are less than two entries in this list, it is
 	 * already sorted */
 
@@ -418,8 +418,8 @@ static ListEntry *list_sort_internal(ListEntry **list,
 		more_list->prev = pivot;
 	}
 
-	/* Work out what the last entry in the list is.  If the more list was 
-	 * empty, the pivot was the last entry.  Otherwise, the end of the 
+	/* Work out what the last entry in the list is.  If the more list was
+	 * empty, the pivot was the last entry.  Otherwise, the end of the
 	 * more list is the end of the total list. */
 
 	if (more_list == NULL) {
@@ -447,7 +447,7 @@ ListEntry *list_find_data(ListEntry *list,
 			return rover;
 		}
 	}
-	
+
 	/* Not found */
 
 	return NULL;
@@ -476,8 +476,8 @@ int list_iter_has_more(ListIterator *iter)
 		return *iter->prev_next != NULL;
 
 	} else {
-		/* The current entry as not been deleted since the last 
-		 * call to list_iter_next: there is a next entry if 
+		/* The current entry as not been deleted since the last
+		 * call to list_iter_next: there is a next entry if
 		 * current->next is not NULL */
 
 		return iter->current->next != NULL;
@@ -502,7 +502,7 @@ ListValue list_iter_next(ListIterator *iter)
 		iter->prev_next = &iter->current->next;
 		iter->current = iter->current->next;
 	}
-	
+
 	/* Have we reached the end of the list? */
 
 	if (iter->current == NULL) {
@@ -516,12 +516,12 @@ void list_iter_remove(ListIterator *iter)
 {
 	if (iter->current == NULL || iter->current != *iter->prev_next) {
 
-		/* Either we have not yet read the first item, we have 
+		/* Either we have not yet read the first item, we have
 		 * reached the end of the list, or we have already removed
 		 * the current value.  Either way, do nothing. */
 
 	} else {
-		
+
 		/* Remove the current entry */
 
 		*iter->prev_next = iter->current->next;

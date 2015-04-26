@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -23,10 +23,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * @brief Binomial heap.
  *
- * A binomial heap is a heap data structure implemented using a 
+ * A binomial heap is a heap data structure implemented using a
  * binomial tree.  In a heap, values are ordered by priority.
  *
- * To create a binomial heap, use @ref binomial_heap_new.  To destroy a 
+ * To create a binomial heap, use @ref binomial_heap_new.  To destroy a
  * binomial heap, use @ref binomial_heap_free.
  *
  * To insert a value into a binomial heap, use @ref binomial_heap_insert.
@@ -43,7 +43,7 @@ extern "C" {
 #endif
 
 /**
- * Heap type.  If a heap is a min heap (@ref BINOMIAL_HEAP_TYPE_MIN), the 
+ * Heap type.  If a heap is a min heap (@ref BINOMIAL_HEAP_TYPE_MIN), the
  * values with the lowest priority are stored at the top of the heap and
  * will be the first returned.  If a heap is a max heap
  * (@ref BINOMIAL_HEAP_TYPE_MAX), the values with the greatest priority
@@ -82,17 +82,17 @@ typedef void *BinomialHeapValue;
  *                         zero if the two are equal.
  */
 
-typedef int (*BinomialHeapCompareFunc)(BinomialHeapValue value1, 
+typedef int (*BinomialHeapCompareFunc)(BinomialHeapValue value1,
                                        BinomialHeapValue value2);
 
-/** 
+/**
  * A binomial heap data structure.
  */
 
 typedef struct _BinomialHeap BinomialHeap;
 
 /**
- * Create a new @ref BinomialHeap. 
+ * Create a new @ref BinomialHeap.
  *
  * @param heap_type        The type of heap: min heap or max heap.
  * @param compare_func     Pointer to a function used to compare the priority
@@ -128,7 +128,7 @@ int binomial_heap_insert(BinomialHeap *heap, BinomialHeapValue value);
  * Remove the first value from a binomial heap.
  *
  * @param heap             The heap.
- * @return                 The first value in the heap, or 
+ * @return                 The first value in the heap, or
  *                         @ref BINOMIAL_HEAP_NULL if the heap is empty.
  */
 

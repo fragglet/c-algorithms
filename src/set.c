@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -61,7 +61,7 @@ static const unsigned int set_num_primes = sizeof(set_primes) / sizeof(int);
 
 static int set_allocate_table(Set *set)
 {
-	/* Determine the table size based on the current prime index.  
+	/* Determine the table size based on the current prime index.
 	 * An attempt is made here to ensure sensible behavior if the
 	 * maximum prime is exceeded, but in practice other things are
 	 * likely to break long before that happens. */
@@ -79,11 +79,11 @@ static int set_allocate_table(Set *set)
 	return set->table != NULL;
 }
 
-static void set_free_entry(Set *set, SetEntry *entry) 
+static void set_free_entry(Set *set, SetEntry *entry)
 {
-	/* If there is a free function registered, call it to free the 
+	/* If there is a free function registered, call it to free the
 	 * data for this entry first */
-	
+
 	if (set->free_func != NULL) {
 		set->free_func(entry->data);
 	}
@@ -104,15 +104,15 @@ Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func)
 	if (new_set == NULL) {
 		return NULL;
 	}
-	
+
 	new_set->hash_func = hash_func;
 	new_set->equal_func = equal_func;
 	new_set->entries = 0;
 	new_set->prime_index = 0;
 	new_set->free_func = NULL;
-	
+
 	/* Allocate the table */
-	
+
 	if (!set_allocate_table(new_set)) {
 		free(new_set);
 		return NULL;
@@ -203,13 +203,13 @@ static int set_enlarge(Set *set)
 			next = rover->next;
 
 			/* Hook this entry into the new table */
-			
+
 			index = set->hash_func(rover->data) % set->table_size;
 			rover->next = set->table[index];
 			set->table[index] = rover;
 
 			/* Advance to the next entry in the chain */
-			
+
 			rover = next;
 		}
 	}
@@ -241,7 +241,7 @@ int set_insert(Set *set, SetValue data)
 		}
 	}
 
-	/* Use the hash of the data to determine an index to insert into the 
+	/* Use the hash of the data to determine an index to insert into the
 	 * table at. */
 
 	index = set->hash_func(data) % set->table_size;
@@ -272,9 +272,9 @@ int set_insert(Set *set, SetValue data)
 	if (newentry == NULL) {
 		return 0;
 	}
-	
+
 	newentry->data = data;
-	
+
 	/* Link into chain */
 
 	newentry->next = set->table[index];
@@ -423,7 +423,7 @@ Set *set_union(Set *set1, Set *set2)
 	}
 
 	/* Add all values from the first set */
-	
+
 	set_iterate(set1, &iterator);
 
 	while (set_iter_has_more(&iterator)) {
@@ -437,14 +437,14 @@ Set *set_union(Set *set1, Set *set2)
 		if (!set_insert(new_set, value)) {
 
 			/* Failed to insert */
-			
+
 			set_free(new_set);
 			return NULL;
 		}
 	}
-	
+
 	/* Add all values from the second set */
-	
+
 	set_iterate(set2, &iterator);
 
 	while (set_iter_has_more(&iterator)) {
@@ -453,7 +453,7 @@ Set *set_union(Set *set1, Set *set2)
 
 		value = set_iter_next(&iterator);
 
-		/* Has this value been put into the new set already? 
+		/* Has this value been put into the new set already?
 		 * If so, do not insert this again */
 
 		if (set_query(new_set, value) == 0) {
@@ -492,12 +492,12 @@ Set *set_intersection(Set *set1, Set *set2)
 
 		value = set_iter_next(&iterator);
 
-		/* Is this value in set 2 as well?  If so, it should be 
+		/* Is this value in set 2 as well?  If so, it should be
 		 * in the new set. */
 
 		if (set_query(set2, value) != 0) {
 
-			/* Copy the value first before inserting, 
+			/* Copy the value first before inserting,
 			 * if necessary */
 
 			if (!set_insert(new_set, value)) {

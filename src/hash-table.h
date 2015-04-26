@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -23,11 +23,11 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * @brief Hash table.
  *
- * A hash table stores a set of values which can be addressed by a 
+ * A hash table stores a set of values which can be addressed by a
  * key.  Given the key, the corresponding value can be looked up
  * quickly.
  *
- * To create a hash table, use @ref hash_table_new.  To destroy a 
+ * To create a hash table, use @ref hash_table_new.  To destroy a
  * hash table, use @ref hash_table_free.
  *
  * To insert a value into a hash table, use @ref hash_table_insert.
@@ -36,9 +36,9 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * To look up a value by its key, use @ref hash_table_lookup.
  *
- * To iterate over all values in a hash table, use 
+ * To iterate over all values in a hash table, use
  * @ref hash_table_iterate to initialise a @ref HashTableIterator
- * structure.  Each value can then be read in turn using 
+ * structure.  Each value can then be read in turn using
  * @ref hash_table_iter_next and @ref hash_table_iter_has_more.
  */
 
@@ -49,7 +49,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 extern "C" {
 #endif
 
-/** 
+/**
  * A hash table structure.
  */
 
@@ -90,7 +90,7 @@ struct _HashTableIterator {
 };
 
 /**
- * A null @ref HashTableValue. 
+ * A null @ref HashTableValue.
  */
 
 #define HASH_TABLE_NULL ((void *) 0)
@@ -108,21 +108,21 @@ typedef unsigned int (*HashTableHashFunc)(HashTableKey value);
 /**
  * Function used to compare two keys for equality.
  *
- * @return   Non-zero if the two keys are equal, zero if the keys are 
+ * @return   Non-zero if the two keys are equal, zero if the keys are
  *           not equal.
  */
 
 typedef int (*HashTableEqualFunc)(HashTableKey value1, HashTableKey value2);
 
 /**
- * Type of function used to free keys when entries are removed from a 
+ * Type of function used to free keys when entries are removed from a
  * hash table.
  */
 
 typedef void (*HashTableKeyFreeFunc)(HashTableKey value);
 
 /**
- * Type of function used to free values when entries are removed from a 
+ * Type of function used to free values when entries are removed from a
  * hash table.
  */
 
@@ -131,16 +131,16 @@ typedef void (*HashTableValueFreeFunc)(HashTableValue value);
 /**
  * Create a new hash table.
  *
- * @param hash_func            Function used to generate hash keys for the 
+ * @param hash_func            Function used to generate hash keys for the
  *                             keys used in the table.
- * @param equal_func           Function used to test keys used in the table 
+ * @param equal_func           Function used to test keys used in the table
  *                             for equality.
- * @return                     A new hash table structure, or NULL if it 
+ * @return                     A new hash table structure, or NULL if it
  *                             was not possible to allocate the new hash
  *                             table.
  */
 
-HashTable *hash_table_new(HashTableHashFunc hash_func, 
+HashTable *hash_table_new(HashTableHashFunc hash_func,
                           HashTableEqualFunc equal_func);
 
 /**
@@ -165,7 +165,7 @@ void hash_table_register_free_functions(HashTable *hash_table,
                                         HashTableValueFreeFunc value_free_func);
 
 /**
- * Insert a value into a hash table, overwriting any existing entry 
+ * Insert a value into a hash table, overwriting any existing entry
  * using the same key.
  *
  * @param hash_table           The hash table.
@@ -176,8 +176,8 @@ void hash_table_register_free_functions(HashTable *hash_table,
  *                             memory for the new entry.
  */
 
-int hash_table_insert(HashTable *hash_table, 
-                      HashTableKey key, 
+int hash_table_insert(HashTable *hash_table,
+                      HashTableKey key,
                       HashTableValue value);
 
 /**
@@ -185,11 +185,11 @@ int hash_table_insert(HashTable *hash_table,
  *
  * @param hash_table          The hash table.
  * @param key                 The key of the value to look up.
- * @return                    The value, or @ref HASH_TABLE_NULL if there 
+ * @return                    The value, or @ref HASH_TABLE_NULL if there
  *                            is no value with that key in the hash table.
  */
 
-HashTableValue hash_table_lookup(HashTable *hash_table, 
+HashTableValue hash_table_lookup(HashTable *hash_table,
                                  HashTableKey key);
 
 /**
@@ -203,7 +203,7 @@ HashTableValue hash_table_lookup(HashTable *hash_table,
 
 int hash_table_remove(HashTable *hash_table, HashTableKey key);
 
-/** 
+/**
  * Retrieve the number of entries in a hash table.
  *
  * @param hash_table          The hash table.
@@ -216,7 +216,7 @@ unsigned int hash_table_num_entries(HashTable *hash_table);
  * Initialise a @ref HashTableIterator to iterate over a hash table.
  *
  * @param hash_table          The hash table.
- * @param iter                Pointer to an iterator structure to 
+ * @param iter                Pointer to an iterator structure to
  *                            initialise.
  */
 
@@ -224,11 +224,11 @@ void hash_table_iterate(HashTable *hash_table, HashTableIterator *iter);
 
 /**
  * Determine if there are more keys in the hash table to iterate
- * over. 
+ * over.
  *
  * @param iterator            The hash table iterator.
  * @return                    Zero if there are no more values to iterate
- *                            over, non-zero if there are more values to 
+ *                            over, non-zero if there are more values to
  *                            iterate over.
  */
 
@@ -238,8 +238,8 @@ int hash_table_iter_has_more(HashTableIterator *iterator);
  * Using a hash table iterator, retrieve the next key.
  *
  * @param iterator            The hash table iterator.
- * @return                    The next key from the hash table, or 
- *                            @ref HASH_TABLE_NULL if there are no more 
+ * @return                    The next key from the hash table, or
+ *                            @ref HASH_TABLE_NULL if there are no more
  *                            keys to iterate over.
  */
 

@@ -2,19 +2,19 @@
 
 Copyright (c) 2005-2008, Simon Howard
 
-Permission to use, copy, modify, and/or distribute this software 
-for any purpose with or without fee is hereby granted, provided 
-that the above copyright notice and this permission notice appear 
-in all copies. 
+Permission to use, copy, modify, and/or distribute this software
+for any purpose with or without fee is hereby granted, provided
+that the above copyright notice and this permission notice appear
+in all copies.
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL 
-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
-AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR 
-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM 
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, 
-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN      
-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
@@ -23,10 +23,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * Singly-linked list.
  *
- * A singly-linked list stores a collection of values.  Each 
+ * A singly-linked list stores a collection of values.  Each
  * entry in the list (represented by a pointer to a @ref SListEntry
- * structure) contains a link to the next entry.  It is only 
- * possible to iterate over entries in a singly linked list in one 
+ * structure) contains a link to the next entry.  It is only
+ * possible to iterate over entries in a singly linked list in one
  * direction.
  *
  * To create a new singly-linked list, create a variable which is
@@ -39,20 +39,20 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * To find the length of a list, use @ref slist_length.
  *
- * To access a value in a list by its index in the list, use 
+ * To access a value in a list by its index in the list, use
  * @ref slist_nth_data.
  *
  * To search a list for a value, use @ref slist_find_data.
  *
  * To sort a list into an order, use @ref slist_sort.
  *
- * To find a particular entry in a list by its index, use 
+ * To find a particular entry in a list by its index, use
  * @ref slist_nth_entry.
  *
- * To iterate over each value in a list, use @ref slist_iterate to 
+ * To iterate over each value in a list, use @ref slist_iterate to
  * initialise a @ref SListIterator structure, with @ref slist_iter_next
  * and @ref slist_iter_has_more to retrieve each value in turn.
- * @ref slist_iter_remove can be used to efficiently remove the 
+ * @ref slist_iter_remove can be used to efficiently remove the
  * current entry from the list.
  *
  * Given a particular entry in a list (@ref SListEntry):
@@ -72,8 +72,8 @@ extern "C" {
 
 /**
  * Represents an entry in a singly-linked list.  The empty list is
- * represented by a NULL pointer. To initialise a new singly linked 
- * list, simply create a variable of this type 
+ * represented by a NULL pointer. To initialise a new singly linked
+ * list, simply create a variable of this type
  * containing a pointer to NULL.
  */
 
@@ -109,8 +109,8 @@ struct _SListIterator {
 /**
  * Callback function used to compare values in a list when sorting.
  *
- * @return   A negative value if value1 should be sorted before value2, 
- *           a positive value if value1 should be sorted after value2, 
+ * @return   A negative value if value1 should be sorted before value2,
+ *           a positive value if value1 should be sorted after value2,
  *           zero if value1 and value2 are equal.
  */
 
@@ -156,7 +156,7 @@ SListEntry *slist_prepend(SListEntry **list, SListValue data);
 
 SListEntry *slist_append(SListEntry **list, SListValue data);
 
-/** 
+/**
  * Retrieve the next entry in a list.
  *
  * @param listentry    Pointer to the list entry.
@@ -174,7 +174,7 @@ SListEntry *slist_next(SListEntry *listentry);
 
 SListValue slist_data(SListEntry *listentry);
 
-/** 
+/**
  * Retrieve the entry at a specified index in a list.
  *
  * @param list       The list.
@@ -184,7 +184,7 @@ SListValue slist_data(SListEntry *listentry);
 
 SListEntry *slist_nth_entry(SListEntry *list, unsigned int n);
 
-/** 
+/**
  * Retrieve the value stored at a specified index in the list.
  *
  * @param list       The list.
@@ -195,7 +195,7 @@ SListEntry *slist_nth_entry(SListEntry *list, unsigned int n);
 
 SListValue slist_nth_data(SListEntry *list, unsigned int n);
 
-/** 
+/**
  * Find the length of a list.
  *
  * @param list       The list.
@@ -209,8 +209,8 @@ unsigned int slist_length(SListEntry *list);
  *
  * @param list       The list.
  * @return           A newly-allocated C array containing all values in the
- *                   list, or NULL if it was not possible to allocate the 
- *                   memory for the array.  The length of the array is 
+ *                   list, or NULL if it was not possible to allocate the
+ *                   memory for the array.  The length of the array is
  *                   equal to the length of the list (see @ref slist_length).
  */
 
@@ -262,11 +262,11 @@ void slist_sort(SListEntry **list, SListCompareFunc compare_func);
  *                       NULL if not found.
  */
 
-SListEntry *slist_find_data(SListEntry *list, 
+SListEntry *slist_find_data(SListEntry *list,
                             SListEqualFunc callback,
                             SListValue data);
 
-/** 
+/**
  * Initialise a @ref SListIterator structure to iterate over a list.
  *
  * @param list           Pointer to the list to iterate over.
@@ -288,16 +288,16 @@ void slist_iterate(SListEntry **list, SListIterator *iter);
 int slist_iter_has_more(SListIterator *iterator);
 
 /**
- * Using a list iterator, retrieve the next value from the list. 
+ * Using a list iterator, retrieve the next value from the list.
  *
  * @param iterator       The list iterator.
- * @return               The next value from the list, or SLIST_NULL if 
+ * @return               The next value from the list, or SLIST_NULL if
  *                       there are no more values in the list.
  */
-	
+
 SListValue slist_iter_next(SListIterator *iterator);
 
-/** 
+/**
  * Delete the current entry in the list (the value last returned from
  * @ref slist_iter_next)
  *
