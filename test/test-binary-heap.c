@@ -136,7 +136,9 @@ void test_out_of_memory(void)
 {
 	BinaryHeap *heap;
 	int *value;
-	int values[] = { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+	int values[] = {
+		15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0,
+	};
 	int i;
 
 	/* Allocate a heap and fill to the default limit */

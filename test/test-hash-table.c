@@ -262,7 +262,8 @@ void test_hash_table_iterating_remove(void)
 	assert(removed == 100);
 	assert(count == NUM_TEST_VALUES);
 
-	assert(hash_table_num_entries(hash_table) == NUM_TEST_VALUES - removed);
+	assert(hash_table_num_entries(hash_table)
+	       == NUM_TEST_VALUES - removed);
 
 	/* Check all entries divisible by 100 were really removed */
 

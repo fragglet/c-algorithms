@@ -153,7 +153,8 @@ void arraylist_remove_range(ArrayList *arraylist, unsigned int index,
 
 	memmove(&arraylist->data[index],
 	        &arraylist->data[index + length],
-	        (arraylist->length - (index + length)) * sizeof(ArrayListValue));
+	        (arraylist->length - (index + length))
+	            * sizeof(ArrayListValue));
 
 	/* Decrease the counter */
 
@@ -223,9 +224,9 @@ static void arraylist_sort_internal(ArrayListValue *list_data,
 
 		if (compare_func(list_data[i], pivot) < 0) {
 
-			/* This should be in list 1.  Therefore it is in the wrong
-			 * position. Swap the data immediately following the last
-			 * item in list 1 with this data. */
+			/* This should be in list 1.  Therefore it is in the
+			 * wrong position. Swap the data immediately following
+			 * the last item in list 1 with this data. */
 
 			tmp = list_data[i];
 			list_data[i] = list_data[list1_length];
@@ -234,8 +235,8 @@ static void arraylist_sort_internal(ArrayListValue *list_data,
 			++list1_length;
 
 		} else {
-			/* This should be in list 2.  This is already in the right
-			 * position. */
+			/* This should be in list 2.  This is already in the
+			 * right position. */
 		}
 	}
 
@@ -266,6 +267,7 @@ void arraylist_sort(ArrayList *arraylist, ArrayListCompareFunc compare_func)
 {
 	/* Perform the recursive sort */
 
-	arraylist_sort_internal(arraylist->data, arraylist->length, compare_func);
+	arraylist_sort_internal(arraylist->data, arraylist->length,
+	                        compare_func);
 }
 

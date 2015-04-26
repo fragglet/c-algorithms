@@ -254,8 +254,8 @@ int slist_remove_entry(SListEntry **list, SListEntry *entry)
 
 		} else {
 
-			/* rover->next now points at entry, so rover is the preceding
-			 * entry. Unlink the entry from the list. */
+			/* rover->next now points at entry, so rover is the
+			 * preceding entry. Unlink the entry from the list. */
 
 			rover->next = entry->next;
 		}

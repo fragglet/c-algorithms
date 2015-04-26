@@ -149,7 +149,8 @@ static BinomialHeap *generate_heap(void)
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		if (i != TEST_VALUE) {
-			assert(binomial_heap_insert(heap, &test_array[i]) != 0);
+			assert(binomial_heap_insert(heap,
+			                            &test_array[i]) != 0);
 		}
 	}
 

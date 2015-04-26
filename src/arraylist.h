@@ -83,7 +83,8 @@ struct _ArrayList {
  * @return Non-zero if the values are equal, zero if they are not equal.
  */
 
-typedef int (*ArrayListEqualFunc)(ArrayListValue value1, ArrayListValue value2);
+typedef int (*ArrayListEqualFunc)(ArrayListValue value1,
+                                  ArrayListValue value2);
 
 /**
  * Compare two values in an arraylist.  Used by @ref arraylist_sort

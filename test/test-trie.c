@@ -56,7 +56,8 @@ Trie *generate_trie(void)
 		test_array[i] = i;
 		sprintf(test_strings[i], "%i", i);
 
-		assert(trie_insert(trie, test_strings[i], &test_array[i]) != 0);
+		assert(trie_insert(trie, test_strings[i],
+		                   &test_array[i]) != 0);
 
 		++entries;
 
@@ -315,7 +316,8 @@ void test_trie_insert_binary(void)
 
 	/* Insert NULL value doesn't work */
 
-	assert(trie_insert_binary(trie, bin_key3, sizeof(bin_key3), NULL) == 0);
+	assert(trie_insert_binary(trie, bin_key3,
+	                          sizeof(bin_key3), NULL) == 0);
 
 	/* Read them back */
 

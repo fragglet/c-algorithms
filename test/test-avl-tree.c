@@ -127,7 +127,8 @@ int validate_subtree(AVLTreeNode *node)
 
 	/* Check this node is balanced */
 
-	assert(left_height - right_height < 2 && right_height - left_height < 2);
+	assert(left_height - right_height < 2 &&
+	       right_height - left_height < 2);
 
 	/* Calculate the height of this node */
 

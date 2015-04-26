@@ -265,7 +265,8 @@ int trie_insert(Trie *trie, char *key, TrieValue value)
 				/* Allocation failed.  Go back and undo
 				 * what we have done so far. */
 
-				trie_insert_rollback(trie, (unsigned char *) key);
+				trie_insert_rollback(trie,
+				                     (unsigned char *) key);
 
 				return 0;
 			}

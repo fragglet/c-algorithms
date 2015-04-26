@@ -234,7 +234,8 @@ int set_insert(Set *set, SetValue data)
 
 	if ((set->entries * 3) / set->table_size > 0) {
 
-		/* The table is more than 1/3 full and must be increased in size */
+		/* The table is more than 1/3 full and must be increased
+		 * in size */
 
 		if (!set_enlarge(set)) {
 			return 0;

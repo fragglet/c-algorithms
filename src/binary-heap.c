@@ -36,7 +36,8 @@ struct _BinaryHeap {
 	BinaryHeapCompareFunc compare_func;
 };
 
-static int binary_heap_cmp(BinaryHeap *heap, BinaryHeapValue data1, BinaryHeapValue data2)
+static int binary_heap_cmp(BinaryHeap *heap, BinaryHeapValue data1,
+                           BinaryHeapValue data2)
 {
 	if (heap->heap_type == BINARY_HEAP_TYPE_MIN) {
 		return heap->compare_func(data1, data2);
@@ -93,7 +94,8 @@ int binary_heap_insert(BinaryHeap *heap, BinaryHeapValue value)
 		/* Double the table size */
 
 		new_size = heap->alloced_size * 2;
-		new_values = realloc(heap->values, sizeof(BinaryHeapValue) * new_size);
+		new_values = realloc(heap->values,
+		                     sizeof(BinaryHeapValue) * new_size);
 
 		if (new_values == NULL) {
 			return 0;
@@ -206,8 +208,9 @@ BinaryHeapValue binary_heap_pop(BinaryHeap *heap)
 			next_index = child2;
 
 		} else {
-			/* Node is less than both its children.  The heap condition
-			 * is satisfied.  We can stop percolating down. */
+			/* Node is less than both its children. The heap
+			 * condition is satisfied.  * We can stop percolating
+			 * down. */
 
 			heap->values[index] = new_value;
 			break;

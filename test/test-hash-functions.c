@@ -46,7 +46,8 @@ void test_pointer_hash(void)
 
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		for (j=i+1; j<NUM_TEST_VALUES; ++j) {
-			assert(pointer_hash(&array[i]) != pointer_hash(&array[j]));
+			assert(pointer_hash(&array[i])
+			       != pointer_hash(&array[j]));
 		}
 	}
 }

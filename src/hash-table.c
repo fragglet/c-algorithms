@@ -220,7 +220,8 @@ static int hash_table_enlarge(HashTable *hash_table)
 
 			/* Find the index into the new table */
 
-			index = hash_table->hash_func(rover->key) % hash_table->table_size;
+			index = hash_table->hash_func(rover->key)
+			      % hash_table->table_size;
 
 			/* Link this entry into the chain */
 
@@ -240,7 +241,8 @@ static int hash_table_enlarge(HashTable *hash_table)
 	return 1;
 }
 
-int hash_table_insert(HashTable *hash_table, HashTableKey key, HashTableValue value)
+int hash_table_insert(HashTable *hash_table, HashTableKey key,
+                      HashTableValue value)
 {
 	HashTableEntry *rover;
 	HashTableEntry *newentry;
@@ -481,7 +483,8 @@ HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 			/* Is there anything in this chain? */
 
 			if (hash_table->table[chain] != NULL) {
-				iterator->next_entry = hash_table->table[chain];
+				iterator->next_entry =
+				    hash_table->table[chain];
 				break;
 			}
 

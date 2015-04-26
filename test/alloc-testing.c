@@ -82,7 +82,8 @@ static BlockHeader *alloc_test_get_header(void *ptr)
 
 /* Overwrite a block of memory with a repeated pattern. */
 
-static void alloc_test_overwrite(void *ptr, size_t length, unsigned int pattern)
+static void alloc_test_overwrite(void *ptr, size_t length,
+                                 unsigned int pattern)
 {
 	unsigned char *byte_ptr;
 	int pattern_seq;

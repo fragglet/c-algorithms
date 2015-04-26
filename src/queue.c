@@ -92,8 +92,8 @@ int queue_push_head(Queue *queue, QueueValue data)
 
 	if (queue->head == NULL) {
 
-		/* If the queue was previously empty, both the head and tail must
-		 * be pointed at the new entry */
+		/* If the queue was previously empty, both the head and
+		 * tail must be pointed at the new entry */
 
 		queue->head = new_entry;
 		queue->tail = new_entry;
@@ -179,8 +179,8 @@ int queue_push_tail(Queue *queue, QueueValue data)
 
 	if (queue->tail == NULL) {
 
-		/* If the queue was previously empty, both the head and tail must
-		 * be pointed at the new entry */
+		/* If the queue was previously empty, both the head and
+		 * tail must be pointed at the new entry */
 
 		queue->head = new_entry;
 		queue->tail = new_entry;
