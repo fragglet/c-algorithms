@@ -497,6 +497,7 @@ RBTreeNode *rb_tree_node_parent(RBTreeNode *node)
 RBTreeValue *rb_tree_to_array(RBTree *tree)
 {
 	/* TODO */
+	return NULL;
 }
 
 int rb_tree_num_entries(RBTree *tree)

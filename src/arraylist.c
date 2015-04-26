@@ -103,7 +103,7 @@ int arraylist_insert(ArrayList *arraylist, unsigned int index,
 {
 	/* Sanity check the index */
 
-	if (index < 0 || index > arraylist->length) {
+	if (index > arraylist->length) {
 		return 0;
 	}
 
@@ -145,7 +145,7 @@ void arraylist_remove_range(ArrayList *arraylist, unsigned int index,
 {
 	/* Check this is a valid range */
 
-	if (index < 0 || length < 0 || index + length > arraylist->length) {
+	if (index > arraylist->length || index + length > arraylist->length) {
 		return;
 	}
 

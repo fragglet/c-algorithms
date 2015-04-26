@@ -269,10 +269,8 @@ void test_avl_tree_child(void)
 
 	/* Check invalid values */
 
-	assert(avl_tree_node_child(root, -1) == NULL);
 	assert(avl_tree_node_child(root, 10000) == NULL);
 	assert(avl_tree_node_child(root, 2) == NULL);
-	assert(avl_tree_node_child(root, -100000) == NULL);
 
 	avl_tree_free(tree);
 }

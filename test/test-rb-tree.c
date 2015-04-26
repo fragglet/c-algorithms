@@ -200,10 +200,8 @@ void test_rb_tree_child(void)
 
 	/* Check invalid values */
 
-	assert(rb_tree_node_child(root, -1) == NULL);
 	assert(rb_tree_node_child(root, 10000) == NULL);
 	assert(rb_tree_node_child(root, 2) == NULL);
-	assert(rb_tree_node_child(root, -100000) == NULL);
 
 	rb_tree_free(tree);
 }
