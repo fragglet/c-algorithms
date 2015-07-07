@@ -441,7 +441,7 @@ int hash_table_iter_has_more(HashTableIterator *iterator)
 }
 
 HashTableValue hash_table_value(HashTableIterator *iterator) {
-	HashTableValue result = HASH_TABLE_NULL;
+	HashTableEntry* current_handle;
 
 	/* Iterator has handle on a valid HashTable? */
 	if (iterator == NULL || iterator->hash_table == NULL) {
@@ -449,10 +449,13 @@ HashTableValue hash_table_value(HashTableIterator *iterator) {
 	}
 
 	unsigned int cursor = (iterator->next_chain - 1);
-	HashTableEntry* current_handle = iterator->hash_table->table[cursor];
-	result = current_handle->key;
+	current_handle = iterator->hash_table->table[cursor];
 
-	return result;
+	if(current_handle == NULL){
+		return HASH_TABLE_NULL;
+	}
+
+	return current_handle->value;
 }
 
 HashTableValue hash_table_iter_next(HashTableIterator *iterator)
