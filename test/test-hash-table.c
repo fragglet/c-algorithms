@@ -433,7 +433,6 @@ void test_hash_iterator_KeyValue_pair() {
 	HashTableIterator iterator;
 	int* key;
 	int* value;
-	int* l_value;
 
 	hash_table = hash_table_new(int_hash, int_equal);
 
@@ -450,9 +449,7 @@ void test_hash_iterator_KeyValue_pair() {
 		key = (int*) hash_table_iter_next(&iterator);
 		value = (int*) hash_table_value(&iterator);
 
-		l_value = hash_table_lookup(hash_table, key);
 		assert(*key == *value);
-		assert(*value == *l_value);
 	}
 
 	hash_table_free(hash_table);
