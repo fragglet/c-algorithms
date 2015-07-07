@@ -243,18 +243,7 @@ int hash_table_iter_has_more(HashTableIterator *iterator);
  *                            keys to iterate over.
  */
 
-HashTableValue hash_table_iter_next(HashTableIterator *iterator);
-
-/**
- * Using a hash table iterator, retrieve @ref HashTable value
- * held by existing iterator handle.
- *
- * @param iterator            The hash table iterator.
- * @return                    @ref HashTable value currently placed under
- *                            iterator handle, else @ref HASH_TABLE_NULL.
- */
-
-HashTableValue hash_table_value(HashTableIterator *iterator);
+HashTableKey hash_table_iter_next(HashTableIterator *iterator);
 
 #ifdef __cplusplus
 }

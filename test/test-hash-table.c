@@ -444,8 +444,10 @@ void test_hash_iterator_KeyValue_pair() {
 	while (hash_table_iter_has_more(&iterator)) {
 
 		// Retrieve both Key and Value
-		int* key = (int*) hash_table_iter_next(&iterator);
-		int* value = (int*) hash_table_value(&iterator);
+		HashTableKey key = hash_table_iter_next(&iterator);
+		int* value = (int*) hash_table_lookup(hash_table, key);
+
+		assert((int* ) key == (int* )value);
 	}
 
 	hash_table_free(hash_table);

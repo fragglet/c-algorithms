@@ -440,29 +440,11 @@ int hash_table_iter_has_more(HashTableIterator *iterator)
 	return iterator->next_entry != NULL;
 }
 
-HashTableValue hash_table_value(HashTableIterator *iterator) {
-	HashTableEntry* current_handle;
-
-	/* Iterator has handle on a valid HashTable? */
-	if (iterator == NULL || iterator->hash_table == NULL) {
-		return HASH_TABLE_NULL;
-	}
-
-	unsigned int cursor = (iterator->next_chain - 1);
-	current_handle = iterator->hash_table->table[cursor];
-
-	if(current_handle == NULL){
-		return HASH_TABLE_NULL;
-	}
-
-	return current_handle->value;
-}
-
-HashTableValue hash_table_iter_next(HashTableIterator *iterator)
+HashTableKey hash_table_iter_next(HashTableIterator *iterator)
 {
 	HashTableEntry *current_entry;
 	HashTable *hash_table;
-	HashTableValue result;
+	HashTableKey key;
 
 	unsigned int chain;
 
@@ -477,7 +459,7 @@ HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 	/* Result is immediately available */
 
 	current_entry = iterator->next_entry;
-	result = current_entry->key;
+	key = current_entry->key;
 
 	/* Find the next entry */
 
@@ -515,6 +497,6 @@ HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 		iterator->next_chain = chain;
 	}
 
-	return result;
+	return key;
 }
 
