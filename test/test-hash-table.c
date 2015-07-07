@@ -194,7 +194,7 @@ void test_hash_table_iterating(void)
 	hash_table_iterate(hash_table, &iterator);
 
 	while (hash_table_iter_has_more(&iterator)) {
-		hash_table_iter_next(&iterator);
+		hash_table_iter_next(&iterator, VALUE);
 
 		++count;
 	}
@@ -202,8 +202,8 @@ void test_hash_table_iterating(void)
 	assert(count == NUM_TEST_VALUES);
 
 	/* Test iter_next after iteration has completed. */
-
-	assert(hash_table_iter_next(&iterator) == HASH_TABLE_NULL);
+	assert(hash_table_iter_next(&iterator, KEY) == HASH_TABLE_NULL);
+	assert(hash_table_iter_next(&iterator, VALUE) == HASH_TABLE_NULL);
 
 	hash_table_free(hash_table);
 
@@ -245,7 +245,7 @@ void test_hash_table_iterating_remove(void)
 
 		/* Read the next value */
 
-		val = hash_table_iter_next(&iterator);
+		val = hash_table_iter_next(&iterator, VALUE);
 
 		/* Remove every hundredth entry */
 
@@ -425,6 +425,31 @@ void test_hash_table_out_of_memory(void)
 	assert(hash_table_insert(hash_table, &values[65], &values[65]) == 0);
 	assert(hash_table_num_entries(hash_table) == 65);
 
+	hash_table_free(hash_table);
+}
+
+void test_hash_iterator_returning_KeyValue_pair(){
+
+	HashTable *hash_table;
+	HashTableIterator iterator;
+	int** kv_pair;
+
+	hash_table = hash_table_new(int_hash, int_equal);
+
+	/* Add some values */
+
+	hash_table_insert(hash_table, &value1, &value1);
+	hash_table_insert(hash_table, &value2, &value2);
+
+	hash_table_iterate(hash_table, &iterator);
+
+	while (hash_table_iter_has_more(&iterator)) {
+
+		// Retrieve both Key and Value
+		kv_pair = (int**) hash_table_iter_next(&iterator, KEY_VALUE);
+
+		assert(*((int*)kv_pair[0]) == *((int*)kv_pair[1]));
+	}
 	hash_table_free(hash_table);
 }
 
