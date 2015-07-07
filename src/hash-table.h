@@ -45,10 +45,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifndef ALGORITHM_HASH_TABLE_H
 #define ALGORITHM_HASH_TABLE_H
 
-#define KEY         1
-#define VALUE       2
-#define KEY_VALUE   3
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -242,16 +238,23 @@ int hash_table_iter_has_more(HashTableIterator *iterator);
  * Using a hash table iterator, retrieve the next key.
  *
  * @param iterator            The hash table iterator.
- * @param flag                Flag to determine whether the return value should
- *                            either be the Key, Value or Both KeyValue held in
- *                            array[2] where array[0] is Key and array[1] is value.
- *
  * @return                    The next key from the hash table, or
  *                            @ref HASH_TABLE_NULL if there are no more
  *                            keys to iterate over.
  */
 
-HashTableValue hash_table_iter_next(HashTableIterator *iterator, int flag);
+HashTableValue hash_table_iter_next(HashTableIterator *iterator);
+
+/**
+ * Using a hash table iterator, retrieve @ref HashTable value
+ * held by existing iterator handle.
+ *
+ * @param iterator            The hash table iterator.
+ * @return                    @ref HashTable value currently placed under
+ *                            iterator handle, else @ref HASH_TABLE_NULL.
+ */
+
+HashTableValue hash_table_value(HashTableIterator *iterator);
 
 #ifdef __cplusplus
 }
