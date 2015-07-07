@@ -440,11 +440,12 @@ int hash_table_iter_has_more(HashTableIterator *iterator)
 	return iterator->next_entry != NULL;
 }
 
-HashTableValue hash_table_iter_next(HashTableIterator *iterator)
+HashTableValue hash_table_iter_next(HashTableIterator *iterator, int flag)
 {
 	HashTableEntry *current_entry;
 	HashTable *hash_table;
 	HashTableValue result;
+	void* res[2];
 	unsigned int chain;
 
 	hash_table = iterator->hash_table;
@@ -458,7 +459,23 @@ HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 	/* Result is immediately available */
 
 	current_entry = iterator->next_entry;
-	result = current_entry->value;
+
+	switch (flag) {
+	case VALUE:
+		result = current_entry->value;
+		break;
+	case KEY:
+		result = current_entry->key;
+		break;
+	case KEY_VALUE:
+		res[0] = current_entry->key;
+		res[1] = current_entry->value;
+		result = res;
+		break;
+	default:
+		result = current_entry->value;
+		break;
+	}
 
 	/* Find the next entry */
 
