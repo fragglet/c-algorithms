@@ -428,6 +428,32 @@ void test_hash_table_out_of_memory(void)
 	hash_table_free(hash_table);
 }
 
+void test_hash_iterator_key_value_pair() {
+
+	HashTable *hash_table;
+	HashTableIterator iterator;
+	hash_table = hash_table_new(int_hash, int_equal);
+
+	/* Add some values */
+
+	hash_table_insert(hash_table, &value1, &value1);
+	hash_table_insert(hash_table, &value2, &value2);
+
+	hash_table_iterate(hash_table, &iterator);
+
+	while (hash_table_iter_has_more(&iterator)) {
+
+		/* Retrieve both Key and Value */
+
+		HashTableKey key = hash_table_iter_next(&iterator);
+		int* value = (int*) hash_table_lookup(hash_table, key);
+
+		assert((int* ) key == (int* )value);
+	}
+
+	hash_table_free(hash_table);
+}
+
 static UnitTestFunction tests[] = {
 	test_hash_table_new_free,
 	test_hash_table_insert_lookup,
@@ -436,6 +462,7 @@ static UnitTestFunction tests[] = {
 	test_hash_table_iterating_remove,
 	test_hash_table_free_functions,
 	test_hash_table_out_of_memory,
+	test_hash_iterator_key_value_pair,
 	NULL
 };
 

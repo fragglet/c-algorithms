@@ -243,7 +243,7 @@ int hash_table_iter_has_more(HashTableIterator *iterator);
  *                            keys to iterate over.
  */
 
-HashTableValue hash_table_iter_next(HashTableIterator *iterator);
+HashTableKey hash_table_iter_next(HashTableIterator *iterator);
 
 #ifdef __cplusplus
 }
