@@ -228,6 +228,7 @@ void test_hash_table_iterating_remove(void)
 	HashTableIterator iterator;
 	char buf[10];
 	char *val;
+	KeyValuePair *value_pair;
 	int count;
 	unsigned int removed;
 	int i;
@@ -245,7 +246,8 @@ void test_hash_table_iterating_remove(void)
 
 		/* Read the next value */
 
-		val = hash_table_iter_next(&iterator);
+		value_pair = hash_table_iter_next(&iterator);
+		val = value_pair->value;
 
 		/* Remove every hundredth entry */
 
@@ -404,7 +406,8 @@ void test_hash_table_out_of_memory(void)
 	/* Test failure when increasing table size.
 	 * The initial table size is 193 entries.  The table increases in
 	 * size when 1/3 full, so the 66th entry should cause the insert
-	 * to fail. */
+	 * to fail.
+	 */
 
 	for (i=0; i<65; ++i) {
 		values[i] = (int) i;
@@ -432,6 +435,7 @@ void test_hash_iterator_key_value_pair() {
 
 	HashTable *hash_table;
 	HashTableIterator iterator;
+	KeyValuePair *value_pair;
 	hash_table = hash_table_new(int_hash, int_equal);
 
 	/* Add some values */
@@ -443,12 +447,13 @@ void test_hash_iterator_key_value_pair() {
 
 	while (hash_table_iter_has_more(&iterator)) {
 
-		/* Retrieve both Key and Value */
+		// Retrieve both Key and Value
+		value_pair = hash_table_iter_next(&iterator);
 
-		HashTableKey key = hash_table_iter_next(&iterator);
-		int* value = (int*) hash_table_lookup(hash_table, key);
+		int* key = (int*) value_pair->key;
+		int* val = (int*) value_pair->value;
 
-		assert((int* ) key == (int* )value);
+		assert(*key == *val);
 	}
 
 	hash_table_free(hash_table);
