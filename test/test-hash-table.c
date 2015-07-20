@@ -202,6 +202,7 @@ void test_hash_table_iterating(void)
 	assert(count == NUM_TEST_VALUES);
 
 	/* Test iter_next after iteration has completed. */
+
 	HashTablePair pair = hash_table_iter_next(&iterator);
 	assert(pair.value == HASH_TABLE_NULL);
 
