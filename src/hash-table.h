@@ -254,8 +254,9 @@ int hash_table_iter_has_more(HashTableIterator *iterator);
  *       of @ref HashTablePair stored internally.
  *
  * @param iterator            The hash table iterator.
- * @return                    The next @ref HashTablePair from the hash table
- *                            if there are no more keys to iterate over.
+ * @return                    The next @ref HashTablePair from the hash table, or
+ *                            @ref HASH_TABLE_NULL of Key and Value if there are
+ *                            no more keys to iterate over.
  */
 
 HashTablePair hash_table_iter_next(HashTableIterator *iterator);

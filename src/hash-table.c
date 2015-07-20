@@ -468,11 +468,16 @@ HashTablePair hash_table_iter_next(HashTableIterator *iterator)
 {
 	HashTableEntry *current_entry;
 	HashTable *hash_table;
-	HashTablePair pair;
+
+	HashTablePair pair = {NULL, NULL};
 
 	unsigned int chain;
 
 	hash_table = iterator->hash_table;
+
+	if (iterator->next_entry == NULL) {
+		return pair;
+	}
 
 	/* Result is immediately available */
 
