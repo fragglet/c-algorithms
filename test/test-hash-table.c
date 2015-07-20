@@ -449,10 +449,11 @@ void test_hash_iterator_key_pair() {
 	while (hash_table_iter_has_more(&iterator)) {
 
 		/* Retrieve both Key and Value */
+
 		pair = hash_table_iter_next(&iterator);
 
-		int* key = (int*) pair.key;
-		int* val = (int*) pair.value;
+		int *key = (int*) pair.key;
+		int *val = (int*) pair.value;
 
 		assert(*key == *val);
 	}
