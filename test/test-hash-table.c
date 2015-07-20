@@ -228,7 +228,7 @@ void test_hash_table_iterating_remove(void)
 	HashTableIterator iterator;
 	char buf[10];
 	char *val;
-	KeyValuePair *value_pair;
+	HashTablePair pair;
 	int count;
 	unsigned int removed;
 	int i;
@@ -246,8 +246,8 @@ void test_hash_table_iterating_remove(void)
 
 		/* Read the next value */
 
-		value_pair = hash_table_iter_next(&iterator);
-		val = value_pair->value;
+		pair = hash_table_iter_next(&iterator);
+		val = pair.value;
 
 		/* Remove every hundredth entry */
 
@@ -431,11 +431,11 @@ void test_hash_table_out_of_memory(void)
 	hash_table_free(hash_table);
 }
 
-void test_hash_iterator_key_value_pair() {
+void test_hash_iterator_key_pair() {
 
 	HashTable *hash_table;
 	HashTableIterator iterator;
-	KeyValuePair *value_pair;
+	HashTablePair pair;
 	hash_table = hash_table_new(int_hash, int_equal);
 
 	/* Add some values */
@@ -447,11 +447,11 @@ void test_hash_iterator_key_value_pair() {
 
 	while (hash_table_iter_has_more(&iterator)) {
 
-		// Retrieve both Key and Value
-		value_pair = hash_table_iter_next(&iterator);
+		/* Retrieve both Key and Value */
+		pair = hash_table_iter_next(&iterator);
 
-		int* key = (int*) value_pair->key;
-		int* val = (int*) value_pair->value;
+		int* key = (int*) pair.key;
+		int* val = (int*) pair.value;
 
 		assert(*key == *val);
 	}
@@ -467,7 +467,7 @@ static UnitTestFunction tests[] = {
 	test_hash_table_iterating_remove,
 	test_hash_table_free_functions,
 	test_hash_table_out_of_memory,
-	test_hash_iterator_key_value_pair,
+	test_hash_iterator_key_pair,
 	NULL
 };
 
