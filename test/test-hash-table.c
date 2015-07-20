@@ -201,10 +201,6 @@ void test_hash_table_iterating(void)
 
 	assert(count == NUM_TEST_VALUES);
 
-	/* Test iter_next after iteration has completed. */
-
-	assert(hash_table_iter_next(&iterator) == HASH_TABLE_NULL);
-
 	hash_table_free(hash_table);
 
 	/* Test iterating over an empty table */
