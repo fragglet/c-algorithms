@@ -67,7 +67,6 @@ typedef struct _HashTableIterator HashTableIterator;
 
 typedef struct _HashTableEntry HashTableEntry;
 
-
 /**
  * A key to look up a value in a @ref HashTable.
  */
@@ -249,7 +248,7 @@ int hash_table_iter_has_more(HashTableIterator *iterator);
  * Using a hash table iterator, retrieve the next @ref HashTablePair.
  *
  * Note: To avoid @ref HashTableEntry internal @ref HashTablePair
- *       from been tampered with, and potentially messing with
+ *       from being tampered with, and potentially messing with
  *       internal table structure, the function returns a copy
  *       of @ref HashTablePair stored internally.
  *

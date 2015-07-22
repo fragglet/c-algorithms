@@ -254,7 +254,6 @@ int hash_table_insert(HashTable *hash_table, HashTableKey key,
 	HashTableEntry *rover;
 	HashTablePair *pair;
 	HashTableEntry *newentry;
-	HashTablePair newpair;
 	unsigned int index;
 
 	/* If there are too many items in the table with respect to the table
@@ -325,10 +324,8 @@ int hash_table_insert(HashTable *hash_table, HashTableKey key,
 		return 0;
 	}
 
-	newpair.key = key;
-	newpair.value = value;
-
-	newentry->pair = newpair;
+	newentry->pair.key = key;
+	newentry->pair.value = value;
 
 	/* Link into the list */
 
@@ -468,7 +465,6 @@ HashTablePair hash_table_iter_next(HashTableIterator *iterator)
 {
 	HashTableEntry *current_entry;
 	HashTable *hash_table;
-
 	HashTablePair pair = {NULL, NULL};
 
 	unsigned int chain;

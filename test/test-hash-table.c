@@ -432,8 +432,8 @@ void test_hash_table_out_of_memory(void)
 	hash_table_free(hash_table);
 }
 
-void test_hash_iterator_key_pair() {
-
+void test_hash_iterator_key_pair()
+{
 	HashTable *hash_table;
 	HashTableIterator iterator;
 	HashTablePair pair;
