@@ -203,7 +203,8 @@ void test_hash_table_iterating(void)
 
 	/* Test iter_next after iteration has completed. */
 
-	assert(hash_table_iter_next(&iterator) == HASH_TABLE_NULL);
+	HashTablePair pair = hash_table_iter_next(&iterator);
+	assert(pair.value == HASH_TABLE_NULL);
 
 	hash_table_free(hash_table);
 
@@ -228,6 +229,7 @@ void test_hash_table_iterating_remove(void)
 	HashTableIterator iterator;
 	char buf[10];
 	char *val;
+	HashTablePair pair;
 	int count;
 	unsigned int removed;
 	int i;
@@ -245,7 +247,8 @@ void test_hash_table_iterating_remove(void)
 
 		/* Read the next value */
 
-		val = hash_table_iter_next(&iterator);
+		pair = hash_table_iter_next(&iterator);
+		val = pair.value;
 
 		/* Remove every hundredth entry */
 
@@ -404,7 +407,8 @@ void test_hash_table_out_of_memory(void)
 	/* Test failure when increasing table size.
 	 * The initial table size is 193 entries.  The table increases in
 	 * size when 1/3 full, so the 66th entry should cause the insert
-	 * to fail. */
+	 * to fail.
+	 */
 
 	for (i=0; i<65; ++i) {
 		values[i] = (int) i;
@@ -428,6 +432,35 @@ void test_hash_table_out_of_memory(void)
 	hash_table_free(hash_table);
 }
 
+void test_hash_iterator_key_pair()
+{
+	HashTable *hash_table;
+	HashTableIterator iterator;
+	HashTablePair pair;
+	hash_table = hash_table_new(int_hash, int_equal);
+
+	/* Add some values */
+
+	hash_table_insert(hash_table, &value1, &value1);
+	hash_table_insert(hash_table, &value2, &value2);
+
+	hash_table_iterate(hash_table, &iterator);
+
+	while (hash_table_iter_has_more(&iterator)) {
+
+		/* Retrieve both Key and Value */
+
+		pair = hash_table_iter_next(&iterator);
+
+		int *key = (int*) pair.key;
+		int *val = (int*) pair.value;
+
+		assert(*key == *val);
+	}
+
+	hash_table_free(hash_table);
+}
+
 static UnitTestFunction tests[] = {
 	test_hash_table_new_free,
 	test_hash_table_insert_lookup,
@@ -436,6 +469,7 @@ static UnitTestFunction tests[] = {
 	test_hash_table_iterating_remove,
 	test_hash_table_free_functions,
 	test_hash_table_out_of_memory,
+	test_hash_iterator_key_pair,
 	NULL
 };
 

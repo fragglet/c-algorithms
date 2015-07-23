@@ -32,8 +32,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #endif
 
 struct _HashTableEntry {
-	HashTableKey key;
-	HashTableValue value;
+	HashTablePair pair;
 	HashTableEntry *next;
 };
 
@@ -95,17 +94,21 @@ static int hash_table_allocate_table(HashTable *hash_table)
 
 static void hash_table_free_entry(HashTable *hash_table, HashTableEntry *entry)
 {
+	HashTablePair *pair;
+
+	pair = &(entry->pair);
+
 	/* If there is a function registered for freeing keys, use it to free
 	 * the key */
 
 	if (hash_table->key_free_func != NULL) {
-		hash_table->key_free_func(entry->key);
+		hash_table->key_free_func(pair->key);
 	}
 
 	/* Likewise with the value */
 
 	if (hash_table->value_free_func != NULL) {
-		hash_table->value_free_func(entry->value);
+		hash_table->value_free_func(pair->value);
 	}
 
 	/* Free the data structure */
@@ -185,6 +188,7 @@ static int hash_table_enlarge(HashTable *hash_table)
 	unsigned int old_table_size;
 	unsigned int old_prime_index;
 	HashTableEntry *rover;
+	HashTablePair *pair;
 	HashTableEntry *next;
 	unsigned int index;
 	unsigned int i;
@@ -218,10 +222,13 @@ static int hash_table_enlarge(HashTable *hash_table)
 		while (rover != NULL) {
 			next = rover->next;
 
+			/* Fetch rover HashTablePair */
+
+			pair = &(rover->pair);
+
 			/* Find the index into the new table */
 
-			index = hash_table->hash_func(rover->key)
-			      % hash_table->table_size;
+			index = hash_table->hash_func(pair->key) % hash_table->table_size;
 
 			/* Link this entry into the chain */
 
@@ -245,6 +252,7 @@ int hash_table_insert(HashTable *hash_table, HashTableKey key,
                       HashTableValue value)
 {
 	HashTableEntry *rover;
+	HashTablePair *pair;
 	HashTableEntry *newentry;
 	unsigned int index;
 
@@ -274,7 +282,12 @@ int hash_table_insert(HashTable *hash_table, HashTableKey key,
 	rover = hash_table->table[index];
 
 	while (rover != NULL) {
-		if (hash_table->equal_func(rover->key, key) != 0) {
+
+		/* Fetch rover's HashTablePair entry */
+
+		pair = &(rover->pair);
+
+		if (hash_table->equal_func(pair->key, key) != 0) {
 
 			/* Same key: overwrite this entry with new data */
 
@@ -282,23 +295,24 @@ int hash_table_insert(HashTable *hash_table, HashTableKey key,
 			 * before adding in the new data */
 
 			if (hash_table->value_free_func != NULL) {
-				hash_table->value_free_func(rover->value);
+				hash_table->value_free_func(pair->value);
 			}
 
 			/* Same with the key: use the new key value and free
 			 * the old one */
 
 			if (hash_table->key_free_func != NULL) {
-				hash_table->key_free_func(rover->key);
+				hash_table->key_free_func(pair->key);
 			}
 
-			rover->key = key;
-			rover->value = value;
+			pair->key = key;
+			pair->value = value;
 
 			/* Finished */
 
 			return 1;
 		}
+
 		rover = rover->next;
 	}
 
@@ -310,8 +324,8 @@ int hash_table_insert(HashTable *hash_table, HashTableKey key,
 		return 0;
 	}
 
-	newentry->key = key;
-	newentry->value = value;
+	newentry->pair.key = key;
+	newentry->pair.value = value;
 
 	/* Link into the list */
 
@@ -330,6 +344,7 @@ int hash_table_insert(HashTable *hash_table, HashTableKey key,
 HashTableValue hash_table_lookup(HashTable *hash_table, HashTableKey key)
 {
 	HashTableEntry *rover;
+	HashTablePair *pair;
 	unsigned int index;
 
 	/* Generate the hash of the key and hence the index into the table */
@@ -342,12 +357,15 @@ HashTableValue hash_table_lookup(HashTable *hash_table, HashTableKey key)
 	rover = hash_table->table[index];
 
 	while (rover != NULL) {
-		if (hash_table->equal_func(key, rover->key) != 0) {
+		pair = &(rover->pair);
+
+		if (hash_table->equal_func(key, pair->key) != 0) {
 
 			/* Found the entry.  Return the data. */
 
-			return rover->value;
+			return pair->value;
 		}
+
 		rover = rover->next;
 	}
 
@@ -360,6 +378,7 @@ int hash_table_remove(HashTable *hash_table, HashTableKey key)
 {
 	HashTableEntry **rover;
 	HashTableEntry *entry;
+	HashTablePair *pair;
 	unsigned int index;
 	int result;
 
@@ -377,7 +396,9 @@ int hash_table_remove(HashTable *hash_table, HashTableKey key)
 
 	while (*rover != NULL) {
 
-		if (hash_table->equal_func(key, (*rover)->key) != 0) {
+		pair = &((*rover)->pair);
+
+		if (hash_table->equal_func(key, pair->key) != 0) {
 
 			/* This is the entry to remove */
 
@@ -440,25 +461,23 @@ int hash_table_iter_has_more(HashTableIterator *iterator)
 	return iterator->next_entry != NULL;
 }
 
-HashTableValue hash_table_iter_next(HashTableIterator *iterator)
+HashTablePair hash_table_iter_next(HashTableIterator *iterator)
 {
 	HashTableEntry *current_entry;
 	HashTable *hash_table;
-	HashTableValue result;
+	HashTablePair pair = {NULL, NULL};
 	unsigned int chain;
 
 	hash_table = iterator->hash_table;
 
-	/* No more entries? */
-
 	if (iterator->next_entry == NULL) {
-		return HASH_TABLE_NULL;
+		return pair;
 	}
 
 	/* Result is immediately available */
 
 	current_entry = iterator->next_entry;
-	result = current_entry->value;
+	pair = current_entry->pair;
 
 	/* Find the next entry */
 
@@ -483,8 +502,7 @@ HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 			/* Is there anything in this chain? */
 
 			if (hash_table->table[chain] != NULL) {
-				iterator->next_entry =
-				    hash_table->table[chain];
+				iterator->next_entry = hash_table->table[chain];
 				break;
 			}
 
@@ -496,6 +514,6 @@ HashTableValue hash_table_iter_next(HashTableIterator *iterator)
 		iterator->next_chain = chain;
 	}
 
-	return result;
+	return pair;
 }
 

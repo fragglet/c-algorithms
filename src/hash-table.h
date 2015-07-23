@@ -80,6 +80,16 @@ typedef void *HashTableKey;
 typedef void *HashTableValue;
 
 /**
+ * Internal structure representing an entry in hash table
+ * used as @ref HashTableIterator next result.
+ */
+
+typedef struct _HashTablePair{
+	HashTableKey key;
+	HashTableValue value;
+} HashTablePair;
+
+/**
  * Definition of a @ref HashTableIterator.
  */
 
@@ -235,15 +245,21 @@ void hash_table_iterate(HashTable *hash_table, HashTableIterator *iter);
 int hash_table_iter_has_more(HashTableIterator *iterator);
 
 /**
- * Using a hash table iterator, retrieve the next key.
+ * Using a hash table iterator, retrieve the next @ref HashTablePair.
+ *
+ * Note: To avoid @ref HashTableEntry internal @ref HashTablePair
+ *       from being tampered with, and potentially messing with
+ *       internal table structure, the function returns a copy
+ *       of @ref HashTablePair stored internally.
  *
  * @param iterator            The hash table iterator.
- * @return                    The next key from the hash table, or
- *                            @ref HASH_TABLE_NULL if there are no more
- *                            keys to iterate over.
+ * @return                    The next @ref HashTablePair from the hash
+ *                            table, or @ref HASH_TABLE_NULL of Key and
+ *                            Value if there are no more keys to iterate
+ *                            over.
  */
 
-HashTableValue hash_table_iter_next(HashTableIterator *iterator);
+HashTablePair hash_table_iter_next(HashTableIterator *iterator);
 
 #ifdef __cplusplus
 }
