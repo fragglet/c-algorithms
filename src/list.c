@@ -36,7 +36,7 @@ struct _ListEntry {
 	ListEntry *next;
 };
 
-void list_free(ListEntry *list)
+void list_free(ListEntry *list, ListFreeFunc callback)
 {
 	ListEntry *entry;
 
@@ -50,6 +50,10 @@ void list_free(ListEntry *list)
 
 		next = entry->next;
 
+		if (callback != NULL) {
+			callback(entry->data);
+		}
+
 		free(entry);
 
 		entry = next;
@@ -59,6 +63,13 @@ void list_free(ListEntry *list)
 ListEntry *list_prepend(ListEntry **list, ListValue data)
 {
 	ListEntry *newentry;
+
+	if (list == NULL) {
+
+		/* not a valid list */
+
+		return NULL;
+	}
 
 	/* Create new entry */
 
@@ -86,6 +97,10 @@ ListEntry *list_append(ListEntry **list, ListValue data)
 {
 	ListEntry *rover;
 	ListEntry *newentry;
+
+	if (list == NULL) {
+		return NULL;
+	}
 
 	/* Create new list entry */
 
@@ -124,16 +139,28 @@ ListEntry *list_append(ListEntry **list, ListValue data)
 
 ListValue list_data(ListEntry *listentry)
 {
+	if (listentry == NULL) {
+		return LIST_NULL;
+	}
+
 	return listentry->data;
 }
 
 ListEntry *list_prev(ListEntry *listentry)
 {
+	if (listentry == NULL) {
+		return NULL;
+	}
+
 	return listentry->prev;
 }
 
 ListEntry *list_next(ListEntry *listentry)
 {
+	if (listentry == NULL) {
+		return NULL;
+	}
+
 	return listentry->next;
 }
 
@@ -206,7 +233,7 @@ ListValue *list_to_array(ListEntry *list)
 
 	length = list_length(list);
 
-	array = malloc(sizeof(ListValue) * length);
+	array = malloc(sizeof(ListValue) * (length + 1));
 
 	if (array == NULL) {
 		return NULL;
@@ -227,14 +254,17 @@ ListValue *list_to_array(ListEntry *list)
 		rover = rover->next;
 	}
 
+	/* NULL as the last one */
+	array[i] = NULL;
+
 	return array;
 }
 
-int list_remove_entry(ListEntry **list, ListEntry *entry)
+int list_remove_entry(ListEntry **list, ListEntry *entry, ListFreeFunc callback)
 {
 	/* If the list is empty, or entry is NULL, always fail */
 
-	if (*list == NULL || entry == NULL) {
+	if (list == NULL || *list == NULL || entry == NULL) {
 		return 0;
 	}
 
@@ -269,6 +299,10 @@ int list_remove_entry(ListEntry **list, ListEntry *entry)
 		}
 	}
 
+	if (callback != NULL) {
+		callback(entry->data);
+	}
+
 	/* Free the list entry */
 
 	free(entry);
@@ -279,11 +313,15 @@ int list_remove_entry(ListEntry **list, ListEntry *entry)
 }
 
 unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
-                              ListValue data)
+                              ListValue data, ListFreeFunc free_func)
 {
 	unsigned int entries_removed;
 	ListEntry *rover;
 	ListEntry *next;
+
+	if (list == NULL || callback == NULL) {
+		return 0;
+	}
 
 	entries_removed = 0;
 
@@ -317,6 +355,10 @@ unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
 				rover->next->prev = rover->prev;
 			}
 
+			if (free_func != NULL) {
+				free_func(rover->data);
+			}
+
 			/* Free the entry */
 
 			free(rover);
@@ -342,6 +384,10 @@ static ListEntry *list_sort_internal(ListEntry **list,
 	ListEntry *rover;
 	ListEntry *less_list, *more_list;
 	ListEntry *less_list_end, *more_list_end;
+
+	if (list == NULL || compare_func == NULL) {
+		return NULL;
+	}
 
 	/* If there are less than two entries in this list, it is
 	 * already sorted */
