@@ -60,6 +60,13 @@ ListEntry *list_prepend(ListEntry **list, ListValue data)
 {
 	ListEntry *newentry;
 
+	if (list == NULL) {
+
+		/* not a valid list */
+
+		return NULL;
+	}
+
 	/* Create new entry */
 
 	newentry = malloc(sizeof(ListEntry));
@@ -86,6 +93,10 @@ ListEntry *list_append(ListEntry **list, ListValue data)
 {
 	ListEntry *rover;
 	ListEntry *newentry;
+
+	if (list == NULL) {
+		return NULL;
+	}
 
 	/* Create new list entry */
 
@@ -124,16 +135,28 @@ ListEntry *list_append(ListEntry **list, ListValue data)
 
 ListValue list_data(ListEntry *listentry)
 {
+	if (listentry == NULL) {
+		return LIST_NULL;
+	}
+
 	return listentry->data;
 }
 
 ListEntry *list_prev(ListEntry *listentry)
 {
+	if (listentry == NULL) {
+		return NULL;
+	}
+
 	return listentry->prev;
 }
 
 ListEntry *list_next(ListEntry *listentry)
 {
+	if (listentry == NULL) {
+		return NULL;
+	}
+
 	return listentry->next;
 }
 
@@ -234,7 +257,7 @@ int list_remove_entry(ListEntry **list, ListEntry *entry)
 {
 	/* If the list is empty, or entry is NULL, always fail */
 
-	if (*list == NULL || entry == NULL) {
+	if (list == NULL || *list == NULL || entry == NULL) {
 		return 0;
 	}
 
@@ -284,6 +307,10 @@ unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
 	unsigned int entries_removed;
 	ListEntry *rover;
 	ListEntry *next;
+
+	if (list == NULL || callback == NULL) {
+		return 0;
+	}
 
 	entries_removed = 0;
 
@@ -342,6 +369,10 @@ static ListEntry *list_sort_internal(ListEntry **list,
 	ListEntry *rover;
 	ListEntry *less_list, *more_list;
 	ListEntry *less_list_end, *more_list_end;
+
+	if (list == NULL || compare_func == NULL) {
+		return NULL;
+	}
 
 	/* If there are less than two entries in this list, it is
 	 * already sorted */
