@@ -23,7 +23,8 @@ TESTS =                          \
         test-hash-table          \
         test-rb-tree             \
         test-set                 \
-        test-trie
+        test-trie		 \
+	test-sortedarray
 
 check_PROGRAMS = $(TESTS)
 check_LIBRARIES = libtestframework.a

@@ -8,13 +8,13 @@ CALG_HEADERFILES=\
 arraylist.h  compare-int.h      hash-int.h      hash-table.h  set.h         \
 avl-tree.h   compare-pointer.h  hash-pointer.h  list.h        slist.h       \
 queue.h      compare-string.h   hash-string.h   trie.h        binary-heap.h \
-bloom-filter.h binomial-heap.h  rb-tree.h
+bloom-filter.h binomial-heap.h  rb-tree.h	sortedarray.h
 
 SRC=\
 arraylist.c    compare-pointer.c  hash-pointer.c  list.c   slist.c       \
 avl-tree.c     compare-string.c   hash-string.c   queue.c  trie.c        \
 compare-int.c  hash-int.c         hash-table.c    set.c    binary-heap.c \
-bloom-filter.c binomial-heap.c    rb-tree.c
+bloom-filter.c binomial-heap.c    rb-tree.c	  sortedarray.c
 
 libcalgtest_a_CFLAGS=$(TEST_CFLAGS) -DALLOC_TESTING -I../test -g
 libcalgtest_a_SOURCES=$(SRC) $(MAIN_HEADERFILES)
