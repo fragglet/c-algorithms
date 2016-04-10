@@ -23,7 +23,11 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * @brief Automatically sorted and resizing array
  *
- * SortedArrays are encapsulated ArrayLists which are sorted.
+ * An SortedArray is an automatically resizing sorted array. Most operations
+ * run O(n) worst case running time. Some operations run in O(log n).
+ *
+ * To retrieve a value use the sortedarray structure by accessing the data
+ * field.
  *
  * To create a SortedArray, use @ref sortedarray_new
  * To destroy a SortedArray, use @ref sortedarray_free
