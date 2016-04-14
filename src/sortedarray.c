@@ -218,6 +218,10 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 
 int sortedarray_index_of(SortedArray *sortedarray, SortedArrayValue data)
 {
+	if (sortedarray == NULL) {
+		return -1;
+	}
+	
 	/* do a binary search */
 	unsigned int left = 0;
 	unsigned int right = sortedarray->length;
