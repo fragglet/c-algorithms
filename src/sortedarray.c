@@ -40,7 +40,7 @@ static unsigned int sortedarray_first_index(SortedArray *sortedarray,
                                    SortedArrayValue data, unsigned int left,
                                    unsigned int right)
 {
-	unsigned int index = 0;
+	unsigned int index = left;
 
 	while (left < right) {
 		index = (left + right) / 2;
@@ -64,7 +64,7 @@ static unsigned int sortedarray_last_index(SortedArray *sortedarray,
                                   SortedArrayValue data, unsigned int left, 
                                   unsigned int right)
 {
-	unsigned int index = 0;
+	unsigned int index = right;
 
 	while (left < right) {
 		index = (left + right) / 2;
@@ -79,10 +79,10 @@ static unsigned int sortedarray_last_index(SortedArray *sortedarray,
 		}
 	}
 
-	return (index > 0) ? index - 1 : 0;
+	return index;
 }
 
-	SortedArray *sortedarray_new(unsigned int length,
+SortedArray *sortedarray_new(unsigned int length,
                              SortedArrayEqualFunc equ_func,
                              SortedArrayCompareFunc cmp_func)
 {
