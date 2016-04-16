@@ -121,6 +121,19 @@ struct _SortedArray {
 };
 
 /**
+ * @brief Macro to retrieve an element of type T at index I from sortedarray A.
+ *
+ * @param A				Type: SortedArray*. The sortedarray to retrieve the 
+ *                      element from.
+ * @param T				The type of the element to retrieve.
+ * @param I				Type: unsigned int. The index to retrieve from.
+ * @return				The element of type T at index I of array A. If A is NULL
+ *                      then NULL is returned.
+ */
+#define SORTEDARRAY_GET(A, T, I) (((SortedArray*) A) != NULL ? \
+                       ((T) (((SortedArray*) A)->data[(unsigned int) I])) : NULL)
+
+/**
  * Allocate a new SortedArray for use.
  *
  * @param length        Indication to the amount of memory that should be 

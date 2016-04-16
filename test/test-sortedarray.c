@@ -178,7 +178,7 @@ static int ptr_equal(SortedArrayValue v1, SortedArrayValue v2) {
 void test_sortedarray_index_of_equ_key(void)
 {
 	SortedArray *sortedarray = generate_sortedarray();
-	unsigned int i;
+	int i;
 
 	/* replace equal function by function which checks pointers */
 	sortedarray->equ_func = ptr_equal;
@@ -193,6 +193,19 @@ void test_sortedarray_index_of_equ_key(void)
 	free_sorted_ints(sortedarray);
 }
 
+void test_sortedarray_get(void) {
+	unsigned int i;
+
+	SortedArray *arr = generate_sortedarray();
+
+	for (i = 0; i < arr->length; i++) {
+		assert(arr->data[i] == SORTEDARRAY_GET(arr, SortedArrayValue, i));
+		assert(*((int*) arr->data[i]) == *SORTEDARRAY_GET(arr, int*, i));
+	}
+
+	free_sorted_ints(arr);
+}
+
 static UnitTestFunction tests[] = {
 	test_sortedarray_new_free,
 	test_sortedarray_insert,
@@ -200,6 +213,7 @@ static UnitTestFunction tests[] = {
 	test_sortedarray_remove_range,
 	test_sortedarray_index_of,
 	test_sortedarray_index_of_equ_key,
+	test_sortedarray_get,
 	NULL   
 };
 
