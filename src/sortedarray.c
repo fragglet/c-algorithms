@@ -34,6 +34,38 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "alloc-testing.h"
 #endif
 
+/**
+ * Definition of a @ref SortedArray
+ */
+struct _SortedArray {
+	/**
+	 * This field contains the actual array. The array always has a length
+	 * of value of field length.
+	 */
+	SortedArrayValue *data;
+
+	/**
+	 * The length of the sorted array.
+	 */
+	unsigned int length;
+
+	/**
+	 * Field for internal usage only indicating how much memory already has
+	 * been allocated for *data.
+	 */
+	unsigned int _alloced;
+
+	/**
+	 * The callback used to determine if two values equal.
+	 */
+	SortedArrayEqualFunc equ_func;
+
+	/**
+	 * The callback use to determine the order of two values.
+	 */
+	SortedArrayCompareFunc cmp_func;
+};
+
 /* Function for finding first index of range which equals data. An equal value
    must be present. */
 static unsigned int sortedarray_first_index(SortedArray *sortedarray,
@@ -80,6 +112,22 @@ static unsigned int sortedarray_last_index(SortedArray *sortedarray,
 	}
 
 	return index;
+}
+
+SortedArrayValue *sortedarray_get(SortedArray *array, unsigned int i)
+{
+	//check if array is NULL
+	if (array == NULL) {
+		return NULL;
+	}
+
+	//otherwise just return the element
+	return array->data[i];	
+}
+
+unsigned int sortedarray_length(SortedArray *array)
+{
+	return array->length;
 }
 
 SortedArray *sortedarray_new(unsigned int length,

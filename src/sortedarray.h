@@ -89,49 +89,21 @@ typedef int (*SortedArrayCompareFunc)(SortedArrayValue value1,
                                       SortedArrayValue value2);
 
 /**
- * Definition of a @ref SortedArray
+ * @brief Function to retrieve element at index i from array
+ *
+ * @param array			The pointer to the sortedarray to retrieve the element from.
+ * @param i				The index of the element to retrieve.
+ * @return				The i-th element of the array, or NULL if array was NULL.
  */
-struct _SortedArray {
-	/**
-	 * This field contains the actual array. The array always has a length
-	 * of value of field length.
-	 */
-	SortedArrayValue *data;
-
-	/**
-	 * The length of the sorted array.
-	 */
-	unsigned int length;
-
-	/**
-	 * Field for internal usage only indicating how much memory already has
-	 * been allocated for *data.
-	 */
-	unsigned int _alloced;
-
-	/**
-	 * The callback used to determine if two values equal.
-	 */
-	SortedArrayEqualFunc equ_func;
-
-	/**
-	 * The callback use to determine the order of two values.
-	 */
-	SortedArrayCompareFunc cmp_func;
-};
+SortedArrayValue *sortedarray_get(SortedArray *array, unsigned int i);
 
 /**
- * @brief Macro to retrieve an element of type T at index I from sortedarray A.
+ * @brief Function to retrieve the length of the SortedArray array.
  *
- * @param A				Type: SortedArray*. The sortedarray to retrieve the 
- *                      element from.
- * @param T				The type of the element to retrieve.
- * @param I				Type: unsigned int. The index to retrieve from.
- * @return				The element of type T at index I of array A. If A is NULL
- *                      then NULL is returned.
+ * @param array			The array to retrieve the length from.
+ * @return				The lenght of the SortedArray.
  */
-#define SORTEDARRAY_GET(A, T, I) (((SortedArray*) A) != NULL ? \
-                       ((T) (((SortedArray*) A)->data[(unsigned int) I])) : NULL)
+unsigned int sortedarray_length(SortedArray *array);
 
 /**
  * Allocate a new SortedArray for use.
