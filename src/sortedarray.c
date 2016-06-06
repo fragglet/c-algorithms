@@ -81,8 +81,7 @@ static unsigned int sortedarray_first_index(SortedArray *sortedarray,
 		                                  sortedarray->data[index]);
 		if (order > 0) {
 			left = index + 1;
-		}
-		else {
+		} else {
 			right = index;
 		}
 	}
@@ -105,8 +104,7 @@ static unsigned int sortedarray_last_index(SortedArray *sortedarray,
 		                                  sortedarray->data[index]);
 		if (order <= 0) {
 			left = index + 1;
-		}
-		else {
+		} else {
 			right = index;
 		}
 	}
@@ -218,19 +216,18 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 		if (order < 0) {
 			/* value should be left of index */
 			right = index;
-		}
-		else if (order > 0) {
+		} else if (order > 0) {
 			/* value should be right of index */
 			left = index + 1;
-		}
-		else {
+		} else {
 			/* value should be at index */
 			left = right = index;
 			break;
 		}
 	}
 
-	if (sortedarray->length > 0 && sortedarray->cmp_func(data, sortedarray->data[index]) > 0) {
+	if (sortedarray->length > 0 && sortedarray->cmp_func(data, 
+	                       sortedarray->data[index]) > 0) {
 		index++;
 	}
 
@@ -245,8 +242,7 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 
 		if (data == NULL) {
 			return 0;
-		}
-		else {
+		} else {
 			sortedarray->data = data;
 			sortedarray->_alloced = newsize;
 		}
@@ -286,12 +282,10 @@ int sortedarray_index_of(SortedArray *sortedarray, SortedArrayValue data)
 		if (order < 0) {
 			/* value should be left */
 			right = index;
-		}
-		else if (order > 0) {
+		} else if (order > 0) {
 			/* value should be right */
 			left = index + 1;
-		}
-		else {
+		} else {
 			/* no binary search can be done anymore, 
 			   search linear now */
 			left = sortedarray_first_index(sortedarray, data, left,
