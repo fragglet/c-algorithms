@@ -206,6 +206,7 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 	unsigned int right = sortedarray->length;
 	unsigned int index = 0;
 
+	/* When length is 1 set right to 0 so that the loop is not entered */	
 	right = (right > 1) ? right : 0;
 
 	while (left != right) {
@@ -221,17 +222,17 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 			left = index + 1;
 		} else {
 			/* value should be at index */
-			left = right = index;
 			break;
 		}
 	}
 
+	/* look whether the item should be put before or after the index */
 	if (sortedarray->length > 0 && sortedarray->cmp_func(data, 
 	                       sortedarray->data[index]) > 0) {
 		index++;
 	}
 
-	/* insert element at r */
+	/* insert element at index */
 	if (sortedarray->length + 1 > sortedarray->_alloced) {
 		/* enlarge the array */
 		unsigned int newsize;
