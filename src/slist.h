@@ -176,12 +176,13 @@ SListEntry *slist_next(SListEntry *listentry);
 SListValue slist_data(SListEntry *listentry);
 
 /**
- * Set the value at a list entry. If listentry is NULL nothing is done.
+ * Set the value at a list entry. The value provided will be written to the 
+ * given listentry. If listentry is NULL nothing is done.
  *
  * @param listentry 	Pointer to the list entry.
  * @param value			The value to set.
  */
-void slist_set(SListEntry *listentry, SListValue value);
+void slist_set_data(SListEntry *listentry, SListValue value);
 
 /**
  * Retrieve the entry at a specified index in a list.

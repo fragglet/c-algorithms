@@ -120,7 +120,7 @@ SListValue slist_data(SListEntry *listentry)
 	return listentry->data;
 }
 
-void slist_set(SListEntry *listentry, SListValue data)
+void slist_set_data(SListEntry *listentry, SListValue data)
 {
 	if (listentry != NULL) {
 		listentry->data = data;
