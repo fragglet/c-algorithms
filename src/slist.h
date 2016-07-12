@@ -59,6 +59,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * @li To find the next entry, use @ref slist_next.
  * @li To access the value stored at the entry, use @ref slist_data.
+ * @li To set the value stored at the entry, use @ref slist_set.
  * @li To remove the entry, use @ref slist_remove_entry.
  *
  */
@@ -173,6 +174,14 @@ SListEntry *slist_next(SListEntry *listentry);
  */
 
 SListValue slist_data(SListEntry *listentry);
+
+/**
+ * Set the value at a list entry. If listentry is NULL nothing is done.
+ *
+ * @param listentry 	Pointer to the list entry.
+ * @param value			The value to set.
+ */
+void slist_set(SListEntry *listentry, SListValue value);
 
 /**
  * Retrieve the entry at a specified index in a list.
