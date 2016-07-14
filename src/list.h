@@ -46,7 +46,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * To access an entry in the list by index, use @ref list_nth_entry or
  * @ref list_nth_data.
  *
- * To modify data in the list use @ref list_set.
+ * To modify data in the list use @ref list_set_data.
  *
  * To sort a list, use @ref list_sort.
  *

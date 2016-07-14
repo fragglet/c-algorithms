@@ -59,7 +59,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * @li To find the next entry, use @ref slist_next.
  * @li To access the value stored at the entry, use @ref slist_data.
- * @li To set the value stored at the entry, use @ref slist_set.
+ * @li To set the value stored at the entry, use @ref slist_set_data.
  * @li To remove the entry, use @ref slist_remove_entry.
  *
  */
