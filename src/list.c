@@ -142,6 +142,13 @@ ListValue list_data(ListEntry *listentry)
 	return listentry->data;
 }
 
+void list_set_data(ListEntry *listentry, ListValue value)
+{
+	if (listentry != NULL) {
+		listentry->data = value;
+	}
+}
+
 ListEntry *list_prev(ListEntry *listentry)
 {
 	if (listentry == NULL) {

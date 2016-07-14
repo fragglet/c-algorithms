@@ -120,6 +120,13 @@ SListValue slist_data(SListEntry *listentry)
 	return listentry->data;
 }
 
+void slist_set_data(SListEntry *listentry, SListValue data)
+{
+	if (listentry != NULL) {
+		listentry->data = data;
+	}
+}
+
 SListEntry *slist_next(SListEntry *listentry)
 {
 	return listentry->next;
