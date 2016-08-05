@@ -150,6 +150,12 @@ Tree* tree_alloc(TreeNodeValue data)
 void tree_free(Tree* t)
 {
 	if (t != NULL) {
+		unsigned int i;
+		
+		for (i = 0; i < t->outDegree; i++) {
+			tree_free(t->children[i]);
+		}
+
 		free(t->children);
 		free(t);
 	}
