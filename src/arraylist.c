@@ -38,7 +38,7 @@ ArrayList *arraylist_new(unsigned int length)
 	/* If the length is not specified, use a sensible default */
 
 	if (length <= 0) {
-		length = 16;
+		length = 8;
 	}
 
 	/* Allocate the new ArrayList and fill in the fields.  There are
