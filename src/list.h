@@ -120,12 +120,21 @@ typedef int (*ListCompareFunc)(ListValue value1, ListValue value2);
 typedef int (*ListEqualFunc)(ListValue value1, ListValue value2);
 
 /**
+ * Callback function used to clean up the ListValue.
+ *
+ * @param value       The ListValue to be cleaned.
+ */
+
+typedef void (*ListFreeFunc)(ListValue value);
+
+/**
  * Free an entire list.
  *
  * @param list         The list to free.
+ * @param callback     Callback function to clean up ListValue.
  */
 
-void list_free(ListEntry *list);
+void list_free(ListEntry *list, ListFreeFunc callback);
 
 /**
  * Prepend a value to the start of a list.
@@ -234,11 +243,12 @@ ListValue *list_to_array(ListEntry *list);
  *
  * @param list       Pointer to the list.
  * @param entry      The list entry to remove .
+ * @param callback   Callback function to clean up ListValue.
  * @return           If the entry is not found in the list, returns zero,
  *                   else returns non-zero.
  */
 
-int list_remove_entry(ListEntry **list, ListEntry *entry);
+int list_remove_entry(ListEntry **list, ListEntry *entry, ListFreeFunc callback);
 
 /**
  * Remove all occurrences of a particular value from a list.
@@ -247,11 +257,12 @@ int list_remove_entry(ListEntry **list, ListEntry *entry);
  * @param callback   Function to invoke to compare values in the list
  *                   with the value to be removed.
  * @param data       The value to remove from the list.
+ * @param free_func  Callback function to clean up ListValue.
  * @return           The number of entries removed from the list.
  */
 
 unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
-                              ListValue data);
+                              ListValue data, ListFreeFunc free_func);
 
 /**
  * Sort a list.

@@ -36,7 +36,7 @@ struct _ListEntry {
 	ListEntry *next;
 };
 
-void list_free(ListEntry *list)
+void list_free(ListEntry *list, ListFreeFunc callback)
 {
 	ListEntry *entry;
 
@@ -49,6 +49,10 @@ void list_free(ListEntry *list)
 		ListEntry *next;
 
 		next = entry->next;
+
+		if (callback != NULL) {
+			callback(entry->data);
+		}
 
 		free(entry);
 
@@ -236,7 +240,7 @@ ListValue *list_to_array(ListEntry *list)
 
 	length = list_length(list);
 
-	array = malloc(sizeof(ListValue) * length);
+	array = malloc(sizeof(ListValue) * (length + 1));
 
 	if (array == NULL) {
 		return NULL;
@@ -257,10 +261,13 @@ ListValue *list_to_array(ListEntry *list)
 		rover = rover->next;
 	}
 
+	/* NULL as the last one */
+	array[i] = NULL;
+
 	return array;
 }
 
-int list_remove_entry(ListEntry **list, ListEntry *entry)
+int list_remove_entry(ListEntry **list, ListEntry *entry, ListFreeFunc callback)
 {
 	/* If the list is empty, or entry is NULL, always fail */
 
@@ -299,6 +306,10 @@ int list_remove_entry(ListEntry **list, ListEntry *entry)
 		}
 	}
 
+	if (callback != NULL) {
+		callback(entry->data);
+	}
+
 	/* Free the list entry */
 
 	free(entry);
@@ -309,7 +320,7 @@ int list_remove_entry(ListEntry **list, ListEntry *entry)
 }
 
 unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
-                              ListValue data)
+                              ListValue data, ListFreeFunc free_func)
 {
 	unsigned int entries_removed;
 	ListEntry *rover;
@@ -349,6 +360,10 @@ unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
 
 			if (rover->next != NULL) {
 				rover->next->prev = rover->prev;
+			}
+
+			if (free_func != NULL) {
+				free_func(rover->data);
 			}
 
 			/* Free the entry */
