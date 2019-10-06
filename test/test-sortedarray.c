@@ -38,7 +38,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 void check_sorted_prop(SortedArray *sortedarray)
 {
-	unsigned int i;
+	register unsigned int i;
 	for (i = 1; i < sortedarray_length(sortedarray); i++) {
 		assert(int_compare(
 		                   sortedarray_get(sortedarray, i-1),
@@ -48,7 +48,7 @@ void check_sorted_prop(SortedArray *sortedarray)
 
 void free_sorted_ints(SortedArray *sortedarray)
 {
-	unsigned int i;
+	register unsigned int i;
 	for (i = 0; i < sortedarray_length(sortedarray); i++) {
 		int *pi = (int*) sortedarray_get(sortedarray, i);
 		free(pi);
@@ -62,7 +62,7 @@ SortedArray *generate_sortedarray_equ(SortedArrayEqualFunc equ_func)
 	/* generate a sorted array of length TEST_SIZE, filled with random 
 	   numbers. */
 	SortedArray *sortedarray;
-	unsigned int i;
+	register unsigned int i;
 
 	int array[TEST_SIZE] = TEST_ARRAY;
 
@@ -105,7 +105,7 @@ void test_sortedarray_new_free(void)
 void test_sortedarray_insert(void)
 {
 	SortedArray *sortedarray = generate_sortedarray();
-	unsigned int i;
+	register unsigned int i;
 
 	/* insert a few random numbers, then check if everything is sorted */
 	for (i = 0; i < 20; i++) {
@@ -140,7 +140,7 @@ void test_sortedarray_remove_range(void)
 
 	/* get values in test range */
 	int new[TEST_REMOVE_RANGE_LENGTH];
-	unsigned int i;
+	register unsigned int i;
 	for (i = 0; i < TEST_REMOVE_RANGE_LENGTH; i++) {
 		new[i] = *((int*) sortedarray_get(sortedarray, TEST_REMOVE_RANGE + 
 		                                    TEST_REMOVE_RANGE_LENGTH + i));
@@ -168,7 +168,7 @@ void test_sortedarray_remove_range(void)
 void test_sortedarray_index_of(void) {
 	SortedArray *sortedarray = generate_sortedarray();
 
-	unsigned int i;
+	register unsigned int i;
 	for (i = 0; i < TEST_SIZE; i++) {
 		int r = sortedarray_index_of(sortedarray, 
 		                sortedarray_get(sortedarray, i));
@@ -188,7 +188,7 @@ void test_sortedarray_index_of_equ_key(void)
 {
 	/* replace equal function by function which checks pointers */
 	SortedArray *sortedarray = generate_sortedarray_equ(ptr_equal);
-	unsigned int i;
+	register unsigned int i;
 
 	/* check if all search value return the same index */
 	for (i = 0; i < TEST_SIZE; i++) {
@@ -202,7 +202,7 @@ void test_sortedarray_index_of_equ_key(void)
 }
 
 void test_sortedarray_get(void) {
-	unsigned int i;
+	register unsigned int i;
 
 	SortedArray *arr = generate_sortedarray();
 
