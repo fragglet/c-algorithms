@@ -24,7 +24,8 @@ TESTS =                          \
         test-rb-tree             \
         test-set                 \
         test-trie		 \
-	test-sortedarray
+	test-sortedarray	 \
+	test-tree
 
 check_PROGRAMS = $(TESTS)
 check_LIBRARIES = libtestframework.a
