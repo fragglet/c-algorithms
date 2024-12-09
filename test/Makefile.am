@@ -35,7 +35,7 @@ framework.c          framework.h
 
 test_cpp_SOURCES = test-cpp.cpp
 
-EXTRA_DIST=valgrind-wrapper
+EXTRA_DIST=valgrind-wrapper gencov
 
 if BUILD_COVERAGE
 
