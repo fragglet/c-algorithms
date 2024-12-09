@@ -1,4 +1,4 @@
-AC_INIT(C Algorithms, 1.2.0, fraggle@removethisbit.gmail.com, c-algorithms)
+AC_INIT([C Algorithms],[1.2.0],[fraggle@removethisbit.gmail.com],[c-algorithms])
 AC_CONFIG_AUX_DIR(autotools)
 AC_CONFIG_SRCDIR([src/arraylist.c])
 AC_CONFIG_MACRO_DIR([m4])
@@ -9,7 +9,7 @@ AM_INIT_AUTOMAKE
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CXX
-AC_PROG_LIBTOOL
+LT_INIT
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
@@ -67,17 +67,18 @@ AM_CONDITIONAL(USE_VALGRIND, $use_valgrind)
 MAIN_CFLAGS="$CFLAGS"
 CFLAGS=""
 
-AM_CONFIG_HEADER(config.h:config.h.in)
+AC_CONFIG_HEADERS(config.h:config.h.in)
 
 AC_SUBST(MAIN_CFLAGS)
 AC_SUBST(TEST_CFLAGS)
 AC_SUBST(ac_aux_dir)
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
     Makefile
     libcalg-1.0.pc
     doc/Makefile
     src/Makefile
     test/Makefile
 ])
+AC_OUTPUT
 
