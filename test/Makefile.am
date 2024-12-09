@@ -4,7 +4,7 @@ AM_CXXFLAGS = $(AM_CFLAGS)
 LDADD = $(top_builddir)/src/libcalgtest.a libtestframework.a
 
 if USE_VALGRIND
-TESTS_ENVIRONMENT=./valgrind-wrapper
+LOG_COMPILER=./valgrind-wrapper
 endif
 
 TESTS =                          \
