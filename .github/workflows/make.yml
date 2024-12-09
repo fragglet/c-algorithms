@@ -7,6 +7,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt -q install doxygen
     - uses: actions/checkout@v4
     - name: configure
       run: |
