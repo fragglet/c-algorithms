@@ -71,6 +71,7 @@ static void avl_tree_free_subtree(AVLTree *tree, AVLTreeNode *node)
 	avl_tree_free_subtree(tree, node->children[AVL_TREE_NODE_RIGHT]);
 
 	free(node);
+	free(tree);
 }
 
 void avl_tree_free(AVLTree *tree)
