@@ -26,6 +26,10 @@ jobs:
       with:
         path: "artifacts"
         name: coverage_reports
+    - name: make dist
+      run: |
+        make distcheck
+        make dist
 
   valgrind_build:
     runs-on: ubuntu-latest
