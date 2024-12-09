@@ -37,3 +37,21 @@ test_cpp_SOURCES = test-cpp.cpp
 
 EXTRA_DIST=valgrind-wrapper
 
+if BUILD_COVERAGE
+
+# Delete .gcda files before running tests.
+check-am: check-prerun
+
+check-prerun:
+	@rm -f $(top_builddir)/lib/*.gcda   \
+               $(top_builddir)/src/*.gcda   \
+               $(top_builddir)/test/*.gcda
+
+# Display coverage summary after running tests.
+check: report-coverage
+
+report-coverage: check-am
+	@cd $(top_builddir); ./test/gencov src/*.c
+
+endif
+

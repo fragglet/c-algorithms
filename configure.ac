@@ -31,12 +31,14 @@ fi
 
 # Support for coverage analysis via gcov:
 
-coverage=no
+build_coverage=false
 AC_ARG_ENABLE(coverage, 
 [  --enable-coverage       Enable coverage testing. ],
-[ coverage=yes ])
+[ build_coverage=true ])
 
-if [[ "$coverage" = "yes" ]]; then
+AM_CONDITIONAL(BUILD_COVERAGE, $build_coverage)
+
+if [[ "$build_coverage" = "true" ]]; then
         if $is_gcc; then
                 TEST_CFLAGS="$TEST_CFLAGS -fprofile-arcs -ftest-coverage"
         else
