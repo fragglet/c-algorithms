@@ -2,7 +2,7 @@
 EXTRA_DIST = html Doxyfile intro.h
 
 html:
-	doxygen $(top_srcdir)/doc/Doxyfile
+	DOXYGEN_DOC_DIR=$(srcdir)/ doxygen $(srcdir)/Doxyfile
 
 clean-local:
-	rm -rf $(top_builddir)/doc/html
+	rm -rf html
