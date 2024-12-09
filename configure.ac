@@ -2,6 +2,7 @@ AC_INIT(C Algorithms, 1.2.0, fraggle@removethisbit.gmail.com, c-algorithms)
 AC_CONFIG_AUX_DIR(autotools)
 AC_CONFIG_SRCDIR([src/arraylist.c])
 AC_CONFIG_MACRO_DIR([m4])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 AM_INIT_AUTOMAKE
 
