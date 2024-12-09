@@ -1,5 +1,5 @@
 
-AM_CFLAGS = $(TEST_CFLAGS) -I../src -g
+AM_CFLAGS = $(TEST_CFLAGS) -I$(top_srcdir)/src -g
 AM_CXXFLAGS = $(AM_CFLAGS)
 LDADD = $(top_builddir)/src/libcalgtest.a libtestframework.a
 

@@ -2,5 +2,5 @@
 EXTRA_DIST = html Doxyfile intro.h
 
 html:
-	doxygen
+	doxygen $(top_srcdir)/doc/Doxyfile
 
