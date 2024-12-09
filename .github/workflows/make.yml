@@ -20,7 +20,7 @@ jobs:
     - name: Generate coverage reports
       run: |
         mkdir artifacts
-        tar cf - lib/*.gcov src/*.gcov | tar -C artifacts -xf -
+        tar cf - src/*.gcov | tar -C artifacts -xf -
     - name: Upload coverage-annotated source files
       uses: actions/upload-artifact@v4
       with:
