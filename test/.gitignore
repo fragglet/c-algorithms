@@ -14,3 +14,5 @@ test-rb-tree
 test-set
 test-slist
 test-trie
+*.log
+*.trs
