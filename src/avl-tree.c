@@ -18,6 +18,8 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+/* AVL Tree (balanced binary search tree) */
+
 #include <stdlib.h>
 
 #include "avl-tree.h"
@@ -26,8 +28,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
-
-/* AVL Tree (balanced binary search tree) */
 
 struct _AVLTreeNode {
 	AVLTreeNode *children[2];

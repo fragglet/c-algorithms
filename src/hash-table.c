@@ -18,7 +18,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
-/* Hash table implementation */
+/* Hash table */
 
 #include <stdlib.h>
 #include <string.h>

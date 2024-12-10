@@ -19,6 +19,8 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+/* Red-black tree (balanced binary search tree) */
+
 #include <stdlib.h>
 
 #include "rb-tree.h"

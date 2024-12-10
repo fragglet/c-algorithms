@@ -18,6 +18,8 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+/* Double-ended queue */
+
 #include <stdlib.h>
 
 #include "queue.h"
@@ -26,8 +28,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
-
-/* A double-ended queue */
 
 typedef struct _QueueEntry QueueEntry;
 

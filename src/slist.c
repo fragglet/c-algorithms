@@ -18,6 +18,8 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+/* Singly-linked list */
+
 #include <stdlib.h>
 
 #include "slist.h"
@@ -26,8 +28,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
-
-/* A singly-linked list */
 
 struct _SListEntry {
 	SListValue data;

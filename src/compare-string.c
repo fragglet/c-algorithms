@@ -18,13 +18,13 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+/* Comparison functions for strings */
+
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "compare-string.h"
-
-/* Comparison functions for strings */
 
 int string_equal(void *string1, void *string2)
 {

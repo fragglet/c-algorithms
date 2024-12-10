@@ -18,6 +18,8 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+/* Doubly-linked list */
+
 #include <stdlib.h>
 
 #include "list.h"
@@ -26,8 +28,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
-
-/* A doubly-linked list */
 
 struct _ListEntry {
 	ListValue data;

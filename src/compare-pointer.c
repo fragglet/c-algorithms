@@ -18,9 +18,9 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
-#include "compare-pointer.h"
-
 /* Comparison functions for a generic void pointer */
+
+#include "compare-pointer.h"
 
 int pointer_equal(void *location1, void *location2)
 {

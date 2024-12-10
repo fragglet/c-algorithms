@@ -18,11 +18,11 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+/* String hash functions */
+
 #include <ctype.h>
 
 #include "hash-string.h"
-
-/* String hash function */
 
 unsigned int string_hash(void *string)
 {

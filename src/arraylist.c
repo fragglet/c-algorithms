@@ -18,6 +18,8 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+/* Automatically resizing array */
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -27,8 +29,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
-
-/* Automatically resizing array */
 
 ArrayList *arraylist_new(unsigned int length)
 {

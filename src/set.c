@@ -18,6 +18,8 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+/* Set (container that disallows duplicates) */
+
 #include <stdlib.h>
 #include <string.h>
 #include "set.h"
@@ -26,8 +28,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
-
-/* A set */
 
 struct _SetEntry {
 	SetValue data;

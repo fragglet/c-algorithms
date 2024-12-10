@@ -18,9 +18,9 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
-#include "hash-int.h"
-
 /* Hash function for a pointer to an integer */
+
+#include "hash-int.h"
 
 unsigned int int_hash(void *vlocation)
 {

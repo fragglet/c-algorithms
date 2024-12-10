@@ -18,11 +18,11 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+/* Hash function for a generic pointer */
+
 #include <limits.h>
 
 #include "hash-pointer.h"
-
-/* Hash function for a generic pointer */
 
 unsigned int pointer_hash(void *location)
 {
