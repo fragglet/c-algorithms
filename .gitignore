@@ -1,5 +1,4 @@
 .deps
-.gitignore
 .libs
 INSTALL
 Makefile
