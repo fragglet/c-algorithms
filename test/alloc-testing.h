@@ -35,7 +35,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 /* Don't redefine the functions in the alloc-testing.c, as we need the
  * standard malloc/free functions. */
-
 #ifndef ALLOC_TESTING_C
 #undef malloc
 #define malloc   alloc_test_malloc
@@ -56,7 +55,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * @return               Pointer to the new block, or NULL if it was not
  *                       possible to allocate the new block.
  */
-
 void *alloc_test_malloc(size_t bytes);
 
 /**
@@ -64,7 +62,6 @@ void *alloc_test_malloc(size_t bytes);
  *
  * @param ptr            Pointer to the block to free.
  */
-
 void alloc_test_free(void *ptr);
 
 /**
@@ -76,7 +73,6 @@ void alloc_test_free(void *ptr);
  * @return               Pointer to the new block, or NULL if it was not
  *                       possible to allocate the new block.
  */
-
 void *alloc_test_realloc(void *ptr, size_t bytes);
 
 /**
@@ -89,7 +85,6 @@ void *alloc_test_realloc(void *ptr, size_t bytes);
  *                       or NULL if it was not possible to allocate the
  *                       new block.
  */
-
 void *alloc_test_calloc(size_t nmemb, size_t bytes);
 
 /**
@@ -100,7 +95,6 @@ void *alloc_test_calloc(size_t nmemb, size_t bytes);
  *                       copied string, or NULL if it was not possible
  *                       to allocate the new block.
  */
-
 char *alloc_test_strdup(const char *string);
 
 /**
@@ -114,7 +108,6 @@ char *alloc_test_strdup(const char *string);
  *                       after this will fail.  If this has a negative
  *                       value, the allocation limit is disabled.
  */
-
 void alloc_test_set_limit(signed int alloc_count);
 
 /**
@@ -123,8 +116,6 @@ void alloc_test_set_limit(signed int alloc_count);
  * @return               The number of bytes currently allocated by
  *                       the allocation system.
  */
-
 size_t alloc_test_get_allocated(void);
 
 #endif /* #ifndef ALLOC_TESTING_H */
-

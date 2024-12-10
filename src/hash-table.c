@@ -26,7 +26,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "hash-table.h"
 
 /* malloc() / free() testing */
-
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
@@ -51,7 +50,6 @@ struct _HashTable {
  *   http://planetmath.org/encyclopedia/GoodHashTablePrimes.html
  * Each prime is roughly double the previous value, and as far as
  * possible from the nearest powers of two. */
-
 static const unsigned int hash_table_primes[] = {
 	193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157, 98317,
 	196613, 393241, 786433, 1572869, 3145739, 6291469,
@@ -64,7 +62,6 @@ static const unsigned int hash_table_num_primes
 
 /* Internal function used to allocate the table on hash table creation
  * and when enlarging the table */
-
 static int hash_table_allocate_table(HashTable *hash_table)
 {
 	unsigned int new_table_size;
@@ -89,7 +86,6 @@ static int hash_table_allocate_table(HashTable *hash_table)
 }
 
 /* Free an entry, calling the free functions if there are any registered */
-
 static void hash_table_free_entry(HashTable *hash_table, HashTableEntry *entry)
 {
 	HashTablePair *pair;

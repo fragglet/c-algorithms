@@ -368,7 +368,6 @@ void test_set_iterating(void)
 /* Test the ability to remove the current value while iterating over
  * a set.  ie. the act of removing the current value should not affect
  * the iterator. */
-
 void test_set_iterating_remove(void)
 {
 	Set *set;
@@ -461,7 +460,6 @@ void test_set_free_function(void)
 }
 
 /* Test for out of memory scenario */
-
 void test_set_out_of_memory(void)
 {
 	Set *set;

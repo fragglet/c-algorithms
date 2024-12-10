@@ -47,13 +47,11 @@ extern "C" {
 /**
  * A bloom filter structure.
  */
-
 typedef struct _BloomFilter BloomFilter;
 
 /**
  * A value stored in a @ref BloomFilter.
  */
-
 typedef void *BloomFilterValue;
 
 /**
@@ -63,7 +61,6 @@ typedef void *BloomFilterValue;
  * @param data   The value to generate a hash value for.
  * @return       The hash value.
  */
-
 typedef unsigned int (*BloomFilterHashFunc)(BloomFilterValue data);
 
 /**
@@ -85,7 +82,6 @@ typedef unsigned int (*BloomFilterHashFunc)(BloomFilterValue data);
  *                         was not possible to allocate the new bloom
  *                         filter.
  */
-
 BloomFilter *bloom_filter_new(unsigned int table_size,
                               BloomFilterHashFunc hash_func,
                               unsigned int num_functions);
@@ -95,7 +91,6 @@ BloomFilter *bloom_filter_new(unsigned int table_size,
  *
  * @param bloomfilter      The bloom filter to destroy.
  */
-
 void bloom_filter_free(BloomFilter *bloomfilter);
 
 /**
@@ -104,7 +99,6 @@ void bloom_filter_free(BloomFilter *bloomfilter);
  * @param bloomfilter          The bloom filter.
  * @param value                The value to insert.
  */
-
 void bloom_filter_insert(BloomFilter *bloomfilter, BloomFilterValue value);
 
 /**
@@ -117,7 +111,6 @@ void bloom_filter_insert(BloomFilter *bloomfilter, BloomFilterValue value);
  *                             indicates that it either may or may not
  *                             have been inserted.
  */
-
 int bloom_filter_query(BloomFilter *bloomfilter, BloomFilterValue value);
 
 /**
@@ -128,7 +121,6 @@ int bloom_filter_query(BloomFilter *bloomfilter, BloomFilterValue value);
  *                             should be (table_size + 7) / 8 bytes in
  *                             length.
  */
-
 void bloom_filter_read(BloomFilter *bloomfilter, unsigned char *array);
 
 /**
@@ -142,7 +134,6 @@ void bloom_filter_read(BloomFilter *bloomfilter, unsigned char *array);
  *                             should be (table_size + 7) / 8 bytes in
  *                             length.
  */
-
 void bloom_filter_load(BloomFilter *bloomfilter, unsigned char *array);
 
 /**
@@ -161,7 +152,6 @@ void bloom_filter_load(BloomFilter *bloomfilter, unsigned char *array);
  *                             if the two filters specified were created
  *                             with different parameters.
  */
-
 BloomFilter *bloom_filter_union(BloomFilter *filter1,
                                 BloomFilter *filter2);
 
@@ -181,7 +171,6 @@ BloomFilter *bloom_filter_union(BloomFilter *filter1,
  *                             if the two filters specified were created
  *                             with different parameters.
  */
-
 BloomFilter *bloom_filter_intersection(BloomFilter *filter1,
                                        BloomFilter *filter2);
 
@@ -190,4 +179,3 @@ BloomFilter *bloom_filter_intersection(BloomFilter *filter1,
 #endif
 
 #endif /* #ifndef ALGORITHM_BLOOM_FILTER_H */
-

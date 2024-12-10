@@ -34,7 +34,6 @@ extern "C" {
 /**
  * A unit test.
  */
-
 typedef void (*UnitTestFunction)(void);
 
 /**
@@ -44,7 +43,6 @@ typedef void (*UnitTestFunction)(void);
  *
  * @param tests          List of tests to invoke.
  */
-
 void run_tests(UnitTestFunction *tests);
 
 #ifdef __cplusplus
@@ -52,4 +50,3 @@ void run_tests(UnitTestFunction *tests);
 #endif
 
 #endif /* #ifndef TEST_FRAMEWORK_H */
-

@@ -63,25 +63,21 @@ extern "C" {
  *
  * @see rb_tree_new
  */
-
 typedef struct _RBTree RBTree;
 
 /**
  * A key for an @ref RBTree.
  */
-
 typedef void *RBTreeKey;
 
 /**
  * A value stored in an @ref RBTree.
  */
-
 typedef void *RBTreeValue;
 
 /**
  * A null @ref RBTreeValue.
  */
-
 #define RB_TREE_NULL ((void *) 0)
 
 /**
@@ -92,7 +88,6 @@ typedef void *RBTreeValue;
  * @see rb_tree_node_key
  * @see rb_tree_node_value
  */
-
 typedef struct _RBTreeNode RBTreeNode;
 
 /**
@@ -105,13 +100,11 @@ typedef struct _RBTreeNode RBTreeNode;
  *                         be sorted before data1, zero if the two keys
  *                         are equal.
  */
-
 typedef int (*RBTreeCompareFunc)(RBTreeValue data1, RBTreeValue data2);
 
 /**
  * Each node in a red-black tree is either red or black.
  */
-
 typedef enum {
 	RB_TREE_NODE_RED,
 	RB_TREE_NODE_BLACK,
@@ -120,7 +113,6 @@ typedef enum {
 /**
  * A @ref RBTreeNode can have left and right children.
  */
-
 typedef enum {
 	RB_TREE_NODE_LEFT = 0,
 	RB_TREE_NODE_RIGHT = 1
@@ -133,7 +125,6 @@ typedef enum {
  * @return                A new red-black tree, or NULL if it was not possible
  *                        to allocate the memory.
  */
-
 RBTree *rb_tree_new(RBTreeCompareFunc compare_func);
 
 /**
@@ -141,7 +132,6 @@ RBTree *rb_tree_new(RBTreeCompareFunc compare_func);
  *
  * @param tree            The tree to destroy.
  */
-
 void rb_tree_free(RBTree *tree);
 
 /**
@@ -154,7 +144,6 @@ void rb_tree_free(RBTree *tree);
  *                        key and value, or NULL if it was not possible
  *                        to allocate the new memory.
  */
-
 RBTreeNode *rb_tree_insert(RBTree *tree, RBTreeKey key, RBTreeValue value);
 
 /**
@@ -163,7 +152,6 @@ RBTreeNode *rb_tree_insert(RBTree *tree, RBTreeKey key, RBTreeValue value);
  * @param tree            The tree.
  * @param node            The node to remove
  */
-
 void rb_tree_remove_node(RBTree *tree, RBTreeNode *node);
 
 /**
@@ -176,7 +164,6 @@ void rb_tree_remove_node(RBTree *tree, RBTreeNode *node);
  *                        found in the tree, non-zero (true) if a node with
  *                        the specified key was removed.
  */
-
 int rb_tree_remove(RBTree *tree, RBTreeKey key);
 
 /**
@@ -188,7 +175,6 @@ int rb_tree_remove(RBTree *tree, RBTreeKey key);
  * @return                The tree node containing the given key, or NULL
  *                        if no entry with the given key is found.
  */
-
 RBTreeNode *rb_tree_lookup_node(RBTree *tree, RBTreeKey key);
 
 /**
@@ -203,7 +189,6 @@ RBTreeNode *rb_tree_lookup_node(RBTree *tree, RBTreeKey key);
  *                        RB_TREE_NULL if no entry with the given key is
  *                        found.
  */
-
 RBTreeValue rb_tree_lookup(RBTree *tree, RBTreeKey key);
 
 /**
@@ -213,7 +198,6 @@ RBTreeValue rb_tree_lookup(RBTree *tree, RBTreeKey key);
  * @return                The root node of the tree, or NULL if the tree is
  *                        empty.
  */
-
 RBTreeNode *rb_tree_root_node(RBTree *tree);
 
 /**
@@ -222,7 +206,6 @@ RBTreeNode *rb_tree_root_node(RBTree *tree);
  * @param node            The tree node.
  * @return                The key to the given node.
  */
-
 RBTreeKey rb_tree_node_key(RBTreeNode *node);
 
 /**
@@ -231,7 +214,6 @@ RBTreeKey rb_tree_node_key(RBTreeNode *node);
  * @param node            The tree node.
  * @return                The value at the given node.
  */
-
 RBTreeValue rb_tree_node_value(RBTreeNode *node);
 
 /**
@@ -242,7 +224,6 @@ RBTreeValue rb_tree_node_value(RBTreeNode *node);
  * @return                The child of the tree node, or NULL if the
  *                        node has no child on the specified side.
  */
-
 RBTreeNode *rb_tree_node_child(RBTreeNode *node, RBTreeNodeSide side);
 
 /**
@@ -252,7 +233,6 @@ RBTreeNode *rb_tree_node_child(RBTreeNode *node, RBTreeNodeSide side);
  * @return                The parent node of the tree node, or NULL if
  *                        this is the root node.
  */
-
 RBTreeNode *rb_tree_node_parent(RBTreeNode *node);
 
 /**
@@ -261,7 +241,6 @@ RBTreeNode *rb_tree_node_parent(RBTreeNode *node);
  * @param node            The root node of the subtree.
  * @return                The height of the subtree.
  */
-
 int rb_tree_subtree_height(RBTreeNode *node);
 
 /**
@@ -274,7 +253,6 @@ int rb_tree_subtree_height(RBTreeNode *node);
  *                        is equal to the number of entries in the tree
  *                        (see @ref rb_tree_num_entries).
  */
-
 RBTreeValue *rb_tree_to_array(RBTree *tree);
 
 /**
@@ -283,7 +261,6 @@ RBTreeValue *rb_tree_to_array(RBTree *tree);
  * @param tree            The tree.
  * @return                The number of key-value pairs stored in the tree.
  */
-
 int rb_tree_num_entries(RBTree *tree);
 
 #ifdef __cplusplus
@@ -291,4 +268,3 @@ int rb_tree_num_entries(RBTree *tree);
 #endif
 
 #endif /* #ifndef ALGORITHM_RB_TREE_H */
-

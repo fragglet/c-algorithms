@@ -48,7 +48,6 @@ Queue *generate_queue(void)
 }
 
 /* Test cases for the queue */
-
 void test_queue_new_free(void)
 {
 	int i;

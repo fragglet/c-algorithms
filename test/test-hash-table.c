@@ -39,7 +39,6 @@ int allocated_keys = 0;
 int allocated_values = 0;
 
 /* Generates a hash table for use in tests containing 10,000 entries */
-
 HashTable *generate_hash_table(void)
 {
 	HashTable *hash_table;
@@ -69,7 +68,6 @@ HashTable *generate_hash_table(void)
 }
 
 /* Basic allocate and free */
-
 void test_hash_table_new_free(void)
 {
 	HashTable *hash_table;
@@ -100,7 +98,6 @@ void test_hash_table_new_free(void)
 }
 
 /* Test insert and lookup functions */
-
 void test_hash_table_insert_lookup(void)
 {
 	HashTable *hash_table;
@@ -205,7 +202,6 @@ void test_hash_table_iterating(void)
 /* Demonstrates the ability to iteratively remove objects from
  * a hash table: ie. removing the current key being iterated over
  * does not break the iterator. */
-
 void test_hash_table_iterating_remove(void)
 {
 	HashTable *hash_table;
@@ -262,7 +258,6 @@ void test_hash_table_iterating_remove(void)
 }
 
 /* Create a new key */
-
 int *new_key(int value)
 {
 	int *result;
@@ -276,7 +271,6 @@ int *new_key(int value)
 }
 
 /* Callback function invoked when a key is freed */
-
 void free_key(void *key)
 {
 	free(key);
@@ -285,7 +279,6 @@ void free_key(void *key)
 }
 
 /* Create a new value */
-
 int *new_value(int value)
 {
 	int *result;
@@ -299,7 +292,6 @@ int *new_value(int value)
 }
 
 /* Callback function invoked when a value is freed */
-
 void free_value(void *value)
 {
 	free(value);
@@ -308,7 +300,6 @@ void free_value(void *value)
 }
 
 /* Test the use of functions to free keys / values when they are removed. */
-
 void test_hash_table_free_functions(void)
 {
 	HashTable *hash_table;
@@ -360,7 +351,6 @@ void test_hash_table_free_functions(void)
 }
 
 /* Test for out of memory scenario */
-
 void test_hash_table_out_of_memory(void)
 {
 	HashTable *hash_table;

@@ -24,7 +24,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "bloom-filter.h"
 
 /* malloc() / free() testing */
-
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
@@ -48,7 +47,6 @@ struct _BloomFilter {
  * Groups of four numbers were then combined to give 32-bit integers, most
  * significant byte first.
  */
-
 static const unsigned int salts[] = {
 	0x1953c322, 0x588ccf17, 0x64bf600c, 0xa6be3f3d,
 	0x341a02ea, 0x15b03217, 0x3b062858, 0x5956fd06,

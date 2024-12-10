@@ -26,7 +26,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "trie.h"
 
 /* malloc() / free() testing */
-
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
@@ -159,7 +158,6 @@ static TrieNode *trie_find_end_binary(Trie *trie, unsigned char *key,
 }
 
 /* Roll back an insert operation after a failed malloc() call. */
-
 static void trie_insert_rollback(Trie *trie, unsigned char *key)
 {
 	TrieNode *node;

@@ -78,5 +78,3 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * and @link hash-pointer.h hash @endlink functions.
  *
  */
-
-

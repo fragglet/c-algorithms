@@ -29,25 +29,21 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "alloc-testing.h"
 
 /* All allocated blocks are given this magic number */
-
 #define ALLOC_TEST_MAGIC 0x72ec82d2
 
 /* This value is written to memory after it is freshly allocated, to ensure
  * that code under test does not rely on memory being initialised by
  * malloc(). */
-
 #define MALLOC_PATTERN 0xBAADF00D
 
 /* This value is written to memory after it is freed, to ensure that code
  * does not rely on memory that has been freed. */
-
 #define FREE_PATTERN 0xDEADBEEF
 
 /**
  * All blocks allocated by the testing framework are preceded by a structure
  * of this type.
  */
-
 typedef struct _BlockHeader BlockHeader;
 
 struct _BlockHeader {
@@ -56,17 +52,14 @@ struct _BlockHeader {
 };
 
 /* Count of the current number of allocated bytes. */
-
 static size_t allocated_bytes = 0;
 
 /* Limit on number of allocations that are possible.  Each time an allocation
  * is made, this is decremented.  When it reaches zero, no more allocations
  * are allowed.  If this has a negative value, the limit is disabled. */
-
 signed int allocation_limit = -1;
 
 /* Get the block header for an allocated pointer. */
-
 static BlockHeader *alloc_test_get_header(void *ptr)
 {
 	BlockHeader *result;
@@ -80,7 +73,6 @@ static BlockHeader *alloc_test_get_header(void *ptr)
 }
 
 /* Overwrite a block of memory with a repeated pattern. */
-
 static void alloc_test_overwrite(void *ptr, size_t length,
                                  unsigned int pattern)
 {
@@ -99,7 +91,6 @@ static void alloc_test_overwrite(void *ptr, size_t length,
 }
 
 /* Base malloc function used by other functions. */
-
 void *alloc_test_malloc(size_t bytes)
 {
 	BlockHeader *header;
@@ -139,7 +130,6 @@ void *alloc_test_malloc(size_t bytes)
 }
 
 /* Base free function */
-
 void alloc_test_free(void *ptr)
 {
 	BlockHeader *header;

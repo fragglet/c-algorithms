@@ -44,5 +44,3 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <libcalg/sortedarray.h>
 
 #endif /* #ifndef LIBCALG_H */
-
-

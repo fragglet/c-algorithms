@@ -24,7 +24,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "arraylist.h"
 
 /* malloc() / free() testing */
-
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif

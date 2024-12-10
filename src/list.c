@@ -23,7 +23,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "list.h"
 
 /* malloc() / free() testing */
-
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
@@ -337,7 +336,6 @@ unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
 
 /* Function used internally for sorting.  Returns the last entry in the
  * new sorted list */
-
 static ListEntry *list_sort_internal(ListEntry **list,
                                      ListCompareFunc compare_func)
 {

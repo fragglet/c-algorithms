@@ -48,19 +48,16 @@ extern "C" {
 /**
  * A double-ended queue.
  */
-
 typedef struct _Queue Queue;
 
 /**
  * A value stored in a @ref Queue.
  */
-
 typedef void *QueueValue;
 
 /**
  * A null @ref QueueValue.
  */
-
 #define QUEUE_NULL ((void *) 0)
 
 /**
@@ -69,7 +66,6 @@ typedef void *QueueValue;
  * @return           A new queue, or NULL if it was not possible to allocate
  *                   the memory.
  */
-
 Queue *queue_new(void);
 
 /**
@@ -77,7 +73,6 @@ Queue *queue_new(void);
  *
  * @param queue      The queue to destroy.
  */
-
 void queue_free(Queue *queue);
 
 /**
@@ -89,7 +84,6 @@ void queue_free(Queue *queue);
  *                   if it was not possible to allocate the memory for the
  *                   new entry.
  */
-
 int queue_push_head(Queue *queue, QueueValue data);
 
 /**
@@ -99,7 +93,6 @@ int queue_push_head(Queue *queue, QueueValue data);
  * @return           Value that was at the head of the queue, or
  *                   @ref QUEUE_NULL if the queue is empty.
  */
-
 QueueValue queue_pop_head(Queue *queue);
 
 /**
@@ -110,7 +103,6 @@ QueueValue queue_pop_head(Queue *queue);
  * @return           Value at the head of the queue, or @ref QUEUE_NULL if the
  *                   queue is empty.
  */
-
 QueueValue queue_peek_head(Queue *queue);
 
 /**
@@ -122,7 +114,6 @@ QueueValue queue_peek_head(Queue *queue);
  *                   if it was not possible to allocate the memory for the
  *                   new entry.
  */
-
 int queue_push_tail(Queue *queue, QueueValue data);
 
 /**
@@ -132,7 +123,6 @@ int queue_push_tail(Queue *queue, QueueValue data);
  * @return           Value that was at the head of the queue, or
  *                   @ref QUEUE_NULL if the queue is empty.
  */
-
 QueueValue queue_pop_tail(Queue *queue);
 
 /**
@@ -143,7 +133,6 @@ QueueValue queue_pop_tail(Queue *queue);
  * @return           Value at the tail of the queue, or QUEUE_NULL if the
  *                   queue is empty.
  */
-
 QueueValue queue_peek_tail(Queue *queue);
 
 /**
@@ -153,7 +142,6 @@ QueueValue queue_peek_tail(Queue *queue);
  * @return           Zero if the queue is not empty, non-zero if the queue
  *                   is empty.
  */
-
 int queue_is_empty(Queue *queue);
 
 #ifdef __cplusplus
@@ -161,4 +149,3 @@ int queue_is_empty(Queue *queue);
 #endif
 
 #endif /* #ifndef ALGORITHM_QUEUE_H */
-

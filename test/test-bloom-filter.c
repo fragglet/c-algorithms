@@ -192,7 +192,6 @@ void test_bloom_filter_union(void)
 }
 
 /* Test attempts to do union/intersection of mismatched filters */
-
 void test_bloom_filter_mismatch(void)
 {
 	BloomFilter *filter1;

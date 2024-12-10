@@ -43,7 +43,6 @@ extern "C" {
  * @return                Non-zero if the pointers are equal, zero if they
  *                        are not equal.
  */
-
 int pointer_equal(void *location1, void *location2);
 
 /**
@@ -56,7 +55,6 @@ int pointer_equal(void *location1, void *location2);
  *                        the first pointer is in a higher memory address than
  *                        the second, zero if they point to the same location.
  */
-
 int pointer_compare(void *location1, void *location2);
 
 #ifdef __cplusplus
@@ -64,4 +62,3 @@ int pointer_compare(void *location1, void *location2);
 #endif
 
 #endif /* #ifndef ALGORITHM_COMPARE_POINTER_H */
-

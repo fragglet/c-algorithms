@@ -24,7 +24,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "rb-tree.h"
 
 /* malloc() / free() testing */
-
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
@@ -67,7 +66,6 @@ RBTreeNode *rb_tree_node_uncle(RBTreeNode *node)
 }
 
 /* Replace node1 with node2 at its parent. */
-
 static void rb_tree_node_replace(RBTree *tree, RBTreeNode *node1,
                                  RBTreeNode *node2)
 {
@@ -108,7 +106,6 @@ static void rb_tree_node_replace(RBTree *tree, RBTreeNode *node1,
  *     / \                             / \
  *    A   C                           C   E
  */
-
 static RBTreeNode *rb_tree_rotate(RBTree *tree, RBTreeNode *node,
                                   RBTreeNodeSide direction)
 {
@@ -182,7 +179,6 @@ static void rb_tree_insert_case5(RBTree *tree, RBTreeNode *node);
 
 /* Insert case 1: If the new node is at the root of the tree, it must
  * be recolored black, as the root is always black. */
-
 static void rb_tree_insert_case1(RBTree *tree, RBTreeNode *node)
 {
 	if (node->parent == NULL) {
@@ -200,7 +196,6 @@ static void rb_tree_insert_case1(RBTree *tree, RBTreeNode *node)
 /* Insert case 2: If the parent of the new node is red, this
  * conflicts with the red-black tree conditions, as both children
  * of every red node are black. */
-
 static void rb_tree_insert_case2(RBTree *tree, RBTreeNode *node)
 {
 	/* Note that if this function is being called, we already know
@@ -212,7 +207,6 @@ static void rb_tree_insert_case2(RBTree *tree, RBTreeNode *node)
 
 /* Insert case 3: If the parent and uncle are both red, repaint them
  * both black and repaint the grandparent red.  */
-
 static void rb_tree_insert_case3(RBTree *tree, RBTreeNode *node)
 {
 	RBTreeNode *grandparent;
@@ -252,7 +246,6 @@ static void rb_tree_insert_case3(RBTree *tree, RBTreeNode *node)
  *         R  <- node                 R
  *
  */
-
 void rb_tree_insert_case4(RBTree *tree, RBTreeNode *node)
 {
 	RBTreeNode *next_node;
@@ -295,7 +288,6 @@ void rb_tree_insert_case4(RBTree *tree, RBTreeNode *node)
  *       N/R      ?                   ?      U/B
  *
  */
-
 void rb_tree_insert_case5(RBTree *tree, RBTreeNode *node)
 {
 	RBTreeNode *parent;

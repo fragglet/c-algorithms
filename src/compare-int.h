@@ -45,7 +45,6 @@ extern "C" {
  * @return                Non-zero if the two values are equal, zero if the
  *                        two values are not equal.
  */
-
 int int_equal(void *location1, void *location2);
 
 /**
@@ -58,7 +57,6 @@ int int_equal(void *location1, void *location2);
  *                         value is greater than the second value, zero if
  *                         they are equal.
  */
-
 int int_compare(void *location1, void *location2);
 
 #ifdef __cplusplus
@@ -66,4 +64,3 @@ int int_compare(void *location1, void *location2);
 #endif
 
 #endif /* #ifndef ALGORITHM_COMPARE_INT_H */
-

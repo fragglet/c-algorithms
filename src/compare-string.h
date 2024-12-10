@@ -46,7 +46,6 @@ extern "C" {
  * @return                Non-zero if the strings are equal, zero if they are
  *                        not equal.
  */
-
 int string_equal(void *string1, void *string2);
 
 /**
@@ -59,7 +58,6 @@ int string_equal(void *string1, void *string2);
  *                        first string should be sorted after the second,
  *                        zero if the two strings are equal.
  */
-
 int string_compare(void *string1, void *string2);
 
 /**
@@ -71,7 +69,6 @@ int string_compare(void *string1, void *string2);
  * @return                Non-zero if the strings are equal, zero if they are
  *                        not equal.
  */
-
 int string_nocase_equal(void *string1, void *string2);
 
 /**
@@ -84,7 +81,6 @@ int string_nocase_equal(void *string1, void *string2);
  *                        first string should be sorted after the second,
  *                        zero if the two strings are equal.
  */
-
 int string_nocase_compare(void *string1, void *string2);
 
 #ifdef __cplusplus
@@ -92,4 +88,3 @@ int string_nocase_compare(void *string1, void *string2);
 #endif
 
 #endif /* #ifndef ALGORITHM_COMPARE_STRING_H */
-

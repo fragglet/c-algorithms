@@ -42,7 +42,6 @@ unsigned int string_hash(void *string)
 
 /* The same function, with a tolower on every character so that
  * case is ignored.  This code is duplicated for performance. */
-
 unsigned int string_nocase_hash(void *string)
 {
 	unsigned int result = 5381;

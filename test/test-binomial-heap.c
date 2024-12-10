@@ -150,7 +150,6 @@ static BinomialHeap *generate_heap(void)
 
 /* Verify that the values read out of the specified heap are the
  * same as those inserted in generate_heap. */
-
 static void verify_heap(BinomialHeap *heap)
 {
 	unsigned int num_vals;
@@ -176,7 +175,6 @@ static void verify_heap(BinomialHeap *heap)
 }
 
 /* Test out of memory when doing an insert */
-
 static void test_insert_out_of_memory(void)
 {
 	BinomialHeap *heap;
@@ -202,7 +200,6 @@ static void test_insert_out_of_memory(void)
 }
 
 /* Test out of memory when doing a pop */
-
 void test_pop_out_of_memory(void)
 {
 	BinomialHeap *heap;

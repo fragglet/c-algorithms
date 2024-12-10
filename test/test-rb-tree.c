@@ -34,7 +34,6 @@ int test_array[NUM_TEST_VALUES];
 
 #if 0
 /* Tree print function - useful for debugging. */
-
 static void print_tree(RBTreeNode *node, int depth)
 {
 	int *value;

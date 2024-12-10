@@ -65,25 +65,21 @@ extern "C" {
  * list, simply create a variable of this type
  * containing a pointer to NULL.
  */
-
 typedef struct _ListEntry ListEntry;
 
 /**
  * Structure used to iterate over a list.
  */
-
 typedef struct _ListIterator ListIterator;
 
 /**
  * A value stored in a list.
  */
-
 typedef void *ListValue;
 
 /**
  * Definition of a @ref ListIterator.
  */
-
 struct _ListIterator {
 	ListEntry **prev_next;
 	ListEntry *current;
@@ -92,7 +88,6 @@ struct _ListIterator {
 /**
  * A null @ref ListValue.
  */
-
 #define LIST_NULL ((void *) 0)
 
 /**
@@ -104,7 +99,6 @@ struct _ListIterator {
  *                    value2, a positive value if value1 should be sorted
  *                    after value2, zero if value1 and value2 are equal.
  */
-
 typedef int (*ListCompareFunc)(ListValue value1, ListValue value2);
 
 /**
@@ -116,7 +110,6 @@ typedef int (*ListCompareFunc)(ListValue value1, ListValue value2);
  * @return            A non-zero value if value1 and value2 are equal, zero
  *                    if they are not equal.
  */
-
 typedef int (*ListEqualFunc)(ListValue value1, ListValue value2);
 
 /**
@@ -124,7 +117,6 @@ typedef int (*ListEqualFunc)(ListValue value1, ListValue value2);
  *
  * @param list         The list to free.
  */
-
 void list_free(ListEntry *list);
 
 /**
@@ -135,7 +127,6 @@ void list_free(ListEntry *list);
  * @return             The new entry in the list, or NULL if it was not
  *                     possible to allocate the memory for the new entry.
  */
-
 ListEntry *list_prepend(ListEntry **list, ListValue data);
 
 /**
@@ -146,7 +137,6 @@ ListEntry *list_prepend(ListEntry **list, ListValue data);
  * @return             The new entry in the list, or NULL if it was not
  *                     possible to allocate the memory for the new entry.
  */
-
 ListEntry *list_append(ListEntry **list, ListValue data);
 
 /**
@@ -156,7 +146,6 @@ ListEntry *list_append(ListEntry **list, ListValue data);
  * @return             The previous entry in the list, or NULL if this
  *                     was the first entry in the list.
  */
-
 ListEntry *list_prev(ListEntry *listentry);
 
 /**
@@ -166,7 +155,6 @@ ListEntry *list_prev(ListEntry *listentry);
  * @return             The next entry in the list, or NULL if this was the
  *                     last entry in the list.
  */
-
 ListEntry *list_next(ListEntry *listentry);
 
 /**
@@ -175,7 +163,6 @@ ListEntry *list_next(ListEntry *listentry);
  * @param listentry    Pointer to the list entry.
  * @return             The value stored at the list entry.
  */
-
 ListValue list_data(ListEntry *listentry);
 
 /**
@@ -194,7 +181,6 @@ void list_set_data(ListEntry *listentry, ListValue value);
  * @param n          The index into the list .
  * @return           The entry at the specified index, or NULL if out of range.
  */
-
 ListEntry *list_nth_entry(ListEntry *list, unsigned int n);
 
 /**
@@ -205,7 +191,6 @@ ListEntry *list_nth_entry(ListEntry *list, unsigned int n);
  * @return           The value at the specified index, or @ref LIST_NULL if
  *                   unsuccessful.
  */
-
 ListValue list_nth_data(ListEntry *list, unsigned int n);
 
 /**
@@ -214,7 +199,6 @@ ListValue list_nth_data(ListEntry *list, unsigned int n);
  * @param list       The list.
  * @return           The number of entries in the list.
  */
-
 unsigned int list_length(ListEntry *list);
 
 /**
@@ -226,7 +210,6 @@ unsigned int list_length(ListEntry *list);
  *                   memory.  The length of the array is equal to the length
  *                   of the list (see @ref list_length).
  */
-
 ListValue *list_to_array(ListEntry *list);
 
 /**
@@ -237,7 +220,6 @@ ListValue *list_to_array(ListEntry *list);
  * @return           If the entry is not found in the list, returns zero,
  *                   else returns non-zero.
  */
-
 int list_remove_entry(ListEntry **list, ListEntry *entry);
 
 /**
@@ -249,7 +231,6 @@ int list_remove_entry(ListEntry **list, ListEntry *entry);
  * @param data       The value to remove from the list.
  * @return           The number of entries removed from the list.
  */
-
 unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
                               ListValue data);
 
@@ -259,7 +240,6 @@ unsigned int list_remove_data(ListEntry **list, ListEqualFunc callback,
  * @param list          Pointer to the list to sort.
  * @param compare_func  Function used to compare values in the list.
  */
-
 void list_sort(ListEntry **list, ListCompareFunc compare_func);
 
 /**
@@ -272,7 +252,6 @@ void list_sort(ListEntry **list, ListCompareFunc compare_func);
  * @return               The list entry of the item being searched for, or
  *                       NULL if not found.
  */
-
 ListEntry *list_find_data(ListEntry *list,
                           ListEqualFunc callback,
                           ListValue data);
@@ -283,7 +262,6 @@ ListEntry *list_find_data(ListEntry *list,
  * @param list           A pointer to the list to iterate over.
  * @param iter           A pointer to an iterator structure to initialise.
  */
-
 void list_iterate(ListEntry **list, ListIterator *iter);
 
 /**
@@ -294,7 +272,6 @@ void list_iterate(ListEntry **list, ListIterator *iter);
  *                       iterate over, non-zero if there are more values to
  *                       read.
  */
-
 int list_iter_has_more(ListIterator *iterator);
 
 /**
@@ -304,7 +281,6 @@ int list_iter_has_more(ListIterator *iterator);
  * @return               The next value from the list, or @ref LIST_NULL if
  *                       there are no more values in the list.
  */
-
 ListValue list_iter_next(ListIterator *iterator);
 
 /**
@@ -313,7 +289,6 @@ ListValue list_iter_next(ListIterator *iterator);
  *
  * @param iterator       The list iterator.
  */
-
 void list_iter_remove(ListIterator *iterator);
 
 #ifdef __cplusplus
@@ -321,4 +296,3 @@ void list_iter_remove(ListIterator *iterator);
 #endif
 
 #endif /* #ifndef ALGORITHM_LIST_H */
-

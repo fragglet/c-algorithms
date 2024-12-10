@@ -49,7 +49,6 @@ extern "C" {
  * (@ref BINOMIAL_HEAP_TYPE_MAX), the values with the greatest priority
  * are stored at the top of the heap.
  */
-
 typedef enum {
 	/** A minimum heap. */
 	BINOMIAL_HEAP_TYPE_MIN,
@@ -61,13 +60,11 @@ typedef enum {
 /**
  * A value stored in a @ref BinomialHeap.
  */
-
 typedef void *BinomialHeapValue;
 
 /**
  * A null @ref BinomialHeapValue.
  */
-
 #define BINOMIAL_HEAP_NULL ((void *) 0)
 
 /**
@@ -79,14 +76,12 @@ typedef void *BinomialHeapValue;
  *                         a positive number if value1 is greater than value2,
  *                         zero if the two are equal.
  */
-
 typedef int (*BinomialHeapCompareFunc)(BinomialHeapValue value1,
                                        BinomialHeapValue value2);
 
 /**
  * A binomial heap data structure.
  */
-
 typedef struct _BinomialHeap BinomialHeap;
 
 /**
@@ -98,7 +93,6 @@ typedef struct _BinomialHeap BinomialHeap;
  * @return                 A new binomial heap, or NULL if it was not possible
  *                         to allocate the memory.
  */
-
 BinomialHeap *binomial_heap_new(BinomialHeapType heap_type,
                                 BinomialHeapCompareFunc compare_func);
 
@@ -107,7 +101,6 @@ BinomialHeap *binomial_heap_new(BinomialHeapType heap_type,
  *
  * @param heap             The heap to destroy.
  */
-
 void binomial_heap_free(BinomialHeap *heap);
 
 /**
@@ -119,7 +112,6 @@ void binomial_heap_free(BinomialHeap *heap);
  *                         was not possible to allocate memory for the new
  *                         entry.
  */
-
 int binomial_heap_insert(BinomialHeap *heap, BinomialHeapValue value);
 
 /**
@@ -129,7 +121,6 @@ int binomial_heap_insert(BinomialHeap *heap, BinomialHeapValue value);
  * @return                 The first value in the heap, or
  *                         @ref BINOMIAL_HEAP_NULL if the heap is empty.
  */
-
 BinomialHeapValue binomial_heap_pop(BinomialHeap *heap);
 
 /**
@@ -138,7 +129,6 @@ BinomialHeapValue binomial_heap_pop(BinomialHeap *heap);
  * @param heap             The heap.
  * @return                 The number of values in the heap.
  */
-
 unsigned int binomial_heap_num_entries(BinomialHeap *heap);
 
 #ifdef __cplusplus
@@ -146,4 +136,3 @@ unsigned int binomial_heap_num_entries(BinomialHeap *heap);
 #endif
 
 #endif /* #ifndef ALGORITHM_BINOMIAL_HEAP_H */
-

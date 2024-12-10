@@ -25,7 +25,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "binomial-heap.h"
 
 /* malloc() / free() testing */
-
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
@@ -146,7 +145,6 @@ static BinomialTree *binomial_tree_merge(BinomialHeap *heap,
 /* Used to perform an "undo" when an error occurs during
  * binomial_heap_merge.  Go through the list of roots so far and remove
  * references that have been added. */
-
 static void binomial_heap_merge_undo(BinomialTree **new_roots,
                                      unsigned int count)
 {
@@ -161,7 +159,6 @@ static void binomial_heap_merge_undo(BinomialTree **new_roots,
 
 /* Merge the data in the 'other' heap into the 'heap' heap.
  * Returns non-zero if successful. */
-
 static int binomial_heap_merge(BinomialHeap *heap, BinomialHeap *other)
 {
 	BinomialTree **new_roots;

@@ -27,7 +27,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "framework.h"
 
 /* Run a single test. */
-
 static void run_test(UnitTestFunction test)
 {
 	/* Turn off any allocation limits that may have been set

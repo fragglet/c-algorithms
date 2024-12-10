@@ -23,7 +23,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "avl-tree.h"
 
 /* malloc() / free() testing */
-
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
@@ -94,7 +93,6 @@ int avl_tree_subtree_height(AVLTreeNode *node)
 /* Update the "height" variable of a node, from the heights of its
  * children.  This does not update the height variable of any parent
  * nodes. */
-
 static void avl_tree_update_height(AVLTreeNode *node)
 {
 	AVLTreeNode *left_subtree;
@@ -114,7 +112,6 @@ static void avl_tree_update_height(AVLTreeNode *node)
 }
 
 /* Find what side a node is relative to its parent */
-
 static AVLTreeNodeSide avl_tree_node_parent_side(AVLTreeNode *node)
 {
 	if (node->parent->children[AVL_TREE_NODE_LEFT] == node) {
@@ -125,7 +122,6 @@ static AVLTreeNodeSide avl_tree_node_parent_side(AVLTreeNode *node)
 }
 
 /* Replace node1 with node2 at its parent. */
-
 static void avl_tree_node_replace(AVLTree *tree, AVLTreeNode *node1,
                                   AVLTreeNode *node2)
 {
@@ -168,7 +164,6 @@ static void avl_tree_node_replace(AVLTree *tree, AVLTreeNode *node1,
  *     / \                             / \
  *    A   C                           C   E
  */
-
 static AVLTreeNode *avl_tree_rotate(AVLTree *tree, AVLTreeNode *node,
                                     AVLTreeNodeSide direction)
 {
@@ -204,7 +199,6 @@ static AVLTreeNode *avl_tree_rotate(AVLTree *tree, AVLTreeNode *node,
  *
  * Returns the root node of the new subtree which is replacing the
  * old one. */
-
 static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 {
 	AVLTreeNode *left_subtree;
@@ -267,7 +261,6 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 }
 
 /* Walk up the tree from the given node, performing any needed rotations */
-
 static void avl_tree_balance_to_root(AVLTree *tree, AVLTreeNode *node)
 {
 	AVLTreeNode *rover;
@@ -332,7 +325,6 @@ AVLTreeNode *avl_tree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value)
 /* Find the nearest node to the given node, to replace it.
  * The node returned is unlinked from the tree.
  * Returns NULL if the node has no children. */
-
 static AVLTreeNode *avl_tree_node_get_replacement(AVLTree *tree,
                                                   AVLTreeNode *node)
 {
@@ -381,7 +373,6 @@ static AVLTreeNode *avl_tree_node_get_replacement(AVLTree *tree,
 }
 
 /* Remove a node from a tree */
-
 void avl_tree_remove_node(AVLTree *tree, AVLTreeNode *node)
 {
 	AVLTreeNode *swap_node;
@@ -397,7 +388,6 @@ void avl_tree_remove_node(AVLTree *tree, AVLTreeNode *node)
 
 		/* This is a leaf node and has no children, therefore
 		 * it can be immediately removed. */
-
 		/* Unlink this node from its parent. */
 		avl_tree_node_replace(tree, node, NULL);
 
@@ -441,7 +431,6 @@ void avl_tree_remove_node(AVLTree *tree, AVLTreeNode *node)
 }
 
 /* Remove a node by key */
-
 int avl_tree_remove(AVLTree *tree, AVLTreeKey key)
 {
 	AVLTreeNode *node;

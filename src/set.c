@@ -23,7 +23,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "set.h"
 
 /* malloc() / free() testing */
-
 #ifdef ALLOC_TESTING
 #include "alloc-testing.h"
 #endif
@@ -49,7 +48,6 @@ struct _Set {
  *   http://planetmath.org/encyclopedia/GoodHashTablePrimes.html
  * Each prime is roughly double the previous value, and as far as
  * possible from the nearest powers of two. */
-
 static const unsigned int set_primes[] = {
 	193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157, 98317,
 	196613, 393241, 786433, 1572869, 3145739, 6291469,

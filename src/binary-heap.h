@@ -49,7 +49,6 @@ extern "C" {
  * (@ref BINARY_HEAP_TYPE_MAX), the values with the greatest priority are
  * stored at the top of the heap.
  */
-
 typedef enum {
 	/** A minimum heap. */
 	BINARY_HEAP_TYPE_MIN,
@@ -61,13 +60,11 @@ typedef enum {
 /**
  * A value stored in a @ref BinaryHeap.
  */
-
 typedef void *BinaryHeapValue;
 
 /**
  * A null @ref BinaryHeapValue.
  */
-
 #define BINARY_HEAP_NULL ((void *) 0)
 
 /**
@@ -79,14 +76,12 @@ typedef void *BinaryHeapValue;
  *                         a positive number if value1 is greater than value2,
  *                         zero if the two are equal.
  */
-
 typedef int (*BinaryHeapCompareFunc)(BinaryHeapValue value1,
                                      BinaryHeapValue value2);
 
 /**
  * A binary heap data structure.
  */
-
 typedef struct _BinaryHeap BinaryHeap;
 
 /**
@@ -98,7 +93,6 @@ typedef struct _BinaryHeap BinaryHeap;
  * @return                 A new binary heap, or NULL if it was not possible
  *                         to allocate the memory.
  */
-
 BinaryHeap *binary_heap_new(BinaryHeapType heap_type,
                             BinaryHeapCompareFunc compare_func);
 
@@ -107,7 +101,6 @@ BinaryHeap *binary_heap_new(BinaryHeapType heap_type,
  *
  * @param heap             The heap to destroy.
  */
-
 void binary_heap_free(BinaryHeap *heap);
 
 /**
@@ -119,7 +112,6 @@ void binary_heap_free(BinaryHeap *heap);
  *                         was not possible to allocate memory for the new
  *                         entry.
  */
-
 int binary_heap_insert(BinaryHeap *heap, BinaryHeapValue value);
 
 /**
@@ -129,7 +121,6 @@ int binary_heap_insert(BinaryHeap *heap, BinaryHeapValue value);
  * @return                 The first value in the heap, or
  *                         @ref BINARY_HEAP_NULL if the heap is empty.
  */
-
 BinaryHeapValue binary_heap_pop(BinaryHeap *heap);
 
 /**
@@ -138,7 +129,6 @@ BinaryHeapValue binary_heap_pop(BinaryHeap *heap);
  * @param heap             The heap.
  * @return                 The number of values in the heap.
  */
-
 unsigned int binary_heap_num_entries(BinaryHeap *heap);
 
 #ifdef __cplusplus
@@ -146,4 +136,3 @@ unsigned int binary_heap_num_entries(BinaryHeap *heap);
 #endif
 
 #endif /* #ifndef ALGORITHM_BINARY_HEAP_H */
-

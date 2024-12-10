@@ -38,7 +38,6 @@ extern "C" {
  * @param location        The pointer
  * @return                A hash key for the pointer.
  */
-
 unsigned int pointer_hash(void *location);
 
 #ifdef __cplusplus
@@ -46,4 +45,3 @@ unsigned int pointer_hash(void *location);
 #endif
 
 #endif /* #ifndef ALGORITHM_HASH_POINTER_H */
-

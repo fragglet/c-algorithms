@@ -34,7 +34,6 @@ int test_array[NUM_TEST_VALUES];
 
 #if 0
 /* Tree print function - useful for debugging. */
-
 static void print_tree(AVLTreeNode *node, int depth)
 {
 	int *value;
@@ -80,7 +79,6 @@ int find_subtree_height(AVLTreeNode *node)
 }
 
 /* Validates a subtree, returning its height */
-
 int counter;
 
 int validate_subtree(AVLTreeNode *node)

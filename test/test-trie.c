@@ -243,7 +243,6 @@ static void test_trie_free_long(void)
 
 /* Test the use of the trie when characters in the keys used are negative
  * (top bit set in the character; alternative, c >= 128). */
-
 static void test_trie_negative_keys(void)
 {
 	char my_key[] = { 'a', 'b', 'c', -50, -20, '\0' };

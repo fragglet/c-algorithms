@@ -47,19 +47,16 @@ extern "C" {
 /**
  * A trie structure.
  */
-
 typedef struct _Trie Trie;
 
 /**
  * Value stored in a @ref Trie.
  */
-
 typedef void *TrieValue;
 
 /**
  * A null @ref TrieValue.
  */
-
 #define TRIE_NULL ((void *) 0)
 
 /**
@@ -69,7 +66,6 @@ typedef void *TrieValue;
  *                           was not possible to allocate memory for the
  *                           new trie.
  */
-
 Trie *trie_new(void);
 
 /**
@@ -77,7 +73,6 @@ Trie *trie_new(void);
  *
  * @param trie               The trie to destroy.
  */
-
 void trie_free(Trie *trie);
 
 /**
@@ -91,7 +86,6 @@ void trie_free(Trie *trie);
  *                           or zero if it was not possible to allocate
  *                           memory for the new entry.
  */
-
 int trie_insert(Trie *trie, char *key, TrieValue value);
 
 /**
@@ -106,7 +100,6 @@ int trie_insert(Trie *trie, char *key, TrieValue value);
  *                           or zero if it was not possible to allocate
  *                           memory for the new entry.
  */
-
 int trie_insert_binary(Trie *trie, unsigned char *key,
                        int key_length, TrieValue value);
 
@@ -120,7 +113,6 @@ int trie_insert_binary(Trie *trie, unsigned char *key,
  * @return                   The value associated with the key, or
  *                           @ref TRIE_NULL if not found in the trie.
  */
-
 TrieValue trie_lookup(Trie *trie, char *key);
 
 /**
@@ -134,7 +126,6 @@ TrieValue trie_lookup(Trie *trie, char *key);
  * @return                   The value associated with the key, or
  *                           @ref TRIE_NULL if not found in the trie.
  */
-
 TrieValue trie_lookup_binary(Trie *trie, unsigned char *key, int key_length);
 
 /**
@@ -147,7 +138,6 @@ TrieValue trie_lookup_binary(Trie *trie, unsigned char *key, int key_length);
  * @return                   Non-zero if the key was removed successfully,
  *                           or zero if it is not present in the trie.
  */
-
 int trie_remove(Trie *trie, char *key);
 
 /**
@@ -161,7 +151,6 @@ int trie_remove(Trie *trie, char *key);
  * @return                   Non-zero if the key was removed successfully,
  *                           or zero if it is not present in the trie.
  */
-
 int trie_remove_binary(Trie *trie, unsigned char *key, int key_length);
 
 /**
@@ -170,7 +159,6 @@ int trie_remove_binary(Trie *trie, unsigned char *key, int key_length);
  * @param trie               The trie.
  * @return                   Count of the number of entries in the trie.
  */
-
 unsigned int trie_num_entries(Trie *trie);
 
 #ifdef __cplusplus
@@ -178,4 +166,3 @@ unsigned int trie_num_entries(Trie *trie);
 #endif
 
 #endif /* #ifndef ALGORITHM_TRIE_H */
-

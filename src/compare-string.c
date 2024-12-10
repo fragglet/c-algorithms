@@ -47,7 +47,6 @@ int string_compare(void *string1, void *string2)
 }
 
 /* Comparison functions for strings, which ignore the case of letters. */
-
 int string_nocase_equal(void *string1, void *string2)
 {
 	return string_nocase_compare((char *) string1, (char *) string2) == 0;
@@ -56,7 +55,6 @@ int string_nocase_equal(void *string1, void *string2)
 /* On many systems, strcasecmp or stricmp will give the same functionality
  * as this function.  However, it is non-standard and cannot be relied
  * on to be present. */
-
 int string_nocase_compare(void *string1, void *string2)
 {
 	char *p1;

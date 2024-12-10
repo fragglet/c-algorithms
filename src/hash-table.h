@@ -52,38 +52,32 @@ extern "C" {
 /**
  * A hash table structure.
  */
-
 typedef struct _HashTable HashTable;
 
 /**
  * Structure used to iterate over a hash table.
  */
-
 typedef struct _HashTableIterator HashTableIterator;
 
 /**
  * Internal structure representing an entry in a hash table.
  */
-
 typedef struct _HashTableEntry HashTableEntry;
 
 /**
  * A key to look up a value in a @ref HashTable.
  */
-
 typedef void *HashTableKey;
 
 /**
  * A value stored in a @ref HashTable.
  */
-
 typedef void *HashTableValue;
 
 /**
  * Internal structure representing an entry in hash table
  * used as @ref HashTableIterator next result.
  */
-
 typedef struct _HashTablePair{
 	HashTableKey key;
 	HashTableValue value;
@@ -92,7 +86,6 @@ typedef struct _HashTablePair{
 /**
  * Definition of a @ref HashTableIterator.
  */
-
 struct _HashTableIterator {
 	HashTable *hash_table;
 	HashTableEntry *next_entry;
@@ -102,7 +95,6 @@ struct _HashTableIterator {
 /**
  * A null @ref HashTableValue.
  */
-
 #define HASH_TABLE_NULL ((void *) 0)
 
 /**
@@ -112,7 +104,6 @@ struct _HashTableIterator {
  * @param value  The value to generate a hash value for.
  * @return       The hash value.
  */
-
 typedef unsigned int (*HashTableHashFunc)(HashTableKey value);
 
 /**
@@ -121,21 +112,18 @@ typedef unsigned int (*HashTableHashFunc)(HashTableKey value);
  * @return   Non-zero if the two keys are equal, zero if the keys are
  *           not equal.
  */
-
 typedef int (*HashTableEqualFunc)(HashTableKey value1, HashTableKey value2);
 
 /**
  * Type of function used to free keys when entries are removed from a
  * hash table.
  */
-
 typedef void (*HashTableKeyFreeFunc)(HashTableKey value);
 
 /**
  * Type of function used to free values when entries are removed from a
  * hash table.
  */
-
 typedef void (*HashTableValueFreeFunc)(HashTableValue value);
 
 /**
@@ -149,7 +137,6 @@ typedef void (*HashTableValueFreeFunc)(HashTableValue value);
  *                             was not possible to allocate the new hash
  *                             table.
  */
-
 HashTable *hash_table_new(HashTableHashFunc hash_func,
                           HashTableEqualFunc equal_func);
 
@@ -158,7 +145,6 @@ HashTable *hash_table_new(HashTableHashFunc hash_func,
  *
  * @param hash_table           The hash table to destroy.
  */
-
 void hash_table_free(HashTable *hash_table);
 
 /**
@@ -169,7 +155,6 @@ void hash_table_free(HashTable *hash_table);
  * @param key_free_func        Function used to free keys.
  * @param value_free_func      Function used to free values.
  */
-
 void hash_table_register_free_functions(HashTable *hash_table,
                                         HashTableKeyFreeFunc key_free_func,
                                         HashTableValueFreeFunc value_free_func);
@@ -185,7 +170,6 @@ void hash_table_register_free_functions(HashTable *hash_table,
  *                             or zero if it was not possible to allocate
  *                             memory for the new entry.
  */
-
 int hash_table_insert(HashTable *hash_table,
                       HashTableKey key,
                       HashTableValue value);
@@ -198,7 +182,6 @@ int hash_table_insert(HashTable *hash_table,
  * @return                    The value, or @ref HASH_TABLE_NULL if there
  *                            is no value with that key in the hash table.
  */
-
 HashTableValue hash_table_lookup(HashTable *hash_table,
                                  HashTableKey key);
 
@@ -210,7 +193,6 @@ HashTableValue hash_table_lookup(HashTable *hash_table,
  * @return                    Non-zero if a key was removed, or zero if the
  *                            specified key was not found in the hash table.
  */
-
 int hash_table_remove(HashTable *hash_table, HashTableKey key);
 
 /**
@@ -219,7 +201,6 @@ int hash_table_remove(HashTable *hash_table, HashTableKey key);
  * @param hash_table          The hash table.
  * @return                    The number of entries in the hash table.
  */
-
 unsigned int hash_table_num_entries(HashTable *hash_table);
 
 /**
@@ -229,7 +210,6 @@ unsigned int hash_table_num_entries(HashTable *hash_table);
  * @param iter                Pointer to an iterator structure to
  *                            initialise.
  */
-
 void hash_table_iterate(HashTable *hash_table, HashTableIterator *iter);
 
 /**
@@ -241,7 +221,6 @@ void hash_table_iterate(HashTable *hash_table, HashTableIterator *iter);
  *                            over, non-zero if there are more values to
  *                            iterate over.
  */
-
 int hash_table_iter_has_more(HashTableIterator *iterator);
 
 /**
@@ -258,7 +237,6 @@ int hash_table_iter_has_more(HashTableIterator *iterator);
  *                            Value if there are no more keys to iterate
  *                            over.
  */
-
 HashTablePair hash_table_iter_next(HashTableIterator *iterator);
 
 #ifdef __cplusplus
@@ -266,4 +244,3 @@ HashTablePair hash_table_iter_next(HashTableIterator *iterator);
 #endif
 
 #endif /* #ifndef ALGORITHM_HASH_TABLE_H */
-

@@ -38,7 +38,6 @@ extern "C" {
  * @param string           The string.
  * @return                 A hash key for the string.
  */
-
 unsigned int string_hash(void *string);
 
 /**
@@ -47,7 +46,6 @@ unsigned int string_hash(void *string);
  * @param string           The string.
  * @return                 A hash key for the string.
  */
-
 unsigned int string_nocase_hash(void *string);
 
 #ifdef __cplusplus
@@ -55,4 +53,3 @@ unsigned int string_nocase_hash(void *string);
 #endif
 
 #endif /* #ifndef ALGORITHM_HASH_STRING_H */
-

@@ -46,4 +46,3 @@ unsigned int int_hash(void *location);
 #endif
 
 #endif /* #ifndef ALGORITHM_HASH_INT_H */
-

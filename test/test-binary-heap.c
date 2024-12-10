@@ -125,7 +125,6 @@ void test_max_heap(void)
 }
 
 /* Test out of memory scenario when adding items */
-
 void test_out_of_memory(void)
 {
 	BinaryHeap *heap;

@@ -55,7 +55,6 @@ extern "C" {
  * Represents a set of values.  Created using the @ref set_new function and
  * destroyed using the @ref set_free function.
  */
-
 typedef struct _Set Set;
 
 /**
@@ -63,25 +62,21 @@ typedef struct _Set Set;
  *
  * @see set_iterate
  */
-
 typedef struct _SetIterator SetIterator;
 
 /**
  * Internal structure representing an entry in the set.
  */
-
 typedef struct _SetEntry SetEntry;
 
 /**
  * A value stored in a @ref Set.
  */
-
 typedef void *SetValue;
 
 /**
  * Definition of a @ref SetIterator.
  */
-
 struct _SetIterator {
 	Set *set;
 	SetEntry *next_entry;
@@ -91,27 +86,23 @@ struct _SetIterator {
 /**
  * A null @ref SetValue.
  */
-
 #define SET_NULL ((void *) 0)
 
 /**
  * Hash function.  Generates a hash key for values to be stored in a set.
  */
-
 typedef unsigned int (*SetHashFunc)(SetValue value);
 
 /**
  * Equality function.  Compares two values to determine if they are
  * equivalent.
  */
-
 typedef int (*SetEqualFunc)(SetValue value1, SetValue value2);
 
 /**
  * Function used to free values stored in a set.  See
  * @ref set_register_free_function.
  */
-
 typedef void (*SetFreeFunc)(SetValue value);
 
 /**
@@ -123,7 +114,6 @@ typedef void (*SetFreeFunc)(SetValue value);
  * @return              A new set, or NULL if it was not possible to
  *                      allocate the memory for the set.
  */
-
 Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func);
 
 /**
@@ -131,7 +121,6 @@ Set *set_new(SetHashFunc hash_func, SetEqualFunc equal_func);
  *
  * @param set           The set to destroy.
  */
-
 void set_free(Set *set);
 
 /**
@@ -142,7 +131,6 @@ void set_free(Set *set);
  * @param free_func     Function to call when values are removed from the
  *                      set.
  */
-
 void set_register_free_function(Set *set, SetFreeFunc free_func);
 
 /**
@@ -155,7 +143,6 @@ void set_register_free_function(Set *set, SetFreeFunc free_func);
  *                      if it was not possible to allocate memory for the
  *                      new entry.
  */
-
 int set_insert(Set *set, SetValue data);
 
 /**
@@ -167,7 +154,6 @@ int set_insert(Set *set, SetValue data);
  *                      from the set, zero (false) if the value was not
  *                      found in the set.
  */
-
 int set_remove(Set *set, SetValue data);
 
 /**
@@ -178,7 +164,6 @@ int set_remove(Set *set, SetValue data);
  * @return              Zero if the value is not in the set, non-zero if the
  *                      value is in the set.
  */
-
 int set_query(Set *set, SetValue data);
 
 /**
@@ -187,7 +172,6 @@ int set_query(Set *set, SetValue data);
  * @param set           The set.
  * @return              A count of the number of entries in the set.
  */
-
 unsigned int set_num_entries(Set *set);
 
 /**
@@ -198,7 +182,6 @@ unsigned int set_num_entries(Set *set);
  *                         or NULL if it was not possible to allocate
  *                         memory for the array.
  */
-
 SetValue *set_to_array(Set *set);
 
 /**
@@ -210,7 +193,6 @@ SetValue *set_to_array(Set *set);
  *                         first or second sets, or NULL if it was not
  *                         possible to allocate memory for the new set.
  */
-
 Set *set_union(Set *set1, Set *set2);
 
 /**
@@ -222,7 +204,6 @@ Set *set_union(Set *set1, Set *set2);
  *                         set, or NULL if it was not possible to allocate
  *                         memory for the new set.
  */
-
 Set *set_intersection(Set *set1, Set *set2);
 
 /**
@@ -232,7 +213,6 @@ Set *set_intersection(Set *set1, Set *set2);
  * @param set              The set to iterate over.
  * @param iter             Pointer to an iterator structure to initialise.
  */
-
 void set_iterate(Set *set, SetIterator *iter);
 
 /**
@@ -243,7 +223,6 @@ void set_iterate(Set *set, SetIterator *iter);
  *                         to iterate over, non-zero if there are more
  *                         values to be read.
  */
-
 int set_iter_has_more(SetIterator *iterator);
 
 /**
@@ -253,7 +232,6 @@ int set_iter_has_more(SetIterator *iterator);
  * @return                 The next value from the set, or @ref SET_NULL if no
  *                         more values are available.
  */
-
 SetValue set_iter_next(SetIterator *iterator);
 
 #ifdef __cplusplus
@@ -261,4 +239,3 @@ SetValue set_iter_next(SetIterator *iterator);
 #endif
 
 #endif /* #ifndef ALGORITHM_SET_H */
-

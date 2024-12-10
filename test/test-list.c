@@ -31,7 +31,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 int variable1 = 50, variable2, variable3, variable4;
 
 /* Returns a list containing four entries */
-
 ListEntry *generate_list(void)
 {
 	ListEntry *list = NULL;
@@ -470,7 +469,6 @@ void test_list_iterate(void)
 
 /* Test that the iterator functions can survive removal of the current
  * value using the normal remove functions. */
-
 void test_list_iterate_bad_remove(void)
 {
 	ListEntry *list;
