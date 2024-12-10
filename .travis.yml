@@ -1,7 +1,0 @@
-language: c
-
-compiler:
- - gcc
-
-script: ./autogen.sh --enable-coverage && make && make check && bash src/gencov
-
