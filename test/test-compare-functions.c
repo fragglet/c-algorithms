@@ -38,15 +38,12 @@ void test_int_compare(void)
 	int c = 4;
 
 	/* If first is less than second, result is negative) */
-
 	assert(int_compare(&a, &b) < 0);
 
 	/* If first is more than second, result is positive) */
-
 	assert(int_compare(&b, &a) > 0);
 
 	/* If both are equal, result is zero */
-
 	assert(int_compare(&a, &c) == 0);
 }
 
@@ -57,11 +54,9 @@ void test_int_equal(void)
 	int c = 4;
 
 	/* Returns non-zero (true) if both are equal */
-
 	assert(int_equal(&a, &c) != 0);
 
 	/* Returns zero (false) if not equal) */
-
 	assert(int_equal(&a, &b) == 0);
 }
 
@@ -71,16 +66,13 @@ void test_pointer_compare(void)
 
 	/* Negative if first argument is a lower memory address than
 	 * the second */
-
 	assert(pointer_compare(&array[0], &array[4]) < 0);
 
 	/* Positive if the first argument is a higher memory address
 	 * than the second */
-
 	assert(pointer_compare(&array[3], &array[2]) > 0);
 
 	/* Zero if the two arguments are equal */
-
 	assert(pointer_compare(&array[4], &array[4]) == 0);
 }
 
@@ -89,11 +81,9 @@ void test_pointer_equal(void)
 	int a, b;
 
 	/* Non-zero (true) if the two pointers are equal */
-
 	assert(pointer_equal(&a, &a) != 0);
 
 	/* Zero (false) if the two pointers are not equal */
-
 	assert(pointer_equal(&a, &b) == 0);
 }
 
@@ -104,15 +94,12 @@ void test_string_compare(void)
 	char test3[] = "Apple";
 
 	/* Negative if first argument should be sorted before the second */
-
 	assert(string_compare(test1, test2) < 0);
 
 	/* Positive if the second argument should be sorted before the first */
-
 	assert(string_compare(test2, test1) > 0);
 
 	/* Zero if the two arguments are equal */
-
 	assert(string_compare(test1, test3) == 0);
 }
 
@@ -125,11 +112,9 @@ void test_string_equal(void)
 	char test5[] = "this is a test string";
 
 	/* Non-zero (true) if the two strings are equal */
-
 	assert(string_equal(test1, test5) != 0);
 
 	/* Zero (false) if the two strings are different */
-
 	/* Check that length affects the result */
 	assert(string_equal(test1, test2) == 0);
 	assert(string_equal(test1, test3) == 0);
@@ -148,19 +133,15 @@ void test_string_nocase_compare(void)
 	char test6[] = "Charlie";
 
 	/* Negative if first argument should be sorted before the second */
-
 	assert(string_nocase_compare(test1, test2) < 0);
 
 	/* Positive if the second argument should be sorted before the first */
-
 	assert(string_nocase_compare(test2, test1) > 0);
 
 	/* Zero if the two arguments are equal */
-
 	assert(string_nocase_compare(test1, test3) == 0);
 
 	/* Check ordering is independent of case */
-
 	assert(string_nocase_compare(test4, test5) < 0);
 	assert(string_nocase_compare(test5, test6) < 0);
 }
@@ -174,11 +155,9 @@ void test_string_nocase_equal(void)
 	char test5[] = "this is a test string";
 
 	/* Non-zero (true) if the two strings are equal */
-
 	assert(string_nocase_equal(test1, test5) != 0);
 
 	/* Zero (false) if the two strings are different */
-
 	/* Check that length affects the result */
 	assert(string_nocase_equal(test1, test2) == 0);
 	assert(string_nocase_equal(test1, test3) == 0);

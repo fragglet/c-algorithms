@@ -47,7 +47,6 @@ Set *generate_set(void)
 
 	/* Add 10,000 items sequentially, checking that the counter
 	 * works properly */
-
 	for (i=0; i<10000; ++i) {
 		sprintf(buf, "%i", i);
 		value = strdup(buf);
@@ -75,7 +74,6 @@ void test_set_new_free(void)
 	assert(set != NULL);
 
 	/* Fill the set with many values before freeing */
-
 	for (i=0; i<10000; ++i) {
 		value = (int *) malloc(sizeof(int));
 
@@ -85,11 +83,9 @@ void test_set_new_free(void)
 	}
 
 	/* Free the set */
-
 	set_free(set);
 
 	/* Test out of memory scenario */
-
 	alloc_test_set_limit(0);
 	set = set_new(int_hash, int_equal);
 	assert(set == NULL);
@@ -109,7 +105,6 @@ void test_set_insert(void)
 
 	/* Perform a union of numbers1 and numbers2.  Cannot add the same
 	 * value twice. */
-
 	set = set_new(int_hash, int_equal);
 
 	for (i=0; i<6; ++i) {
@@ -133,14 +128,12 @@ void test_set_query(void)
 	set = generate_set();
 
 	/* Test all values */
-
 	for (i=0; i<10000; ++i) {
 		sprintf(buf, "%i", i);
 		assert(set_query(set, buf) != 0);
 	}
 
 	/* Test invalid values returning zero */
-
 	assert(set_query(set, "-1") == 0);
 	assert(set_query(set, "100001") == 0);
 
@@ -160,32 +153,26 @@ void test_set_remove(void)
 	assert(num_entries == 10000);
 
 	/* Remove some entries */
-
 	for (i=4000; i<6000; ++i) {
 
 		sprintf(buf, "%i", i);
 
 		/* Check this is in the set */
-
 		assert(set_query(set, buf) != 0);
 
 		/* Remove it */
-
 		assert(set_remove(set, buf) != 0);
 
 		/* Check the number of entries decreases */
-
 		assert(set_num_entries(set) == num_entries - 1);
 
 		/* Check it is no longer in the set */
-
 		assert(set_query(set, buf) == 0);
 
 		--num_entries;
 	}
 
 	/* Try to remove some invalid entries */
-
 	for (i=-1000; i<-500; ++i) {
 		sprintf(buf, "%i", i);
 
@@ -215,7 +202,6 @@ void test_set_union(void)
 	size_t allocated;
 
 	/* Create the first set */
-
 	set1 = set_new(int_hash, int_equal);
 
 	for (i=0; i<7; ++i) {
@@ -223,7 +209,6 @@ void test_set_union(void)
 	}
 
 	/* Create the second set */
-
 	set2 = set_new(int_hash, int_equal);
 
 	for (i=0; i<7; ++i) {
@@ -231,7 +216,6 @@ void test_set_union(void)
 	}
 
 	/* Perform the union */
-
 	result_set = set_union(set1, set2);
 
 	assert(set_num_entries(result_set) == 11);
@@ -243,12 +227,10 @@ void test_set_union(void)
 	set_free(result_set);
 
 	/* Test out of memory scenario */
-
 	alloc_test_set_limit(0);
 	assert(set_union(set1, set2) == NULL);
 
 	/* Can allocate set, can't copy all set1 values */
-
 	alloc_test_set_limit(2 + 2);
 	allocated = alloc_test_get_allocated();
 	assert(set_union(set1, set2) == NULL);
@@ -256,7 +238,6 @@ void test_set_union(void)
 
 	/* Can allocate set, can copy set1 values,
 	 * can't copy all set2 values */
-
 	alloc_test_set_limit(2 + 7 + 2);
 	allocated = alloc_test_get_allocated();
 	assert(set_union(set1, set2) == NULL);
@@ -278,7 +259,6 @@ void test_set_intersection(void)
 	size_t allocated;
 
 	/* Create the first set */
-
 	set1 = set_new(int_hash, int_equal);
 
 	for (i=0; i<7; ++i) {
@@ -286,7 +266,6 @@ void test_set_intersection(void)
 	}
 
 	/* Create the second set */
-
 	set2 = set_new(int_hash, int_equal);
 
 	for (i=0; i<7; ++i) {
@@ -294,7 +273,6 @@ void test_set_intersection(void)
 	}
 
 	/* Perform the intersection */
-
 	result_set = set_intersection(set1, set2);
 
 	assert(set_num_entries(result_set) == 3);
@@ -304,12 +282,10 @@ void test_set_intersection(void)
 	}
 
 	/* Test out of memory scenario */
-
 	alloc_test_set_limit(0);
 	assert(set_intersection(set1, set2) == NULL);
 
 	/* Can allocate set, can't copy all values */
-
 	alloc_test_set_limit(2 + 2);
 	allocated = alloc_test_get_allocated();
 	assert(set_intersection(set1, set2) == NULL);
@@ -329,7 +305,6 @@ void test_set_to_array(void)
 
 	/* Create a set containing pointers to all entries in the "values"
 	 * array. */
-
 	set = set_new(pointer_hash, pointer_equal);
 
 	for (i=0; i<100; ++i) {
@@ -340,14 +315,12 @@ void test_set_to_array(void)
 	array = (int **) set_to_array(set);
 
 	/* Check the array */
-
 	for (i=0; i<100; ++i) {
 		assert(*array[i] == 1);
 		*array[i] = 0;
 	}
 
 	/* Test out of memory scenario */
-
 	alloc_test_set_limit(0);
 	assert(set_to_array(set) == NULL);
 
@@ -364,7 +337,6 @@ void test_set_iterating(void)
 	set = generate_set();
 
 	/* Iterate over all values in the set */
-
 	count = 0;
 	set_iterate(set, &iterator);
 
@@ -376,17 +348,14 @@ void test_set_iterating(void)
 	}
 
 	/* Test iter_next after iteration has completed. */
-
 	assert(set_iter_next(&iterator) == NULL);
 
 	/* Check final count */
-
 	assert(count == 10000);
 
 	set_free(set);
 
 	/* Test iterating over an empty set */
-
 	set = set_new(int_hash, int_equal);
 
 	set_iterate(set, &iterator);
@@ -414,7 +383,6 @@ void test_set_iterating_remove(void)
 	removed = 0;
 
 	/* Iterate over all values in the set */
-
 	set_iterate(set, &iterator);
 
 	while (set_iter_has_more(&iterator)) {
@@ -424,7 +392,6 @@ void test_set_iterating_remove(void)
 		if ((atoi(value) % 100) == 0) {
 
 			/* Remove this value */
-
 			set_remove(set, value);
 
 			++removed;
@@ -434,7 +401,6 @@ void test_set_iterating_remove(void)
 	}
 
 	/* Check final counts */
-
 	assert(count == 10000);
 	assert(removed == 100);
 	assert(set_num_entries(set) == 10000 - removed);
@@ -468,7 +434,6 @@ void test_set_free_function(void)
 	int *value;
 
 	/* Create a set and fill it with 1000 values */
-
 	set = set_new(int_hash, int_equal);
 
 	set_register_free_function(set, free_value);
@@ -484,14 +449,12 @@ void test_set_free_function(void)
 	assert(allocated_values == 1000);
 
 	/* Test removing a value */
-
 	i = 500;
 	set_remove(set, &i);
 
 	assert(allocated_values == 999);
 
 	/* Test freeing the set */
-
 	set_free(set);
 
 	assert(allocated_values == 0);
@@ -508,7 +471,6 @@ void test_set_out_of_memory(void)
 	set = set_new(int_hash, int_equal);
 
 	/* Test normal failure */
-
 	alloc_test_set_limit(0);
 	values[0] = 0;
 	assert(set_insert(set, &values[0]) == 0);
@@ -520,7 +482,6 @@ void test_set_out_of_memory(void)
 	 * The initial table size is 193 entries.  The table increases in
 	 * size when 1/3 full, so the 66th entry should cause the insert
 	 * to fail. */
-
 	for (i=0; i<65; ++i) {
 		values[i] = (int) i;
 
@@ -531,7 +492,6 @@ void test_set_out_of_memory(void)
 	assert(set_num_entries(set) == 65);
 
 	/* Test the 66th insert */
-
 	alloc_test_set_limit(0);
 
 	values[65] = 65;

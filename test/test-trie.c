@@ -44,7 +44,6 @@ Trie *generate_trie(void)
 	unsigned int entries;
 
 	/* Create a trie and fill it with a large number of values */
-
 	trie = trie_new();
 	entries = 0;
 
@@ -52,7 +51,6 @@ Trie *generate_trie(void)
 
 		/* Create a string containing a text version of i, and use
 		 * it as a key for the value */
-
 		test_array[i] = i;
 		sprintf(test_strings[i], "%i", i);
 
@@ -72,7 +70,6 @@ void test_trie_new_free(void)
 	Trie *trie;
 
 	/* Allocate and free an empty trie */
-
 	trie = trie_new();
 
 	assert(trie != NULL);
@@ -80,7 +77,6 @@ void test_trie_new_free(void)
 	trie_free(trie);
 
 	/* Add some values before freeing */
-
 	trie = trie_new();
 
 	assert(trie_insert(trie, "hello", "there") != 0);
@@ -91,7 +87,6 @@ void test_trie_new_free(void)
 	trie_free(trie);
 
 	/* Add a value, remove it and then free */
-
 	trie = trie_new();
 
 	assert(trie_insert(trie, "hello", "there") != 0);
@@ -100,7 +95,6 @@ void test_trie_new_free(void)
 	trie_free(trie);
 
 	/* Test out of memory scenario */
-
 	alloc_test_set_limit(0);
 	trie = trie_new();
 	assert(trie == NULL);
@@ -115,20 +109,17 @@ void test_trie_insert(void)
 	trie = generate_trie();
 
 	/* Test insert of NULL value has no effect */
-
 	entries = trie_num_entries(trie);
 	assert(trie_insert(trie, "hello world", NULL) == 0);
 	assert(trie_num_entries(trie) == entries);
 
 	/* Test out of memory scenario */
-
 	allocated = alloc_test_get_allocated();
 	alloc_test_set_limit(0);
 	assert(trie_insert(trie, "a", "test value") == 0);
 	assert(trie_num_entries(trie) == entries);
 
 	/* Test rollback */
-
 	alloc_test_set_limit(5);
 	assert(trie_insert(trie, "hello world", "test value") == 0);
 	assert(alloc_test_get_allocated() == allocated);
@@ -147,12 +138,10 @@ void test_trie_lookup(void)
 	trie = generate_trie();
 
 	/* Test lookup for non-existent values */
-
 	assert(trie_lookup(trie, "000000000000000") == TRIE_NULL);
 	assert(trie_lookup(trie, "") == TRIE_NULL);
 
 	/* Look up all values */
-
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
 
 		sprintf(buf, "%i", i);
@@ -175,7 +164,6 @@ void test_trie_remove(void)
 	trie = generate_trie();
 
 	/* Test remove on non-existent values. */
-
 	assert(trie_remove(trie, "000000000000000") == 0);
 	assert(trie_remove(trie, "") == 0);
 
@@ -184,13 +172,11 @@ void test_trie_remove(void)
 	assert(entries == NUM_TEST_VALUES);
 
 	/* Remove all values */
-
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
 
 		sprintf(buf, "%i", i);
 
 		/* Remove value and check counter */
-
 		assert(trie_remove(trie, buf) != 0);
 		--entries;
 		assert(trie_num_entries(trie) == entries);
@@ -207,7 +193,6 @@ void test_trie_replace(void)
 	trie = generate_trie();
 
 	/* Test replacing values */
-
 	val = malloc(sizeof(int));
 	*val = 999;
 	assert(trie_insert(trie, "999", val) != 0);
@@ -226,7 +211,6 @@ void test_trie_insert_empty(void)
 	trie = trie_new();
 
 	/* Test insert on empty string */
-
 	assert(trie_insert(trie, "", buf) != 0);
 	assert(trie_num_entries(trie) != 0);
 	assert(trie_lookup(trie, "") == buf);
@@ -244,13 +228,11 @@ static void test_trie_free_long(void)
 	Trie *trie;
 
 	/* Generate a long string */
-
 	long_string = malloc(LONG_STRING_LEN);
 	memset(long_string, 'A', LONG_STRING_LEN);
 	long_string[LONG_STRING_LEN - 1] = '\0';
 
 	/* Create a trie and add the string */
-
 	trie = trie_new();
 	trie_insert(trie, long_string, long_string);
 
@@ -290,7 +272,6 @@ Trie *generate_binary_trie(void)
 	trie = trie_new();
 
 	/* Insert some values */
-
 	assert(trie_insert_binary(trie,
 	                          bin_key2, sizeof(bin_key2),
 	                          "goodbye world") != 0);
@@ -309,18 +290,15 @@ void test_trie_insert_binary(void)
 	trie = generate_binary_trie();
 
 	/* Overwrite a value */
-
 	assert(trie_insert_binary(trie,
 	                          bin_key, sizeof(bin_key),
 	                          "hi world") != 0);
 
 	/* Insert NULL value doesn't work */
-
 	assert(trie_insert_binary(trie, bin_key3,
 	                          sizeof(bin_key3), NULL) == 0);
 
 	/* Read them back */
-
 	value = trie_lookup_binary(trie, bin_key, sizeof(bin_key));
 	assert(!strcmp(value, "hi world"));
 
@@ -356,7 +334,6 @@ void test_trie_remove_binary(void)
 	trie = generate_binary_trie();
 
 	/* Test look up and remove of invalid values */
-
 	value = trie_lookup_binary(trie, bin_key3, sizeof(bin_key3));
 	assert(value == NULL);
 
@@ -366,7 +343,6 @@ void test_trie_remove_binary(void)
 	assert(trie_remove_binary(trie, bin_key4, sizeof(bin_key4)) == 0);
 
 	/* Remove the two values */
-
 	assert(trie_remove_binary(trie, bin_key2, sizeof(bin_key2)) != 0);
 	assert(trie_lookup_binary(trie, bin_key2, sizeof(bin_key2)) == NULL);
 	assert(trie_lookup_binary(trie, bin_key, sizeof(bin_key)) != NULL);

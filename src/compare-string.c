@@ -64,7 +64,6 @@ int string_nocase_compare(void *string1, void *string2)
 	int c1, c2;
 
 	/* Iterate over each character in the strings */
-
 	p1 = (char *) string1;
 	p2 = (char *) string2;
 
@@ -76,7 +75,6 @@ int string_nocase_compare(void *string1, void *string2)
 		if (c1 != c2) {
 
 			/* Strings are different */
-
 			if (c1 < c2) {
 				return -1;
 			} else {
@@ -85,18 +83,15 @@ int string_nocase_compare(void *string1, void *string2)
 		}
 
 		/* End of string */
-
 		if (c1 == '\0')
 			break;
 
 		/* Advance to the next character */
-
 		++p1;
 		++p2;
 	}
 
 	/* Reached the end of string and no difference found */
-
 	return 0;
 }
 

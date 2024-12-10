@@ -89,7 +89,6 @@ RBTree *create_tree(void)
 	int i;
 
 	/* Create a tree and fill with nodes */
-
 	tree = rb_tree_new((RBTreeCompareFunc) int_compare);
 
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
@@ -113,7 +112,6 @@ void test_rb_tree_new(void)
 	rb_tree_free(tree);
 
 	/* Test out of memory scenario */
-
 	alloc_test_set_limit(0);
 
 	tree = rb_tree_new((RBTreeCompareFunc) int_compare);
@@ -131,7 +129,6 @@ void test_rb_tree_insert_lookup(void)
 
 	/* Create a tree containing some values. Validate the
 	 * tree is consistent at all stages. */
-
 	tree = rb_tree_new((RBTreeCompareFunc) int_compare);
 
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
@@ -145,7 +142,6 @@ void test_rb_tree_insert_lookup(void)
 	assert(rb_tree_root_node(tree) != NULL);
 
 	/* Check that all values can be read back again */
-
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		node = rb_tree_lookup_node(tree, &i);
 		assert(node != NULL);
@@ -156,7 +152,6 @@ void test_rb_tree_insert_lookup(void)
 	}
 
 	/* Check that invalid nodes are not found */
-
 	i = -1;
 	assert(rb_tree_lookup_node(tree, &i) == NULL);
 	i = NUM_TEST_VALUES + 100;
@@ -177,7 +172,6 @@ void test_rb_tree_child(void)
 
 	/* Create a tree containing some values. Validate the
 	 * tree is consistent at all stages. */
-
 	tree = rb_tree_new((RBTreeCompareFunc) int_compare);
 
 	for (i=0; i<3; ++i) {
@@ -185,7 +179,6 @@ void test_rb_tree_child(void)
 	}
 
 	/* Check the tree */
-
 	root = rb_tree_root_node(tree);
 	p = rb_tree_node_value(root);
 	assert(*p == 2);
@@ -199,7 +192,6 @@ void test_rb_tree_child(void)
 	assert(*p == 3);
 
 	/* Check invalid values */
-
 	assert(rb_tree_node_child(root, 10000) == NULL);
 	assert(rb_tree_node_child(root, 2) == NULL);
 
@@ -213,15 +205,12 @@ void test_out_of_memory(void)
 	int i;
 
 	/* Create a tree */
-
 	tree = create_tree();
 
 	/* Set a limit to stop any more entries from being added. */
-
 	alloc_test_set_limit(0);
 
 	/* Try to add some more nodes and verify that this fails. */
-
 	for (i=10000; i<20000; ++i) {
 		node = rb_tree_insert(tree, &i, &i);
 		assert(node == NULL);
@@ -236,12 +225,10 @@ void test_rb_tree_free(void)
 	RBTree *tree;
 
 	/* Try freeing an empty tree */
-
 	tree = rb_tree_new((RBTreeCompareFunc) int_compare);
 	rb_tree_free(tree);
 
 	/* Create a big tree and free it */
-
 	tree = create_tree();
 	rb_tree_free(tree);
 }
@@ -253,7 +240,6 @@ void test_rb_tree_lookup(void)
 	int *value;
 
 	/* Create a tree and look up all values */
-
 	tree = create_tree();
 
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
@@ -264,7 +250,6 @@ void test_rb_tree_lookup(void)
 	}
 
 	/* Test invalid values */
-
 	i = -1;
 	assert(rb_tree_lookup(tree, &i) == NULL);
 	i = NUM_TEST_VALUES + 1;
@@ -286,19 +271,16 @@ void test_rb_tree_remove(void)
 	tree = create_tree();
 
 	/* Try removing invalid entries */
-
 	i = NUM_TEST_VALUES + 100;
 	assert(rb_tree_remove(tree, &i) == 0);
 	i = -1;
 	assert(rb_tree_remove(tree, &i) == 0);
 
 	/* Delete the nodes from the tree */
-
 	expected_entries = NUM_TEST_VALUES;
 
 	/* This looping arrangement causes nodes to be removed in a
 	 * randomish fashion from all over the tree. */
-
 	for (x=0; x<10; ++x) {
 		for (y=0; y<10; ++y) {
 			for (z=0; z<10; ++z) {
@@ -313,7 +295,6 @@ void test_rb_tree_remove(void)
 	}
 
 	/* All entries removed, should be empty now */
-
 	assert(rb_tree_root_node(tree) == NULL);
 
 	rb_tree_free(tree);
@@ -329,7 +310,6 @@ void test_rb_tree_to_array(void)
 	int **array;
 
 	/* Add all entries to the tree */
-
 	tree = rb_tree_new((RBTreeCompareFunc) int_compare);
 
 	for (i=0; i<num_entries; ++i) {
@@ -339,7 +319,6 @@ void test_rb_tree_to_array(void)
 	assert(rb_tree_num_entries(tree) == num_entries);
 
 	/* Convert to an array and check the contents */
-
 	array = (int **) rb_tree_to_array(tree);
 
 	for (i=0; i<num_entries; ++i) {
@@ -349,7 +328,6 @@ void test_rb_tree_to_array(void)
 	free(array);
 
 	/* Test out of memory scenario */
-
 	alloc_test_set_limit(0);
 
 	array = (int **) rb_tree_to_array(tree);

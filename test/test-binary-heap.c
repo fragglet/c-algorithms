@@ -42,7 +42,6 @@ void test_binary_heap_new_free(void)
 	}
 
 	/* Test low memory scenario */
-
 	alloc_test_set_limit(0);
 	heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
 	assert(heap == NULL);
@@ -78,14 +77,12 @@ void test_min_heap(void)
 	heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
 
 	/* Push a load of values onto the heap */
-
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		assert(binary_heap_insert(heap, &test_array[i]) != 0);
 	}
 
 	/* Pop values off the heap and check they are in order */
-
 	i = -1;
 	while (binary_heap_num_entries(heap) > 0) {
 		val = (int *) binary_heap_pop(heap);
@@ -95,7 +92,6 @@ void test_min_heap(void)
 	}
 
 	/* Test popping from an empty heap */
-
 	assert(binary_heap_num_entries(heap) == 0);
 	assert(binary_heap_pop(heap) == BINARY_HEAP_NULL);
 
@@ -111,14 +107,12 @@ void test_max_heap(void)
 	heap = binary_heap_new(BINARY_HEAP_TYPE_MAX, int_compare);
 
 	/* Push a load of values onto the heap */
-
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		assert(binary_heap_insert(heap, &test_array[i]) != 0);
 	}
 
 	/* Pop values off the heap and check they are in order */
-
 	i = NUM_TEST_VALUES;
 	while (binary_heap_num_entries(heap) > 0) {
 		val = (int *) binary_heap_pop(heap);
@@ -142,7 +136,6 @@ void test_out_of_memory(void)
 	int i;
 
 	/* Allocate a heap and fill to the default limit */
-
 	heap = binary_heap_new(BINARY_HEAP_TYPE_MIN, int_compare);
 
 	alloc_test_set_limit(0);
@@ -154,7 +147,6 @@ void test_out_of_memory(void)
 	assert(binary_heap_num_entries(heap) == 16);
 
 	/* Check that we cannot add new values */
-
 	for (i=0; i<16; ++i) {
 		assert(binary_heap_insert(heap, &values[i]) == 0);
 		assert(binary_heap_num_entries(heap) == 16);
@@ -162,7 +154,6 @@ void test_out_of_memory(void)
 
 	/* Check that we can read the values back out again and they
 	 * are in the right order. */
-
 	for (i=0; i<16; ++i) {
 		value = binary_heap_pop(heap);
 		assert(*value == i);

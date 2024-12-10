@@ -65,15 +65,12 @@ typedef struct _ArrayList ArrayList;
 struct _ArrayList {
 
 	/** Entries in the array */
-
 	ArrayListValue *data;
 
 	/** Length of the array */
-
 	unsigned int length;
 
 	/** Private data and should not be accessed */
-
 	unsigned int _alloced;
 };
 

@@ -27,7 +27,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 unsigned int string_hash(void *string)
 {
 	/* This is the djb2 string hash function */
-
 	unsigned int result = 5381;
 	unsigned char *p;
 

@@ -62,13 +62,11 @@ Queue *queue_new(void)
 void queue_free(Queue *queue)
 {
 	/* Empty the queue */
-
 	while (!queue_is_empty(queue)) {
 		queue_pop_head(queue);
 	}
 
 	/* Free back the queue */
-
 	free(queue);
 }
 
@@ -77,7 +75,6 @@ int queue_push_head(Queue *queue, QueueValue data)
 	QueueEntry *new_entry;
 
 	/* Create the new entry and fill in the fields in the structure */
-
 	new_entry = malloc(sizeof(QueueEntry));
 
 	if (new_entry == NULL) {
@@ -89,12 +86,10 @@ int queue_push_head(Queue *queue, QueueValue data)
 	new_entry->next = queue->head;
 
 	/* Insert into the queue */
-
 	if (queue->head == NULL) {
 
 		/* If the queue was previously empty, both the head and
 		 * tail must be pointed at the new entry */
-
 		queue->head = new_entry;
 		queue->tail = new_entry;
 
@@ -102,11 +97,9 @@ int queue_push_head(Queue *queue, QueueValue data)
 
 		/* First entry in the list must have prev pointed back to this
 		 * new entry */
-
 		queue->head->prev = new_entry;
 
 		/* Only the head must be pointed at the new entry */
-
 		queue->head = new_entry;
 	}
 
@@ -119,13 +112,11 @@ QueueValue queue_pop_head(Queue *queue)
 	QueueValue result;
 
 	/* Check the queue is not empty */
-
 	if (queue_is_empty(queue)) {
 		return QUEUE_NULL;
 	}
 
 	/* Unlink the first entry from the head of the queue */
-
 	entry = queue->head;
 	queue->head = entry->next;
 	result = entry->data;
@@ -134,17 +125,14 @@ QueueValue queue_pop_head(Queue *queue)
 
 		/* If doing this has unlinked the last entry in the queue, set
 		 * tail to NULL as well. */
-
 		queue->tail = NULL;
 	} else {
 
 		/* The new first in the queue has no previous entry */
-
 		queue->head->prev = NULL;
 	}
 
 	/* Free back the queue entry structure */
-
 	free(entry);
 
 	return result;
@@ -164,7 +152,6 @@ int queue_push_tail(Queue *queue, QueueValue data)
 	QueueEntry *new_entry;
 
 	/* Create the new entry and fill in the fields in the structure */
-
 	new_entry = malloc(sizeof(QueueEntry));
 
 	if (new_entry == NULL) {
@@ -176,12 +163,10 @@ int queue_push_tail(Queue *queue, QueueValue data)
 	new_entry->next = NULL;
 
 	/* Insert into the queue tail */
-
 	if (queue->tail == NULL) {
 
 		/* If the queue was previously empty, both the head and
 		 * tail must be pointed at the new entry */
-
 		queue->head = new_entry;
 		queue->tail = new_entry;
 
@@ -189,11 +174,9 @@ int queue_push_tail(Queue *queue, QueueValue data)
 
 		/* The current entry at the tail must have next pointed to this
 		 * new entry */
-
 		queue->tail->next = new_entry;
 
 		/* Only the tail must be pointed at the new entry */
-
 		queue->tail = new_entry;
 	}
 
@@ -206,13 +189,11 @@ QueueValue queue_pop_tail(Queue *queue)
 	QueueValue result;
 
 	/* Check the queue is not empty */
-
 	if (queue_is_empty(queue)) {
 		return QUEUE_NULL;
 	}
 
 	/* Unlink the first entry from the tail of the queue */
-
 	entry = queue->tail;
 	queue->tail = entry->prev;
 	result = entry->data;
@@ -221,18 +202,15 @@ QueueValue queue_pop_tail(Queue *queue)
 
 		/* If doing this has unlinked the last entry in the queue, set
 		 * head to NULL as well. */
-
 		queue->head = NULL;
 
 	} else {
 
 		/* The new entry at the tail has no next entry. */
-
 		queue->tail->next = NULL;
 	}
 
 	/* Free back the queue entry structure */
-
 	free(entry);
 
 	return result;

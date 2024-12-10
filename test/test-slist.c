@@ -60,7 +60,6 @@ void test_slist_append(void)
 	assert(slist_nth_data(list, 3) == &variable4);
 
 	/* Test out of memory scenario */
-
 	alloc_test_set_limit(0);
 	assert(slist_length(list) == 4);
 	assert(slist_append(&list, &variable1) == NULL);
@@ -84,7 +83,6 @@ void test_slist_prepend(void)
 	assert(slist_nth_data(list, 3) == &variable1);
 
 	/* Test out of memory scenario */
-
 	alloc_test_set_limit(0);
 	assert(slist_length(list) == 4);
 	assert(slist_prepend(&list, &variable1) == NULL);
@@ -98,13 +96,11 @@ void test_slist_free(void)
 	SListEntry *list;
 
 	/* Create a list and free it */
-
 	list = generate_list();
 
 	slist_free(list);
 
 	/* Check the empty list frees correctly */
-
 	slist_free(NULL);
 }
 
@@ -137,7 +133,6 @@ void test_slist_nth_entry(void)
 	list = generate_list();
 
 	/* Check all values in the list */
-
 	entry = slist_nth_entry(list, 0);
 	assert(slist_data(entry) == &variable1);
 	entry = slist_nth_entry(list, 1);
@@ -148,7 +143,6 @@ void test_slist_nth_entry(void)
 	assert(slist_data(entry) == &variable4);
 
 	/* Check out of range values */
-
 	entry = slist_nth_entry(list, 4);
 	assert(entry == NULL);
 	entry = slist_nth_entry(list, 400);
@@ -164,14 +158,12 @@ void test_slist_nth_data(void)
 	list = generate_list();
 
 	/* Check all values in the list */
-
 	assert(slist_nth_data(list, 0) == &variable1);
 	assert(slist_nth_data(list, 1) == &variable2);
 	assert(slist_nth_data(list, 2) == &variable3);
 	assert(slist_nth_data(list, 3) == &variable4);
 
 	/* Check out of range values */
-
 	assert(slist_nth_data(list, 4) == NULL);
 	assert(slist_nth_data(list, 400) == NULL);
 
@@ -183,19 +175,16 @@ void test_slist_length(void)
 	SListEntry *list;
 
 	/* Generate a list and check that it is four entries long */
-
 	list = generate_list();
 
 	assert(slist_length(list) == 4);
 
 	/* Add an entry and check that it still works properly */
-
 	slist_prepend(&list, &variable1);
 
 	assert(slist_length(list) == 5);
 
 	/* Check the length of the empty list */
-
 	assert(slist_length(NULL) == 0);
 
 	slist_free(list);
@@ -210,29 +199,23 @@ void test_slist_remove_entry(void)
 	list = generate_list();
 
 	/* Remove the third entry */
-
 	entry = slist_nth_entry(list, 2);
 	assert(slist_remove_entry(&list, entry) != 0);
 	assert(slist_length(list) == 3);
 
 	/* Remove the first entry */
-
 	entry = slist_nth_entry(list, 0);
 	assert(slist_remove_entry(&list, entry) != 0);
 	assert(slist_length(list) == 2);
 
 	/* Try some invalid removes */
-
 	/* This was already removed: */
-
 	assert(slist_remove_entry(&list, entry) == 0);
 
 	/* NULL */
-
 	assert(slist_remove_entry(&list, NULL) == 0);
 
 	/* Removing NULL from an empty list */
-
 	assert(slist_remove_entry(&empty_list, NULL) == 0);
 
 	slist_free(list);
@@ -247,7 +230,6 @@ void test_slist_remove_data(void)
 	unsigned int i;
 
 	/* Generate a list containing all the entries in the array */
-
 	list = NULL;
 
 	for (i=0; i<num_entries; ++i) {
@@ -255,26 +237,22 @@ void test_slist_remove_data(void)
 	}
 
 	/* Test removing invalid data */
-
 	val = 0;
 	assert(slist_remove_data(&list, int_equal, &val) == 0);
 	val = 56;
 	assert(slist_remove_data(&list, int_equal, &val) == 0);
 
 	/* Remove the number 8 from the list */
-
 	val = 8;
 	assert(slist_remove_data(&list, int_equal, &val) == 1);
 	assert(slist_length(list) == num_entries - 1);
 
 	/* Remove the number 4 from the list (occurs multiple times) */
-
 	val = 4;
 	assert(slist_remove_data(&list, int_equal, &val) == 4);
 	assert(slist_length(list) == num_entries - 5);
 
 	/* Remove the number 89 from the list (first entry) */
-
 	val = 89;
 	assert(slist_remove_data(&list, int_equal, &val) == 1);
 	assert(slist_length(list) == num_entries - 6);
@@ -299,11 +277,9 @@ void test_slist_sort(void)
 	slist_sort(&list, int_compare);
 
 	/* List length is unchanged */
-
 	assert(slist_length(list) == num_entries);
 
 	/* Check the list is sorted */
-
 	for (i=0; i<num_entries; ++i) {
 		int *value;
 
@@ -314,7 +290,6 @@ void test_slist_sort(void)
 	slist_free(list);
 
 	/* Check sorting an empty list */
-
 	list = NULL;
 
 	slist_sort(&list, int_compare);
@@ -333,14 +308,12 @@ void test_slist_find_data(void)
 	int *data;
 
 	/* Generate a list containing the entries */
-
 	list = NULL;
 	for (i=0; i<num_entries; ++i) {
 		slist_append(&list, &entries[i]);
 	}
 
 	/* Check that each value can be searched for correctly */
-
 	for (i=0; i<num_entries; ++i) {
 
 		val = entries[i];
@@ -354,7 +327,6 @@ void test_slist_find_data(void)
 	}
 
 	/* Check some invalid values return NULL */
-
 	val = 0;
 	assert(slist_find_data(list, int_equal, &val) == NULL);
 	val = 56;
@@ -380,7 +352,6 @@ void test_slist_to_array(void)
 	free(array);
 
 	/* Test out of memory scenario */
-
 	alloc_test_set_limit(0);
 
 	array = slist_to_array(list);
@@ -399,7 +370,6 @@ void test_slist_iterate(void)
 	int counter;
 
 	/* Create a list with 50 entries */
-
 	list = NULL;
 
 	for (i=0; i<50; ++i) {
@@ -407,17 +377,14 @@ void test_slist_iterate(void)
 	}
 
 	/* Iterate over the list and count the number of entries visited */
-
 	counter = 0;
 
 	slist_iterate(&list, &iter);
 
 	/* Test remove before slist_iter_next has been called */
-
 	slist_iter_remove(&iter);
 
 	/* Iterate over the list */
-
 	while (slist_iter_has_more(&iter)) {
 
 		data = (int *) slist_iter_next(&iter);
@@ -426,22 +393,18 @@ void test_slist_iterate(void)
 		++counter;
 
 		/* Remove half the entries from the list */
-
 		if ((counter % 2) == 0) {
 			slist_iter_remove(&iter);
 
 			/* Test double remove */
-
 			slist_iter_remove(&iter);
 		}
 	}
 
 	/* Test iter_next after iteration has completed. */
-
 	assert(slist_iter_next(&iter) == SLIST_NULL);
 
 	/* Test remove at the end of a list */
-
 	slist_iter_remove(&iter);
 
 	assert(counter == 50);
@@ -450,7 +413,6 @@ void test_slist_iterate(void)
 	slist_free(list);
 
 	/* Test iterating over an empty list */
-
 	list = NULL;
 	counter = 0;
 
@@ -464,7 +426,6 @@ void test_slist_iterate(void)
 		++counter;
 
 		/* Remove half the entries from the list */
-
 		if ((counter % 2) == 0) {
 			slist_iter_remove(&iter);
 		}
@@ -485,7 +446,6 @@ void test_slist_iterate_bad_remove(void)
 	int *val;
 
 	/* Create a list with 49 entries */
-
 	list = NULL;
 
 	for (i=0; i<49; ++i) {
@@ -496,7 +456,6 @@ void test_slist_iterate_bad_remove(void)
 	/* Iterate over the list, removing each element in turn.  We
 	 * use an odd number of list elements so that the first and
 	 * last entries are removed. */
-
 	slist_iterate(&list, &iter);
 
 	while (slist_iter_has_more(&iter)) {
@@ -505,7 +464,6 @@ void test_slist_iterate_bad_remove(void)
 		/* Remove all the even numbers. Check that slist_iter_remove
 		 * can cope with the fact that the current element has
 		 * already been removed. */
-
 		if ((*val % 2) == 0) {
 			assert(slist_remove_data(&list, int_equal, val) != 0);
 			slist_iter_remove(&iter);

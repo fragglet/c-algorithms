@@ -51,11 +51,9 @@ HashTable *generate_hash_table(void)
 	 * string versions of the integer values 0..9999 to ensure that there
 	 * will be collisions within the hash table (using integer values
 	 * with int_hash causes no collisions) */
-
 	hash_table = hash_table_new(string_hash, string_equal);
 
 	/* Insert lots of values */
-
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		sprintf(buf, "%i", i);
 
@@ -65,7 +63,6 @@ HashTable *generate_hash_table(void)
 	}
 
 	/* Automatically free all the values with the hash table */
-
 	hash_table_register_free_functions(hash_table, NULL, free);
 
 	return hash_table;
@@ -82,18 +79,15 @@ void test_hash_table_new_free(void)
 	assert(hash_table != NULL);
 
 	/* Add some values */
-
 	hash_table_insert(hash_table, &value1, &value1);
 	hash_table_insert(hash_table, &value2, &value2);
 	hash_table_insert(hash_table, &value3, &value3);
 	hash_table_insert(hash_table, &value4, &value4);
 
 	/* Free the hash table */
-
 	hash_table_free(hash_table);
 
 	/* Test out of memory scenario */
-
 	alloc_test_set_limit(0);
 	hash_table = hash_table_new(int_hash, int_equal);
 	assert(hash_table == NULL);
@@ -115,13 +109,11 @@ void test_hash_table_insert_lookup(void)
 	int i;
 
 	/* Generate a hash table */
-
 	hash_table = generate_hash_table();
 
 	assert(hash_table_num_entries(hash_table) == NUM_TEST_VALUES);
 
 	/* Check all values */
-
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		sprintf(buf, "%i", i);
 		value = hash_table_lookup(hash_table, buf);
@@ -130,14 +122,12 @@ void test_hash_table_insert_lookup(void)
 	}
 
 	/* Lookup on invalid values returns NULL */
-
 	sprintf(buf, "%i", -1);
 	assert(hash_table_lookup(hash_table, buf) == NULL);
 	sprintf(buf, "%i", NUM_TEST_VALUES);
 	assert(hash_table_lookup(hash_table, buf) == NULL);
 
 	/* Insert overwrites existing entries with the same key */
-
 	sprintf(buf, "%i", 12345);
 	hash_table_insert(hash_table, buf, strdup("hello world"));
 	value = hash_table_lookup(hash_table, buf);
@@ -158,19 +148,15 @@ void test_hash_table_remove(void)
 	assert(hash_table_lookup(hash_table, buf) != NULL);
 
 	/* Remove an entry */
-
 	hash_table_remove(hash_table, buf);
 
 	/* Check entry counter */
-
 	assert(hash_table_num_entries(hash_table) == 9999);
 
 	/* Check that NULL is returned now */
-
 	assert(hash_table_lookup(hash_table, buf) == NULL);
 
 	/* Try removing a non-existent entry */
-
 	sprintf(buf, "%i", -1);
 	hash_table_remove(hash_table, buf);
 
@@ -188,7 +174,6 @@ void test_hash_table_iterating(void)
 	hash_table = generate_hash_table();
 
 	/* Iterate over all values in the table */
-
 	count = 0;
 
 	hash_table_iterate(hash_table, &iterator);
@@ -202,14 +187,12 @@ void test_hash_table_iterating(void)
 	assert(count == NUM_TEST_VALUES);
 
 	/* Test iter_next after iteration has completed. */
-
 	HashTablePair pair = hash_table_iter_next(&iterator);
 	assert(pair.value == HASH_TABLE_NULL);
 
 	hash_table_free(hash_table);
 
 	/* Test iterating over an empty table */
-
 	hash_table = hash_table_new(int_hash, int_equal);
 
 	hash_table_iterate(hash_table, &iterator);
@@ -237,7 +220,6 @@ void test_hash_table_iterating_remove(void)
 	hash_table = generate_hash_table();
 
 	/* Iterate over all values in the table */
-
 	count = 0;
 	removed = 0;
 
@@ -246,12 +228,10 @@ void test_hash_table_iterating_remove(void)
 	while (hash_table_iter_has_more(&iterator)) {
 
 		/* Read the next value */
-
 		pair = hash_table_iter_next(&iterator);
 		val = pair.value;
 
 		/* Remove every hundredth entry */
-
 		if ((atoi(val) % 100) == 0) {
 			hash_table_remove(hash_table, val);
 			++removed;
@@ -261,7 +241,6 @@ void test_hash_table_iterating_remove(void)
 	}
 
 	/* Check counts */
-
 	assert(removed == 100);
 	assert(count == NUM_TEST_VALUES);
 
@@ -269,7 +248,6 @@ void test_hash_table_iterating_remove(void)
 	       == NUM_TEST_VALUES - removed);
 
 	/* Check all entries divisible by 100 were really removed */
-
 	for (i=0; i<NUM_TEST_VALUES; ++i) {
 		sprintf(buf, "%i", i);
 
@@ -339,7 +317,6 @@ void test_hash_table_free_functions(void)
 	int i;
 
 	/* Create a hash table, fill it with values */
-
 	hash_table = hash_table_new(int_hash, int_equal);
 
 	hash_table_register_free_functions(hash_table, free_key, free_value);
@@ -357,7 +334,6 @@ void test_hash_table_free_functions(void)
 	assert(allocated_values == NUM_TEST_VALUES);
 
 	/* Check that removing a key works */
-
 	i = NUM_TEST_VALUES / 2;
 	hash_table_remove(hash_table, &i);
 
@@ -365,7 +341,6 @@ void test_hash_table_free_functions(void)
 	assert(allocated_values == NUM_TEST_VALUES - 1);
 
 	/* Check that replacing an existing key works */
-
 	key = new_key(NUM_TEST_VALUES / 3);
 	value = new_value(999);
 
@@ -378,7 +353,6 @@ void test_hash_table_free_functions(void)
 	assert(allocated_values == NUM_TEST_VALUES - 1);
 
 	/* A free of the hash table should free all of the keys and values */
-
 	hash_table_free(hash_table);
 
 	assert(allocated_keys == 0);
@@ -396,7 +370,6 @@ void test_hash_table_out_of_memory(void)
 	hash_table = hash_table_new(int_hash, int_equal);
 
 	/* Test normal failure */
-
 	alloc_test_set_limit(0);
 	values[0] = 0;
 	assert(hash_table_insert(hash_table, &values[0], &values[0]) == 0);
@@ -409,7 +382,6 @@ void test_hash_table_out_of_memory(void)
 	 * size when 1/3 full, so the 66th entry should cause the insert
 	 * to fail.
 	 */
-
 	for (i=0; i<65; ++i) {
 		values[i] = (int) i;
 
@@ -421,7 +393,6 @@ void test_hash_table_out_of_memory(void)
 	assert(hash_table_num_entries(hash_table) == 65);
 
 	/* Test the 66th insert */
-
 	alloc_test_set_limit(0);
 
 	values[65] = 65;
@@ -440,7 +411,6 @@ void test_hash_iterator_key_pair()
 	hash_table = hash_table_new(int_hash, int_equal);
 
 	/* Add some values */
-
 	hash_table_insert(hash_table, &value1, &value1);
 	hash_table_insert(hash_table, &value2, &value2);
 
@@ -449,7 +419,6 @@ void test_hash_iterator_key_pair()
 	while (hash_table_iter_has_more(&iterator)) {
 
 		/* Retrieve both Key and Value */
-
 		pair = hash_table_iter_next(&iterator);
 
 		int *key = (int*) pair.key;

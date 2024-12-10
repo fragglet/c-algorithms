@@ -35,7 +35,6 @@ static void test_malloc_free(void)
 	int i;
 
 	/* Allocate a block and check that the counters increase */
-
 	assert(alloc_test_get_allocated() == 0);
 
 	block = malloc(1024);
@@ -44,7 +43,6 @@ static void test_malloc_free(void)
 	assert(alloc_test_get_allocated() == 1024);
 
 	/* Check that the block is initialised with garbage */
-
 	ptr = block;
 
 	for (i=0; i<1024; ++i) {
@@ -52,13 +50,11 @@ static void test_malloc_free(void)
 	}
 
 	/* Free the block back and check the counters decrease */
-
 	free(block);
 
 	assert(alloc_test_get_allocated() == 0);
 
 	/* Try setting a limit */
-
 	alloc_test_set_limit(3);
 
 	block = malloc(1024);
@@ -81,25 +77,21 @@ static void test_realloc(void)
 	void *block2;
 
 	/* This block will be allocated while the other tests are run */
-
 	block2 = malloc(1024);
 
 	/* Allocate a block */
-
 	block = malloc(1024);
 
 	assert(block != NULL);
 	assert(alloc_test_get_allocated() == 1024 + 1024);
 
 	/* Reallocate the block larger */
-
 	block = realloc(block, 2048);
 	assert(block != NULL);
 
 	assert(alloc_test_get_allocated() == 2048 + 1024);
 
 	/* Reallocate the block smaller */
-
 	block = realloc(block, 1500);
 	assert(block != NULL);
 
@@ -110,7 +102,6 @@ static void test_realloc(void)
 	assert(alloc_test_get_allocated() == 0 + 1024);
 
 	/* Test passing a NULL pointer to make realloc behave as malloc() */
-
 	block = realloc(NULL, 1024);
 
 	assert(block != NULL);
@@ -123,7 +114,6 @@ static void test_realloc(void)
 	assert(alloc_test_get_allocated() == 0);
 
 	/* Test realloc with a limit set */
-
 	block = malloc(512);
 	assert(block != NULL);
 	assert(alloc_test_get_allocated() == 512);
@@ -141,7 +131,6 @@ static void test_realloc(void)
 	assert(alloc_test_get_allocated() == 0);
 
 	/* Test NULL realloc with limit */
-
 	alloc_test_set_limit(1);
 
 	block = realloc(NULL, 1024);
@@ -162,7 +151,6 @@ static void test_calloc(void)
 	assert(alloc_test_get_allocated() == 0);
 
 	/* Allocate a block */
-
 	block = calloc(16, 64);
 
 	assert(alloc_test_get_allocated() == 1024);
@@ -170,7 +158,6 @@ static void test_calloc(void)
 	assert(block != NULL);
 
 	/* Check the block contents are initialised to zero */
-
 	for (i=0; i<1024; ++i) {
 		assert(block[i] == 0);
 	}
@@ -180,7 +167,6 @@ static void test_calloc(void)
 	assert(alloc_test_get_allocated() == 0);
 
 	/* Test calloc with limit */
-
 	alloc_test_set_limit(1);
 
 	block = calloc(1024, 1);
@@ -200,7 +186,6 @@ static void test_strdup(void)
 	assert(alloc_test_get_allocated() == 0);
 
 	/* Test strdup */
-
 	str = strdup("hello world");
 
 	assert(str != NULL);
@@ -213,7 +198,6 @@ static void test_strdup(void)
 	assert(alloc_test_get_allocated() == 0);
 
 	/* Test strdup with limit */
-
 	alloc_test_set_limit(1);
 
 	str = strdup("hello world");
@@ -231,13 +215,11 @@ static void test_limits(void)
 	void *block;
 
 	/* Test normal malloc */
-
 	block = malloc(2048);
 	assert(block != NULL);
 	free(block);
 
 	/* Test malloc with limit */
-
 	alloc_test_set_limit(1);
 	block = malloc(1024);
 	assert(block != NULL);
@@ -245,7 +227,6 @@ static void test_limits(void)
 	free(block);
 
 	/* Check that it is possible to remove the limit */
-
 	alloc_test_set_limit(-1);
 	block = malloc(1024);
 	assert(block != NULL);

@@ -62,7 +62,6 @@ BinaryHeap *binary_heap_new(BinaryHeapType heap_type,
 	heap->compare_func = compare_func;
 
 	/* Initial size of 16 elements */
-
 	heap->alloced_size = 16;
 	heap->values = malloc(sizeof(BinaryHeapValue) * heap->alloced_size);
 
@@ -88,11 +87,9 @@ int binary_heap_insert(BinaryHeap *heap, BinaryHeapValue value)
 	unsigned int parent;
 
 	/* Possibly realloc the heap to a larger size */
-
 	if (heap->num_values >= heap->alloced_size) {
 
 		/* Double the table size */
-
 		new_size = heap->alloced_size * 2;
 		new_values = realloc(heap->values,
 		                     sizeof(BinaryHeapValue) * new_size);
@@ -106,40 +103,32 @@ int binary_heap_insert(BinaryHeap *heap, BinaryHeapValue value)
 	}
 
 	/* Add to the bottom of the heap and start from there */
-
 	index = heap->num_values;
 	++heap->num_values;
 
 	/* Percolate the value up to the top of the heap */
-
 	while (index > 0) {
 
 		/* The parent index is found by halving the node index */
-
 		parent = (index - 1) / 2;
 
 		/* Compare the node with its parent */
-
 		if (binary_heap_cmp(heap, heap->values[parent], value) < 0) {
 
 			/* Ordered correctly - insertion is complete */
-
 			break;
 
 		} else {
 
 			/* Need to swap this node with its parent */
-
 			heap->values[index] = heap->values[parent];
 
 			/* Advance up to the parent */
-
 			index = parent;
 		}
 	}
 
 	/* Save the new value in the final location */
-
 	heap->values[index] = value;
 
 	return 1;
@@ -154,29 +143,24 @@ BinaryHeapValue binary_heap_pop(BinaryHeap *heap)
 	unsigned int child1, child2;
 
 	/* Empty heap? */
-
 	if (heap->num_values == 0) {
 		return BINARY_HEAP_NULL;
 	}
 
 	/* Take the value from the top of the heap */
-
 	result = heap->values[0];
 
 	/* Remove the last value from the heap; we will percolate this down
 	 * from the top. */
-
 	new_value = heap->values[heap->num_values - 1];
 	--heap->num_values;
 
 	/* Percolate the new top value down */
-
 	index = 0;
 
 	for (;;) {
 
 		/* Calculate the array indexes of the children of this node */
-
 		child1 = index * 2 + 1;
 		child2 = index * 2 + 2;
 
@@ -187,7 +171,6 @@ BinaryHeapValue binary_heap_pop(BinaryHeap *heap)
 
 			/* Left child is less than the node.  We need to swap
 			 * with one of the children, whichever is less. */
-
 			if (child2 < heap->num_values
 			 && binary_heap_cmp(heap,
 			                    heap->values[child1],
@@ -204,24 +187,20 @@ BinaryHeapValue binary_heap_pop(BinaryHeap *heap)
 
 			/* Right child is less than the node.  Swap with the
 			 * right child. */
-
 			next_index = child2;
 
 		} else {
 			/* Node is less than both its children. The heap
 			 * condition is satisfied.  * We can stop percolating
 			 * down. */
-
 			heap->values[index] = new_value;
 			break;
 		}
 
 		/* Swap the current node with the least of the child nodes. */
-
 		heap->values[index] = heap->values[next_index];
 
 		/* Advance to the child we chose */
-
 		index = next_index;
 	}
 

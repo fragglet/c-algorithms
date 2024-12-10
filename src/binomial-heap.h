@@ -52,11 +52,9 @@ extern "C" {
 
 typedef enum {
 	/** A minimum heap. */
-
 	BINOMIAL_HEAP_TYPE_MIN,
 
 	/** A maximum heap. */
-
 	BINOMIAL_HEAP_TYPE_MAX
 } BinomialHeapType;
 

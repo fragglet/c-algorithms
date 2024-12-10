@@ -72,7 +72,6 @@ static BlockHeader *alloc_test_get_header(void *ptr)
 	BlockHeader *result;
 
 	/* Go back from the start of the memory block to get the header. */
-
 	result = ((BlockHeader *) ptr) - 1;
 
 	assert(result->magic_number == ALLOC_TEST_MAGIC);
@@ -107,14 +106,12 @@ void *alloc_test_malloc(size_t bytes)
 	void *ptr;
 
 	/* Check if we have reached the allocation limit. */
-
 	if (allocation_limit == 0) {
 		return NULL;
 	}
 
 	/* Allocate the requested block with enough room for the block header
 	 * as well. */
-
 	header = malloc(sizeof(BlockHeader) + bytes);
 
 	if (header == NULL) {
@@ -126,22 +123,18 @@ void *alloc_test_malloc(size_t bytes)
 
 	/* Fill memory with MALLOC_PATTERN, to ensure that code under test
 	 * does not rely on memory being initialised to zero. */
-
 	ptr = header + 1;
 	alloc_test_overwrite(ptr, bytes, MALLOC_PATTERN);
 
 	/* Update counter */
-
 	allocated_bytes += bytes;
 
 	/* Decrease the allocation limit */
-
 	if (allocation_limit > 0) {
 		--allocation_limit;
 	}
 
 	/* Skip past the header and return the block itself */
-
 	return header + 1;
 }
 
@@ -153,33 +146,27 @@ void alloc_test_free(void *ptr)
 	size_t block_size;
 
 	/* Must accept NULL as a valid pointer to free. */
-
 	if (ptr == NULL) {
 		return;
 	}
 
 	/* Get the block header and do a sanity check */
-
 	header = alloc_test_get_header(ptr);
 	block_size = header->bytes;
 	assert(allocated_bytes >= block_size);
 
 	/* Trash the allocated block to foil any code that relies on memory
 	 * that has been freed. */
-
 	alloc_test_overwrite(ptr, header->bytes, FREE_PATTERN);
 
 	/* Trash the magic number in the block header to stop the same block
 	 * from being freed again. */
-
 	header->magic_number = 0;
 
 	/* Free the allocated memory. */
-
 	free(header);
 
 	/* Update counter */
-
 	allocated_bytes -= block_size;
 }
 
@@ -190,7 +177,6 @@ void *alloc_test_realloc(void *ptr, size_t bytes)
 	size_t bytes_to_copy;
 
 	/* Allocate the new block */
-
 	new_ptr = alloc_test_malloc(bytes);
 
 	if (new_ptr == NULL) {
@@ -198,7 +184,6 @@ void *alloc_test_realloc(void *ptr, size_t bytes)
 	}
 
 	/* Copy over the old data and free the old block, if there was any. */
-
 	if (ptr != NULL) {
 		header = alloc_test_get_header(ptr);
 
@@ -222,7 +207,6 @@ void *alloc_test_calloc(size_t nmemb, size_t bytes)
 	size_t total_bytes = nmemb * bytes;
 
 	/* Allocate the block. */
-
 	result = alloc_test_malloc(total_bytes);
 
 	if (result == NULL) {
@@ -230,7 +214,6 @@ void *alloc_test_calloc(size_t nmemb, size_t bytes)
 	}
 
 	/* Initialise to zero. */
-
 	memset(result, 0, total_bytes);
 
 	return result;

@@ -83,7 +83,6 @@ void trie_free(Trie *trie)
 	free_list = NULL;
 
 	/* Start with the root node */
-
 	if (trie->root_node != NULL) {
 		trie_free_list_push(&free_list, trie->root_node);
 	}
@@ -91,12 +90,10 @@ void trie_free(Trie *trie)
 	/* Go through the free list, freeing nodes.  We add new nodes as
 	 * we encounter them; in this way, all the nodes are freed
 	 * non-recursively. */
-
 	while (free_list != NULL) {
 		node = trie_free_list_pop(&free_list);
 
 		/* Add all children of this node to the free list */
-
 		for (i=0; i<256; ++i) {
 			if (node->next[i] != NULL) {
 				trie_free_list_push(&free_list, node->next[i]);
@@ -104,12 +101,10 @@ void trie_free(Trie *trie)
 		}
 
 		/* Free the node */
-
 		free(node);
 	}
 
 	/* Free the trie */
-
 	free(trie);
 }
 
@@ -119,24 +114,20 @@ static TrieNode *trie_find_end(Trie *trie, char *key)
 	char *p;
 
 	/* Search down the trie until the end of string is reached */
-
 	node = trie->root_node;
 
 	for (p=key; *p != '\0'; ++p) {
 
 		if (node == NULL) {
 			/* Not found in the tree. Return. */
-
 			return NULL;
 		}
 
 		/* Jump to the next node */
-
 		node = node->next[(unsigned char) *p];
 	}
 
 	/* This key is present if the value at the last node is not NULL */
-
 	return node;
 }
 
@@ -148,7 +139,6 @@ static TrieNode *trie_find_end_binary(Trie *trie, unsigned char *key,
 	int c;
 
 	/* Search down the trie until the end of string is reached */
-
 	node = trie->root_node;
 
 	for (j=0; j<key_length; j++) {
@@ -161,12 +151,10 @@ static TrieNode *trie_find_end_binary(Trie *trie, unsigned char *key,
 		c = (unsigned char) key[j];
 
 		/* Jump to the next node */
-
 		node = node->next[c];
 	}
 
 	/* This key is present if the value at the last node is not NULL */
-
 	return node;
 }
 
@@ -184,7 +172,6 @@ static void trie_insert_rollback(Trie *trie, unsigned char *key)
 	 * end of the string because trie_insert never got that far.  As a
 	 * result, it is not necessary to check for the end of string
 	 * delimiter (NUL) */
-
 	node = trie->root_node;
 	prev_ptr = &trie->root_node;
 	p = key;
@@ -192,14 +179,12 @@ static void trie_insert_rollback(Trie *trie, unsigned char *key)
 	while (node != NULL) {
 
 		/* Find the next node now. We might free this node. */
-
 		next_prev_ptr = &node->next[(unsigned char) *p];
 		next_node = *next_prev_ptr;
 		++p;
 
 		/* Decrease the use count and free the node if it
 		 * reaches zero. */
-
 		--node->use_count;
 
 		if (node->use_count == 0) {
@@ -213,7 +198,6 @@ static void trie_insert_rollback(Trie *trie, unsigned char *key)
 		}
 
 		/* Update pointers */
-
 		node = next_node;
 		prev_ptr = next_prev_ptr;
 	}
@@ -227,18 +211,15 @@ int trie_insert(Trie *trie, char *key, TrieValue value)
 	int c;
 
 	/* Cannot insert NULL values */
-
 	if (value == TRIE_NULL) {
 		return 0;
 	}
 
 	/* Search to see if this is already in the tree */
-
 	node = trie_find_end(trie, key);
 
 	/* Already in the tree? If so, replace the existing value and
 	 * return success. */
-
 	if (node != NULL && node->data != TRIE_NULL) {
 		node->data = value;
 		return 1;
@@ -246,7 +227,6 @@ int trie_insert(Trie *trie, char *key, TrieValue value)
 
 	/* Search down the trie until we reach the end of string,
 	 * creating nodes as necessary */
-
 	rover = &trie->root_node;
 	p = key;
 
@@ -257,14 +237,12 @@ int trie_insert(Trie *trie, char *key, TrieValue value)
 		if (node == NULL) {
 
 			/* Node does not exist, so create it */
-
 			node = (TrieNode *) calloc(1, sizeof(TrieNode));
 
 			if (node == NULL) {
 
 				/* Allocation failed.  Go back and undo
 				 * what we have done so far. */
-
 				trie_insert_rollback(trie,
 				                     (unsigned char *) key);
 
@@ -274,31 +252,25 @@ int trie_insert(Trie *trie, char *key, TrieValue value)
 			node->data = TRIE_NULL;
 
 			/* Link in to the trie */
-
 			*rover = node;
 		}
 
 		/* Increase the node use count */
-
 		++node->use_count;
 
 		/* Current character */
-
 		c = (unsigned char) *p;
 
 		/* Reached the end of string?  If so, we're finished. */
-
 		if (c == '\0') {
 
 			/* Set the data at the node we have reached */
-
 			node->data = value;
 
 			break;
 		}
 
 		/* Advance to the next node in the chain */
-
 		rover = &node->next[c];
 		++p;
 	}
@@ -315,18 +287,15 @@ int trie_insert_binary(Trie *trie, unsigned char *key, int key_length,
 	int p,c;
 
 	/* Cannot insert NULL values */
-
 	if (value == TRIE_NULL) {
 		return 0;
 	}
 
 	/* Search to see if this is already in the tree */
-
 	node = trie_find_end_binary(trie, key, key_length);
 
 	/* Already in the tree? If so, replace the existing value and
 	 * return success. */
-
 	if (node != NULL && node->data != TRIE_NULL) {
 		node->data = value;
 		return 1;
@@ -334,7 +303,6 @@ int trie_insert_binary(Trie *trie, unsigned char *key, int key_length,
 
 	/* Search down the trie until we reach the end of string,
 	 * creating nodes as necessary */
-
 	rover = &trie->root_node;
 	p = 0;
 
@@ -345,14 +313,12 @@ int trie_insert_binary(Trie *trie, unsigned char *key, int key_length,
 		if (node == NULL) {
 
 			/* Node does not exist, so create it */
-
 			node = (TrieNode *) calloc(1, sizeof(TrieNode));
 
 			if (node == NULL) {
 
 				/* Allocation failed.  Go back and undo
 				 * what we have done so far. */
-
 				trie_insert_rollback(trie, key);
 
 				return 0;
@@ -361,31 +327,25 @@ int trie_insert_binary(Trie *trie, unsigned char *key, int key_length,
 			node->data = TRIE_NULL;
 
 			/* Link in to the trie */
-
 			*rover = node;
 		}
 
 		/* Increase the node use count */
-
 		++node->use_count;
 
 		/* Current character */
-
 		c = (unsigned char) key[p];
 
 		/* Reached the end of string?  If so, we're finished. */
-
 		if (p == key_length) {
 
 			/* Set the data at the node we have reached */
-
 			node->data = value;
 
 			break;
 		}
 
 		/* Advance to the next node in the chain */
-
 		rover = &node->next[c];
 		++p;
 	}
@@ -401,7 +361,6 @@ int trie_remove_binary(Trie *trie, unsigned char *key, int key_length)
 	int p, c;
 
 	/* Find the end node and remove the value */
-
 	node = trie_find_end_binary(trie, key, key_length);
 
 	if (node != NULL && node->data != TRIE_NULL) {
@@ -412,7 +371,6 @@ int trie_remove_binary(Trie *trie, unsigned char *key, int key_length)
 
 	/* Now traverse the tree again as before, decrementing the use
 	 * count of each node.  Free back nodes as necessary. */
-
 	node = trie->root_node;
 	last_next_ptr = &trie->root_node;
 	p = 0;
@@ -424,7 +382,6 @@ int trie_remove_binary(Trie *trie, unsigned char *key, int key_length)
 		next = node->next[c];
 
 		/* Free this node if necessary */
-
 		--node->use_count;
 
 		if (node->use_count <= 0) {
@@ -435,7 +392,6 @@ int trie_remove_binary(Trie *trie, unsigned char *key, int key_length)
 			 * needs to be done once in a remove.  After the first
 			 * unlink, all further nodes are also going to be
 			 * free'd. */
-
 			if (last_next_ptr != NULL) {
 				*last_next_ptr = NULL;
 				last_next_ptr = NULL;
@@ -452,18 +408,15 @@ int trie_remove_binary(Trie *trie, unsigned char *key, int key_length)
 		/* If necessary, save the location of the "next" pointer
 		 * so that it may be set to NULL on the next iteration if
 		 * the next node visited is freed. */
-
 		if (last_next_ptr != NULL) {
 			last_next_ptr = &node->next[c];
 		}
 
 		/* Jump to the next node */
-
 		node = next;
 	}
 
 	/* Removed successfully */
-
 	return 1;
 }
 
@@ -476,7 +429,6 @@ int trie_remove(Trie *trie, char *key)
 	int c;
 
 	/* Find the end node and remove the value */
-
 	node = trie_find_end(trie, key);
 
 	if (node != NULL && node->data != TRIE_NULL) {
@@ -487,7 +439,6 @@ int trie_remove(Trie *trie, char *key)
 
 	/* Now traverse the tree again as before, decrementing the use
 	 * count of each node.  Free back nodes as necessary. */
-
 	node = trie->root_node;
 	last_next_ptr = &trie->root_node;
 	p = key;
@@ -495,12 +446,10 @@ int trie_remove(Trie *trie, char *key)
 	for (;;) {
 
 		/* Find the next node */
-
 		c = (unsigned char) *p;
 		next = node->next[c];
 
 		/* Free this node if necessary */
-
 		--node->use_count;
 
 		if (node->use_count <= 0) {
@@ -511,7 +460,6 @@ int trie_remove(Trie *trie, char *key)
 			 * needs to be done once in a remove.  After the first
 			 * unlink, all further nodes are also going to be
 			 * free'd. */
-
 			if (last_next_ptr != NULL) {
 				*last_next_ptr = NULL;
 				last_next_ptr = NULL;
@@ -519,7 +467,6 @@ int trie_remove(Trie *trie, char *key)
 		}
 
 		/* Go to the next character or finish */
-
 		if (c == '\0') {
 			break;
 		} else {
@@ -529,18 +476,15 @@ int trie_remove(Trie *trie, char *key)
 		/* If necessary, save the location of the "next" pointer
 		 * so that it may be set to NULL on the next iteration if
 		 * the next node visited is freed. */
-
 		if (last_next_ptr != NULL) {
 			last_next_ptr = &node->next[c];
 		}
 
 		/* Jump to the next node */
-
 		node = next;
 	}
 
 	/* Removed successfully */
-
 	return 1;
 }
 
@@ -574,7 +518,6 @@ unsigned int trie_num_entries(Trie *trie)
 {
 	/* To find the number of entries, simply look at the use count
 	 * of the root node. */
-
 	if (trie->root_node == NULL) {
 		return 0;
 	} else {

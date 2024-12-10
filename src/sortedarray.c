@@ -184,7 +184,6 @@ void sortedarray_remove_range(SortedArray *sortedarray, unsigned int index,
                               unsigned int length)
 {
 	/* removal does not violate sorted property */
-
 	/* check if valid range */
 	if (index > sortedarray->length || index + length > sortedarray->length) {
 		return;

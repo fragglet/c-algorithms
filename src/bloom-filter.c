@@ -76,13 +76,11 @@ BloomFilter *bloom_filter_new(unsigned int table_size,
 
 	/* There is a limit on the number of functions which can be
 	 * applied, due to the table size */
-
 	if (num_functions > sizeof(salts) / sizeof(*salts)) {
 		return NULL;
 	}
 
 	/* Allocate bloom filter structure */
-
 	filter = malloc(sizeof(BloomFilter));
 
 	if (filter == NULL) {
@@ -92,7 +90,6 @@ BloomFilter *bloom_filter_new(unsigned int table_size,
 	/* Allocate table, each entry is one bit; these are packed into
 	 * bytes.  When allocating we must round the length up to the nearest
 	 * byte. */
-
 	filter->table = calloc((table_size + 7) / 8, 1);
 
 	if (filter->table == NULL) {
@@ -122,26 +119,21 @@ void bloom_filter_insert(BloomFilter *bloomfilter, BloomFilterValue value)
 	unsigned char b;
 
 	/* Generate hash of the value to insert */
-
 	hash = bloomfilter->hash_func(value);
 
 	/* Generate multiple unique hashes by XORing with values in the
 	 * salt table. */
-
 	for (i=0; i<bloomfilter->num_functions; ++i) {
 
 		/* Generate a unique hash */
-
 		subhash = hash ^ salts[i];
 
 		/* Find the index into the table */
-
 		index = subhash % bloomfilter->table_size;
 
 		/* Insert into the table.
 		 * index / 8 finds the byte index of the table,
 		 * index % 8 gives the bit index within that byte to set. */
-
 		b = (unsigned char) (1 << (index % 8));
 		bloomfilter->table[index / 8] |= b;
 	}
@@ -157,30 +149,24 @@ int bloom_filter_query(BloomFilter *bloomfilter, BloomFilterValue value)
 	int bit;
 
 	/* Generate hash of the value to lookup */
-
 	hash = bloomfilter->hash_func(value);
 
 	/* Generate multiple unique hashes by XORing with values in the
 	 * salt table. */
-
 	for (i=0; i<bloomfilter->num_functions; ++i) {
 
 		/* Generate a unique hash */
-
 		subhash = hash ^ salts[i];
 
 		/* Find the index into the table to test */
-
 		index = subhash % bloomfilter->table_size;
 
 		/* The byte at index / 8 holds the value to test */
-
 		b = bloomfilter->table[index / 8];
 		bit = 1 << (index % 8);
 
 		/* Test if the particular bit is set; if it is not set,
 		 * this value can not have been inserted. */
-
 		if ((b & bit) == 0) {
 			return 0;
 		}
@@ -189,7 +175,6 @@ int bloom_filter_query(BloomFilter *bloomfilter, BloomFilterValue value)
 	/* All necessary bits were set.  This may indicate that the value
 	 * was inserted, or the values could have been set through other
 	 * insertions. */
-
 	return 1;
 }
 
@@ -199,11 +184,9 @@ void bloom_filter_read(BloomFilter *bloomfilter, unsigned char *array)
 
 	/* The table is an array of bits, packed into bytes.  Round up
 	 * to the nearest byte. */
-
 	array_size = (bloomfilter->table_size + 7) / 8;
 
 	/* Copy into the buffer of the calling routine. */
-
 	memcpy(array, bloomfilter->table, array_size);
 }
 
@@ -213,11 +196,9 @@ void bloom_filter_load(BloomFilter *bloomfilter, unsigned char *array)
 
 	/* The table is an array of bits, packed into bytes.  Round up
 	 * to the nearest byte. */
-
 	array_size = (bloomfilter->table_size + 7) / 8;
 
 	/* Copy from the buffer of the calling routine. */
-
 	memcpy(bloomfilter->table, array, array_size);
 }
 
@@ -229,7 +210,6 @@ BloomFilter *bloom_filter_union(BloomFilter *filter1, BloomFilter *filter2)
 
 	/* To perform this operation, both filters must be created with
 	 * the same values. */
-
 	if (filter1->table_size != filter2->table_size
 	 || filter1->num_functions != filter2->num_functions
 	 || filter1->hash_func != filter2->hash_func) {
@@ -237,7 +217,6 @@ BloomFilter *bloom_filter_union(BloomFilter *filter1, BloomFilter *filter2)
 	}
 
 	/* Create a new bloom filter for the result */
-
 	result = bloom_filter_new(filter1->table_size,
 	                          filter1->hash_func,
 	                          filter1->num_functions);
@@ -248,11 +227,9 @@ BloomFilter *bloom_filter_union(BloomFilter *filter1, BloomFilter *filter2)
 
 	/* The table is an array of bits, packed into bytes.  Round up
 	 * to the nearest byte. */
-
 	array_size = (filter1->table_size + 7) / 8;
 
 	/* Populate the table of the new filter */
-
 	for (i=0; i<array_size; ++i) {
 		result->table[i] = filter1->table[i] | filter2->table[i];
 	}
@@ -269,7 +246,6 @@ BloomFilter *bloom_filter_intersection(BloomFilter *filter1,
 
 	/* To perform this operation, both filters must be created with
 	 * the same values. */
-
 	if (filter1->table_size != filter2->table_size
 	 || filter1->num_functions != filter2->num_functions
 	 || filter1->hash_func != filter2->hash_func) {
@@ -277,7 +253,6 @@ BloomFilter *bloom_filter_intersection(BloomFilter *filter1,
 	}
 
 	/* Create a new bloom filter for the result */
-
 	result = bloom_filter_new(filter1->table_size,
 	                          filter1->hash_func,
 	                          filter1->num_functions);
@@ -288,11 +263,9 @@ BloomFilter *bloom_filter_intersection(BloomFilter *filter1,
 
 	/* The table is an array of bits, packed into bytes.  Round up
 	 * to the nearest byte. */
-
 	array_size = (filter1->table_size + 7) / 8;
 
 	/* Populate the table of the new filter */
-
 	for (i=0; i<array_size; ++i) {
 		result->table[i] = filter1->table[i] & filter2->table[i];
 	}

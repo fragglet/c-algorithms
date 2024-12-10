@@ -74,13 +74,11 @@ static void rb_tree_node_replace(RBTree *tree, RBTreeNode *node1,
 	int side;
 
 	/* Set the node's parent pointer. */
-
 	if (node2 != NULL) {
 		node2->parent = node1->parent;
 	}
 
 	/* The root node? */
-
 	if (node1->parent == NULL) {
 		tree->root_node = node2;
 	} else {
@@ -118,20 +116,16 @@ static RBTreeNode *rb_tree_rotate(RBTree *tree, RBTreeNode *node,
 
 	/* The child of this node will take its place:
 	   for a left rotation, it is the right child, and vice versa. */
-
 	new_root = node->children[1-direction];
 
 	/* Make new_root the root, update parent pointers. */
-
 	rb_tree_node_replace(tree, node, new_root);
 
 	/* Rearrange pointers */
-
 	node->children[1-direction] = new_root->children[direction];
 	new_root->children[direction] = node;
 
 	/* Update parent references */
-
 	node->parent = new_root;
 
 	if (node->children[1-direction] != NULL) {
@@ -163,12 +157,10 @@ static void rb_tree_free_subtree(RBTreeNode *node)
 {
 	if (node != NULL) {
 		/* Recurse to subnodes */
-
 		rb_tree_free_subtree(node->children[RB_TREE_NODE_LEFT]);
 		rb_tree_free_subtree(node->children[RB_TREE_NODE_RIGHT]);
 
 		/* Free this node */
-
 		free(node);
 	}
 }
@@ -176,11 +168,9 @@ static void rb_tree_free_subtree(RBTreeNode *node)
 void rb_tree_free(RBTree *tree)
 {
 	/* Free all nodes in the tree */
-
 	rb_tree_free_subtree(tree->root_node);
 
 	/* Free back the main tree structure */
-
 	free(tree);
 }
 
@@ -198,13 +188,11 @@ static void rb_tree_insert_case1(RBTree *tree, RBTreeNode *node)
 	if (node->parent == NULL) {
 
 		/* The root node is black */
-
 		node->color = RB_TREE_NODE_BLACK;
 
 	} else {
 
 		/* Not root */
-
 		rb_tree_insert_case2(tree, node);
 	}
 }
@@ -217,7 +205,6 @@ static void rb_tree_insert_case2(RBTree *tree, RBTreeNode *node)
 {
 	/* Note that if this function is being called, we already know
 	 * the node has a parent, as it is not the root node. */
-
 	if (node->parent->color != RB_TREE_NODE_BLACK) {
 		rb_tree_insert_case3(tree, node);
 	}
@@ -233,7 +220,6 @@ static void rb_tree_insert_case3(RBTree *tree, RBTreeNode *node)
 
 	/* Note that the node must have a grandparent, as the parent
 	 * is red, and the root node is always black. */
-
 	grandparent = node->parent->parent;
 	uncle = rb_tree_node_uncle(node);
 
@@ -244,7 +230,6 @@ static void rb_tree_insert_case3(RBTree *tree, RBTreeNode *node)
 		grandparent->color = RB_TREE_NODE_RED;
 
 		/* Recurse to grandparent */
-
 		rb_tree_insert_case1(tree, grandparent);
 
 	} else {
@@ -278,19 +263,16 @@ void rb_tree_insert_case4(RBTree *tree, RBTreeNode *node)
 	 * only need to examine what side the node is on relative
 	 * to its parent, and the side the parent is on relative to
 	 * the grandparent. */
-
 	side = rb_tree_node_side(node);
 
 	if (side != rb_tree_node_side(node->parent)) {
 
 		/* After the rotation, we will continue to case 5, but
 		 * the parent node will be at the bottom. */
-
 		next_node = node->parent;
 
 		/* Rotate around the parent in the opposite direction
 		 * to side. */
-
 		rb_tree_rotate(tree, node->parent, 1-side);
 	} else {
 		next_node = node;
@@ -325,15 +307,12 @@ void rb_tree_insert_case5(RBTree *tree, RBTreeNode *node)
 
 	/* What side are we, relative to the parent?  This will determine
 	 * the direction that we rotate. */
-
 	side = rb_tree_node_side(node);
 
 	/* Rotate at the grandparent, in the opposite direction to side. */
-
 	rb_tree_rotate(tree, grandparent, 1-side);
 
 	/* Recolor the (old) parent and grandparent. */
-
 	parent->color = RB_TREE_NODE_BLACK;
 	grandparent->color = RB_TREE_NODE_RED;
 }
@@ -346,7 +325,6 @@ RBTreeNode *rb_tree_insert(RBTree *tree, RBTreeKey key, RBTreeValue value)
 	RBTreeNodeSide side;
 
 	/* Allocate a new node */
-
 	node = malloc(sizeof(RBTreeNode));
 
 	if (node == NULL) {
@@ -354,7 +332,6 @@ RBTreeNode *rb_tree_insert(RBTree *tree, RBTreeKey key, RBTreeValue value)
 	}
 
 	/* Set up structure.  Initially, the node is red. */
-
 	node->key = key;
 	node->value = value;
 	node->color = RB_TREE_NODE_RED;
@@ -362,18 +339,15 @@ RBTreeNode *rb_tree_insert(RBTree *tree, RBTreeKey key, RBTreeValue value)
 	node->children[RB_TREE_NODE_RIGHT] = NULL;
 
 	/* First, perform a normal binary tree-style insert. */
-
 	parent = NULL;
 	rover = &tree->root_node;
 
 	while (*rover != NULL) {
 
 		/* Update parent */
-
 		parent = *rover;
 
 		/* Choose which path to go down, left or right child */
-
 		if (tree->compare_func(value, (*rover)->value) < 0) {
 			side = RB_TREE_NODE_LEFT;
 		} else {
@@ -384,16 +358,13 @@ RBTreeNode *rb_tree_insert(RBTree *tree, RBTreeKey key, RBTreeValue value)
 	}
 
 	/* Insert at the position we have reached */
-
 	*rover = node;
 	node->parent = parent;
 
 	/* Possibly reorder the tree. */
-
 	rb_tree_insert_case1(tree, node);
 
 	/* Update the node count */
-
 	++tree->num_nodes;
 
 	return node;
@@ -408,7 +379,6 @@ RBTreeNode *rb_tree_lookup_node(RBTree *tree, RBTreeKey key)
 	node = tree->root_node;
 
 	/* Search down the tree. */
-
 	while (node != NULL) {
 		diff = tree->compare_func(key, node->key);
 
@@ -424,7 +394,6 @@ RBTreeNode *rb_tree_lookup_node(RBTree *tree, RBTreeKey key)
 	}
 
 	/* Not found. */
-
 	return NULL;
 }
 
@@ -433,7 +402,6 @@ RBTreeValue rb_tree_lookup(RBTree *tree, RBTreeKey key)
 	RBTreeNode *node;
 
 	/* Find the node for this key. */
-
 	node = rb_tree_lookup_node(tree, key);
 
 	if (node == NULL) {
@@ -453,7 +421,6 @@ int rb_tree_remove(RBTree *tree, RBTreeKey key)
 	RBTreeNode *node;
 
 	/* Find the node to remove. */
-
 	node = rb_tree_lookup_node(tree, key);
 
 	if (node == NULL) {
