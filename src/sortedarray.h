@@ -66,10 +66,10 @@ typedef struct _SortedArray SortedArray;
 /**
  * Compare two values in a SortedArray to determine if they are equal.
  *
- * @param value1	The first value to compare.
- * @param value2	The second value to compare.
- * @return		Non-zero if value1 equals value2, zero if they do not
- *			equal.
+ * @param value1  The first value to compare.
+ * @param value2  The second value to compare.
+ * @return        Non-zero if value1 equals value2, zero if they do not
+ *                equal.
  *
  */
 typedef int (*SortedArrayEqualFunc)(SortedArrayValue value1,
@@ -78,11 +78,11 @@ typedef int (*SortedArrayEqualFunc)(SortedArrayValue value1,
 /**
  * Compare two values in a SortedArray to determine their order.
  *
- * @param value1	The first value to compare.
- * @param value2	The second value to compare.
- * @return		Less than zero if value1 is compared smaller than
- * 			value2, zero if they compare equal, or greater than
- * 			zero if value1 compares greate than value2.
+ * @param value1  The first value to compare.
+ * @param value2  The second value to compare.
+ * @return        Less than zero if value1 is compared smaller than
+ *                value2, zero if they compare equal, or greater than
+ *                zero if value1 compares greate than value2.
  */
 typedef int (*SortedArrayCompareFunc)(SortedArrayValue value1,
                                       SortedArrayValue value2);
@@ -90,32 +90,32 @@ typedef int (*SortedArrayCompareFunc)(SortedArrayValue value1,
 /**
  * @brief Function to retrieve element at index i from array
  *
- * @param array			The pointer to the sortedarray to retrieve the element from.
- * @param i				The index of the element to retrieve.
- * @return				The i-th element of the array, or NULL if array was NULL.
+ * @param array   The pointer to the sortedarray to retrieve the element from.
+ * @param i       The index of the element to retrieve.
+ * @return        The i-th element of the array, or NULL if array was NULL.
  */
 SortedArrayValue *sortedarray_get(SortedArray *array, unsigned int i);
 
 /**
  * @brief Function to retrieve the length of the SortedArray array.
  *
- * @param array			The array to retrieve the length from.
- * @return				The lenght of the SortedArray.
+ * @param array   The array to retrieve the length from.
+ * @return        The length of the SortedArray.
  */
 unsigned int sortedarray_length(SortedArray *array);
 
 /**
  * Allocate a new SortedArray for use.
  *
- * @param length        Indication to the amount of memory that should be
- *                      allocated. If 0 is given, then a default is used.
- * @param equ_func      The function used to determine if two values in the
- *                      SortedArray equal. This may not be NULL.
- * @param cmp_func      The function used to determine the relative order of
- *                      two values in the SortedArray. This may not be NULL.
+ * @param length    Indication to the amount of memory that should be
+ *                  allocated. If 0 is given, then a default is used.
+ * @param equ_func  The function used to determine if two values in the
+ *                  SortedArray equal. This may not be NULL.
+ * @param cmp_func  The function used to determine the relative order of
+ *                  two values in the SortedArray. This may not be NULL.
  *
- * @return              A new SortedArray or NULL if it was not possible to
- *                      allocate one.
+ * @return          A new SortedArray or NULL if it was not possible to
+ *                  allocate one.
  */
 SortedArray *sortedarray_new(unsigned int length,
                              SortedArrayEqualFunc equ_func,

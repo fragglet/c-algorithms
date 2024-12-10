@@ -18,12 +18,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
-/**
- * @file sortedarray.c
- *
- * @brief File containing the implementation of sortedarray.h
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,39 +28,15 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "alloc-testing.h"
 #endif
 
-/**
- * Definition of a @ref SortedArray
- */
 struct _SortedArray {
-	/**
-	 * This field contains the actual array. The array always has a length
-	 * of value of field length.
-	 */
 	SortedArrayValue *data;
-
-	/**
-	 * The length of the sorted array.
-	 */
 	unsigned int length;
-
-	/**
-	 * Field for internal usage only indicating how much memory already has
-	 * been allocated for *data.
-	 */
 	unsigned int _alloced;
-
-	/**
-	 * The callback used to determine if two values equal.
-	 */
 	SortedArrayEqualFunc equ_func;
-
-	/**
-	 * The callback use to determine the order of two values.
-	 */
 	SortedArrayCompareFunc cmp_func;
 };
 
-/* Function for finding first index of range which equals data. An equal value
+/* Find the index of the first entry in range that equals data. An equal value
    must be present. */
 static unsigned int sortedarray_first_index(SortedArray *sortedarray,
                                    SortedArrayValue data, unsigned int left,
@@ -89,7 +59,7 @@ static unsigned int sortedarray_first_index(SortedArray *sortedarray,
 	return index;
 }
 
-/* Function for finding last index of range which equals data. An equal value
+/* Find the index of the last entry in range that equals data. An equal value
    must be present. */
 static unsigned int sortedarray_last_index(SortedArray *sortedarray,
                                   SortedArrayValue data, unsigned int left,
@@ -114,12 +84,10 @@ static unsigned int sortedarray_last_index(SortedArray *sortedarray,
 
 SortedArrayValue *sortedarray_get(SortedArray *array, unsigned int i)
 {
-	//check if array is NULL
 	if (array == NULL) {
 		return NULL;
 	}
 
-	//otherwise just return the element
 	return array->data[i];
 }
 
@@ -132,7 +100,6 @@ SortedArray *sortedarray_new(unsigned int length,
                              SortedArrayEqualFunc equ_func,
                              SortedArrayCompareFunc cmp_func)
 {
-	/* check input requirements */
 	if (equ_func == NULL || cmp_func == NULL) {
 		return NULL;
 	}
@@ -143,26 +110,22 @@ SortedArray *sortedarray_new(unsigned int length,
 	}
 
 	SortedArrayValue *array = malloc(sizeof(SortedArrayValue) * length);
-
-	/* on failure, return null */
 	if (array == NULL) {
 		return NULL;
 	}
 
 	SortedArray *sortedarray = malloc(sizeof(SortedArray));
-
-	/* check for failure */
 	if (sortedarray == NULL) {
 		free(array);
 		return NULL;
 	}
 
-	/* init */
 	sortedarray->data = array;
 	sortedarray->length = 0;
 	sortedarray->_alloced = length;
 	sortedarray->equ_func = equ_func;
 	sortedarray->cmp_func = cmp_func;
+
 	return sortedarray;
 }
 
@@ -200,7 +163,7 @@ void sortedarray_remove_range(SortedArray *sortedarray, unsigned int index,
 
 int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 {
-	/* do a binary search like loop to find right position */
+	/* we perform a binary search to find the right position */
 	unsigned int left  = 0;
 	unsigned int right = sortedarray->length;
 	unsigned int index = 0;
@@ -255,21 +218,21 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 
 	/* insert entry */
 	sortedarray->data[index] = data;
-	++(sortedarray->length);
+	++sortedarray->length;
 
 	return 1;
 }
 
 int sortedarray_index_of(SortedArray *sortedarray, SortedArrayValue data)
 {
-	if (sortedarray == NULL) {
-		return -1;
-	}
-
-	/* do a binary search */
+	/* perform a binary search */
 	unsigned int left = 0;
 	unsigned int right = sortedarray->length;
 	unsigned int index = 0;
+
+	if (sortedarray == NULL) {
+		return -1;
+	}
 
 	/* safe subtract 1 of right without going negative */
 	right = (right > 1) ? right : 0;
