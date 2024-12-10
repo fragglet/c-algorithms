@@ -25,11 +25,6 @@ jobs:
       run: |
         mkdir artifacts
         tar cf - src/*.gcov | tar -C artifacts -xf -
-    - name: Make documentation zip
-      uses: actions/upload-artifact@v4
-      with:
-        path: "doc/html"
-        name: documentation
     - name: Upload coverage-annotated source files
       uses: actions/upload-artifact@v4
       with:
@@ -39,6 +34,11 @@ jobs:
       run: |
         make distcheck
         make dist
+    - name: Make documentation zip
+      uses: actions/upload-artifact@v4
+      with:
+        path: "doc/html"
+        name: documentation
 
   valgrind_build:
     runs-on: ubuntu-latest
