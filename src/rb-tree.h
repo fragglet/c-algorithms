@@ -18,7 +18,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
-/** @file rbtree.h
+/** @file rb-tree.h
  *
  * @brief Balanced binary tree
  *
@@ -45,8 +45,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * @ref rb_tree_lookup_node.
  *
  * Tree nodes can be queried using the
- * @ref rb_tree_node_left_child,
- * @ref rb_tree_node_right_child,
+ * @ref rb_tree_node_child,
  * @ref rb_tree_node_parent,
  * @ref rb_tree_node_key and
  * @ref rb_tree_node_value functions.
@@ -88,8 +87,7 @@ typedef void *RBTreeValue;
 /**
  * A node in a red-black tree.
  *
- * @see rb_tree_node_left_child
- * @see rb_tree_node_right_child
+ * @see rb_tree_node_child
  * @see rb_tree_node_parent
  * @see rb_tree_node_key
  * @see rb_tree_node_value

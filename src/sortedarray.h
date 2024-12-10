@@ -32,8 +32,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * To create a SortedArray, use @ref sortedarray_new
  * To destroy a SortedArray, use @ref sortedarray_free
  *
- * To add a value to a SortedArray, use @ref sortedarray_prepend, 
- * @ref sortedarray_append, or @ref sortedarray_insert.
+ * To add a value to a SortedArray, use @ref sortedarray_insert.
  *
  * To remove a value from a SortedArray, use @ref sortedarray_remove
  * or @ref sortedarray_remove_range.
