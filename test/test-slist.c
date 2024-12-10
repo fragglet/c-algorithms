@@ -421,6 +421,7 @@ void test_slist_iterate(void)
 	while (slist_iter_has_more(&iter)) {
 
 		data = (int *) slist_iter_next(&iter);
+		assert(data != NULL);
 
 		++counter;
 
@@ -458,6 +459,7 @@ void test_slist_iterate(void)
 	while (slist_iter_has_more(&iter)) {
 
 		data = (int *) slist_iter_next(&iter);
+		assert(data != NULL);
 
 		++counter;
 

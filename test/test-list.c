@@ -464,6 +464,7 @@ void test_list_iterate(void)
 
 	while (list_iter_has_more(&iter)) {
 		data = (int *) list_iter_next(&iter);
+		assert(data != NULL);
 		++counter;
 
 		if ((counter % 2) == 0) {
@@ -499,6 +500,7 @@ void test_list_iterate(void)
 
 	while (list_iter_has_more(&iter)) {
 		data = (int *) list_iter_next(&iter);
+		assert(data != NULL);
 		++counter;
 	}
 
