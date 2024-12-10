@@ -53,27 +53,14 @@ typedef void *SortedArrayValue;
 /**
  * A SortedArray structure. Use @ref sortedarray_new to create one.
  *
- * The SortedArray is an automatically resizing array which stores its
- * elements in sorted order. Userdefined functions determine the sorting order.
- * All operations on a SortedArray maintain the sorted property. Most
- * operations are done in O(n) time, but searching can be done in O(log n)
- * worst case.
+ * The SortedArray is an automatically resizing array which stores its elements
+ * in sorted order. User-defined functions determine the sorting order. All
+ * operations on a SortedArray maintain the sorted property. Most operations
+ * are done in O(n) time, but searching can be done in O(log n) worst case.
  *
  * @see sortedarray_new
  */
 typedef struct _SortedArray SortedArray;
-
-/**
- * Compare two values in a SortedArray to determine if they are equal.
- *
- * @param value1  The first value to compare.
- * @param value2  The second value to compare.
- * @return        Non-zero if value1 equals value2, zero if they do not
- *                equal.
- *
- */
-typedef int (*SortedArrayEqualFunc)(SortedArrayValue value1,
-                                    SortedArrayValue value2);
 
 /**
  * Compare two values in a SortedArray to determine their order.
@@ -109,8 +96,6 @@ unsigned int sortedarray_length(SortedArray *array);
  *
  * @param length    Indication to the amount of memory that should be
  *                  allocated. If 0 is given, then a default is used.
- * @param equ_func  The function used to determine if two values in the
- *                  SortedArray equal. This may not be NULL.
  * @param cmp_func  The function used to determine the relative order of
  *                  two values in the SortedArray. This may not be NULL.
  *
@@ -118,7 +103,6 @@ unsigned int sortedarray_length(SortedArray *array);
  *                  allocate one.
  */
 SortedArray *sortedarray_new(unsigned int length,
-                             SortedArrayEqualFunc equ_func,
                              SortedArrayCompareFunc cmp_func);
 
 /**

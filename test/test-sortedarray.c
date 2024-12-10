@@ -40,9 +40,8 @@ void check_sorted_prop(SortedArray *sortedarray)
 {
 	unsigned int i;
 	for (i = 1; i < sortedarray_length(sortedarray); i++) {
-		assert(int_compare(
-		                   sortedarray_get(sortedarray, i-1),
-						   sortedarray_get(sortedarray, i)) <= 0);
+		assert(int_compare(sortedarray_get(sortedarray, i-1),
+		                   sortedarray_get(sortedarray, i)) <= 0);
 	}
 }
 
@@ -57,7 +56,7 @@ void free_sorted_ints(SortedArray *sortedarray)
 	sortedarray_free(sortedarray);
 }
 
-SortedArray *generate_sortedarray_equ(SortedArrayEqualFunc equ_func)
+SortedArray *generate_sortedarray(void)
 {
 	/* generate a sorted array of length TEST_SIZE, filled with random
 	   numbers. */
@@ -66,7 +65,7 @@ SortedArray *generate_sortedarray_equ(SortedArrayEqualFunc equ_func)
 
 	int array[TEST_SIZE] = TEST_ARRAY;
 
-	sortedarray = sortedarray_new(0, equ_func, int_compare);
+	sortedarray = sortedarray_new(0, int_compare);
 
 	for (i = 0; i < TEST_SIZE; ++i) {
 		int *pi = malloc(sizeof(int));
@@ -77,17 +76,12 @@ SortedArray *generate_sortedarray_equ(SortedArrayEqualFunc equ_func)
 	return sortedarray;
 }
 
-SortedArray *generate_sortedarray(void)
-{
-	return generate_sortedarray_equ(int_equal);
-}
-
 void test_sortedarray_new_free(void)
 {
 	SortedArray *sortedarray;
 
 	/* test normal */
-	sortedarray = sortedarray_new(0, int_equal, int_compare);
+	sortedarray = sortedarray_new(0, int_compare);
 	assert(sortedarray != NULL);
 	sortedarray_free(sortedarray);
 
@@ -96,7 +90,7 @@ void test_sortedarray_new_free(void)
 
 	/* low memory */
 	alloc_test_set_limit(0);
-	sortedarray = sortedarray_new(0, int_equal, int_compare);
+	sortedarray = sortedarray_new(0, int_compare);
 	assert(sortedarray == NULL);
 
 	alloc_test_set_limit(-1);
@@ -180,27 +174,6 @@ void test_sortedarray_index_of(void) {
 	free_sorted_ints(sortedarray);
 }
 
-static int ptr_equal(SortedArrayValue v1, SortedArrayValue v2) {
-	return v1 == v2;
-}
-
-void test_sortedarray_index_of_equ_key(void)
-{
-	/* replace equal function by function which checks pointers */
-	SortedArray *sortedarray = generate_sortedarray_equ(ptr_equal);
-	unsigned int i;
-
-	/* check if all search value return the same index */
-	for (i = 0; i < TEST_SIZE; i++) {
-		int r = sortedarray_index_of(sortedarray,
-		                             sortedarray_get(sortedarray, i));
-		assert(r >= 0);
-		assert(i == (unsigned int) r);
-	}
-
-	free_sorted_ints(sortedarray);
-}
-
 void test_sortedarray_get(void) {
 	unsigned int i;
 
@@ -221,7 +194,6 @@ static UnitTestFunction tests[] = {
 	test_sortedarray_remove,
 	test_sortedarray_remove_range,
 	test_sortedarray_index_of,
-	test_sortedarray_index_of_equ_key,
 	test_sortedarray_get,
 	NULL
 };

@@ -32,55 +32,8 @@ struct _SortedArray {
 	SortedArrayValue *data;
 	unsigned int length;
 	unsigned int _alloced;
-	SortedArrayEqualFunc equ_func;
 	SortedArrayCompareFunc cmp_func;
 };
-
-/* Find the index of the first entry in range that equals data. An equal value
-   must be present. */
-static unsigned int sortedarray_first_index(SortedArray *sortedarray,
-                                   SortedArrayValue data, unsigned int left,
-                                   unsigned int right)
-{
-	unsigned int index = left;
-
-	while (left < right) {
-		index = (left + right) / 2;
-
-		int order = sortedarray->cmp_func(data,
-		                                  sortedarray->data[index]);
-		if (order > 0) {
-			left = index + 1;
-		} else {
-			right = index;
-		}
-	}
-
-	return index;
-}
-
-/* Find the index of the last entry in range that equals data. An equal value
-   must be present. */
-static unsigned int sortedarray_last_index(SortedArray *sortedarray,
-                                  SortedArrayValue data, unsigned int left,
-                                  unsigned int right)
-{
-	unsigned int index = right;
-
-	while (left < right) {
-		index = (left + right) / 2;
-
-		int order = sortedarray->cmp_func(data,
-		                                  sortedarray->data[index]);
-		if (order <= 0) {
-			left = index + 1;
-		} else {
-			right = index;
-		}
-	}
-
-	return index;
-}
 
 SortedArrayValue *sortedarray_get(SortedArray *array, unsigned int i)
 {
@@ -97,10 +50,9 @@ unsigned int sortedarray_length(SortedArray *array)
 }
 
 SortedArray *sortedarray_new(unsigned int length,
-                             SortedArrayEqualFunc equ_func,
                              SortedArrayCompareFunc cmp_func)
 {
-	if (equ_func == NULL || cmp_func == NULL) {
+	if (cmp_func == NULL) {
 		return NULL;
 	}
 
@@ -123,7 +75,6 @@ SortedArray *sortedarray_new(unsigned int length,
 	sortedarray->data = array;
 	sortedarray->length = 0;
 	sortedarray->_alloced = length;
-	sortedarray->equ_func = equ_func;
 	sortedarray->cmp_func = cmp_func;
 
 	return sortedarray;
@@ -249,22 +200,7 @@ int sortedarray_index_of(SortedArray *sortedarray, SortedArrayValue data)
 			/* value should be right */
 			left = index + 1;
 		} else {
-			/* no binary search can be done anymore,
-			   search linear now */
-			left = sortedarray_first_index(sortedarray, data, left,
-			                               index);
-			right = sortedarray_last_index(sortedarray, data,
-			                               index, right);
-
-			for (index = left; index <= right; index++) {
-				if (sortedarray->equ_func(data,
-				                sortedarray->data[index])) {
-					return (int) index;
-				}
-			}
-
-			/* nothing is found */
-			return -1;
+			return (int) index;
 		}
 	}
 
