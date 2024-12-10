@@ -15,12 +15,12 @@ CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
 LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
 NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- 
+
  */
 
 /**
  * @file sortedarray.c
- * 
+ *
  * @brief File containing the implementation of sortedarray.h
  */
 
@@ -77,7 +77,7 @@ static unsigned int sortedarray_first_index(SortedArray *sortedarray,
 	while (left < right) {
 		index = (left + right) / 2;
 
-		int order = sortedarray->cmp_func(data, 
+		int order = sortedarray->cmp_func(data,
 		                                  sortedarray->data[index]);
 		if (order > 0) {
 			left = index + 1;
@@ -91,8 +91,8 @@ static unsigned int sortedarray_first_index(SortedArray *sortedarray,
 
 /* Function for finding last index of range which equals data. An equal value
    must be present. */
-static unsigned int sortedarray_last_index(SortedArray *sortedarray, 
-                                  SortedArrayValue data, unsigned int left, 
+static unsigned int sortedarray_last_index(SortedArray *sortedarray,
+                                  SortedArrayValue data, unsigned int left,
                                   unsigned int right)
 {
 	unsigned int index = right;
@@ -100,7 +100,7 @@ static unsigned int sortedarray_last_index(SortedArray *sortedarray,
 	while (left < right) {
 		index = (left + right) / 2;
 
-		int order = sortedarray->cmp_func(data, 
+		int order = sortedarray->cmp_func(data,
 		                                  sortedarray->data[index]);
 		if (order <= 0) {
 			left = index + 1;
@@ -120,7 +120,7 @@ SortedArrayValue *sortedarray_get(SortedArray *array, unsigned int i)
 	}
 
 	//otherwise just return the element
-	return array->data[i];	
+	return array->data[i];
 }
 
 unsigned int sortedarray_length(SortedArray *array)
@@ -149,14 +149,14 @@ SortedArray *sortedarray_new(unsigned int length,
 		return NULL;
 	}
 
-	SortedArray *sortedarray = malloc(sizeof(SortedArray));    
+	SortedArray *sortedarray = malloc(sizeof(SortedArray));
 
 	/* check for failure */
 	if (sortedarray == NULL) {
 		free(array);
 		return NULL;
 	}
-    
+
 	/* init */
 	sortedarray->data = array;
 	sortedarray->length = 0;
@@ -193,7 +193,7 @@ void sortedarray_remove_range(SortedArray *sortedarray, unsigned int index,
 	/* move entries back */
 	memmove(&sortedarray->data[index],
 	        &sortedarray->data[index + length],
-	        (sortedarray->length - (index + length)) 
+	        (sortedarray->length - (index + length))
 	              * sizeof(SortedArrayValue));
 
 	sortedarray->length -= length;
@@ -206,13 +206,13 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 	unsigned int right = sortedarray->length;
 	unsigned int index = 0;
 
-	/* When length is 1 set right to 0 so that the loop is not entered */	
+	/* When length is 1 set right to 0 so that the loop is not entered */
 	right = (right > 1) ? right : 0;
 
 	while (left != right) {
 		index = (left + right) / 2;
 
-		int order = sortedarray->cmp_func(data, 
+		int order = sortedarray->cmp_func(data,
 		                                  sortedarray->data[index]);
 		if (order < 0) {
 			/* value should be left of index */
@@ -227,7 +227,7 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 	}
 
 	/* look whether the item should be put before or after the index */
-	if (sortedarray->length > 0 && sortedarray->cmp_func(data, 
+	if (sortedarray->length > 0 && sortedarray->cmp_func(data,
 	                       sortedarray->data[index]) > 0) {
 		index++;
 	}
@@ -266,7 +266,7 @@ int sortedarray_index_of(SortedArray *sortedarray, SortedArrayValue data)
 	if (sortedarray == NULL) {
 		return -1;
 	}
-	
+
 	/* do a binary search */
 	unsigned int left = 0;
 	unsigned int right = sortedarray->length;
@@ -278,7 +278,7 @@ int sortedarray_index_of(SortedArray *sortedarray, SortedArrayValue data)
 	while (left != right) {
 		index = (left + right) / 2;
 
-		int order = sortedarray->cmp_func(data, 
+		int order = sortedarray->cmp_func(data,
 		                                  sortedarray->data[index]);
 		if (order < 0) {
 			/* value should be left */
@@ -287,15 +287,15 @@ int sortedarray_index_of(SortedArray *sortedarray, SortedArrayValue data)
 			/* value should be right */
 			left = index + 1;
 		} else {
-			/* no binary search can be done anymore, 
+			/* no binary search can be done anymore,
 			   search linear now */
 			left = sortedarray_first_index(sortedarray, data, left,
 			                               index);
-			right = sortedarray_last_index(sortedarray, data, 
+			right = sortedarray_last_index(sortedarray, data,
 			                               index, right);
 
 			for (index = left; index <= right; index++) {
-				if (sortedarray->equ_func(data, 
+				if (sortedarray->equ_func(data,
 				                sortedarray->data[index])) {
 					return (int) index;
 				}

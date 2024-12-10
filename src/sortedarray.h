@@ -53,9 +53,9 @@ typedef void *SortedArrayValue;
 /**
  * A SortedArray structure. Use @ref sortedarray_new to create one.
  *
- * The SortedArray is an automatically resizing array which stores its 
+ * The SortedArray is an automatically resizing array which stores its
  * elements in sorted order. Userdefined functions determine the sorting order.
- * All operations on a SortedArray maintain the sorted property. Most 
+ * All operations on a SortedArray maintain the sorted property. Most
  * operations are done in O(n) time, but searching can be done in O(log n)
  * worst case.
  *
@@ -80,7 +80,7 @@ typedef int (*SortedArrayEqualFunc)(SortedArrayValue value1,
  *
  * @param value1	The first value to compare.
  * @param value2	The second value to compare.
- * @return		Less than zero if value1 is compared smaller than 
+ * @return		Less than zero if value1 is compared smaller than
  * 			value2, zero if they compare equal, or greater than
  * 			zero if value1 compares greate than value2.
  */
@@ -107,7 +107,7 @@ unsigned int sortedarray_length(SortedArray *array);
 /**
  * Allocate a new SortedArray for use.
  *
- * @param length        Indication to the amount of memory that should be 
+ * @param length        Indication to the amount of memory that should be
  *                      allocated. If 0 is given, then a default is used.
  * @param equ_func      The function used to determine if two values in the
  *                      SortedArray equal. This may not be NULL.
@@ -117,8 +117,8 @@ unsigned int sortedarray_length(SortedArray *array);
  * @return              A new SortedArray or NULL if it was not possible to
  *                      allocate one.
  */
-SortedArray *sortedarray_new(unsigned int length, 
-                             SortedArrayEqualFunc equ_func, 
+SortedArray *sortedarray_new(unsigned int length,
+                             SortedArrayEqualFunc equ_func,
                              SortedArrayCompareFunc cmp_func);
 
 /**
@@ -138,7 +138,7 @@ void sortedarray_free(SortedArray *sortedarray);
 void sortedarray_remove(SortedArray *sortedarray, unsigned int index);
 
 /**
- * Remove a range of entities from a SortedArray while maintaining the sorted 
+ * Remove a range of entities from a SortedArray while maintaining the sorted
  * property.
  *
  * @param sortedarray   The SortedArray to remove the range of values from.

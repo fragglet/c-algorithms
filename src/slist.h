@@ -176,7 +176,7 @@ SListEntry *slist_next(SListEntry *listentry);
 SListValue slist_data(SListEntry *listentry);
 
 /**
- * Set the value at a list entry. The value provided will be written to the 
+ * Set the value at a list entry. The value provided will be written to the
  * given listentry. If listentry is NULL nothing is done.
  *
  * @param listentry 	Pointer to the list entry.

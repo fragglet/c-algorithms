@@ -179,7 +179,7 @@ ListEntry *list_next(ListEntry *listentry);
 ListValue list_data(ListEntry *listentry);
 
 /**
- * Set the value at a list entry. The value provided will be written to the 
+ * Set the value at a list entry. The value provided will be written to the
  * given listentry. If listentry is NULL nothing is done.
  *
  * @param listentry 	Pointer to the list entry.

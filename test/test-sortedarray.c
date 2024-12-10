@@ -59,7 +59,7 @@ void free_sorted_ints(SortedArray *sortedarray)
 
 SortedArray *generate_sortedarray_equ(SortedArrayEqualFunc equ_func)
 {
-	/* generate a sorted array of length TEST_SIZE, filled with random 
+	/* generate a sorted array of length TEST_SIZE, filled with random
 	   numbers. */
 	SortedArray *sortedarray;
 	unsigned int i;
@@ -142,22 +142,22 @@ void test_sortedarray_remove_range(void)
 	int new[TEST_REMOVE_RANGE_LENGTH];
 	unsigned int i;
 	for (i = 0; i < TEST_REMOVE_RANGE_LENGTH; i++) {
-		new[i] = *((int*) sortedarray_get(sortedarray, TEST_REMOVE_RANGE + 
+		new[i] = *((int*) sortedarray_get(sortedarray, TEST_REMOVE_RANGE +
 		                                    TEST_REMOVE_RANGE_LENGTH + i));
 	}
-	
+
 	/* free removed elements */
 	for (i = 0; i < TEST_REMOVE_RANGE_LENGTH; i++) {
 		free((int*) sortedarray_get(sortedarray, TEST_REMOVE_RANGE + i));
 	}
 
 	/* remove */
-	sortedarray_remove_range(sortedarray, TEST_REMOVE_RANGE, 
+	sortedarray_remove_range(sortedarray, TEST_REMOVE_RANGE,
 			TEST_REMOVE_RANGE_LENGTH);
-	
+
 	/* assert */
 	for (i = 0; i < TEST_REMOVE_RANGE_LENGTH; i++) {
-		assert(*((int*) sortedarray_get(sortedarray, TEST_REMOVE_RANGE + i)) == 
+		assert(*((int*) sortedarray_get(sortedarray, TEST_REMOVE_RANGE + i)) ==
 		                                                                new[i]);
 	}
 
@@ -170,13 +170,13 @@ void test_sortedarray_index_of(void) {
 
 	unsigned int i;
 	for (i = 0; i < TEST_SIZE; i++) {
-		int r = sortedarray_index_of(sortedarray, 
+		int r = sortedarray_index_of(sortedarray,
 		                sortedarray_get(sortedarray, i));
 		assert(r >= 0);
-		assert(*((int*) sortedarray_get(sortedarray,(unsigned int) r)) == 
+		assert(*((int*) sortedarray_get(sortedarray,(unsigned int) r)) ==
 		        *((int*) sortedarray_get(sortedarray, i)));
 	}
-	
+
 	free_sorted_ints(sortedarray);
 }
 
@@ -192,7 +192,7 @@ void test_sortedarray_index_of_equ_key(void)
 
 	/* check if all search value return the same index */
 	for (i = 0; i < TEST_SIZE; i++) {
-		int r = sortedarray_index_of(sortedarray, 
+		int r = sortedarray_index_of(sortedarray,
 		                             sortedarray_get(sortedarray, i));
 		assert(r >= 0);
 		assert(i == (unsigned int) r);
@@ -208,7 +208,7 @@ void test_sortedarray_get(void) {
 
 	for (i = 0; i < sortedarray_length(arr); i++) {
 		assert(sortedarray_get(arr, i) == sortedarray_get(arr, i));
-		assert(*((int*) sortedarray_get(arr, i)) == 
+		assert(*((int*) sortedarray_get(arr, i)) ==
 		       *((int*) sortedarray_get(arr, i)));
 	}
 
@@ -223,7 +223,7 @@ static UnitTestFunction tests[] = {
 	test_sortedarray_index_of,
 	test_sortedarray_index_of_equ_key,
 	test_sortedarray_get,
-	NULL   
+	NULL
 };
 
 int main(int argc, char *argv[])
