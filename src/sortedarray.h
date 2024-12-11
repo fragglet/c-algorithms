@@ -164,4 +164,4 @@ void sortedarray_clear(SortedArray *sortedarray);
 }
 #endif
 
-#endif // #ifndef ALGORITHM_SORTEDARRAY_H
+#endif /* #ifndef ALGORITHM_SORTEDARRAY_H */

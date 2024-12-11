@@ -23,6 +23,15 @@ jobs:
           echo
           false
         fi
+    - name: Check comment style
+      run: |
+        if grep " //" */*.[ch]; then
+          echo
+          echo "*** C++-style comments were detected in the above lines."
+          echo "*** Please change to use /* ... */ -style comments."
+          echo
+          false
+        fi
 
   build_and_coverage:
     runs-on: ubuntu-latest
