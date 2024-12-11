@@ -13,8 +13,8 @@ jobs:
         sudo apt -q install clang-format
     - name: Check formatting
       run: |
-        clang-format -i */*.[ch]
-        if git diff */*.[ch] | grep ""; then
+        clang-format -i src/*.[ch]
+        if git diff | grep ""; then
           echo
           echo "*** Formatting errors detected by clang-format."
           echo "*** Please apply the above diff or run:"
