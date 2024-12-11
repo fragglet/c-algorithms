@@ -3,6 +3,27 @@ name: Continuous Integration
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
+  check_style:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt -q install clang-format
+     - name: Check formatting
+      run: |
+        clang-format -i */*.[ch]
+        if git diff */*.[ch] | grep ""; then
+          echo
+          echo "*** Formatting errors detected by clang-format."
+          echo "*** Please apply the above diff or run:"
+          echo "    clang-format -i */*.[ch]"
+          echo
+          false
+        fi
+
+jobs:
   build_and_coverage:
     runs-on: ubuntu-latest
 
