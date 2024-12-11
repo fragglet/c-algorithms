@@ -11,9 +11,10 @@ jobs:
       run: |
         sudo apt update
         sudo apt -q install clang-format
+    - uses: actions/checkout@v4
     - name: Check formatting
       run: |
-        clang-format -i src/*.[ch]
+        clang-format -i */*.[ch]
         if git diff | grep ""; then
           echo
           echo "*** Formatting errors detected by clang-format."
