@@ -1,0 +1,13 @@
+BasedOnStyle: LLVM
+IndentWidth: 8
+UseTab: ForIndentation
+BreakBeforeBraces: Linux
+AllowShortIfStatementsOnASingleLine: false
+IndentCaseLabels: false
+InsertBraces: true
+SpaceAfterCStyleCast: true
+BinPackParameters: true
+BreakArrays: false
+AlignOperands: AlignAfterOperator
+AllowShortFunctionsOnASingleLine: None
+AllowShortEnumsOnASingleLine: false
