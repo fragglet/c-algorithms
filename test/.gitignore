@@ -13,6 +13,7 @@ test-queue
 test-rb-tree
 test-set
 test-slist
+test-sortedarray
 test-trie
 *.log
 *.trs
