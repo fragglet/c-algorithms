@@ -4,7 +4,7 @@ UseTab: ForIndentation
 BreakBeforeBraces: Linux
 AllowShortIfStatementsOnASingleLine: false
 IndentCaseLabels: false
-InsertBraces: true
+# InsertBraces: true
 SpaceAfterCStyleCast: true
 BinPackParameters: true
 BreakArrays: false
