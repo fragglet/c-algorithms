@@ -11,7 +11,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt -q install clang-format
-     - name: Check formatting
+    - name: Check formatting
       run: |
         clang-format -i */*.[ch]
         if git diff */*.[ch] | grep ""; then
