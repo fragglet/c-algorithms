@@ -118,8 +118,9 @@ void sortedarray_free(SortedArray *sortedarray);
  *
  * @param sortedarray   The SortedArray to remove a value from.
  * @param index         The index to remove from the array.
+ * @return              Zero on failure, non-zero on success.
  */
-void sortedarray_remove(SortedArray *sortedarray, unsigned int index);
+int sortedarray_remove(SortedArray *sortedarray, unsigned int index);
 
 /**
  * Remove a range of entities from a SortedArray while maintaining the sorted
@@ -128,9 +129,10 @@ void sortedarray_remove(SortedArray *sortedarray, unsigned int index);
  * @param sortedarray   The SortedArray to remove the range of values from.
  * @param index         The starting index of the range to remove.
  * @param length        The length of the range to remove.
+ * @return              Zero on failure, non-zero on success.
  */
-void sortedarray_remove_range(SortedArray *sortedarray, unsigned int index,
-                              unsigned int length);
+int sortedarray_remove_range(SortedArray *sortedarray, unsigned int index,
+                             unsigned int length);
 
 /**
  * Insert a value into a SortedArray while maintaining the sorted property.

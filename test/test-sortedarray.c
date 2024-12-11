@@ -157,16 +157,18 @@ void test_sortedarray_remove(void)
 	int *got;
 
 	/* Reverse order here so the check_idx calculations below work */
-	sortedarray_remove_range(sa, REMOVE_IDX_3, REMOVE_IDX_3_LEN);
-	sortedarray_remove_range(sa, REMOVE_IDX_2, REMOVE_IDX_2_LEN);
-	sortedarray_remove(sa, REMOVE_IDX_1);
+	assert(sortedarray_remove_range(sa, REMOVE_IDX_3,
+	                                REMOVE_IDX_3_LEN) != 0);
+	assert(sortedarray_remove_range(sa, REMOVE_IDX_2,
+	                                REMOVE_IDX_2_LEN) != 0);
+	assert(sortedarray_remove(sa, REMOVE_IDX_1) != 0);
 
 	/* Invalid indexes */
-	sortedarray_remove(NULL, 0);
-	sortedarray_remove(sa, sortedarray_length(sa));
-	sortedarray_remove_range(sa, sortedarray_length(sa), 3);
-	sortedarray_remove(sa, 999999);
-	sortedarray_remove_range(sa, 999999, 44);
+	assert(sortedarray_remove(NULL, 0) == 0);
+	assert(sortedarray_remove(sa, sortedarray_length(sa)) == 0);
+	assert(sortedarray_remove_range(sa, sortedarray_length(sa), 3) == 0);
+	assert(sortedarray_remove(sa, 999999) == 0);
+	assert(sortedarray_remove_range(sa, 999999, 44) == 0);
 
 	check_sorted(sa);
 	assert(sortedarray_length(sa) == NUM_TEST_VALUES - 1

@@ -88,19 +88,18 @@ void sortedarray_free(SortedArray *sortedarray)
 	}
 }
 
-void sortedarray_remove(SortedArray *sortedarray, unsigned int index)
+int sortedarray_remove(SortedArray *sortedarray, unsigned int index)
 {
 	/* same as remove range of length 1 */
-	sortedarray_remove_range(sortedarray, index, 1);
+	return sortedarray_remove_range(sortedarray, index, 1);
 }
 
-/* TODO: Return boolean value to indicate success */
-void sortedarray_remove_range(SortedArray *sortedarray, unsigned int index,
-                              unsigned int length)
+int sortedarray_remove_range(SortedArray *sortedarray, unsigned int index,
+                             unsigned int length)
 {
 	/* check if valid range */
 	if (sortedarray == NULL || index >= sortedarray->length) {
-		return;
+		return 0;
 	}
 	if (index + length > sortedarray->length) {
 		length = sortedarray->length - index;
@@ -113,6 +112,8 @@ void sortedarray_remove_range(SortedArray *sortedarray, unsigned int index,
 	              * sizeof(SortedArrayValue));
 
 	sortedarray->length -= length;
+
+	return 1;
 }
 
 int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
