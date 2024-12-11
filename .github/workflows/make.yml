@@ -23,7 +23,6 @@ jobs:
           false
         fi
 
-jobs:
   build_and_coverage:
     runs-on: ubuntu-latest
 
