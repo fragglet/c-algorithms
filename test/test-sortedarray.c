@@ -29,172 +29,202 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "compare-int.h"
 #include "sortedarray.h"
 
-#define TEST_SIZE 20
-#define TEST_ARRAY {10, 12, 12, 1, 2, 3, 6, 7, 2, 23, 13, 23, 23, 34, 31, 9,\
-	21, -2, -12, -4}
-#define TEST_REMOVE_EL 15
-#define TEST_REMOVE_RANGE 7
-#define TEST_REMOVE_RANGE_LENGTH 4
+#define NUM_TEST_VALUES (sizeof(test_values) / sizeof(*test_values))
 
-void check_sorted_prop(SortedArray *sortedarray)
+static int test_values[] = {
+	114812, 292972, 15252, 317887, 859422, 943227, 173673, 444396,
+	289730, 60903, 706503, 412815, -13616, 464193, 921380, 411002,
+	118983, 908936, 854842, 228639, 175174, 976812, 963457, 39332,
+	774021, 588784, 23511, 364428, 816641, 66433, 911779, 774060, 4340,
+	-46542, 739951, 388501, 710893, 817647, 582295, 994147, 741106,
+	813303, 187471, 147041,
+	933029, 933029, 933029,  /* Duplicates */
+	753121, 469556, 882575, 953070, 166462, -25609, 766862, 199480,
+	269323, 636875, 49809, 633426, 153528, 325532, 15949, 418818, 541376,
+	950242, 824802, 67683, 583518, 91497, 832324, 591778, 296072, 96531,
+	867789, 126879, 716791, 685326, 826331, 677729, 496589, -6777,
+	667244, 446665, 560213, 727965, 678769, 428202, 761385, 130289,
+	724727, 300728, 734018, 493283, 770024, 472722, 123696, 301295,
+	511707, 383382, 151978
+};
+
+/* The above array, sorted into order. */
+static int sorted_test_values[] = {
+	-46542, -25609, -13616, -6777, 4340, 15252, 15949, 23511, 39332,
+	49809, 60903, 66433, 67683, 91497, 96531, 114812, 118983, 123696,
+	126879, 130289, 147041, 151978, 153528, 166462, 173673, 175174,
+	187471, 199480, 228639, 269323, 289730, 292972, 296072, 300728,
+	301295, 317887, 325532, 364428, 383382, 388501, 411002, 412815,
+	418818, 428202, 444396, 446665, 464193, 469556, 472722, 493283,
+	496589, 511707, 541376, 560213, 582295, 583518, 588784, 591778,
+	633426, 636875, 667244, 677729, 678769, 685326, 706503, 710893,
+	716791, 724727, 727965, 734018, 739951, 741106, 753121, 761385,
+	766862, 770024, 774021, 774060, 813303, 816641, 817647, 824802,
+	826331, 832324, 854842, 859422, 867789, 882575, 908936, 911779,
+	921380,
+	933029, 933029, 933029,  /* Duplicates */
+	943227, 950242, 953070, 963457, 976812, 994147
+};
+
+void check_sorted(SortedArray *sa)
 {
 	unsigned int i;
-	for (i = 1; i < sortedarray_length(sortedarray); i++) {
-		assert(int_compare(sortedarray_get(sortedarray, i-1),
-		                   sortedarray_get(sortedarray, i)) <= 0);
+	for (i = 1; i < sortedarray_length(sa); i++) {
+		assert(int_compare(sortedarray_get(sa, i-1),
+		                   sortedarray_get(sa, i)) <= 0);
 	}
-}
-
-void free_sorted_ints(SortedArray *sortedarray)
-{
-	unsigned int i;
-	for (i = 0; i < sortedarray_length(sortedarray); i++) {
-		int *pi = (int*) sortedarray_get(sortedarray, i);
-		free(pi);
-	}
-
-	sortedarray_free(sortedarray);
 }
 
 SortedArray *generate_sortedarray(void)
 {
-	/* generate a sorted array of length TEST_SIZE, filled with random
-	   numbers. */
-	SortedArray *sortedarray;
+	SortedArray *sa;
 	unsigned int i;
 
-	int array[TEST_SIZE] = TEST_ARRAY;
+	sa = sortedarray_new(0, int_compare);
 
-	sortedarray = sortedarray_new(0, int_compare);
-
-	for (i = 0; i < TEST_SIZE; ++i) {
-		int *pi = malloc(sizeof(int));
-		*pi = array[i];
-		sortedarray_insert(sortedarray, pi);
+	/* Populate with contents of test_values. We do not allocate any
+	   integers, just take pointers into test_values */
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
+		sortedarray_insert(sa, &test_values[i]);
 	}
 
-	return sortedarray;
+	return sa;
 }
 
 void test_sortedarray_new_free(void)
 {
-	SortedArray *sortedarray;
+	SortedArray *sa;
+
+	assert(sortedarray_new(0, NULL) == NULL);
 
 	/* test normal */
-	sortedarray = sortedarray_new(0, int_compare);
-	assert(sortedarray != NULL);
-	sortedarray_free(sortedarray);
+	sa = sortedarray_new(0, int_compare);
+	assert(sa != NULL);
+	sortedarray_free(sa);
 
 	/* freeing null */
 	sortedarray_free(NULL);
 
 	/* low memory */
 	alloc_test_set_limit(0);
-	sortedarray = sortedarray_new(0, int_compare);
-	assert(sortedarray == NULL);
+	sa = sortedarray_new(0, int_compare);
+	assert(sa == NULL);
 
 	alloc_test_set_limit(-1);
 }
 
 void test_sortedarray_insert(void)
 {
-	SortedArray *sortedarray = generate_sortedarray();
-	unsigned int i;
+	SortedArray *sa = generate_sortedarray();
 
-	/* insert a few random numbers, then check if everything is sorted */
-	for (i = 0; i < 20; i++) {
-		int i = (int) (((float) rand())/((float) RAND_MAX) * 100);
-		int *pi = malloc(sizeof(int));
-		*pi = i;
-		sortedarray_insert(sortedarray, pi);
-	}
+	assert(sortedarray_insert(NULL, NULL) == 0);
 
-	check_sorted_prop(sortedarray);
-	free_sorted_ints(sortedarray);
+	/* generate_sortedarray above already inserted the integers. */
+	check_sorted(sa);
+	sortedarray_free(sa);
 }
 
+void test_sortedarray_get(void)
+{
+	SortedArray *sa = generate_sortedarray();
+	unsigned int i;
+	int *got;
+
+	for (i = 0; i < sortedarray_length(sa); i++) {
+		got = sortedarray_get(sa, i);
+		assert(got != NULL);
+		assert(*got == sorted_test_values[i]);
+	}
+
+	/* Invalid indexes */
+	assert(sortedarray_get(NULL, 0) == NULL);
+	assert(sortedarray_get(sa, sortedarray_length(sa)) == NULL);
+	assert(sortedarray_get(sa, 999999) == NULL);
+
+	sortedarray_free(sa);
+}
+
+#define REMOVE_IDX_1 23
+#define REMOVE_IDX_2 57
+#define REMOVE_IDX_2_LEN 7
+#define REMOVE_IDX_3 95
+#define REMOVE_IDX_3_LEN 10
+#define REMOVE_IDX_3_REAL_LEN 5
 void test_sortedarray_remove(void)
 {
-	SortedArray *sortedarray = generate_sortedarray();
+	SortedArray *sa = generate_sortedarray();
+	unsigned int i, check_idx;
+	int *got;
 
-	/* remove index 24 */
-	int *ip = (int*) sortedarray_get(sortedarray, TEST_REMOVE_EL + 1);
-	int i = *ip;
-	free((int*) sortedarray_get(sortedarray, TEST_REMOVE_EL));
-	sortedarray_remove(sortedarray, TEST_REMOVE_EL);
-	assert(*((int*) sortedarray_get(sortedarray, TEST_REMOVE_EL)) == i);
+	/* Reverse order here so the check_idx calculations below work */
+	sortedarray_remove_range(sa, REMOVE_IDX_3, REMOVE_IDX_3_LEN);
+	sortedarray_remove_range(sa, REMOVE_IDX_2, REMOVE_IDX_2_LEN);
+	sortedarray_remove(sa, REMOVE_IDX_1);
 
-	check_sorted_prop(sortedarray);
-	free_sorted_ints(sortedarray);
+	/* Invalid indexes */
+	sortedarray_remove(NULL, 0);
+	sortedarray_remove(sa, sortedarray_length(sa));
+	sortedarray_remove_range(sa, sortedarray_length(sa), 3);
+	sortedarray_remove(sa, 999999);
+	sortedarray_remove_range(sa, 999999, 44);
+
+	check_sorted(sa);
+	assert(sortedarray_length(sa) == NUM_TEST_VALUES - 1
+	                               - REMOVE_IDX_2_LEN
+	                               - REMOVE_IDX_3_REAL_LEN);
+
+	for (i = 0; i < sortedarray_length(sa); i++) {
+		check_idx = i;
+		if (check_idx >= REMOVE_IDX_1) {
+			++check_idx;
+		}
+		if (check_idx >= REMOVE_IDX_2) {
+			check_idx += REMOVE_IDX_2_LEN;
+		}
+		got = sortedarray_get(sa, i);
+		assert(*got == sorted_test_values[check_idx]);
+	}
+
+	sortedarray_free(sa);
 }
 
-void test_sortedarray_remove_range(void)
+void test_sortedarray_index_of(void)
 {
-	SortedArray *sortedarray = generate_sortedarray();
-
-	/* get values in test range */
-	int new[TEST_REMOVE_RANGE_LENGTH];
+	SortedArray *sa = generate_sortedarray();
 	unsigned int i;
-	for (i = 0; i < TEST_REMOVE_RANGE_LENGTH; i++) {
-		new[i] = *((int*) sortedarray_get(sortedarray, TEST_REMOVE_RANGE +
-		                                    TEST_REMOVE_RANGE_LENGTH + i));
+	int got_idx, test_index;
+
+	assert(sortedarray_index_of(NULL, NULL) == -1);
+
+	/* Invalid index */
+	test_index = 999999;
+	assert(sortedarray_index_of(sa, &test_index) == -1);
+
+	for (i = 0; i < NUM_TEST_VALUES; i++) {
+		got_idx = sortedarray_index_of(sa, &sorted_test_values[i]);
+		/* We cannot just check got_idx == i as there are duplicates */
+		assert(sorted_test_values[got_idx] == sorted_test_values[i]);
 	}
 
-	/* free removed elements */
-	for (i = 0; i < TEST_REMOVE_RANGE_LENGTH; i++) {
-		free((int*) sortedarray_get(sortedarray, TEST_REMOVE_RANGE + i));
-	}
-
-	/* remove */
-	sortedarray_remove_range(sortedarray, TEST_REMOVE_RANGE,
-			TEST_REMOVE_RANGE_LENGTH);
-
-	/* assert */
-	for (i = 0; i < TEST_REMOVE_RANGE_LENGTH; i++) {
-		assert(*((int*) sortedarray_get(sortedarray, TEST_REMOVE_RANGE + i)) ==
-		                                                                new[i]);
-	}
-
-	check_sorted_prop(sortedarray);
-	free_sorted_ints(sortedarray);
+	sortedarray_free(sa);
 }
 
-void test_sortedarray_index_of(void) {
-	SortedArray *sortedarray = generate_sortedarray();
+void test_sortedarray_clear(void)
+{
+	SortedArray *sa = generate_sortedarray();
 
-	unsigned int i;
-	for (i = 0; i < TEST_SIZE; i++) {
-		int r = sortedarray_index_of(sortedarray,
-		                sortedarray_get(sortedarray, i));
-		assert(r >= 0);
-		assert(*((int*) sortedarray_get(sortedarray,(unsigned int) r)) ==
-		        *((int*) sortedarray_get(sortedarray, i)));
-	}
-
-	free_sorted_ints(sortedarray);
-}
-
-void test_sortedarray_get(void) {
-	unsigned int i;
-
-	SortedArray *arr = generate_sortedarray();
-
-	for (i = 0; i < sortedarray_length(arr); i++) {
-		assert(sortedarray_get(arr, i) == sortedarray_get(arr, i));
-		assert(*((int*) sortedarray_get(arr, i)) ==
-		       *((int*) sortedarray_get(arr, i)));
-	}
-
-	free_sorted_ints(arr);
+	sortedarray_clear(sa);
+	assert(sortedarray_length(sa) == 0);
+	sortedarray_free(sa);
 }
 
 static UnitTestFunction tests[] = {
 	test_sortedarray_new_free,
 	test_sortedarray_insert,
-	test_sortedarray_remove,
-	test_sortedarray_remove_range,
-	test_sortedarray_index_of,
 	test_sortedarray_get,
+	test_sortedarray_remove,
+	test_sortedarray_index_of,
+	test_sortedarray_clear,
 	NULL
 };
 

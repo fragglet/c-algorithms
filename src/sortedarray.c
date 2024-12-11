@@ -35,9 +35,9 @@ struct _SortedArray {
 	SortedArrayCompareFunc cmp_func;
 };
 
-SortedArrayValue *sortedarray_get(SortedArray *array, unsigned int i)
+SortedArrayValue sortedarray_get(SortedArray *array, unsigned int i)
 {
-	if (array == NULL) {
+	if (array == NULL || i >= array->length) {
 		return NULL;
 	}
 
@@ -97,10 +97,12 @@ void sortedarray_remove(SortedArray *sortedarray, unsigned int index)
 void sortedarray_remove_range(SortedArray *sortedarray, unsigned int index,
                               unsigned int length)
 {
-	/* removal does not violate sorted property */
 	/* check if valid range */
-	if (index > sortedarray->length || index + length > sortedarray->length) {
+	if (sortedarray == NULL || index >= sortedarray->length) {
 		return;
+	}
+	if (index + length > sortedarray->length) {
+		length = sortedarray->length - index;
 	}
 
 	/* move entries back */
@@ -114,10 +116,15 @@ void sortedarray_remove_range(SortedArray *sortedarray, unsigned int index,
 
 int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 {
-	/* we perform a binary search to find the right position */
-	unsigned int left  = 0;
-	unsigned int right = sortedarray->length;
-	unsigned int index = 0;
+	unsigned int left, right, index;
+
+	if (sortedarray == NULL) {
+		return 0;
+	}
+
+	left = 0;
+	right = sortedarray->length;
+	index = 0;
 
 	/* When length is 1 set right to 0 so that the loop is not entered */
 	right = (right > 1) ? right : 0;
@@ -176,14 +183,15 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 
 int sortedarray_index_of(SortedArray *sortedarray, SortedArrayValue data)
 {
-	/* perform a binary search */
-	unsigned int left = 0;
-	unsigned int right = sortedarray->length;
-	unsigned int index = 0;
+	unsigned int left, right, index;
 
 	if (sortedarray == NULL) {
 		return -1;
 	}
+
+	left = 0;
+	right = sortedarray->length;
+	index = 0;
 
 	/* safe subtract 1 of right without going negative */
 	right = (right > 1) ? right : 0;

@@ -81,7 +81,7 @@ typedef int (*SortedArrayCompareFunc)(SortedArrayValue value1,
  * @param i       The index of the element to retrieve.
  * @return        The i-th element of the array, or NULL if array was NULL.
  */
-SortedArrayValue *sortedarray_get(SortedArray *array, unsigned int i);
+SortedArrayValue sortedarray_get(SortedArray *array, unsigned int i);
 
 /**
  * @brief Function to retrieve the length of the SortedArray array.
