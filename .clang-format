@@ -7,7 +7,6 @@ IndentCaseLabels: false
 # InsertBraces: true
 SpaceAfterCStyleCast: true
 BinPackParameters: true
-BreakArrays: false
 AlignOperands: AlignAfterOperator
 AllowShortFunctionsOnASingleLine: None
 AllowShortEnumsOnASingleLine: false
