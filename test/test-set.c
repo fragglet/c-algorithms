@@ -18,21 +18,21 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 #include "alloc-testing.h"
 #include "framework.h"
 
-#include "set.h"
 #include "compare-int.h"
-#include "hash-int.h"
 #include "compare-pointer.h"
-#include "hash-pointer.h"
 #include "compare-string.h"
+#include "hash-int.h"
+#include "hash-pointer.h"
 #include "hash-string.h"
+#include "set.h"
 
 int allocated_values;
 
@@ -47,7 +47,7 @@ Set *generate_set(void)
 
 	/* Add 10,000 items sequentially, checking that the counter
 	 * works properly */
-	for (i=0; i<10000; ++i) {
+	for (i = 0; i < 10000; ++i) {
 		sprintf(buf, "%i", i);
 		value = strdup(buf);
 
@@ -74,7 +74,7 @@ void test_set_new_free(void)
 	assert(set != NULL);
 
 	/* Fill the set with many values before freeing */
-	for (i=0; i<10000; ++i) {
+	for (i = 0; i < 10000; ++i) {
 		value = (int *) malloc(sizeof(int));
 
 		*value = i;
@@ -99,18 +99,18 @@ void test_set_new_free(void)
 void test_set_insert(void)
 {
 	Set *set;
-	int numbers1[] = { 1, 2, 3, 4, 5, 6 };
-	int numbers2[] = { 5, 6, 7, 8, 9, 10 };
+	int numbers1[] = {1, 2, 3, 4, 5, 6};
+	int numbers2[] = {5, 6, 7, 8, 9, 10};
 	int i;
 
 	/* Perform a union of numbers1 and numbers2.  Cannot add the same
 	 * value twice. */
 	set = set_new(int_hash, int_equal);
 
-	for (i=0; i<6; ++i) {
+	for (i = 0; i < 6; ++i) {
 		set_insert(set, &numbers1[i]);
 	}
-	for (i=0; i<6; ++i) {
+	for (i = 0; i < 6; ++i) {
 		set_insert(set, &numbers2[i]);
 	}
 
@@ -128,7 +128,7 @@ void test_set_query(void)
 	set = generate_set();
 
 	/* Test all values */
-	for (i=0; i<10000; ++i) {
+	for (i = 0; i < 10000; ++i) {
 		sprintf(buf, "%i", i);
 		assert(set_query(set, buf) != 0);
 	}
@@ -153,7 +153,7 @@ void test_set_remove(void)
 	assert(num_entries == 10000);
 
 	/* Remove some entries */
-	for (i=4000; i<6000; ++i) {
+	for (i = 4000; i < 6000; ++i) {
 
 		sprintf(buf, "%i", i);
 
@@ -173,14 +173,14 @@ void test_set_remove(void)
 	}
 
 	/* Try to remove some invalid entries */
-	for (i=-1000; i<-500; ++i) {
+	for (i = -1000; i < -500; ++i) {
 		sprintf(buf, "%i", i);
 
 		assert(set_remove(set, buf) == 0);
 		assert(set_num_entries(set) == num_entries);
 	}
 
-	for (i=50000; i<51000; ++i) {
+	for (i = 50000; i < 51000; ++i) {
 		sprintf(buf, "%i", i);
 
 		assert(set_remove(set, buf) == 0);
@@ -204,14 +204,14 @@ void test_set_union(void)
 	/* Create the first set */
 	set1 = set_new(int_hash, int_equal);
 
-	for (i=0; i<7; ++i) {
+	for (i = 0; i < 7; ++i) {
 		set_insert(set1, &numbers1[i]);
 	}
 
 	/* Create the second set */
 	set2 = set_new(int_hash, int_equal);
 
-	for (i=0; i<7; ++i) {
+	for (i = 0; i < 7; ++i) {
 		set_insert(set2, &numbers2[i]);
 	}
 
@@ -220,7 +220,7 @@ void test_set_union(void)
 
 	assert(set_num_entries(result_set) == 11);
 
-	for (i=0; i<11; ++i) {
+	for (i = 0; i < 11; ++i) {
 		assert(set_query(result_set, &result[i]) != 0);
 	}
 
@@ -261,14 +261,14 @@ void test_set_intersection(void)
 	/* Create the first set */
 	set1 = set_new(int_hash, int_equal);
 
-	for (i=0; i<7; ++i) {
+	for (i = 0; i < 7; ++i) {
 		set_insert(set1, &numbers1[i]);
 	}
 
 	/* Create the second set */
 	set2 = set_new(int_hash, int_equal);
 
-	for (i=0; i<7; ++i) {
+	for (i = 0; i < 7; ++i) {
 		set_insert(set2, &numbers2[i]);
 	}
 
@@ -277,7 +277,7 @@ void test_set_intersection(void)
 
 	assert(set_num_entries(result_set) == 3);
 
-	for (i=0; i<3; ++i) {
+	for (i = 0; i < 3; ++i) {
 		assert(set_query(result_set, &result[i]) != 0);
 	}
 
@@ -307,7 +307,7 @@ void test_set_to_array(void)
 	 * array. */
 	set = set_new(pointer_hash, pointer_equal);
 
-	for (i=0; i<100; ++i) {
+	for (i = 0; i < 100; ++i) {
 		values[i] = 1;
 		set_insert(set, &values[i]);
 	}
@@ -315,7 +315,7 @@ void test_set_to_array(void)
 	array = (int **) set_to_array(set);
 
 	/* Check the array */
-	for (i=0; i<100; ++i) {
+	for (i = 0; i < 100; ++i) {
 		assert(*array[i] == 1);
 		*array[i] = 0;
 	}
@@ -439,7 +439,7 @@ void test_set_free_function(void)
 
 	allocated_values = 0;
 
-	for (i=0; i<1000; ++i) {
+	for (i = 0; i < 1000; ++i) {
 		value = new_value(i);
 
 		set_insert(set, value);
@@ -480,7 +480,7 @@ void test_set_out_of_memory(void)
 	 * The initial table size is 193 entries.  The table increases in
 	 * size when 1/3 full, so the 66th entry should cause the insert
 	 * to fail. */
-	for (i=0; i<65; ++i) {
+	for (i = 0; i < 65; ++i) {
 		values[i] = (int) i;
 
 		assert(set_insert(set, &values[i]) != 0);
@@ -500,7 +500,7 @@ void test_set_out_of_memory(void)
 	set_free(set);
 }
 
-
+/* clang-format off */
 static UnitTestFunction tests[] = {
 	test_set_new_free,
 	test_set_insert,
@@ -515,6 +515,7 @@ static UnitTestFunction tests[] = {
 	test_set_out_of_memory,
 	NULL
 };
+/* clang-format on */
 
 int main(int argc, char *argv[])
 {
@@ -522,4 +523,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

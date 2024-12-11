@@ -20,9 +20,9 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 /* Test cases for compare functions */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include "alloc-testing.h"
 #include "framework.h"
@@ -166,6 +166,7 @@ void test_string_nocase_equal(void)
 	assert(string_nocase_equal(test1, test4) != 0);
 }
 
+/* clang-format off */
 static UnitTestFunction tests[] = {
 	test_int_compare,
 	test_int_equal,
@@ -177,6 +178,7 @@ static UnitTestFunction tests[] = {
 	test_string_nocase_equal,
 	NULL
 };
+/* clang-format on */
 
 int main(int argc, char *argv[])
 {
@@ -184,4 +186,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

@@ -49,5 +49,3 @@ int int_compare(void *vlocation1, void *vlocation2)
 		return 0;
 	}
 }
-
-

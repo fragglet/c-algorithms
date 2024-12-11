@@ -18,15 +18,15 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include "alloc-testing.h"
 #include "framework.h"
 
-#include "hash-pointer.h"
 #include "hash-int.h"
+#include "hash-pointer.h"
 #include "hash-string.h"
 
 #define NUM_TEST_VALUES 200
@@ -37,15 +37,15 @@ void test_pointer_hash(void)
 	int i, j;
 
 	/* Initialise the array to all zeros */
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		array[i] = 0;
 	}
 
 	/* Check hashes are never the same */
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
-		for (j=i+1; j<NUM_TEST_VALUES; ++j) {
-			assert(pointer_hash(&array[i])
-			       != pointer_hash(&array[j]));
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
+		for (j = i + 1; j < NUM_TEST_VALUES; ++j) {
+			assert(pointer_hash(&array[i]) !=
+			       pointer_hash(&array[j]));
 		}
 	}
 }
@@ -56,13 +56,13 @@ void test_int_hash(void)
 	int i, j;
 
 	/* Initialise all entries in the array */
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		array[i] = i;
 	}
 
 	/* Check hashes are never the same */
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
-		for (j=i+1; j<NUM_TEST_VALUES; ++j) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
+		for (j = i + 1; j < NUM_TEST_VALUES; ++j) {
 			assert(int_hash(&array[i]) != int_hash(&array[j]));
 		}
 	}
@@ -116,6 +116,7 @@ void test_string_nocase_hash(void)
 	assert(string_nocase_hash(test1) == string_nocase_hash(test4));
 }
 
+/* clang-format off */
 static UnitTestFunction tests[] = {
 	test_pointer_hash,
 	test_int_hash,
@@ -123,6 +124,7 @@ static UnitTestFunction tests[] = {
 	test_string_nocase_hash,
 	NULL
 };
+/* clang-format on */
 
 int main(int argc, char *argv[])
 {
@@ -130,4 +132,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

@@ -252,8 +252,7 @@ void list_sort(ListEntry **list, ListCompareFunc compare_func);
  * @return               The list entry of the item being searched for, or
  *                       NULL if not found.
  */
-ListEntry *list_find_data(ListEntry *list,
-                          ListEqualFunc callback,
+ListEntry *list_find_data(ListEntry *list, ListEqualFunc callback,
                           ListValue data);
 
 /**

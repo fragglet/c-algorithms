@@ -40,7 +40,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <libcalg/rb-tree.h>
 #include <libcalg/set.h>
 #include <libcalg/slist.h>
-#include <libcalg/trie.h>
 #include <libcalg/sortedarray.h>
+#include <libcalg/trie.h>
 
 #endif /* #ifndef LIBCALG_H */

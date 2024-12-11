@@ -76,8 +76,7 @@ struct _ArrayList {
  *
  * @return Non-zero if the values are equal, zero if they are not equal.
  */
-typedef int (*ArrayListEqualFunc)(ArrayListValue value1,
-                                  ArrayListValue value2);
+typedef int (*ArrayListEqualFunc)(ArrayListValue value1, ArrayListValue value2);
 
 /**
  * Compare two values in an arraylist.  Used by @ref arraylist_sort
@@ -178,8 +177,7 @@ int arraylist_insert(ArrayList *arraylist, unsigned int index,
  * @param data           The value to search for.
  * @return               The index of the value if found, or -1 if not found.
  */
-int arraylist_index_of(ArrayList *arraylist,
-                       ArrayListEqualFunc callback,
+int arraylist_index_of(ArrayList *arraylist, ArrayListEqualFunc callback,
                        ArrayListValue data);
 
 /**

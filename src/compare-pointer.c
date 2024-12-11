@@ -37,5 +37,3 @@ int pointer_compare(void *location1, void *location2)
 		return 0;
 	}
 }
-
-

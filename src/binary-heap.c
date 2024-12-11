@@ -90,8 +90,8 @@ int binary_heap_insert(BinaryHeap *heap, BinaryHeapValue value)
 
 		/* Double the table size */
 		new_size = heap->alloced_size * 2;
-		new_values = realloc(heap->values,
-		                     sizeof(BinaryHeapValue) * new_size);
+		new_values =
+		    realloc(heap->values, sizeof(BinaryHeapValue) * new_size);
 
 		if (new_values == NULL) {
 			return 0;
@@ -163,25 +163,22 @@ BinaryHeapValue binary_heap_pop(BinaryHeap *heap)
 		child1 = index * 2 + 1;
 		child2 = index * 2 + 2;
 
-		if (child1 < heap->num_values
-		 && binary_heap_cmp(heap,
-		                    new_value,
-		                    heap->values[child1]) > 0) {
+		if (child1 < heap->num_values &&
+		    binary_heap_cmp(heap, new_value, heap->values[child1]) >
+		        0) {
 
 			/* Left child is less than the node.  We need to swap
 			 * with one of the children, whichever is less. */
-			if (child2 < heap->num_values
-			 && binary_heap_cmp(heap,
-			                    heap->values[child1],
+			if (child2 < heap->num_values &&
+			    binary_heap_cmp(heap, heap->values[child1],
 			                    heap->values[child2]) > 0) {
 				next_index = child2;
 			} else {
 				next_index = child1;
 			}
 
-		} else if (child2 < heap->num_values
-		        && binary_heap_cmp(heap,
-		                           new_value,
+		} else if (child2 < heap->num_values &&
+		           binary_heap_cmp(heap, new_value,
 		                           heap->values[child2]) > 0) {
 
 			/* Right child is less than the node.  Swap with the
@@ -210,4 +207,3 @@ unsigned int binary_heap_num_entries(BinaryHeap *heap)
 {
 	return heap->num_values;
 }
-

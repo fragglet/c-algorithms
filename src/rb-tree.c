@@ -115,25 +115,24 @@ static RBTreeNode *rb_tree_rotate(RBTree *tree, RBTreeNode *node,
 
 	/* The child of this node will take its place:
 	   for a left rotation, it is the right child, and vice versa. */
-	new_root = node->children[1-direction];
+	new_root = node->children[1 - direction];
 
 	/* Make new_root the root, update parent pointers. */
 	rb_tree_node_replace(tree, node, new_root);
 
 	/* Rearrange pointers */
-	node->children[1-direction] = new_root->children[direction];
+	node->children[1 - direction] = new_root->children[direction];
 	new_root->children[direction] = node;
 
 	/* Update parent references */
 	node->parent = new_root;
 
-	if (node->children[1-direction] != NULL) {
-		node->children[1-direction]->parent = node;
+	if (node->children[1 - direction] != NULL) {
+		node->children[1 - direction]->parent = node;
 	}
 
 	return new_root;
 }
-
 
 RBTree *rb_tree_new(RBTreeCompareFunc compare_func)
 {
@@ -268,7 +267,7 @@ void rb_tree_insert_case4(RBTree *tree, RBTreeNode *node)
 
 		/* Rotate around the parent in the opposite direction
 		 * to side. */
-		rb_tree_rotate(tree, node->parent, 1-side);
+		rb_tree_rotate(tree, node->parent, 1 - side);
 	} else {
 		next_node = node;
 	}
@@ -304,7 +303,7 @@ void rb_tree_insert_case5(RBTree *tree, RBTreeNode *node)
 	side = rb_tree_node_side(node);
 
 	/* Rotate at the grandparent, in the opposite direction to side. */
-	rb_tree_rotate(tree, grandparent, 1-side);
+	rb_tree_rotate(tree, grandparent, 1 - side);
 
 	/* Recolor the (old) parent and grandparent. */
 	parent->color = RB_TREE_NODE_BLACK;
@@ -406,8 +405,7 @@ RBTreeValue rb_tree_lookup(RBTree *tree, RBTreeKey key)
 }
 
 void rb_tree_remove_node(RBTree *tree, RBTreeNode *node)
-{
-	/* TODO */
+{ /* TODO */
 }
 
 int rb_tree_remove(RBTree *tree, RBTreeKey key)
@@ -465,4 +463,3 @@ int rb_tree_num_entries(RBTree *tree)
 {
 	return tree->num_nodes;
 }
-

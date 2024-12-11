@@ -228,4 +228,3 @@ int queue_is_empty(Queue *queue)
 {
 	return queue->head == NULL;
 }
-

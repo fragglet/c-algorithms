@@ -81,8 +81,9 @@ int string_nocase_compare(void *string1, void *string2)
 		}
 
 		/* End of string */
-		if (c1 == '\0')
+		if (c1 == '\0') {
 			break;
+		}
 
 		/* Advance to the next character */
 		++p1;
@@ -92,5 +93,3 @@ int string_nocase_compare(void *string1, void *string2)
 	/* Reached the end of string and no difference found */
 	return 0;
 }
-
-

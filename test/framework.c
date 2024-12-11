@@ -45,8 +45,7 @@ void run_tests(UnitTestFunction *tests)
 {
 	int i;
 
-	for (i=0; tests[i] != NULL; ++i) {
+	for (i = 0; tests[i] != NULL; ++i) {
 		run_test(tests[i]);
 	}
 }
-

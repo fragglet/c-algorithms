@@ -106,10 +106,9 @@ int sortedarray_remove_range(SortedArray *sortedarray, unsigned int index,
 	}
 
 	/* move entries back */
-	memmove(&sortedarray->data[index],
-	        &sortedarray->data[index + length],
-	        (sortedarray->length - (index + length))
-	              * sizeof(SortedArrayValue));
+	memmove(&sortedarray->data[index], &sortedarray->data[index + length],
+	        (sortedarray->length - (index + length)) *
+	            sizeof(SortedArrayValue));
 
 	sortedarray->length -= length;
 
@@ -134,8 +133,8 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 	while (left != right) {
 		index = (left + right) / 2;
 
-		int order = sortedarray->cmp_func(data,
-		                                  sortedarray->data[index]);
+		int order =
+		    sortedarray->cmp_func(data, sortedarray->data[index]);
 		if (order < 0) {
 			/* value should be left of index */
 			right = index;
@@ -149,8 +148,8 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 	}
 
 	/* look whether the item should be put before or after the index */
-	if (sortedarray->length > 0 && sortedarray->cmp_func(data,
-	                       sortedarray->data[index]) > 0) {
+	if (sortedarray->length > 0 &&
+	    sortedarray->cmp_func(data, sortedarray->data[index]) > 0) {
 		index++;
 	}
 
@@ -161,7 +160,8 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 		SortedArrayValue *data;
 
 		newsize = sortedarray->_alloced * 2;
-		data = realloc(sortedarray->data, sizeof(SortedArrayValue) * newsize);
+		data = realloc(sortedarray->data,
+		               sizeof(SortedArrayValue) * newsize);
 
 		if (data == NULL) {
 			return 0;
@@ -172,8 +172,7 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 	}
 
 	/* move all other elements */
-	memmove(&sortedarray->data[index + 1],
-	        &sortedarray->data[index],
+	memmove(&sortedarray->data[index + 1], &sortedarray->data[index],
 	        (sortedarray->length - index) * sizeof(SortedArrayValue));
 
 	/* insert entry */
@@ -202,8 +201,8 @@ int sortedarray_index_of(SortedArray *sortedarray, SortedArrayValue data)
 	while (left != right) {
 		index = (left + right) / 2;
 
-		int order = sortedarray->cmp_func(data,
-		                                  sortedarray->data[index]);
+		int order =
+		    sortedarray->cmp_func(data, sortedarray->data[index]);
 		if (order < 0) {
 			/* value should be left */
 			right = index;

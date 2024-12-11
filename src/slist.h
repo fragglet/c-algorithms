@@ -229,8 +229,7 @@ int slist_remove_entry(SListEntry **list, SListEntry *entry);
  * @param data       The value to remove from the list.
  * @return           The number of entries removed from the list.
  */
-unsigned int slist_remove_data(SListEntry **list,
-                               SListEqualFunc callback,
+unsigned int slist_remove_data(SListEntry **list, SListEqualFunc callback,
                                SListValue data);
 
 /**
@@ -252,8 +251,7 @@ void slist_sort(SListEntry **list, SListCompareFunc compare_func);
  * @return               The list entry of the value being searched for, or
  *                       NULL if not found.
  */
-SListEntry *slist_find_data(SListEntry *list,
-                            SListEqualFunc callback,
+SListEntry *slist_find_data(SListEntry *list, SListEqualFunc callback,
                             SListValue data);
 
 /**

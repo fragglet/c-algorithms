@@ -18,9 +18,9 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include "alloc-testing.h"
 #include "framework.h"
@@ -221,6 +221,7 @@ void test_bloom_filter_mismatch(void)
 	bloom_filter_free(filter1);
 }
 
+/* clang-format off */
 static UnitTestFunction tests[] = {
 	test_bloom_filter_new_free,
 	test_bloom_filter_insert_query,
@@ -230,6 +231,7 @@ static UnitTestFunction tests[] = {
 	test_bloom_filter_mismatch,
 	NULL
 };
+/* clang-format on */
 
 int main(int argc, char *argv[])
 {
@@ -237,4 +239,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

@@ -18,19 +18,19 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 #include "alloc-testing.h"
 #include "framework.h"
 
-#include "hash-table.h"
-#include "hash-int.h"
 #include "compare-int.h"
-#include "hash-string.h"
 #include "compare-string.h"
+#include "hash-int.h"
+#include "hash-string.h"
+#include "hash-table.h"
 
 #define NUM_TEST_VALUES 10000
 
@@ -53,7 +53,7 @@ HashTable *generate_hash_table(void)
 	hash_table = hash_table_new(string_hash, string_equal);
 
 	/* Insert lots of values */
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		sprintf(buf, "%i", i);
 
 		value = strdup(buf);
@@ -111,7 +111,7 @@ void test_hash_table_insert_lookup(void)
 	assert(hash_table_num_entries(hash_table) == NUM_TEST_VALUES);
 
 	/* Check all values */
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		sprintf(buf, "%i", i);
 		value = hash_table_lookup(hash_table, buf);
 
@@ -240,11 +240,10 @@ void test_hash_table_iterating_remove(void)
 	assert(removed == 100);
 	assert(count == NUM_TEST_VALUES);
 
-	assert(hash_table_num_entries(hash_table)
-	       == NUM_TEST_VALUES - removed);
+	assert(hash_table_num_entries(hash_table) == NUM_TEST_VALUES - removed);
 
 	/* Check all entries divisible by 100 were really removed */
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		sprintf(buf, "%i", i);
 
 		if (i % 100 == 0) {
@@ -314,7 +313,7 @@ void test_hash_table_free_functions(void)
 
 	allocated_values = 0;
 
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		key = new_key(i);
 		value = new_value(99);
 
@@ -372,11 +371,11 @@ void test_hash_table_out_of_memory(void)
 	 * size when 1/3 full, so the 66th entry should cause the insert
 	 * to fail.
 	 */
-	for (i=0; i<65; ++i) {
+	for (i = 0; i < 65; ++i) {
 		values[i] = (int) i;
 
-		assert(hash_table_insert(hash_table,
-		                         &values[i], &values[i]) != 0);
+		assert(hash_table_insert(hash_table, &values[i], &values[i]) !=
+		       0);
 		assert(hash_table_num_entries(hash_table) == i + 1);
 	}
 
@@ -411,8 +410,8 @@ void test_hash_iterator_key_pair()
 		/* Retrieve both Key and Value */
 		pair = hash_table_iter_next(&iterator);
 
-		int *key = (int*) pair.key;
-		int *val = (int*) pair.value;
+		int *key = (int *) pair.key;
+		int *val = (int *) pair.value;
 
 		assert(*key == *val);
 	}
@@ -420,6 +419,7 @@ void test_hash_iterator_key_pair()
 	hash_table_free(hash_table);
 }
 
+/* clang-format off */
 static UnitTestFunction tests[] = {
 	test_hash_table_new_free,
 	test_hash_table_insert_lookup,
@@ -431,6 +431,7 @@ static UnitTestFunction tests[] = {
 	test_hash_iterator_key_pair,
 	NULL
 };
+/* clang-format on */
 
 int main(int argc, char *argv[])
 {
@@ -438,4 +439,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

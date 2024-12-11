@@ -108,8 +108,7 @@ int arraylist_insert(ArrayList *arraylist, unsigned int index,
 
 	/* Move the contents of the array forward from the index
 	 * onwards */
-	memmove(&arraylist->data[index + 1],
-	        &arraylist->data[index],
+	memmove(&arraylist->data[index + 1], &arraylist->data[index],
 	        (arraylist->length - index) * sizeof(ArrayListValue));
 
 	/* Insert the new entry at the index */
@@ -138,10 +137,9 @@ void arraylist_remove_range(ArrayList *arraylist, unsigned int index,
 	}
 
 	/* Move back the entries following the range to be removed */
-	memmove(&arraylist->data[index],
-	        &arraylist->data[index + length],
-	        (arraylist->length - (index + length))
-	            * sizeof(ArrayListValue));
+	memmove(&arraylist->data[index], &arraylist->data[index + length],
+	        (arraylist->length - (index + length)) *
+	            sizeof(ArrayListValue));
 
 	/* Decrease the counter */
 	arraylist->length -= length;
@@ -152,15 +150,15 @@ void arraylist_remove(ArrayList *arraylist, unsigned int index)
 	arraylist_remove_range(arraylist, index, 1);
 }
 
-int arraylist_index_of(ArrayList *arraylist,
-                       ArrayListEqualFunc callback,
+int arraylist_index_of(ArrayList *arraylist, ArrayListEqualFunc callback,
                        ArrayListValue data)
 {
 	unsigned int i;
 
-	for (i=0; i<arraylist->length; ++i) {
-		if (callback(arraylist->data[i], data) != 0)
+	for (i = 0; i < arraylist->length; ++i) {
+		if (callback(arraylist->data[i], data) != 0) {
 			return (int) i;
+		}
 	}
 
 	return -1;
@@ -188,7 +186,7 @@ static void arraylist_sort_internal(ArrayListValue *list_data,
 	}
 
 	/* Take the last item as the pivot. */
-	pivot = list_data[list_length-1];
+	pivot = list_data[list_length - 1];
 
 	/* Divide the list into two lists:
 	 *
@@ -202,7 +200,7 @@ static void arraylist_sort_internal(ArrayListValue *list_data,
 	 */
 	list1_length = 0;
 
-	for (i=0; i<list_length-1; ++i) {
+	for (i = 0; i < list_length - 1; ++i) {
 
 		if (compare_func(list_data[i], pivot) < 0) {
 
@@ -230,7 +228,7 @@ static void arraylist_sort_internal(ArrayListValue *list_data,
 	 * or equal to the pivot.
 	 * Move the pivot into place, by swapping it with the item
 	 * immediately following the end of list 1. */
-	list_data[list_length-1] = list_data[list1_length];
+	list_data[list_length - 1] = list_data[list1_length];
 	list_data[list1_length] = pivot;
 
 	/* Recursively sort the sublists. */
@@ -246,4 +244,3 @@ void arraylist_sort(ArrayList *arraylist, ArrayListCompareFunc compare_func)
 	arraylist_sort_internal(arraylist->data, arraylist->length,
 	                        compare_func);
 }
-

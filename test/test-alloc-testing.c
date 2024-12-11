@@ -21,8 +21,8 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 /* Tests for the allocation testing framework. */
 
-#include <stdio.h>
 #include <assert.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "alloc-testing.h"
@@ -45,7 +45,7 @@ static void test_malloc_free(void)
 	/* Check that the block is initialised with garbage */
 	ptr = block;
 
-	for (i=0; i<1024; ++i) {
+	for (i = 0; i < 1024; ++i) {
 		assert(ptr[i] != 0);
 	}
 
@@ -158,7 +158,7 @@ static void test_calloc(void)
 	assert(block != NULL);
 
 	/* Check the block contents are initialised to zero */
-	for (i=0; i<1024; ++i) {
+	for (i = 0; i < 1024; ++i) {
 		assert(block[i] == 0);
 	}
 
@@ -233,6 +233,7 @@ static void test_limits(void)
 	free(block);
 }
 
+/* clang-format off */
 static UnitTestFunction tests[] = {
 	test_malloc_free,
 	test_realloc,
@@ -241,6 +242,7 @@ static UnitTestFunction tests[] = {
 	test_limits,
 	NULL
 };
+/* clang-format on */
 
 int main(int argc, char *argv[])
 {
@@ -248,4 +250,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

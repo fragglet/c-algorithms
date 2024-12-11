@@ -30,4 +30,3 @@ unsigned int int_hash(void *vlocation)
 
 	return (unsigned int) *location;
 }
-

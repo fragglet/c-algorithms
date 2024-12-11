@@ -18,8 +18,8 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
-#include <stdlib.h>
 #include <assert.h>
+#include <stdlib.h>
 
 #include "alloc-testing.h"
 #include "framework.h"
@@ -36,7 +36,7 @@ void test_binomial_heap_new_free(void)
 	BinomialHeap *heap;
 	int i;
 
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		heap = binomial_heap_new(BINOMIAL_HEAP_TYPE_MIN, int_compare);
 		binomial_heap_free(heap);
 	}
@@ -54,7 +54,7 @@ void test_binomial_heap_insert(void)
 
 	heap = binomial_heap_new(BINOMIAL_HEAP_TYPE_MIN, int_compare);
 
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		assert(binomial_heap_insert(heap, &test_array[i]) != 0);
 	}
@@ -76,7 +76,7 @@ void test_min_heap(void)
 	heap = binomial_heap_new(BINOMIAL_HEAP_TYPE_MIN, int_compare);
 
 	/* Push a load of values onto the heap */
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		assert(binomial_heap_insert(heap, &test_array[i]) != 0);
 	}
@@ -106,7 +106,7 @@ void test_max_heap(void)
 	heap = binomial_heap_new(BINOMIAL_HEAP_TYPE_MAX, int_compare);
 
 	/* Push a load of values onto the heap */
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		assert(binomial_heap_insert(heap, &test_array[i]) != 0);
 	}
@@ -137,11 +137,10 @@ static BinomialHeap *generate_heap(void)
 	heap = binomial_heap_new(BINOMIAL_HEAP_TYPE_MIN, int_compare);
 
 	/* Push a load of values onto the heap */
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		if (i != TEST_VALUE) {
-			assert(binomial_heap_insert(heap,
-			                            &test_array[i]) != 0);
+			assert(binomial_heap_insert(heap, &test_array[i]) != 0);
 		}
 	}
 
@@ -159,7 +158,7 @@ static void verify_heap(BinomialHeap *heap)
 	num_vals = binomial_heap_num_entries(heap);
 	assert(num_vals == NUM_TEST_VALUES - 1);
 
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		if (i == TEST_VALUE) {
 			continue;
 		}
@@ -182,14 +181,14 @@ static void test_insert_out_of_memory(void)
 
 	/* There are various memory allocations performed during the insert;
 	 * probe at different limit levels to catch them all. */
-	for (i=0; i<6; ++i) {
+	for (i = 0; i < 6; ++i) {
 		heap = generate_heap();
 
 		/* Insert should fail */
 		alloc_test_set_limit(i);
 		test_array[TEST_VALUE] = TEST_VALUE;
-		assert(binomial_heap_insert(heap,
-		                            &test_array[TEST_VALUE]) == 0);
+		assert(binomial_heap_insert(heap, &test_array[TEST_VALUE]) ==
+		       0);
 		alloc_test_set_limit(-1);
 
 		/* Check that the heap is unharmed */
@@ -208,7 +207,7 @@ void test_pop_out_of_memory(void)
 	/* There are various memory allocations performed as part of the merge
 	 * done during the pop.  Probe at different limit levels to catch them
 	 * all. */
-	for (i=0; i<6; ++i) {
+	for (i = 0; i < 6; ++i) {
 		heap = generate_heap();
 
 		/* Pop should fail */
@@ -221,6 +220,7 @@ void test_pop_out_of_memory(void)
 	}
 }
 
+/* clang-format off */
 static UnitTestFunction tests[] = {
 	test_binomial_heap_new_free,
 	test_binomial_heap_insert,
@@ -230,6 +230,7 @@ static UnitTestFunction tests[] = {
 	test_pop_out_of_memory,
 	NULL
 };
+/* clang-format on */
 
 int main(int argc, char *argv[])
 {
@@ -237,4 +238,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

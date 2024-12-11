@@ -18,10 +18,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 #include "alloc-testing.h"
 #include "framework.h"
@@ -32,10 +32,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 int test_array[NUM_TEST_VALUES];
 char test_strings[NUM_TEST_VALUES][10];
-unsigned char bin_key[] = { 'a', 'b', 'c', 0, 1, 2, 0xff };
-unsigned char bin_key2[] = { 'a', 'b', 'c', 0, 1, 2, 0xff, 0 };
-unsigned char bin_key3[] = { 'a', 'b', 'c' };
-unsigned char bin_key4[] = { 'z', 0, 'z', 'z' };
+unsigned char bin_key[] = {'a', 'b', 'c', 0, 1, 2, 0xff};
+unsigned char bin_key2[] = {'a', 'b', 'c', 0, 1, 2, 0xff, 0};
+unsigned char bin_key3[] = {'a', 'b', 'c'};
+unsigned char bin_key4[] = {'z', 0, 'z', 'z'};
 
 Trie *generate_trie(void)
 {
@@ -47,15 +47,14 @@ Trie *generate_trie(void)
 	trie = trie_new();
 	entries = 0;
 
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 
 		/* Create a string containing a text version of i, and use
 		 * it as a key for the value */
 		test_array[i] = i;
 		sprintf(test_strings[i], "%i", i);
 
-		assert(trie_insert(trie, test_strings[i],
-		                   &test_array[i]) != 0);
+		assert(trie_insert(trie, test_strings[i], &test_array[i]) != 0);
 
 		++entries;
 
@@ -142,7 +141,7 @@ void test_trie_lookup(void)
 	assert(trie_lookup(trie, "") == TRIE_NULL);
 
 	/* Look up all values */
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 
 		sprintf(buf, "%i", i);
 
@@ -172,7 +171,7 @@ void test_trie_remove(void)
 	assert(entries == NUM_TEST_VALUES);
 
 	/* Remove all values */
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 
 		sprintf(buf, "%i", i);
 
@@ -245,7 +244,7 @@ static void test_trie_free_long(void)
  * (top bit set in the character; alternative, c >= 128). */
 static void test_trie_negative_keys(void)
 {
-	char my_key[] = { 'a', 'b', 'c', -50, -20, '\0' };
+	char my_key[] = {'a', 'b', 'c', -50, -20, '\0'};
 	Trie *trie;
 	void *value;
 
@@ -271,11 +270,9 @@ Trie *generate_binary_trie(void)
 	trie = trie_new();
 
 	/* Insert some values */
-	assert(trie_insert_binary(trie,
-	                          bin_key2, sizeof(bin_key2),
+	assert(trie_insert_binary(trie, bin_key2, sizeof(bin_key2),
 	                          "goodbye world") != 0);
-	assert(trie_insert_binary(trie,
-	                          bin_key, sizeof(bin_key),
+	assert(trie_insert_binary(trie, bin_key, sizeof(bin_key),
 	                          "hello world") != 0);
 
 	return trie;
@@ -289,13 +286,11 @@ void test_trie_insert_binary(void)
 	trie = generate_binary_trie();
 
 	/* Overwrite a value */
-	assert(trie_insert_binary(trie,
-	                          bin_key, sizeof(bin_key),
-	                          "hi world") != 0);
+	assert(trie_insert_binary(trie, bin_key, sizeof(bin_key), "hi world") !=
+	       0);
 
 	/* Insert NULL value doesn't work */
-	assert(trie_insert_binary(trie, bin_key3,
-	                          sizeof(bin_key3), NULL) == 0);
+	assert(trie_insert_binary(trie, bin_key3, sizeof(bin_key3), NULL) == 0);
 
 	/* Read them back */
 	value = trie_lookup_binary(trie, bin_key, sizeof(bin_key));
@@ -315,8 +310,7 @@ void test_trie_insert_out_of_memory(void)
 
 	alloc_test_set_limit(3);
 
-	assert(trie_insert_binary(trie,
-	                          bin_key4, sizeof(bin_key4),
+	assert(trie_insert_binary(trie, bin_key4, sizeof(bin_key4),
 	                          "test value") == 0);
 
 	assert(trie_lookup_binary(trie, bin_key4, sizeof(bin_key4)) == NULL);
@@ -352,6 +346,7 @@ void test_trie_remove_binary(void)
 	trie_free(trie);
 }
 
+/* clang-format off */
 static UnitTestFunction tests[] = {
 	test_trie_new_free,
 	test_trie_insert,
@@ -366,6 +361,7 @@ static UnitTestFunction tests[] = {
 	test_trie_remove_binary,
 	NULL
 };
+/* clang-format on */
 
 int main(int argc, char *argv[])
 {
@@ -373,4 +369,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

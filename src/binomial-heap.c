@@ -18,9 +18,9 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
 
 #include "binomial-heap.h"
 
@@ -31,16 +31,14 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 typedef struct _BinomialTree BinomialTree;
 
-struct _BinomialTree
-{
+struct _BinomialTree {
 	BinomialHeapValue value;
 	unsigned short order;
 	unsigned short refcount;
 	BinomialTree **subtrees;
 };
 
-struct _BinomialHeap
-{
+struct _BinomialHeap {
 	BinomialHeapType heap_type;
 	BinomialHeapCompareFunc compare_func;
 	unsigned int num_values;
@@ -48,8 +46,7 @@ struct _BinomialHeap
 	unsigned int roots_length;
 };
 
-static int binomial_heap_cmp(BinomialHeap *heap,
-                             BinomialHeapValue data1,
+static int binomial_heap_cmp(BinomialHeap *heap, BinomialHeapValue data1,
                              BinomialHeapValue data2)
 {
 	if (heap->heap_type == BINOMIAL_HEAP_TYPE_MIN) {
@@ -81,7 +78,7 @@ static void binomial_tree_unref(BinomialTree *tree)
 	 * and free. */
 	if (tree->refcount == 0) {
 
-		for (i=0; i<tree->order; ++i) {
+		for (i = 0; i < tree->order; ++i) {
 			binomial_tree_unref(tree->subtrees[i]);
 		}
 
@@ -135,7 +132,7 @@ static BinomialTree *binomial_tree_merge(BinomialHeap *heap,
 	new_tree->subtrees[new_tree->order - 1] = tree2;
 
 	/* Add a reference to each of the subtrees we have referenced */
-	for (i=0; i<new_tree->order; ++i) {
+	for (i = 0; i < new_tree->order; ++i) {
 		binomial_tree_ref(new_tree->subtrees[i]);
 	}
 
@@ -150,7 +147,7 @@ static void binomial_heap_merge_undo(BinomialTree **new_roots,
 {
 	unsigned int i;
 
-	for (i=0; i<=count; ++i) {
+	for (i = 0; i <= count; ++i) {
 		binomial_tree_unref(new_roots[i]);
 	}
 
@@ -190,7 +187,7 @@ static int binomial_heap_merge(BinomialHeap *heap, BinomialHeap *other)
 	new_roots_length = 0;
 	carry = NULL;
 
-	for (i=0; i<max; ++i) {
+	for (i = 0; i < max; ++i) {
 
 		/* Build up 'vals' as a list of all the values we must
 		 * merge at this step. */
@@ -235,9 +232,7 @@ static int binomial_heap_merge(BinomialHeap *heap, BinomialHeap *other)
 
 			/* Merge the first two values and carry to the
 			 * next iteration */
-			new_carry = binomial_tree_merge(heap,
-			                                vals[0],
-			                                vals[1]);
+			new_carry = binomial_tree_merge(heap, vals[0], vals[1]);
 
 			if (new_carry == NULL) {
 
@@ -269,7 +264,7 @@ static int binomial_heap_merge(BinomialHeap *heap, BinomialHeap *other)
 
 	/* Unreference all values in the old 'roots' array, freeing unused
 	 * BinomialTree structures as necessary. */
-	for (i=0; i<heap->roots_length; ++i) {
+	for (i = 0; i < heap->roots_length; ++i) {
 		if (heap->roots[i] != NULL) {
 			binomial_tree_unref(heap->roots[i]);
 		}
@@ -309,7 +304,7 @@ void binomial_heap_free(BinomialHeap *heap)
 
 	/* Unreference all trees in the heap.  This should free
 	 * back all subtrees. */
-	for (i=0; i<heap->roots_length; ++i) {
+	for (i = 0; i < heap->roots_length; ++i) {
 		binomial_tree_unref(heap->roots[i]);
 	}
 
@@ -374,15 +369,14 @@ BinomialHeapValue binomial_heap_pop(BinomialHeap *heap)
 	/* Find the tree with the lowest root value */
 	least_index = UINT_MAX;
 
-	for (i=0; i<heap->roots_length; ++i) {
+	for (i = 0; i < heap->roots_length; ++i) {
 
 		if (heap->roots[i] == NULL) {
 			continue;
 		}
 
-		if (least_index == UINT_MAX
-		 || binomial_heap_cmp(heap,
-		                      heap->roots[i]->value,
+		if (least_index == UINT_MAX ||
+		    binomial_heap_cmp(heap, heap->roots[i]->value,
 		                      heap->roots[least_index]->value) < 0) {
 			least_index = i;
 		}
@@ -425,4 +419,3 @@ unsigned int binomial_heap_num_entries(BinomialHeap *heap)
 {
 	return heap->num_values;
 }
-

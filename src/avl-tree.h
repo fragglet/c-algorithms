@@ -137,8 +137,7 @@ void avl_tree_free(AVLTree *tree);
  *                        key and value, or NULL if it was not possible
  *                        to allocate the new memory.
  */
-AVLTreeNode *avl_tree_insert(AVLTree *tree, AVLTreeKey key,
-                             AVLTreeValue value);
+AVLTreeNode *avl_tree_insert(AVLTree *tree, AVLTreeKey key, AVLTreeValue value);
 
 /**
  * Remove a node from a tree.

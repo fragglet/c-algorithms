@@ -171,20 +171,20 @@ static AVLTreeNode *avl_tree_rotate(AVLTree *tree, AVLTreeNode *node,
 
 	/* The child of this node will take its place:
 	   for a left rotation, it is the right child, and vice versa. */
-	new_root = node->children[1-direction];
+	new_root = node->children[1 - direction];
 
 	/* Make new_root the root, update parent pointers. */
 	avl_tree_node_replace(tree, node, new_root);
 
 	/* Rearrange pointers */
-	node->children[1-direction] = new_root->children[direction];
+	node->children[1 - direction] = new_root->children[direction];
 	new_root->children[direction] = node;
 
 	/* Update parent references */
 	node->parent = new_root;
 
-	if (node->children[1-direction] != NULL) {
-		node->children[1-direction]->parent = node;
+	if (node->children[1 - direction] != NULL) {
+		node->children[1 - direction]->parent = node;
 	}
 
 	/* Update heights of the affected nodes */
@@ -193,7 +193,6 @@ static AVLTreeNode *avl_tree_rotate(AVLTree *tree, AVLTreeNode *node,
 
 	return new_root;
 }
-
 
 /* Balance a particular tree node.
  *
@@ -212,16 +211,18 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 	/* Check the heights of the child trees.  If there is an unbalance
 	 * (difference between left and right > 2), then rotate nodes
 	 * around to fix it */
-	diff = avl_tree_subtree_height(right_subtree)
-	     - avl_tree_subtree_height(left_subtree);
+	diff = avl_tree_subtree_height(right_subtree) -
+	       avl_tree_subtree_height(left_subtree);
 
 	if (diff >= 2) {
 
 		/* Biased toward the right side too much. */
 		child = right_subtree;
 
-		if (avl_tree_subtree_height(child->children[AVL_TREE_NODE_RIGHT])
-		  < avl_tree_subtree_height(child->children[AVL_TREE_NODE_LEFT])) {
+		if (avl_tree_subtree_height(
+		        child->children[AVL_TREE_NODE_RIGHT]) <
+		    avl_tree_subtree_height(
+		        child->children[AVL_TREE_NODE_LEFT])) {
 
 			/* If the right child is biased toward the left
 			 * side, it must be rotated right first (double
@@ -239,14 +240,15 @@ static AVLTreeNode *avl_tree_node_balance(AVLTree *tree, AVLTreeNode *node)
 		/* Biased toward the left side too much. */
 		child = node->children[AVL_TREE_NODE_LEFT];
 
-		if (avl_tree_subtree_height(child->children[AVL_TREE_NODE_LEFT])
-		  < avl_tree_subtree_height(child->children[AVL_TREE_NODE_RIGHT])) {
+		if (avl_tree_subtree_height(
+		        child->children[AVL_TREE_NODE_LEFT]) <
+		    avl_tree_subtree_height(
+		        child->children[AVL_TREE_NODE_RIGHT])) {
 
 			/* If the left child is biased toward the right
 			 * side, it must be rotated right left (double
 			 * rotation) */
-			avl_tree_rotate(tree, left_subtree,
-			                AVL_TREE_NODE_LEFT);
+			avl_tree_rotate(tree, left_subtree, AVL_TREE_NODE_LEFT);
 		}
 
 		/* Perform a right rotation.  After this, the left child will
@@ -357,8 +359,8 @@ static AVLTreeNode *avl_tree_node_get_replacement(AVLTree *tree,
 	/* Search down the tree, back towards the center. */
 	result = node->children[side];
 
-	while (result->children[1-side] != NULL) {
-		result = result->children[1-side];
+	while (result->children[1 - side] != NULL) {
+		result = result->children[1 - side];
 	}
 
 	/* Unlink the result node, and hook in its remaining child
@@ -406,7 +408,7 @@ void avl_tree_remove_node(AVLTree *tree, AVLTreeNode *node)
 		}
 
 		/* Copy references in the node into the swap node */
-		for (i=0; i<2; ++i) {
+		for (i = 0; i < 2; ++i) {
 			swap_node->children[i] = node->children[i];
 
 			if (swap_node->children[i] != NULL) {
@@ -527,8 +529,7 @@ unsigned int avl_tree_num_entries(AVLTree *tree)
 }
 
 static void avl_tree_to_array_add_subtree(AVLTreeNode *subtree,
-                                         AVLTreeValue *array,
-                                         int *index)
+                                          AVLTreeValue *array, int *index)
 {
 	if (subtree == NULL) {
 		return;
@@ -566,4 +567,3 @@ AVLTreeValue *avl_tree_to_array(AVLTree *tree)
 
 	return array;
 }
-

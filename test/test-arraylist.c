@@ -20,9 +20,9 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 /* ArrayList test cases */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include "alloc-testing.h"
 #include "framework.h"
@@ -39,7 +39,7 @@ ArrayList *generate_arraylist(void)
 
 	arraylist = arraylist_new(0);
 
-	for (i=0; i<4; ++i) {
+	for (i = 0; i < 4; ++i) {
 		arraylist_append(arraylist, &variable1);
 		arraylist_append(arraylist, &variable2);
 		arraylist_append(arraylist, &variable3);
@@ -104,7 +104,7 @@ void test_arraylist_append(void)
 	assert(arraylist->data[3] == &variable4);
 
 	/* Test appending many entries */
-	for (i=0; i<10000; ++i) {
+	for (i = 0; i < 10000; ++i) {
 		assert(arraylist_append(arraylist, NULL) != 0);
 	}
 
@@ -115,7 +115,7 @@ void test_arraylist_append(void)
 
 	alloc_test_set_limit(0);
 
-	for (i=0; i<100; ++i) {
+	for (i = 0; i < 100; ++i) {
 		assert(arraylist_append(arraylist, NULL) != 0);
 	}
 
@@ -125,7 +125,6 @@ void test_arraylist_append(void)
 
 	arraylist_free(arraylist);
 }
-
 
 void test_arraylist_prepend(void)
 {
@@ -155,7 +154,7 @@ void test_arraylist_prepend(void)
 	assert(arraylist->data[3] == &variable1);
 
 	/* Test prepending many entries */
-	for (i=0; i<10000; ++i) {
+	for (i = 0; i < 10000; ++i) {
 		assert(arraylist_prepend(arraylist, NULL) != 0);
 	}
 
@@ -166,7 +165,7 @@ void test_arraylist_prepend(void)
 
 	alloc_test_set_limit(0);
 
-	for (i=0; i<100; ++i) {
+	for (i = 0; i < 100; ++i) {
 		assert(arraylist_prepend(arraylist, NULL) != 0);
 	}
 
@@ -230,7 +229,7 @@ void test_arraylist_insert(void)
 	assert(arraylist->data[18] == &variable1);
 
 	/* Test inserting many entries */
-	for (i=0; i<10000; ++i) {
+	for (i = 0; i < 10000; ++i) {
 		arraylist_insert(arraylist, 10, &variable1);
 	}
 
@@ -296,7 +295,7 @@ void test_arraylist_remove(void)
 
 void test_arraylist_index_of(void)
 {
-	int entries[] = { 89, 4, 23, 42, 16, 15, 8, 99, 50, 30 };
+	int entries[] = {89, 4, 23, 42, 16, 15, 8, 99, 50, 30};
 	int num_entries;
 	ArrayList *arraylist;
 	int i;
@@ -307,12 +306,12 @@ void test_arraylist_index_of(void)
 	num_entries = sizeof(entries) / sizeof(int);
 	arraylist = arraylist_new(0);
 
-	for (i=0; i<num_entries; ++i) {
+	for (i = 0; i < num_entries; ++i) {
 		arraylist_append(arraylist, &entries[i]);
 	}
 
 	/* Check all values get found correctly */
-	for (i=0; i<num_entries; ++i) {
+	for (i = 0; i < num_entries; ++i) {
 
 		val = entries[i];
 
@@ -356,14 +355,14 @@ void test_arraylist_clear(void)
 void test_arraylist_sort(void)
 {
 	ArrayList *arraylist;
-	int entries[] = { 89, 4, 23, 42, 4, 16, 15, 4, 8, 99, 50, 30, 4 };
-	int sorted[]  = { 4, 4, 4, 4, 8, 15, 16, 23, 30, 42, 50, 89, 99 };
+	int entries[] = {89, 4, 23, 42, 4, 16, 15, 4, 8, 99, 50, 30, 4};
+	int sorted[] = {4, 4, 4, 4, 8, 15, 16, 23, 30, 42, 50, 89, 99};
 	unsigned int num_entries = sizeof(entries) / sizeof(int);
 	unsigned int i;
 
 	arraylist = arraylist_new(10);
 
-	for (i=0; i<num_entries; ++i) {
+	for (i = 0; i < num_entries; ++i) {
 		arraylist_prepend(arraylist, &entries[i]);
 	}
 
@@ -373,7 +372,7 @@ void test_arraylist_sort(void)
 	assert(arraylist->length == num_entries);
 
 	/* Check the list is sorted */
-	for (i=0; i<num_entries; ++i) {
+	for (i = 0; i < num_entries; ++i) {
 		int *value;
 
 		value = (int *) arraylist->data[i];
@@ -403,6 +402,7 @@ void test_arraylist_sort(void)
 	arraylist_free(arraylist);
 }
 
+/* clang-format off */
 static UnitTestFunction tests[] = {
 	test_arraylist_new_free,
 	test_arraylist_append,
@@ -415,6 +415,7 @@ static UnitTestFunction tests[] = {
 	test_arraylist_sort,
 	NULL
 };
+/* clang-format on */
 
 int main(int argc, char *argv[])
 {
@@ -422,4 +423,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

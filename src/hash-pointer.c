@@ -28,4 +28,3 @@ unsigned int pointer_hash(void *location)
 {
 	return (unsigned int) (unsigned long) location;
 }
-

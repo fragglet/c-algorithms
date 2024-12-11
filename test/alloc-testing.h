@@ -37,15 +37,15 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * standard malloc/free functions. */
 #ifndef ALLOC_TESTING_C
 #undef malloc
-#define malloc   alloc_test_malloc
+#define malloc alloc_test_malloc
 #undef free
-#define free     alloc_test_free
+#define free alloc_test_free
 #undef realloc
-#define realloc  alloc_test_realloc
+#define realloc alloc_test_realloc
 #undef calloc
-#define calloc   alloc_test_calloc
+#define calloc alloc_test_calloc
 #undef strdup
-#define strdup   alloc_test_strdup
+#define strdup alloc_test_strdup
 #endif
 
 /**

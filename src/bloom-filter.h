@@ -152,8 +152,7 @@ void bloom_filter_load(BloomFilter *bloomfilter, unsigned char *array);
  *                             if the two filters specified were created
  *                             with different parameters.
  */
-BloomFilter *bloom_filter_union(BloomFilter *filter1,
-                                BloomFilter *filter2);
+BloomFilter *bloom_filter_union(BloomFilter *filter1, BloomFilter *filter2);
 
 /**
  * Find the intersection of two bloom filters.  Values are only ever

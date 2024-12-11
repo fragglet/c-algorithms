@@ -113,7 +113,8 @@ ListEntry *list_append(ListEntry **list, ListValue data)
 	} else {
 
 		/* Find the end of list */
-		for (rover=*list; rover->next != NULL; rover = rover->next);
+		for (rover = *list; rover->next != NULL; rover = rover->next)
+			;
 
 		/* Add to the end of list */
 		newentry->prev = rover;
@@ -166,7 +167,7 @@ ListEntry *list_nth_entry(ListEntry *list, unsigned int n)
 	 * Make sure we do not reach the end of the list. */
 	entry = list;
 
-	for (i=0; i<n; ++i) {
+	for (i = 0; i < n; ++i) {
 
 		if (entry == NULL) {
 			return NULL;
@@ -230,7 +231,7 @@ ListValue *list_to_array(ListEntry *list)
 	/* Add all entries to the array */
 	rover = list;
 
-	for (i=0; i<length; ++i) {
+	for (i = 0; i < length; ++i) {
 
 		/* Add this node's data */
 		array[i] = rover->data;
@@ -429,14 +430,13 @@ void list_sort(ListEntry **list, ListCompareFunc compare_func)
 	list_sort_internal(list, compare_func);
 }
 
-ListEntry *list_find_data(ListEntry *list,
-                          ListEqualFunc callback,
+ListEntry *list_find_data(ListEntry *list, ListEqualFunc callback,
                           ListValue data)
 {
 	ListEntry *rover;
 
 	/* Iterate over entries in the list until the data is found */
-	for (rover=list; rover != NULL; rover=rover->next) {
+	for (rover = list; rover != NULL; rover = rover->next) {
 		if (callback(rover->data, data) != 0) {
 			return rover;
 		}
@@ -518,4 +518,3 @@ void list_iter_remove(ListIterator *iter)
 		iter->current = NULL;
 	}
 }
-

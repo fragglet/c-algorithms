@@ -93,7 +93,7 @@ void trie_free(Trie *trie)
 		node = trie_free_list_pop(&free_list);
 
 		/* Add all children of this node to the free list */
-		for (i=0; i<256; ++i) {
+		for (i = 0; i < 256; ++i) {
 			if (node->next[i] != NULL) {
 				trie_free_list_push(&free_list, node->next[i]);
 			}
@@ -115,7 +115,7 @@ static TrieNode *trie_find_end(Trie *trie, char *key)
 	/* Search down the trie until the end of string is reached */
 	node = trie->root_node;
 
-	for (p=key; *p != '\0'; ++p) {
+	for (p = key; *p != '\0'; ++p) {
 
 		if (node == NULL) {
 			/* Not found in the tree. Return. */
@@ -140,7 +140,7 @@ static TrieNode *trie_find_end_binary(Trie *trie, unsigned char *key,
 	/* Search down the trie until the end of string is reached */
 	node = trie->root_node;
 
-	for (j=0; j<key_length; j++) {
+	for (j = 0; j < key_length; j++) {
 
 		if (node == NULL) {
 			/* Not found in the tree. Return. */
@@ -276,13 +276,12 @@ int trie_insert(Trie *trie, char *key, TrieValue value)
 	return 1;
 }
 
-
 int trie_insert_binary(Trie *trie, unsigned char *key, int key_length,
                        TrieValue value)
 {
 	TrieNode **rover;
 	TrieNode *node;
-	int p,c;
+	int p, c;
 
 	/* Cannot insert NULL values */
 	if (value == TRIE_NULL) {
@@ -522,4 +521,3 @@ unsigned int trie_num_entries(Trie *trie)
 		return trie->root_node->use_count;
 	}
 }
-

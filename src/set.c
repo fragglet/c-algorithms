@@ -20,9 +20,9 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 /* Set (container that disallows duplicates) */
 
+#include "set.h"
 #include <stdlib.h>
 #include <string.h>
-#include "set.h"
 
 /* malloc() / free() testing */
 #ifdef ALLOC_TESTING
@@ -49,10 +49,10 @@ struct _Set {
  * Each prime is roughly double the previous value, and as far as
  * possible from the nearest powers of two. */
 static const unsigned int set_primes[] = {
-	193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157, 98317,
-	196613, 393241, 786433, 1572869, 3145739, 6291469,
-	12582917, 25165843, 50331653, 100663319, 201326611,
-	402653189, 805306457, 1610612741,
+    193,      389,       769,       1543,      3079,      6151,
+    12289,    24593,     49157,     98317,     196613,    393241,
+    786433,   1572869,   3145739,   6291469,   12582917,  25165843,
+    50331653, 100663319, 201326611, 402653189, 805306457, 1610612741,
 };
 
 static const unsigned int set_num_primes = sizeof(set_primes) / sizeof(int);
@@ -120,7 +120,7 @@ void set_free(Set *set)
 	unsigned int i;
 
 	/* Free all entries in all chains */
-	for (i=0; i<set->table_size; ++i) {
+	for (i = 0; i < set->table_size; ++i) {
 		rover = set->table[i];
 
 		while (rover != NULL) {
@@ -175,7 +175,7 @@ static int set_enlarge(Set *set)
 
 	/* Iterate through all entries in the old table and add them
 	 * to the new one */
-	for (i=0; i<old_table_size; ++i) {
+	for (i = 0; i < old_table_size; ++i) {
 
 		/* Walk along this chain */
 		rover = old_table[i];
@@ -344,7 +344,7 @@ SetValue *set_to_array(Set *set)
 	array_counter = 0;
 
 	/* Iterate over all entries in all chains */
-	for (i=0; i<set->table_size; ++i) {
+	for (i = 0; i < set->table_size; ++i) {
 
 		rover = set->table[i];
 
@@ -528,4 +528,3 @@ int set_iter_has_more(SetIterator *iterator)
 {
 	return iterator->next_entry != NULL;
 }
-

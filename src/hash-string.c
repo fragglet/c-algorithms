@@ -56,4 +56,3 @@ unsigned int string_nocase_hash(void *string)
 
 	return result;
 }
-

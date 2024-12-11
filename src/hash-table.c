@@ -51,14 +51,14 @@ struct _HashTable {
  * Each prime is roughly double the previous value, and as far as
  * possible from the nearest powers of two. */
 static const unsigned int hash_table_primes[] = {
-	193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157, 98317,
-	196613, 393241, 786433, 1572869, 3145739, 6291469,
-	12582917, 25165843, 50331653, 100663319, 201326611,
-	402653189, 805306457, 1610612741,
+    193,      389,       769,       1543,      3079,      6151,
+    12289,    24593,     49157,     98317,     196613,    393241,
+    786433,   1572869,   3145739,   6291469,   12582917,  25165843,
+    50331653, 100663319, 201326611, 402653189, 805306457, 1610612741,
 };
 
-static const unsigned int hash_table_num_primes
-	= sizeof(hash_table_primes) / sizeof(int);
+static const unsigned int hash_table_num_primes =
+    sizeof(hash_table_primes) / sizeof(int);
 
 /* Internal function used to allocate the table on hash table creation
  * and when enlarging the table */
@@ -79,8 +79,8 @@ static int hash_table_allocate_table(HashTable *hash_table)
 	hash_table->table_size = new_table_size;
 
 	/* Allocate the table and initialise to NULL for all entries */
-	hash_table->table = calloc(hash_table->table_size,
-	                           sizeof(HashTableEntry *));
+	hash_table->table =
+	    calloc(hash_table->table_size, sizeof(HashTableEntry *));
 
 	return hash_table->table != NULL;
 }
@@ -143,7 +143,7 @@ void hash_table_free(HashTable *hash_table)
 	unsigned int i;
 
 	/* Free all entries in all chains */
-	for (i=0; i<hash_table->table_size; ++i) {
+	for (i = 0; i < hash_table->table_size; ++i) {
 		rover = hash_table->table[i];
 		while (rover != NULL) {
 			next = rover->next;
@@ -166,7 +166,6 @@ void hash_table_register_free_functions(HashTable *hash_table,
 	hash_table->key_free_func = key_free_func;
 	hash_table->value_free_func = value_free_func;
 }
-
 
 static int hash_table_enlarge(HashTable *hash_table)
 {
@@ -198,7 +197,7 @@ static int hash_table_enlarge(HashTable *hash_table)
 	}
 
 	/* Link all entries from all chains into the new table */
-	for (i=0; i<old_table_size; ++i) {
+	for (i = 0; i < old_table_size; ++i) {
 		rover = old_table[i];
 
 		while (rover != NULL) {
@@ -208,7 +207,8 @@ static int hash_table_enlarge(HashTable *hash_table)
 			pair = &(rover->pair);
 
 			/* Find the index into the new table */
-			index = hash_table->hash_func(pair->key) % hash_table->table_size;
+			index = hash_table->hash_func(pair->key) %
+			        hash_table->table_size;
 
 			/* Link this entry into the chain */
 			rover->next = hash_table->table[index];
@@ -396,7 +396,7 @@ void hash_table_iterate(HashTable *hash_table, HashTableIterator *iterator)
 	iterator->next_entry = NULL;
 
 	/* Find the first entry */
-	for (chain=0; chain<hash_table->table_size; ++chain) {
+	for (chain = 0; chain < hash_table->table_size; ++chain) {
 
 		if (hash_table->table[chain] != NULL) {
 			iterator->next_entry = hash_table->table[chain];
@@ -459,4 +459,3 @@ HashTablePair hash_table_iter_next(HashTableIterator *iterator)
 
 	return pair;
 }
-

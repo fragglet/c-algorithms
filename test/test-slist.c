@@ -18,15 +18,15 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include "alloc-testing.h"
 #include "framework.h"
 
-#include "slist.h"
 #include "compare-int.h"
+#include "slist.h"
 
 int variable1 = 50, variable2, variable3, variable4;
 
@@ -222,7 +222,7 @@ void test_slist_remove_entry(void)
 
 void test_slist_remove_data(void)
 {
-	int entries[] = { 89, 4, 23, 42, 4, 16, 15, 4, 8, 99, 50, 30, 4 };
+	int entries[] = {89, 4, 23, 42, 4, 16, 15, 4, 8, 99, 50, 30, 4};
 	unsigned int num_entries = sizeof(entries) / sizeof(int);
 	int val;
 	SListEntry *list;
@@ -231,7 +231,7 @@ void test_slist_remove_data(void)
 	/* Generate a list containing all the entries in the array */
 	list = NULL;
 
-	for (i=0; i<num_entries; ++i) {
+	for (i = 0; i < num_entries; ++i) {
 		slist_prepend(&list, &entries[i]);
 	}
 
@@ -262,14 +262,14 @@ void test_slist_remove_data(void)
 void test_slist_sort(void)
 {
 	SListEntry *list;
-	int entries[] = { 89, 4, 23, 42, 4, 16, 15, 4, 8, 99, 50, 30, 4 };
-	int sorted[]  = { 4, 4, 4, 4, 8, 15, 16, 23, 30, 42, 50, 89, 99 };
+	int entries[] = {89, 4, 23, 42, 4, 16, 15, 4, 8, 99, 50, 30, 4};
+	int sorted[] = {4, 4, 4, 4, 8, 15, 16, 23, 30, 42, 50, 89, 99};
 	unsigned int num_entries = sizeof(entries) / sizeof(int);
 	unsigned int i;
 
 	list = NULL;
 
-	for (i=0; i<num_entries; ++i) {
+	for (i = 0; i < num_entries; ++i) {
 		slist_prepend(&list, &entries[i]);
 	}
 
@@ -279,7 +279,7 @@ void test_slist_sort(void)
 	assert(slist_length(list) == num_entries);
 
 	/* Check the list is sorted */
-	for (i=0; i<num_entries; ++i) {
+	for (i = 0; i < num_entries; ++i) {
 		int *value;
 
 		value = (int *) slist_nth_data(list, i);
@@ -298,7 +298,7 @@ void test_slist_sort(void)
 
 void test_slist_find_data(void)
 {
-	int entries[] = { 89, 23, 42, 16, 15, 4, 8, 99, 50, 30 };
+	int entries[] = {89, 23, 42, 16, 15, 4, 8, 99, 50, 30};
 	int num_entries = sizeof(entries) / sizeof(int);
 	SListEntry *list;
 	SListEntry *result;
@@ -308,12 +308,12 @@ void test_slist_find_data(void)
 
 	/* Generate a list containing the entries */
 	list = NULL;
-	for (i=0; i<num_entries; ++i) {
+	for (i = 0; i < num_entries; ++i) {
 		slist_append(&list, &entries[i]);
 	}
 
 	/* Check that each value can be searched for correctly */
-	for (i=0; i<num_entries; ++i) {
+	for (i = 0; i < num_entries; ++i) {
 
 		val = entries[i];
 
@@ -371,7 +371,7 @@ void test_slist_iterate(void)
 	/* Create a list with 50 entries */
 	list = NULL;
 
-	for (i=0; i<50; ++i) {
+	for (i = 0; i < 50; ++i) {
 		slist_prepend(&list, &a);
 	}
 
@@ -446,7 +446,7 @@ void test_slist_iterate_bad_remove(void)
 	/* Create a list with 49 entries */
 	list = NULL;
 
-	for (i=0; i<49; ++i) {
+	for (i = 0; i < 49; ++i) {
 		values[i] = i;
 		slist_prepend(&list, &values[i]);
 	}
@@ -471,6 +471,7 @@ void test_slist_iterate_bad_remove(void)
 	slist_free(list);
 }
 
+/* clang-format off */
 static UnitTestFunction tests[] = {
 	test_slist_append,
 	test_slist_prepend,
@@ -488,6 +489,7 @@ static UnitTestFunction tests[] = {
 	test_slist_iterate_bad_remove,
 	NULL
 };
+/* clang-format on */
 
 int main(int argc, char *argv[])
 {
@@ -495,4 +497,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

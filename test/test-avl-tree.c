@@ -18,9 +18,9 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include "alloc-testing.h"
 #include "framework.h"
@@ -155,7 +155,7 @@ AVLTree *create_tree(void)
 	/* Create a tree and fill with nodes */
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
 
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		test_array[i] = i;
 		avl_tree_insert(tree, &test_array[i], &test_array[i]);
 	}
@@ -181,7 +181,6 @@ void test_avl_tree_new(void)
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
 
 	assert(tree == NULL);
-
 }
 
 void test_avl_tree_insert_lookup(void)
@@ -195,7 +194,7 @@ void test_avl_tree_insert_lookup(void)
 	 * tree is consistent at all stages. */
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
 
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		test_array[i] = (int) i;
 		avl_tree_insert(tree, &test_array[i], &test_array[i]);
 
@@ -206,7 +205,7 @@ void test_avl_tree_insert_lookup(void)
 	assert(avl_tree_root_node(tree) != NULL);
 
 	/* Check that all values can be read back again */
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		node = avl_tree_lookup_node(tree, &i);
 		assert(node != NULL);
 		value = avl_tree_node_key(node);
@@ -228,7 +227,7 @@ void test_avl_tree_child(void)
 	AVLTreeNode *root;
 	AVLTreeNode *left;
 	AVLTreeNode *right;
-	int values[] = { 1, 2, 3 };
+	int values[] = {1, 2, 3};
 	int *p;
 	int i;
 
@@ -236,7 +235,7 @@ void test_avl_tree_child(void)
 	 * tree is consistent at all stages. */
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
 
-	for (i=0; i<3; ++i) {
+	for (i = 0; i < 3; ++i) {
 		avl_tree_insert(tree, &values[i], &values[i]);
 	}
 
@@ -273,7 +272,7 @@ void test_out_of_memory(void)
 	alloc_test_set_limit(0);
 
 	/* Try to add some more nodes and verify that this fails. */
-	for (i=10000; i<20000; ++i) {
+	for (i = 10000; i < 20000; ++i) {
 		node = avl_tree_insert(tree, &i, &i);
 		assert(node == NULL);
 		validate_tree(tree);
@@ -304,7 +303,7 @@ void test_avl_tree_lookup(void)
 	/* Create a tree and look up all values */
 	tree = create_tree();
 
-	for (i=0; i<NUM_TEST_VALUES; ++i) {
+	for (i = 0; i < NUM_TEST_VALUES; ++i) {
 		value = avl_tree_lookup(tree, &i);
 
 		assert(value != NULL);
@@ -343,15 +342,15 @@ void test_avl_tree_remove(void)
 
 	/* This looping arrangement causes nodes to be removed in a
 	 * randomish fashion from all over the tree. */
-	for (x=0; x<10; ++x) {
-		for (y=0; y<10; ++y) {
-			for (z=0; z<10; ++z) {
+	for (x = 0; x < 10; ++x) {
+		for (y = 0; y < 10; ++y) {
+			for (z = 0; z < 10; ++z) {
 				value = z * 100 + (9 - y) * 10 + x;
 				assert(avl_tree_remove(tree, &value) != 0);
 				validate_tree(tree);
 				expected_entries -= 1;
-				assert(avl_tree_num_entries(tree)
-				       == expected_entries);
+				assert(avl_tree_num_entries(tree) ==
+				       expected_entries);
 			}
 		}
 	}
@@ -365,8 +364,8 @@ void test_avl_tree_remove(void)
 void test_avl_tree_to_array(void)
 {
 	AVLTree *tree;
-	int entries[] = { 89, 23, 42, 4, 16, 15, 8, 99, 50, 30 };
-	int sorted[]  = { 4, 8, 15, 16, 23, 30, 42, 50, 89, 99 };
+	int entries[] = {89, 23, 42, 4, 16, 15, 8, 99, 50, 30};
+	int sorted[] = {4, 8, 15, 16, 23, 30, 42, 50, 89, 99};
 	unsigned int num_entries = sizeof(entries) / sizeof(int);
 	unsigned int i;
 	int **array;
@@ -374,7 +373,7 @@ void test_avl_tree_to_array(void)
 	/* Add all entries to the tree */
 	tree = avl_tree_new((AVLTreeCompareFunc) int_compare);
 
-	for (i=0; i<num_entries; ++i) {
+	for (i = 0; i < num_entries; ++i) {
 		avl_tree_insert(tree, &entries[i], NULL);
 	}
 
@@ -383,7 +382,7 @@ void test_avl_tree_to_array(void)
 	/* Convert to an array and check the contents */
 	array = (int **) avl_tree_to_array(tree);
 
-	for (i=0; i<num_entries; ++i) {
+	for (i = 0; i < num_entries; ++i) {
 		assert(*array[i] == sorted[i]);
 	}
 
@@ -399,6 +398,7 @@ void test_avl_tree_to_array(void)
 	avl_tree_free(tree);
 }
 
+/* clang-format off */
 static UnitTestFunction tests[] = {
 	test_avl_tree_new,
 	test_avl_tree_free,
@@ -410,11 +410,10 @@ static UnitTestFunction tests[] = {
 	test_out_of_memory,
 	NULL
 };
+/* clang-format on */
 
 int main(int argc, char *argv[])
 {
 	run_tests(tests);
 	return 0;
 }
-
-

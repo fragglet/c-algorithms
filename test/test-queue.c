@@ -18,9 +18,9 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include "alloc-testing.h"
 #include "framework.h"
@@ -37,7 +37,7 @@ Queue *generate_queue(void)
 	queue = queue_new();
 
 	/* Add some values */
-	for (i=0; i<1000; ++i) {
+	for (i = 0; i < 1000; ++i) {
 		queue_push_head(queue, &variable1);
 		queue_push_head(queue, &variable2);
 		queue_push_head(queue, &variable3);
@@ -61,7 +61,7 @@ void test_queue_new_free(void)
 	/* Add lots of values and then destroy */
 	queue = queue_new();
 
-	for (i=0; i<1000; ++i) {
+	for (i = 0; i < 1000; ++i) {
 		queue_push_head(queue, &variable1);
 	}
 
@@ -81,7 +81,7 @@ void test_queue_push_head(void)
 	queue = queue_new();
 
 	/* Add some values */
-	for (i=0; i<1000; ++i) {
+	for (i = 0; i < 1000; ++i) {
 		queue_push_head(queue, &variable1);
 		queue_push_head(queue, &variable2);
 		queue_push_head(queue, &variable3);
@@ -178,7 +178,7 @@ void test_queue_push_tail(void)
 	queue = queue_new();
 
 	/* Add some values */
-	for (i=0; i<1000; ++i) {
+	for (i = 0; i < 1000; ++i) {
 		queue_push_tail(queue, &variable1);
 		queue_push_tail(queue, &variable2);
 		queue_push_tail(queue, &variable3);
@@ -289,6 +289,7 @@ void test_queue_is_empty(void)
 	queue_free(queue);
 }
 
+/* clang-format off */
 static UnitTestFunction tests[] = {
 	test_queue_new_free,
 	test_queue_push_head,
@@ -300,6 +301,7 @@ static UnitTestFunction tests[] = {
 	test_queue_is_empty,
 	NULL
 };
+/* clang-format on */
 
 int main(int argc, char *argv[])
 {
@@ -307,4 +309,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

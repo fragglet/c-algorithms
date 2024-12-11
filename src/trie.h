@@ -100,8 +100,8 @@ int trie_insert(Trie *trie, char *key, TrieValue value);
  *                           or zero if it was not possible to allocate
  *                           memory for the new entry.
  */
-int trie_insert_binary(Trie *trie, unsigned char *key,
-                       int key_length, TrieValue value);
+int trie_insert_binary(Trie *trie, unsigned char *key, int key_length,
+                       TrieValue value);
 
 /**
  * Look up a value from its key in a trie.

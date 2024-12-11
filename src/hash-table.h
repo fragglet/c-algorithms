@@ -78,7 +78,7 @@ typedef void *HashTableValue;
  * Internal structure representing an entry in hash table
  * used as @ref HashTableIterator next result.
  */
-typedef struct _HashTablePair{
+typedef struct _HashTablePair {
 	HashTableKey key;
 	HashTableValue value;
 } HashTablePair;
@@ -170,8 +170,7 @@ void hash_table_register_free_functions(HashTable *hash_table,
  *                             or zero if it was not possible to allocate
  *                             memory for the new entry.
  */
-int hash_table_insert(HashTable *hash_table,
-                      HashTableKey key,
+int hash_table_insert(HashTable *hash_table, HashTableKey key,
                       HashTableValue value);
 
 /**
@@ -182,8 +181,7 @@ int hash_table_insert(HashTable *hash_table,
  * @return                    The value, or @ref HASH_TABLE_NULL if there
  *                            is no value with that key in the hash table.
  */
-HashTableValue hash_table_lookup(HashTable *hash_table,
-                                 HashTableKey key);
+HashTableValue hash_table_lookup(HashTable *hash_table, HashTableKey key);
 
 /**
  * Remove a value from a hash table.
