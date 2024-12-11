@@ -94,6 +94,7 @@ void sortedarray_remove(SortedArray *sortedarray, unsigned int index)
 	sortedarray_remove_range(sortedarray, index, 1);
 }
 
+/* TODO: Return boolean value to indicate success */
 void sortedarray_remove_range(SortedArray *sortedarray, unsigned int index,
                               unsigned int length)
 {
@@ -181,6 +182,7 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 	return 1;
 }
 
+/* TODO: Refactor to eliminate duplicated binary search */
 int sortedarray_index_of(SortedArray *sortedarray, SortedArrayValue data)
 {
 	unsigned int left, right, index;
