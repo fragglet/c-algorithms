@@ -13,6 +13,7 @@ jobs:
         sudo apt -q install clang-format
     - uses: actions/checkout@v4
     - name: Check formatting
+      if: '!cancelled()'
       run: |
         clang-format -i */*.[ch]
         if git diff | grep ""; then
@@ -22,6 +23,7 @@ jobs:
           false
         fi
     - name: Check C89 compliance
+      if: '!cancelled()'
       env:
         CFLAGS: "-O0 -Werror -std=c89 -pedantic -Isrc"
       run: |
@@ -33,6 +35,7 @@ jobs:
           false
         fi
     - name: Check value types can be redefined
+      if: '!cancelled()'
       env:
         CFLAGS: "-O0 -Werror -DTEST_ALTERNATE_VALUE_TYPES"
       run: |
