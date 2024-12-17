@@ -1,4 +1,10 @@
-ISC License
+The C Algorithms library is made available under the
+[ISC license](https://en.wikipedia.org/wiki/ISC_license), a permissive
+license that is functionally identical to the
+[simplified BSD](https://en.wikipedia.org/wiki/BSD_licenses#2-clause)
+or [MIT licenses](https://en.wikipedia.org/wiki/MIT_License).
+
+---
 
 Copyright (c) 2005-2008, Simon Howard
 
