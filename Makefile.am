@@ -1,7 +1,7 @@
 
 AUX_DIST_GEN = $(ac_aux_dir)
 
-EXTRA_DIST = $(AUX_DIST_GEN) libcalg-1.0.pc.in STYLE.md
+EXTRA_DIST = $(AUX_DIST_GEN) libcalg-1.0.pc.in STYLE.md .clang-format
 MAINTAINERCLEANFILES = $(AUX_DIST_GEN)
 
 pkgconfigdir = $(libdir)/pkgconfig
