@@ -41,7 +41,6 @@ typedef struct {
 		(void *) 0, 0                                                  \
 	}
 
-
 typedef StructType ArrayListValue;
 #define ARRAY_LIST_NULL STRUCT_TYPE_NULL
 
