@@ -532,7 +532,7 @@ unsigned int avl_tree_num_entries(AVLTree *tree)
 }
 
 static void avl_tree_to_array_add_subtree(AVLTreeNode *subtree,
-                                          AVLTreeValue *array, int *index)
+                                          AVLTreeKey *array, int *index)
 {
 	if (subtree == NULL) {
 		return;
@@ -551,13 +551,13 @@ static void avl_tree_to_array_add_subtree(AVLTreeNode *subtree,
 	                              array, index);
 }
 
-AVLTreeValue *avl_tree_to_array(AVLTree *tree)
+AVLTreeKey *avl_tree_to_array(AVLTree *tree)
 {
-	AVLTreeValue *array;
+	AVLTreeKey *array;
 	int index;
 
 	/* Allocate the array */
-	array = malloc(sizeof(AVLTreeValue) * tree->num_nodes);
+	array = malloc(sizeof(AVLTreeKey) * tree->num_nodes);
 
 	if (array == NULL) {
 		return NULL;

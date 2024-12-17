@@ -418,7 +418,7 @@ HashTablePair hash_table_iter_next(HashTableIterator *iterator)
 {
 	HashTableEntry *current_entry;
 	HashTable *hash_table;
-	HashTablePair pair = {HASH_TABLE_NULL, HASH_TABLE_NULL};
+	HashTablePair pair = {HASH_TABLE_KEY_NULL, HASH_TABLE_NULL};
 	unsigned int chain;
 
 	hash_table = iterator->hash_table;

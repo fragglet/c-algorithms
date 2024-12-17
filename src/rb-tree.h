@@ -106,7 +106,7 @@ typedef struct _RBTreeNode RBTreeNode;
  *                         be sorted before data1, zero if the two keys
  *                         are equal.
  */
-typedef int (*RBTreeCompareFunc)(RBTreeValue data1, RBTreeValue data2);
+typedef int (*RBTreeCompareFunc)(RBTreeKey data1, RBTreeKey data2);
 
 /**
  * Each node in a red-black tree is either red or black.
@@ -259,7 +259,7 @@ int rb_tree_subtree_height(RBTreeNode *node);
  *                        is equal to the number of entries in the tree
  *                        (see @ref rb_tree_num_entries).
  */
-RBTreeValue *rb_tree_to_array(RBTree *tree);
+RBTreeKey *rb_tree_to_array(RBTree *tree);
 
 /**
  * Retrieve the number of entries in the tree.

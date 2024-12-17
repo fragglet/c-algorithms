@@ -344,7 +344,7 @@ RBTreeNode *rb_tree_insert(RBTree *tree, RBTreeKey key, RBTreeValue value)
 		parent = *rover;
 
 		/* Choose which path to go down, left or right child */
-		if (tree->compare_func(value, (*rover)->value) < 0) {
+		if (tree->compare_func(key, (*rover)->key) < 0) {
 			side = RB_TREE_NODE_LEFT;
 		} else {
 			side = RB_TREE_NODE_RIGHT;
@@ -456,7 +456,7 @@ RBTreeNode *rb_tree_node_parent(RBTreeNode *node)
 	return node->parent;
 }
 
-RBTreeValue *rb_tree_to_array(RBTree *tree)
+RBTreeKey *rb_tree_to_array(RBTree *tree)
 {
 	/* TODO */
 	return NULL;
