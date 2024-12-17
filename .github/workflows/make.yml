@@ -16,23 +16,33 @@ jobs:
       run: |
         clang-format -i */*.[ch]
         if git diff | grep ""; then
-          echo
-          echo "*** Formatting errors detected by clang-format."
-          echo "*** Please apply the above diff or run:"
-          echo "    clang-format -i */*.[ch]"
-          echo
+          (echo "Formatting errors detected by clang-format." \
+                "Please run \`make format\`.";
+           echo) >> $GITHUB_STEP_SUMMARY
           false
         fi
     - name: Check C89 compliance
       env:
         CFLAGS: "-O0 -Werror -std=c89 -pedantic -Isrc"
       run: |
-        gcc $CFLAGS -c */*.c
+        if ! gcc $CFLAGS -c */*.c; then
+          (echo "Code does not conform to ANSI C. Make sure not to use" \
+                "features from later standards, including C++-style " \
+                "// comments.";
+           echo) >> $GITHUB_STEP_SUMMARY
+          false
+        fi
     - name: Check value types can be redefined
       env:
         CFLAGS: "-O0 -Werror -DTEST_ALTERNATE_VALUE_TYPES"
       run: |
-        gcc $CFLAGS -c src/*.c
+        if ! gcc $CFLAGS -c src/*.c; then
+          (echo "Compile failed when key/value types were redefined to" \
+                "something different from a void pointer. Compile with" \
+                "-DTEST_ALTERNATE_VALUE_TYPES to see the error.";
+           echo) >> $GITHUB_STEP_SUMMARY
+          false
+        fi
 
   build_and_coverage:
     runs-on: ubuntu-latest
