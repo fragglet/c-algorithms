@@ -35,6 +35,9 @@ struct _ListEntry {
 	ListEntry *next;
 };
 
+/* Null value that can be returned without creating a local variable */
+static const ListValue list_null_value = LIST_NULL;
+
 void list_free(ListEntry *list)
 {
 	ListEntry *entry;
@@ -127,7 +130,7 @@ ListEntry *list_append(ListEntry **list, ListValue data)
 ListValue list_data(ListEntry *listentry)
 {
 	if (listentry == NULL) {
-		return LIST_NULL;
+		return list_null_value;
 	}
 
 	return listentry->data;
@@ -187,7 +190,7 @@ ListValue list_nth_data(ListEntry *list, unsigned int n)
 
 	/* If out of range, return NULL, otherwise return the data */
 	if (entry == NULL) {
-		return LIST_NULL;
+		return list_null_value;
 	} else {
 		return entry->data;
 	}
@@ -492,7 +495,7 @@ ListValue list_iter_next(ListIterator *iter)
 
 	/* Have we reached the end of the list? */
 	if (iter->current == NULL) {
-		return LIST_NULL;
+		return list_null_value;
 	} else {
 		return iter->current->data;
 	}

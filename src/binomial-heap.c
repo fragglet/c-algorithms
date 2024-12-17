@@ -46,6 +46,9 @@ struct _BinomialHeap {
 	unsigned int roots_length;
 };
 
+/* Null value that can be returned without creating a local variable */
+static const BinomialHeapValue binomial_heap_null_value = BINOMIAL_HEAP_NULL;
+
 static int binomial_heap_cmp(BinomialHeap *heap, BinomialHeapValue data1,
                              BinomialHeapValue data2)
 {
@@ -363,7 +366,7 @@ BinomialHeapValue binomial_heap_pop(BinomialHeap *heap)
 	unsigned int least_index;
 
 	if (heap->num_values == 0) {
-		return BINOMIAL_HEAP_NULL;
+		return binomial_heap_null_value;
 	}
 
 	/* Find the tree with the lowest root value */
@@ -411,7 +414,7 @@ BinomialHeapValue binomial_heap_pop(BinomialHeap *heap)
 		heap->roots[least_index] = least_tree;
 
 		/* Pop failed */
-		return BINOMIAL_HEAP_NULL;
+		return binomial_heap_null_value;
 	}
 }
 

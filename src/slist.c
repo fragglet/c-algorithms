@@ -34,6 +34,9 @@ struct _SListEntry {
 	SListEntry *next;
 };
 
+/* Null value that can be returned without creating a local variable */
+static const SListValue slist_null_value = SLIST_NULL;
+
 void slist_free(SListEntry *list)
 {
 	SListEntry *entry;
@@ -153,7 +156,7 @@ SListValue slist_nth_data(SListEntry *list, unsigned int n)
 
 	/* If out of range, return NULL, otherwise return the data */
 	if (entry == NULL) {
-		return SLIST_NULL;
+		return slist_null_value;
 	} else {
 		return entry->data;
 	}
@@ -429,7 +432,7 @@ SListValue slist_iter_next(SListIterator *iter)
 
 	/* Have we reached the end of the list? */
 	if (iter->current == NULL) {
-		return SLIST_NULL;
+		return slist_null_value;
 	} else {
 		return iter->current->data;
 	}

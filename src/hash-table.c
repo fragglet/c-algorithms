@@ -60,6 +60,9 @@ static const unsigned int hash_table_primes[] = {
 static const unsigned int hash_table_num_primes =
     sizeof(hash_table_primes) / sizeof(int);
 
+/* Null value that can be returned without creating a local variable */
+static const HashTableValue hash_table_null_value = HASH_TABLE_NULL;
+
 /* Internal function used to allocate the table on hash table creation
  * and when enlarging the table */
 static int hash_table_allocate_table(HashTable *hash_table)
@@ -330,7 +333,7 @@ HashTableValue hash_table_lookup(HashTable *hash_table, HashTableKey key)
 	}
 
 	/* Not found */
-	return HASH_TABLE_NULL;
+	return hash_table_null_value;
 }
 
 int hash_table_remove(HashTable *hash_table, HashTableKey key)
@@ -415,7 +418,7 @@ HashTablePair hash_table_iter_next(HashTableIterator *iterator)
 {
 	HashTableEntry *current_entry;
 	HashTable *hash_table;
-	HashTablePair pair = {NULL, HASH_TABLE_NULL};
+	HashTablePair pair = {HASH_TABLE_NULL, HASH_TABLE_NULL};
 	unsigned int chain;
 
 	hash_table = iterator->hash_table;

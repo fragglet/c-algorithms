@@ -57,6 +57,9 @@ static const unsigned int set_primes[] = {
 
 static const unsigned int set_num_primes = sizeof(set_primes) / sizeof(int);
 
+/* Null value that can be returned without creating a local variable */
+static const SetValue set_null_value = SET_NULL;
+
 static int set_allocate_table(Set *set)
 {
 	/* Determine the table size based on the current prime index.
@@ -482,7 +485,7 @@ SetValue set_iter_next(SetIterator *iterator)
 
 	/* No more entries? */
 	if (iterator->next_entry == NULL) {
-		return SET_NULL;
+		return set_null_value;
 	}
 
 	/* We have the result immediately */

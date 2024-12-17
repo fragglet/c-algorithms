@@ -42,6 +42,9 @@ struct _Queue {
 	QueueEntry *tail;
 };
 
+/* Null value that can be returned without creating a local variable */
+static const QueueValue queue_null_value = QUEUE_NULL;
+
 Queue *queue_new(void)
 {
 	Queue *queue;
@@ -112,7 +115,7 @@ QueueValue queue_pop_head(Queue *queue)
 
 	/* Check the queue is not empty */
 	if (queue_is_empty(queue)) {
-		return QUEUE_NULL;
+		return queue_null_value;
 	}
 
 	/* Unlink the first entry from the head of the queue */
@@ -140,7 +143,7 @@ QueueValue queue_pop_head(Queue *queue)
 QueueValue queue_peek_head(Queue *queue)
 {
 	if (queue_is_empty(queue)) {
-		return QUEUE_NULL;
+		return queue_null_value;
 	} else {
 		return queue->head->data;
 	}
@@ -189,7 +192,7 @@ QueueValue queue_pop_tail(Queue *queue)
 
 	/* Check the queue is not empty */
 	if (queue_is_empty(queue)) {
-		return QUEUE_NULL;
+		return queue_null_value;
 	}
 
 	/* Unlink the first entry from the tail of the queue */
@@ -218,7 +221,7 @@ QueueValue queue_pop_tail(Queue *queue)
 QueueValue queue_peek_tail(Queue *queue)
 {
 	if (queue_is_empty(queue)) {
-		return QUEUE_NULL;
+		return queue_null_value;
 	} else {
 		return queue->tail->data;
 	}

@@ -35,6 +35,9 @@ struct _BinaryHeap {
 	BinaryHeapCompareFunc compare_func;
 };
 
+/* Null value that can be returned without creating a local variable */
+static const BinaryHeapValue binary_heap_null_value = BINARY_HEAP_NULL;
+
 static int binary_heap_cmp(BinaryHeap *heap, BinaryHeapValue data1,
                            BinaryHeapValue data2)
 {
@@ -143,7 +146,7 @@ BinaryHeapValue binary_heap_pop(BinaryHeap *heap)
 
 	/* Empty heap? */
 	if (heap->num_values == 0) {
-		return BINARY_HEAP_NULL;
+		return binary_heap_null_value;
 	}
 
 	/* Take the value from the top of the heap */

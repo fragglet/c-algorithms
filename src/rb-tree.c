@@ -44,6 +44,9 @@ struct _RBTree {
 	int num_nodes;
 };
 
+/* Null value that can be returned without creating a local variable */
+static const RBTreeValue rb_tree_null_value = RB_TREE_NULL;
+
 static RBTreeNodeSide rb_tree_node_side(RBTreeNode *node)
 {
 	if (node->parent->children[RB_TREE_NODE_LEFT] == node) {
@@ -398,7 +401,7 @@ RBTreeValue rb_tree_lookup(RBTree *tree, RBTreeKey key)
 	node = rb_tree_lookup_node(tree, key);
 
 	if (node == NULL) {
-		return RB_TREE_NULL;
+		return rb_tree_null_value;
 	} else {
 		return node->value;
 	}

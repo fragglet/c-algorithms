@@ -43,6 +43,9 @@ struct _AVLTree {
 	unsigned int num_nodes;
 };
 
+/* Null value that can be returned without creating a local variable */
+static const AVLTreeValue avl_tree_null_value = AVL_TREE_NULL;
+
 AVLTree *avl_tree_new(AVLTreeCompareFunc compare_func)
 {
 	AVLTree *new_tree;
@@ -488,7 +491,7 @@ AVLTreeValue avl_tree_lookup(AVLTree *tree, AVLTreeKey key)
 	node = avl_tree_lookup_node(tree, key);
 
 	if (node == NULL) {
-		return AVL_TREE_NULL;
+		return avl_tree_null_value;
 	} else {
 		return node->value;
 	}
