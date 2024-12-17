@@ -11,3 +11,5 @@ $(pkgconfig_DATA) : config.status
 
 SUBDIRS=src test doc
 
+format:
+	clang-format -i */*.[ch]
