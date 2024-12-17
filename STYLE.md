@@ -1,12 +1,19 @@
 
 The following are coding style guidelines for this project.
 
-Code is expected to be ANSI C compatible (C89).  Use `/* ... */` comments, not
-`// ...` comments.
-
 To automatically format all source code, install
 [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and
 run `make format`.
+
+## Standard compliance
+
+Code is expected to be ANSI C compatible (C89). This means:
+
+* All variables must be declared at the beginning of a block.
+* Use `/* ... */` comments, not `// ...` comments.
+* There is no bool type (as added in C99); `int` is used for boolean values.
+* Other features added by later standards may not be used, such as inline
+  functions, variable-length arrays or `long long`.
 
 ## Blocks
 
