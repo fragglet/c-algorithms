@@ -23,15 +23,11 @@ jobs:
           echo
           false
         fi
-    - name: Check comment style
+    - name: Check C89 compliance
+      env:
+        CFLAGS: "-O0 -Werror -std=c89 -pedantic -Isrc"
       run: |
-        if grep " //" */*.[ch]; then
-          echo
-          echo "*** C++-style comments were detected in the above lines."
-          echo "*** Please change to use /* ... */ -style comments."
-          echo
-          false
-        fi
+        gcc $CFLAGS -c */*.c
 
   build_and_coverage:
     runs-on: ubuntu-latest
