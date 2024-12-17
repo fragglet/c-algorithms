@@ -35,10 +35,12 @@ struct _SortedArray {
 	SortedArrayCompareFunc cmp_func;
 };
 
+static const SortedArrayValue sortedarray_null_value = SORTED_ARRAY_NULL;
+
 SortedArrayValue sortedarray_get(SortedArray *array, unsigned int i)
 {
 	if (array == NULL || i >= array->length) {
-		return NULL;
+		return sortedarray_null_value;
 	}
 
 	return array->data[i];

@@ -51,6 +51,11 @@ extern "C" {
 typedef void *SortedArrayValue;
 
 /**
+ * A null @ref SortedArrayValue.
+ */
+#define SORTED_ARRAY_NULL ((void *) 0)
+
+/**
  * A SortedArray structure. Use @ref sortedarray_new to create one.
  *
  * The SortedArray is an automatically resizing array which stores its elements
