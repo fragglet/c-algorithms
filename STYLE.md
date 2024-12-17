@@ -4,14 +4,13 @@ The following are coding style guidelines for this project.
 Code is expected to be ANSI C compatible (C89).  Use `/* ... */` comments, not
 `// ...` comments.
 
-The style is a variant on the K&R style.
-
 To automatically format all source code, install
 [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and
 run `make format`.
 
 ## Blocks
 
+The indentation rules are a variant on the K&R style.
 Tabs are used for indentation, spaces for alignment, eg.
 ```c
 for (...) {
