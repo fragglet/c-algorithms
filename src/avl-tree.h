@@ -65,6 +65,10 @@ extern "C" {
  */
 typedef struct _AVLTree AVLTree;
 
+#ifdef TEST_ALTERNATE_VALUE_TYPES
+#include "alt-value-type.h"
+#else
+
 /**
  * A key for an @ref AVLTree.
  */
@@ -79,6 +83,8 @@ typedef void *AVLTreeValue;
  * A null @ref AVLTreeValue.
  */
 #define AVL_TREE_NULL ((void *) 0)
+
+#endif /* #ifndef TEST_ALTERNATE_VALUE_TYPES */
 
 /**
  * A node in an AVL tree.

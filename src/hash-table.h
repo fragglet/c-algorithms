@@ -64,6 +64,10 @@ typedef struct _HashTableIterator HashTableIterator;
  */
 typedef struct _HashTableEntry HashTableEntry;
 
+#ifdef TEST_ALTERNATE_VALUE_TYPES
+#include "alt-value-type.h"
+#else
+
 /**
  * A key to look up a value in a @ref HashTable.
  */
@@ -73,6 +77,13 @@ typedef void *HashTableKey;
  * A value stored in a @ref HashTable.
  */
 typedef void *HashTableValue;
+
+/**
+ * A null @ref HashTableValue.
+ */
+#define HASH_TABLE_NULL ((void *) 0)
+
+#endif /* #ifndef TEST_ALTERNATE_VALUE_TYPES */
 
 /**
  * Internal structure representing an entry in hash table
@@ -91,11 +102,6 @@ struct _HashTableIterator {
 	HashTableEntry *next_entry;
 	unsigned int next_chain;
 };
-
-/**
- * A null @ref HashTableValue.
- */
-#define HASH_TABLE_NULL ((void *) 0)
 
 /**
  * Hash function used to generate hash values for keys used in a hash

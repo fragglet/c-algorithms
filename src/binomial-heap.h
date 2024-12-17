@@ -57,6 +57,10 @@ typedef enum {
 	BINOMIAL_HEAP_TYPE_MAX
 } BinomialHeapType;
 
+#ifdef TEST_ALTERNATE_VALUE_TYPES
+#include "alt-value-type.h"
+#else
+
 /**
  * A value stored in a @ref BinomialHeap.
  */
@@ -66,6 +70,8 @@ typedef void *BinomialHeapValue;
  * A null @ref BinomialHeapValue.
  */
 #define BINOMIAL_HEAP_NULL ((void *) 0)
+
+#endif /* #ifndef TEST_ALTERNATE_VALUE_TYPES */
 
 /**
  * Type of function used to compare values in a binomial heap.

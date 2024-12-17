@@ -43,10 +43,16 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 extern "C" {
 #endif
 
+#ifdef TEST_ALTERNATE_VALUE_TYPES
+#include "alt-value-type.h"
+#else
+
 /**
  * A value to be stored in an @ref ArrayList.
  */
 typedef void *ArrayListValue;
+
+#endif /* #ifndef TEST_ALTERNATE_VALUE_TYPES */
 
 /**
  * An ArrayList structure.  New ArrayLists can be created using the

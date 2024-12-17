@@ -69,10 +69,21 @@ typedef struct _SetIterator SetIterator;
  */
 typedef struct _SetEntry SetEntry;
 
+#ifdef TEST_ALTERNATE_VALUE_TYPES
+#include "alt-value-type.h"
+#else
+
 /**
  * A value stored in a @ref Set.
  */
 typedef void *SetValue;
+
+/**
+ * A null @ref SetValue.
+ */
+#define SET_NULL ((void *) 0)
+
+#endif /* #ifndef TEST_ALTERNATE_VALUE_TYPES */
 
 /**
  * Definition of a @ref SetIterator.
@@ -82,11 +93,6 @@ struct _SetIterator {
 	SetEntry *next_entry;
 	unsigned int next_chain;
 };
-
-/**
- * A null @ref SetValue.
- */
-#define SET_NULL ((void *) 0)
 
 /**
  * Hash function.  Generates a hash key for values to be stored in a set.

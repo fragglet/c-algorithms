@@ -65,6 +65,10 @@ extern "C" {
  */
 typedef struct _RBTree RBTree;
 
+#ifdef TEST_ALTERNATE_VALUE_TYPES
+#include "alt-value-type.h"
+#else
+
 /**
  * A key for an @ref RBTree.
  */
@@ -79,6 +83,8 @@ typedef void *RBTreeValue;
  * A null @ref RBTreeValue.
  */
 #define RB_TREE_NULL ((void *) 0)
+
+#endif /* #ifndef TEST_ALTERNATE_VALUE_TYPES */
 
 /**
  * A node in a red-black tree.

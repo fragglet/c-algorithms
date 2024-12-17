@@ -50,6 +50,10 @@ extern "C" {
  */
 typedef struct _Queue Queue;
 
+#ifdef TEST_ALTERNATE_VALUE_TYPES
+#include "alt-value-type.h"
+#else
+
 /**
  * A value stored in a @ref Queue.
  */
@@ -59,6 +63,8 @@ typedef void *QueueValue;
  * A null @ref QueueValue.
  */
 #define QUEUE_NULL ((void *) 0)
+
+#endif /* #ifndef TEST_ALTERNATE_VALUE_TYPES */
 
 /**
  * Create a new double-ended queue.

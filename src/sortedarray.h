@@ -45,6 +45,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 extern "C" {
 #endif
 
+#ifdef TEST_ALTERNATE_VALUE_TYPES
+#include "alt-value-type.h"
+#else
+
 /**
  * A value to store in @ref SortedArray.
  */
@@ -54,6 +58,8 @@ typedef void *SortedArrayValue;
  * A null @ref SortedArrayValue.
  */
 #define SORTED_ARRAY_NULL ((void *) 0)
+
+#endif /* #ifndef TEST_ALTERNATE_VALUE_TYPES */
 
 /**
  * A SortedArray structure. Use @ref sortedarray_new to create one.

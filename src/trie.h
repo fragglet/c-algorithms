@@ -49,6 +49,10 @@ extern "C" {
  */
 typedef struct _Trie Trie;
 
+#ifdef TEST_ALTERNATE_VALUE_TYPES
+#include "alt-value-type.h"
+#else
+
 /**
  * Value stored in a @ref Trie.
  */
@@ -58,6 +62,8 @@ typedef void *TrieValue;
  * A null @ref TrieValue.
  */
 #define TRIE_NULL ((void *) 0)
+
+#endif /* #ifndef TEST_ALTERNATE_VALUE_TYPES */
 
 /**
  * Create a new trie.

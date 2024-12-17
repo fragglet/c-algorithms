@@ -49,10 +49,16 @@ extern "C" {
  */
 typedef struct _BloomFilter BloomFilter;
 
+#ifdef TEST_ALTERNATE_VALUE_TYPES
+#include "alt-value-type.h"
+#else
+
 /**
  * A value stored in a @ref BloomFilter.
  */
 typedef void *BloomFilterValue;
+
+#endif /* #ifndef TEST_ALTERNATE_VALUE_TYPES */
 
 /**
  * Hash function used to generate hash values for values inserted into a

@@ -72,10 +72,21 @@ typedef struct _ListEntry ListEntry;
  */
 typedef struct _ListIterator ListIterator;
 
+#ifdef TEST_ALTERNATE_VALUE_TYPES
+#include "alt-value-type.h"
+#else
+
 /**
  * A value stored in a list.
  */
 typedef void *ListValue;
+
+/**
+ * A null @ref ListValue.
+ */
+#define LIST_NULL ((void *) 0)
+
+#endif /* #ifndef TEST_ALTERNATE_VALUE_TYPES */
 
 /**
  * Definition of a @ref ListIterator.
@@ -84,11 +95,6 @@ struct _ListIterator {
 	ListEntry **prev_next;
 	ListEntry *current;
 };
-
-/**
- * A null @ref ListValue.
- */
-#define LIST_NULL ((void *) 0)
 
 /**
  * Callback function used to compare values in a list when sorting.
