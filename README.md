@@ -1,5 +1,4 @@
-
-C Algorithms
+## C Algorithms
 
 The C programming language includes a very limited standard library in
 comparison to other modern programming languages.  This is a collection of
