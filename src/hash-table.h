@@ -96,8 +96,10 @@ typedef void *HashTableValue;
  */
 typedef struct _HashTablePair {
 	HashTableKey key;
-	HashTableValue value;
+			HashTableKey value;
 } HashTablePair;
+
+// bad comment
 
 /**
  * Definition of a @ref HashTableIterator.
