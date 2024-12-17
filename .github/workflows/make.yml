@@ -3,7 +3,7 @@ name: Continuous Integration
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  check_style:
+  check_style_etc:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,6 +28,11 @@ jobs:
         CFLAGS: "-O0 -Werror -std=c89 -pedantic -Isrc"
       run: |
         gcc $CFLAGS -c */*.c
+    - name: Check value types can be redefined
+      env:
+        CFLAGS: "-O0 -Werror -DTEST_ALTERNATE_VALUE_TYPES"
+      run: |
+        gcc $CFLAGS -c src/*.c
 
   build_and_coverage:
     runs-on: ubuntu-latest
