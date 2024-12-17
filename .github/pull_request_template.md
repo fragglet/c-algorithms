@@ -7,7 +7,7 @@ If you are planning to add a new module (data structure or algorithm), you may w
 
 Before filing your pull request, please ensure that your change:
 * Is written  in the C programming language. 
-* Conforms to the project's style guidelines. 
+* Conforms to the project's style guidelines (see STYLE.md).
 * Does not duplicate existing code already present. 
 * Passes all unit test checks (existing code). Run `make check` to confirm. 
 * Adds unit tests (new code) with at least 95% coverage. Build with `configure –enable-coverage` to confirm. 
