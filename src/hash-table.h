@@ -79,6 +79,11 @@ typedef void *HashTableKey;
 typedef void *HashTableValue;
 
 /**
+ * A null @ref HashTableKey.
+ */
+#define HASH_TABLE_KEY_NULL ((void *) 0)
+
+/**
  * A null @ref HashTableValue.
  */
 #define HASH_TABLE_NULL ((void *) 0)
