@@ -24,17 +24,24 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
    different types and confirm the library still builds. */
 
 typedef struct {
+	void *ptr;
+	int v;
+} StructType2;
+
+typedef struct {
 	int a, b;
 } StructType;
 
 #define STRUCT_TYPE_NULL {0, 0}
+#define STRUCT_TYPE2_NULL {(void *) 0, 0}
 
 typedef StructType ArrayListValue;
 #define ARRAY_LIST_NULL STRUCT_TYPE_NULL
 
-typedef StructType AVLTreeKey;
+typedef StructType2 AVLTreeKey;
 typedef StructType AVLTreeValue;
 #define AVL_TREE_NULL STRUCT_TYPE_NULL
+
 typedef StructType BinaryHeapValue;
 #define BINARY_HEAP_NULL STRUCT_TYPE_NULL
 
@@ -44,7 +51,8 @@ typedef StructType BinomialHeapValue;
 typedef StructType BloomFilterValue;
 #define BLOOM_FILTER_NULL STRUCT_TYPE_NULL
 
-typedef StructType HashTableKey;
+typedef StructType2 HashTableKey;
+#define HASH_TABLE_KEY_NULL STRUCT_TYPE2_NULL
 typedef StructType HashTableValue;
 #define HASH_TABLE_NULL STRUCT_TYPE_NULL
 
@@ -54,7 +62,7 @@ typedef StructType ListValue;
 typedef StructType QueueValue;
 #define QUEUE_NULL STRUCT_TYPE_NULL
 
-typedef StructType RBTreeKey;
+typedef StructType2 RBTreeKey;
 typedef StructType RBTreeValue;
 #define RB_TREE_NULL STRUCT_TYPE_NULL
 
