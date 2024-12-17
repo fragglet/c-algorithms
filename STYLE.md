@@ -72,3 +72,10 @@ All public interfaces must be documented using
  */
 unsigned int hash_table_num_entries(HashTable *hash_table);
 ```
+
+## Modularity
+
+The project is structured in a modular way, such that each module (`.c` and
+`.h` file) is independent of the others. The idea is that anyone should be able
+to use any file in an "off the shelf" way by trivially copying those two files
+into their project.
