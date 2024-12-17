@@ -166,6 +166,7 @@ void test_hash_table_iterating(void)
 {
 	HashTable *hash_table;
 	HashTableIterator iterator;
+	HashTablePair pair;
 	int count;
 
 	hash_table = generate_hash_table();
@@ -184,7 +185,7 @@ void test_hash_table_iterating(void)
 	assert(count == NUM_TEST_VALUES);
 
 	/* Test iter_next after iteration has completed. */
-	HashTablePair pair = hash_table_iter_next(&iterator);
+	pair = hash_table_iter_next(&iterator);
 	assert(pair.value == HASH_TABLE_NULL);
 
 	hash_table_free(hash_table);
@@ -397,6 +398,8 @@ void test_hash_iterator_key_pair()
 	HashTable *hash_table;
 	HashTableIterator iterator;
 	HashTablePair pair;
+	int *key, *val;
+
 	hash_table = hash_table_new(int_hash, int_equal);
 
 	/* Add some values */
@@ -410,8 +413,8 @@ void test_hash_iterator_key_pair()
 		/* Retrieve both Key and Value */
 		pair = hash_table_iter_next(&iterator);
 
-		int *key = (int *) pair.key;
-		int *val = (int *) pair.value;
+		key = (int *) pair.key;
+		val = (int *) pair.value;
 
 		assert(*key == *val);
 	}

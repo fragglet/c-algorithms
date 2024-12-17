@@ -52,6 +52,9 @@ unsigned int sortedarray_length(SortedArray *array)
 SortedArray *sortedarray_new(unsigned int length,
                              SortedArrayCompareFunc cmp_func)
 {
+	SortedArrayValue *array;
+	SortedArray *sortedarray;
+
 	if (cmp_func == NULL) {
 		return NULL;
 	}
@@ -61,12 +64,12 @@ SortedArray *sortedarray_new(unsigned int length,
 		length = 16;
 	}
 
-	SortedArrayValue *array = malloc(sizeof(SortedArrayValue) * length);
+	array = malloc(sizeof(SortedArrayValue) * length);
 	if (array == NULL) {
 		return NULL;
 	}
 
-	SortedArray *sortedarray = malloc(sizeof(SortedArray));
+	sortedarray = malloc(sizeof(SortedArray));
 	if (sortedarray == NULL) {
 		free(array);
 		return NULL;
@@ -118,6 +121,7 @@ int sortedarray_remove_range(SortedArray *sortedarray, unsigned int index,
 int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 {
 	unsigned int left, right, index;
+	int order;
 
 	if (sortedarray == NULL) {
 		return 0;
@@ -132,9 +136,8 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 
 	while (left != right) {
 		index = (left + right) / 2;
+		order = sortedarray->cmp_func(data, sortedarray->data[index]);
 
-		int order =
-		    sortedarray->cmp_func(data, sortedarray->data[index]);
 		if (order < 0) {
 			/* value should be left of index */
 			right = index;
@@ -186,6 +189,7 @@ int sortedarray_insert(SortedArray *sortedarray, SortedArrayValue data)
 int sortedarray_index_of(SortedArray *sortedarray, SortedArrayValue data)
 {
 	unsigned int left, right, index;
+	int order;
 
 	if (sortedarray == NULL) {
 		return -1;
@@ -200,9 +204,8 @@ int sortedarray_index_of(SortedArray *sortedarray, SortedArrayValue data)
 
 	while (left != right) {
 		index = (left + right) / 2;
+		order = sortedarray->cmp_func(data, sortedarray->data[index]);
 
-		int order =
-		    sortedarray->cmp_func(data, sortedarray->data[index]);
 		if (order < 0) {
 			/* value should be left */
 			right = index;

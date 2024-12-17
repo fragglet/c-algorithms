@@ -107,7 +107,7 @@ typedef int (*RBTreeCompareFunc)(RBTreeValue data1, RBTreeValue data2);
  */
 typedef enum {
 	RB_TREE_NODE_RED,
-	RB_TREE_NODE_BLACK,
+	RB_TREE_NODE_BLACK
 } RBTreeNodeColor;
 
 /**
