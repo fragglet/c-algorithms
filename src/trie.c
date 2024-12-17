@@ -59,7 +59,7 @@ Trie *trie_new(void)
 
 static void trie_free_list_push(TrieNode **list, TrieNode *node)
 {
-	node->data = *list;
+	node->next[0] = *list;
 	*list = node;
 }
 
@@ -68,7 +68,7 @@ static TrieNode *trie_free_list_pop(TrieNode **list)
 	TrieNode *result;
 
 	result = *list;
-	*list = result->data;
+	*list = result->next[0];
 
 	return result;
 }
