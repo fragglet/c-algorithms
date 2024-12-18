@@ -59,8 +59,23 @@ Tests should [cover](https://en.wikipedia.org/wiki/Code_coverage) at least
 95% of lines.  Configure the project using `./configure --enable-coverage` and
 then run `make check`.
 
-## Documentation
+## Comments
 
+Code should be commented using full English sentences. In general, try not to
+document "what" the code is doing, but rather the "how" and "why". Most people,
+for example, would agree that the following is an example of a comment that is
+not useful:
+```c
+    /* Free the node */
+    free(node);
+```
+The following is a comment that is more enlightening to the reader:
+```c
+    /* The node to be removed must be swapped with an "adjacent"
+     * node, ie. one which has the closest key to this one. Find
+     * a node to swap with. */
+    swap_node = avl_tree_node_get_replacement(tree, node);
+```
 All public interfaces must be documented using
 [Doxygen](https://www.doxygen.nl/). For example:
 ```c
