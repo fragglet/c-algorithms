@@ -1,0 +1,3 @@
+[submodule "boring"]
+	path = boring
+	url = https://github.com/fragglet/boring.git
