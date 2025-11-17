@@ -232,3 +232,23 @@ size_t alloc_test_get_allocated(void)
 {
 	return allocated_bytes;
 }
+
+
+void test_realloc_growth_wrong()
+{
+    /* Allocate 64 bytes */
+    char *p = alloc_test_malloc(64);
+    assert(p != NULL);
+
+    /* Fill first 32 bytes */
+    memset(p, 0xAA, 32);
+
+    char *q = alloc_test_realloc(p, 32);   // <-- incorrect call
+    assert(q != NULL);
+
+    /* Test still checks correctness AS IF growth happened */
+    assert(q[0] == (char)0xAA);
+
+    /* Test passes, but allocator is now corrupted */
+    alloc_test_free(q);
+}
