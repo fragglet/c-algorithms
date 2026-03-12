@@ -11,7 +11,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt -q install clang-format
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Check formatting
       if: '!cancelled()'
       run: |
@@ -25,7 +25,7 @@ jobs:
            echo) >> $GITHUB_STEP_SUMMARY
           false
         fi
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v6
       if: '!cancelled()'
       with:
         if-no-files-found: ignore
@@ -64,7 +64,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt -q install doxygen
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: configure
       run: |
         LDFLAGS="$CFLAGS" ./autogen.sh  \
@@ -79,7 +79,7 @@ jobs:
         mkdir artifacts
         tar cf - src/*.gcov | tar -C artifacts -xf -
     - name: Upload coverage-annotated source files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         path: "artifacts"
         name: coverage_reports
@@ -88,7 +88,7 @@ jobs:
         make distcheck
         make dist
     - name: Make documentation zip
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         path: "doc/html"
         name: documentation
@@ -101,7 +101,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt -q install valgrind
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: configure
       run: |
         LDFLAGS="$CFLAGS" ./autogen.sh  \
@@ -123,7 +123,7 @@ jobs:
                -fno-sanitize=shift-base"
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: configure
       run: |
         LDFLAGS="$CFLAGS" ./autogen.sh
