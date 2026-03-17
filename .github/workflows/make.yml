@@ -1,7 +1,12 @@
 name: Continuous Integration
 
-on: [push, pull_request, workflow_dispatch]
-
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:  # Nightly build
+    - cron: "0 3 * * *"
+    
 jobs:
   check_style_etc:
     runs-on: ubuntu-latest
