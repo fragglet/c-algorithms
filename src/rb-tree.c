@@ -456,6 +456,25 @@ RBTreeNode *rb_tree_node_parent(RBTreeNode *node)
 	return node->parent;
 }
 
+int rb_tree_subtree_height(RBTreeNode *node)
+{
+	int left_height;
+	int right_height;
+
+	if (node == NULL) {
+		return 0;
+	}
+
+	left_height = rb_tree_subtree_height(node->children[RB_TREE_NODE_LEFT]);
+	right_height = rb_tree_subtree_height(node->children[RB_TREE_NODE_RIGHT]);
+
+	if (left_height > right_height) {
+		return left_height + 1;
+	} else {
+		return right_height + 1;
+	}
+}
+
 RBTreeKey *rb_tree_to_array(RBTree *tree)
 {
 	/* TODO */
