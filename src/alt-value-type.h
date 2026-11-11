@@ -32,14 +32,8 @@ typedef struct {
 	int a, b;
 } StructType;
 
-#define STRUCT_TYPE_NULL                                                       \
-	{                                                                      \
-		0, 0                                                           \
-	}
-#define STRUCT_TYPE2_NULL                                                      \
-	{                                                                      \
-		(void *) 0, 0                                                  \
-	}
+#define STRUCT_TYPE_NULL {0, 0}
+#define STRUCT_TYPE2_NULL {(void *) 0, 0}
 
 typedef StructType ArrayListValue;
 #define ARRAY_LIST_NULL STRUCT_TYPE_NULL
